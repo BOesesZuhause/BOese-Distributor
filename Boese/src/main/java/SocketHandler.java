@@ -1,14 +1,21 @@
 import java.io.IOException;
+
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.json.JsonObject;
-
 import javax.websocket.Session;
+
+
 public class SocketHandler {
+	
 	private final Set<Session> sessions = new HashSet<Session>();
+	private static SocketHandler instance = new SocketHandler();
+	
+	private SocketHandler(){
+	}
 	
 	
 	public void addSession(Session session){
@@ -28,5 +35,9 @@ public class SocketHandler {
             Logger.getLogger(SocketHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+	public static SocketHandler getInstance() {
+		return instance;
+	}
 
 }
