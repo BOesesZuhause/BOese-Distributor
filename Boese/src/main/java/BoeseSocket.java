@@ -1,4 +1,3 @@
-import javax.inject.Inject;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -9,11 +8,11 @@ import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint("/events/")
 public class BoeseSocket {
 	
-	@Inject
-	SocketHandler handler; //TODO ist immer null, wird nicht injected
-
+	
+	SocketHandler handler = SocketHandler.getInstance();
 	@OnOpen
 	public void open(Session session) {
+		handler = SocketHandler.getInstance();
 		handler.addSession(session);
 	}
 
