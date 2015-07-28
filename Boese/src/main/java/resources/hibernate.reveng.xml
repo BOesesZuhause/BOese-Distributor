@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<table-filter match-name="Component" match-schema="public"></table-filter>
+	<table-filter match-name="Connector" match-schema="public"></table-filter>
+	<table-filter match-name="Device" match-schema="public"></table-filter>
+	<table-filter match-name="DeviceComponent" match-schema="public"></table-filter>
+	<table-filter match-name="DeviceComponenteReplace"
+		match-schema="public">
+	</table-filter>
+	<table-filter match-name="DeviceGroup" match-schema="public"></table-filter>
+	<table-filter match-name="Group" match-schema="public"></table-filter>
+	<table-filter match-name="GroupUser" match-schema="public"></table-filter>
+	<table-filter match-name="GroupZone" match-schema="public"></table-filter>
+	<table-filter match-name="HistoryLogComponente"
+		match-schema="public">
+	</table-filter>
+	<table-filter match-name="HistoryLogConnector"
+		match-schema="public">
+	</table-filter>
+	<table-filter match-name="HistoryLogRule" match-schema="public"></table-filter>
+	<table-filter match-name="LogComponent" match-schema="public"></table-filter>
+	<table-filter match-name="LogConnector" match-schema="public"></table-filter>
+	<table-filter match-name="LogRule" match-schema="public"></table-filter>
+	<table-filter match-name="Rule" match-schema="public"></table-filter>
+	<table-filter match-name="Service" match-schema="public"></table-filter>
+	<table-filter match-name="ServiceDevice" match-schema="public"></table-filter>
+	<table-filter match-name="Unit" match-schema="public"></table-filter>
+	<table-filter match-name="User" match-schema="public"></table-filter>
+	<table-filter match-name="Zone" match-schema="public"></table-filter>
+</hibernate-reverse-engineering>
