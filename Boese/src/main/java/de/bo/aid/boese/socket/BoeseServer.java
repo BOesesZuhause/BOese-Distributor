@@ -1,3 +1,5 @@
+package de.bo.aid.boese.socket;
+
 import javax.websocket.server.ServerContainer;
 
 import org.eclipse.jetty.server.Server;

@@ -1,3 +1,4 @@
+package de.bo.aid.boese.socket;
 import java.io.IOException;
 
 
@@ -35,6 +36,12 @@ public class SocketHandler {
             Logger.getLogger(SocketHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+	
+	 private void sendToAllConnectedSessions(JsonObject message) {
+	        for (Session session : sessions) {
+	            sendToSession(session, message);
+	        }
+	    }
 
 	public static SocketHandler getInstance() {
 		return instance;

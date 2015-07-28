@@ -1,3 +1,5 @@
+package de.bo.aid.boese.socket.test;
+
 import static org.junit.Assert.*;
 
 import java.net.URI;
@@ -7,6 +9,8 @@ import javax.websocket.Session;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import de.bo.aid.boese.socket.BoeseServer;
 
 public class ConectionTest {
 	
@@ -20,7 +24,7 @@ public class ConectionTest {
 	
 
 	@Test
-	public void test() throws Exception {
+	public void testConnection() throws Exception {
 		URI uri = URI.create("ws://localhost:8080/events/");
 		Session s1 = SocketClient.connect(uri);
 		assertNotNull(s1);
