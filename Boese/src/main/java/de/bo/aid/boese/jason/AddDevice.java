@@ -8,6 +8,7 @@ public class AddDevice extends BoeseJson {
 	
 	public AddDevice(String alias) {
 		this.alias = alias;
+		components = null;
 		this.messageType = MessageType.SENDLIST;
 	}
 	
@@ -25,19 +26,23 @@ public class AddDevice extends BoeseJson {
 		return components;
 	}
 	
-	// TODO
-	public Set<String> getComponentNames() {
-		return null;
+	public String getAlias() {
+		return alias;
 	}
 	
 	// TODO
-	public DeviceComponent getComponentByName(String name) {
-		return null;
-	}
-	
-	// TODO
-	public DeviceComponent getComponentByUnit(int unitId) {
-		return null;
-	}
+//	public Set<String> getComponentNames() {
+//		return null;
+//	}
+//	
+//	// TODO
+//	public DeviceComponent getComponentByName(String name) {
+//		return null;
+//	}
+//	
+//	// TODO
+//	public DeviceComponent getComponentByUnit(int unitId) {
+//		return null;
+//	}
 
 }
