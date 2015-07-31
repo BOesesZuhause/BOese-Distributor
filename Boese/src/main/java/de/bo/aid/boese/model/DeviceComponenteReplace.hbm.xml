@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 30.07.2015 11:14:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="de.bo.aid.boese.model.DeviceComponenteReplace" table="device_componente_replace" schema="public" optimistic-lock="version">
+        <composite-id name="id" class="de.bo.aid.boese.model.DeviceComponenteReplaceId">
+            <key-property name="deCoId" type="int">
+                <column name="DeCoID" />
+            </key-property>
+            <key-property name="deCoIdreplaced" type="int">
+                <column name="DeCoIDReplaced" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="deviceComponentByDeCoId" class="de.bo.aid.boese.model.DeviceComponent" update="false" insert="false" fetch="select">
+            <column name="DeCoID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="deviceComponentByDeCoIdreplaced" class="de.bo.aid.boese.model.DeviceComponent" update="false" insert="false" fetch="select">
+            <column name="DeCoIDReplaced" not-null="true" />
+        </many-to-one>
+        <property name="timestap" type="timestamp">
+            <column name="Timestap" length="29" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

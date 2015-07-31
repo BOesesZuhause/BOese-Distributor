@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 30.07.2015 11:14:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="de.bo.aid.boese.model.User" table="user" schema="public" optimistic-lock="version">
+        <id name="usId" type="int">
+            <column name="UsID" />
+            <generator class="assigned" />
+        </id>
+        <property name="surname" type="string">
+            <column name="Surname" length="125" not-null="true" />
+        </property>
+        <property name="firstName" type="string">
+            <column name="FirstName" length="125" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="Password" length="125" not-null="true" />
+        </property>
+        <property name="gender" type="java.lang.Boolean">
+            <column name="Gender" />
+        </property>
+        <property name="birthdate" type="date">
+            <column name="Birthdate" length="13" />
+        </property>
+        <property name="userName" type="string">
+            <column name="UserName" length="125" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="Email" length="125" />
+        </property>
+        <set name="groupUsers" table="group_user" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UsID" not-null="true" />
+            </key>
+            <one-to-many class="de.bo.aid.boese.model.GroupUser" />
+        </set>
+    </class>
+</hibernate-mapping>

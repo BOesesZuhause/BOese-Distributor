@@ -13,12 +13,6 @@
         <property name="hibernate.search.autoregister_listeners">false</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.validator.apply_to_ddl">false</property>
-       
-            <!-- Drop and re-create all database on startup -->
-        <property name="hibernate.hbm2ddl.auto">update</property>
- 
-       
-       
         <mapping resource="de/bo/aid/boese/model/Group.hbm.xml" />
         <mapping resource="de/bo/aid/boese/model/DeviceComponent.hbm.xml" />
         <mapping resource="de/bo/aid/boese/model/HistoryLogConnector.hbm.xml" />

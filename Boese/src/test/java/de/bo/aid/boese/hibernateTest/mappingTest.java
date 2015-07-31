@@ -20,14 +20,16 @@ public class mappingTest {
 //				.buildSessionFactory(); 
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
-		session.beginTransaction();
- 
-		Zone zone = new Zone();
-		zone.setName("test");
-		session.save(zone);
- 
-		session.getTransaction().commit();
-		session.close();
+		
+		//Beispiel zum Datenbanktugriff
+//		session.beginTransaction();
+// 
+//		Zone zone = new Zone();
+//		zone.setName("test");
+//		session.save(zone);
+// 
+//		session.getTransaction().commit();
+//		session.close();
 	}
 
 }

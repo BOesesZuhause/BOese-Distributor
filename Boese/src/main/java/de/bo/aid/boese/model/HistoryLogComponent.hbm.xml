@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 30.07.2015 11:14:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="de.bo.aid.boese.model.HistoryLogComponent" table="history_log_component" schema="public">
+        <id name="hiLoCoId" type="int">
+            <column name="HiLoCoID" />
+            <generator class="assigned" />
+        </id>
+        <timestamp name="timestamp" column="Timestamp" />
+        <many-to-one name="deviceComponent" class="de.bo.aid.boese.model.DeviceComponent" fetch="select">
+            <column name="DeCoID" not-null="true" />
+        </many-to-one>
+        <property name="value" type="big_decimal">
+            <column name="Value" precision="1000" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

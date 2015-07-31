@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 30.07.2015 11:14:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="de.bo.aid.boese.model.Component" table="component" schema="public" optimistic-lock="version">
+        <id name="coId" type="int">
+            <column name="CoID" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="unit" class="de.bo.aid.boese.model.Unit" fetch="select">
+            <column name="UnID" not-null="true" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="Name" length="125" not-null="true" />
+        </property>
+        <property name="sensor" type="boolean">
+            <column name="Sensor" not-null="true" />
+        </property>
+        <set name="deviceComponents" table="device_component" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="SeID" not-null="true" />
+            </key>
+            <one-to-many class="de.bo.aid.boese.model.DeviceComponent" />
+        </set>
+    </class>
+</hibernate-mapping>

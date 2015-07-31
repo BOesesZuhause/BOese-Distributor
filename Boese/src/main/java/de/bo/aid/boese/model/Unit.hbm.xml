@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 30.07.2015 11:14:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="de.bo.aid.boese.model.Unit" table="unit" schema="public" optimistic-lock="version">
+        <id name="unId" type="int">
+            <column name="UnID" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="string">
+            <column name="Name" length="25" />
+        </property>
+        <property name="symbol" type="string">
+            <column name="Symbol" length="25" />
+        </property>
+        <set name="components" table="component" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UnID" not-null="true" />
+            </key>
+            <one-to-many class="de.bo.aid.boese.model.Component" />
+        </set>
+    </class>
+</hibernate-mapping>
