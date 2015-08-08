@@ -25,7 +25,7 @@ public class ConectionTest {
 
 	@Test
 	public void testConnection() throws Exception {
-		URI uri = URI.create("ws://localhost:8080/events/");
+		URI uri = URI.create("ws://localhost:8081/events/");
 		Session s1 = SocketClient.connect(uri);
 		assertNotNull(s1);
 	}
