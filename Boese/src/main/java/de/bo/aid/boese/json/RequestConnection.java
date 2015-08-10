@@ -2,15 +2,21 @@ package de.bo.aid.boese.json;
 
 
 public class RequestConnection extends BoeseJson {
-	private String name;
+	private String connectorName;
+	private String password;
 	
-	public RequestConnection(String name, 
+	public RequestConnection(String name, String password,
 			int idConnector, int seqNr, int ackNr, int status, long headerTimestamp) {
 		super(MessageType.REQUESTCONNECTION, idConnector, seqNr, ackNr, status, headerTimestamp);
-		this.name = name;
+		this.connectorName = name;
+		this.password = password;
 	}
 	
 	public String getConnectorName() {
-		return name;
+		return connectorName;
+	}
+	
+	public String getPassword() {
+		return password;
 	}
 }

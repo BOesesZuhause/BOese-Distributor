@@ -59,13 +59,17 @@ public class BoeseJson {
 		return ackNr;
 	}
 	
+	/**
+	 * Getter for the status flag
+	 * @return the status flag
+	 */
 	public int getStatus() {
 		return status;
 	}
 	
 	/**
-	 * Getter for the status flag
-	 * @return the status flag
+	 * Getter for the timestamp of the message
+	 * @return the timestamp of the message
 	 */
 	public long getTimestamp() {
 		return timestamp;
@@ -97,7 +101,13 @@ public class BoeseJson {
 	 */
 	public static BoeseJson readMessage(InputStream is) {
 		JsonReader jr = Json.createReader(is);
-		JsonObject jo = jr.readObject();
+		JsonObject jo = null;
+		try {
+			jo = jr.readObject();
+		} catch(Exception e) {
+			jr.close();
+			return null;
+		}
 		jr.close();
 		BoeseJson bj = null;
 		
@@ -118,7 +128,8 @@ public class BoeseJson {
 		switch(header.getInt("MessageType")) {
 		case 1: // RequestConnection
 			String connectorNameRC = jo.getString("ConnectorName");
-			bj = new RequestConnection(connectorNameRC, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			String passwordRC = jo.getString("Password");
+			bj = new RequestConnection(connectorNameRC, passwordRC, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
 			break;
 		case 2: // ConfirmConnection
 			String passwordCC = jo.getString("Password");
@@ -223,6 +234,9 @@ public class BoeseJson {
 			RequestConnection rc = (RequestConnection)message;
 			job.add("Header", addHeader(1, rc.getConnectorId(), rc.getSeqenceNr(), rc.getAcknowledgeId(), rc.getStatus(), rc.getTimestamp()));
 			job.add("ConnectorName", rc.getConnectorName());
+			if (rc.getPassword() != null) {
+				job.add("Password", rc.getPassword());
+			}
 			break;
 		case CONFIRMCONNECTION:
 			ConfirmConnection cc = (ConfirmConnection)message;
@@ -308,6 +322,7 @@ public class BoeseJson {
 			job.add("DeviceComponentId", ((SendValue)message).getDeviceComponentId());
 			break;
 		default:
+			output = false;
 			break;
 		}
 		JsonWriter writer = Json.createWriter(os);

@@ -26,11 +26,12 @@ public class protokollTest {
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
-				+ "\"ConnectorName\":\"Konnektor1\""
+				+ "\"ConnectorName\":\"Konnektor1\","
+				+ "\"Password\":\"sicher!\""
 				+ "}";
 		
 		OutputStream os = new ByteArrayOutputStream();
-		RequestConnection recCon = new RequestConnection("Konnektor1", 1, 0, 0, 0, 111222334);
+		RequestConnection recCon = new RequestConnection("Konnektor1", "sicher!", 1, 0, 0, 0, 111222334);
 		BoeseJson.parseMessage(recCon, os);
 		assertEquals(os.toString(), message);			
 	}
@@ -47,12 +48,13 @@ public class protokollTest {
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
-				+ "\"ConnectorName\":\"Konnektor1\""
+				+ "\"ConnectorName\":\"Konnektor1\","
+				+ "\"Password\":\"sicher!\""
 				+ "}";
 		
 		InputStream is = new ByteArrayInputStream(message.getBytes());
 		BoeseJson bs = BoeseJson.readMessage(is);
-		assertNotNull(bs);	
+		assertNotNull(bs);
 		
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(bs, os);
