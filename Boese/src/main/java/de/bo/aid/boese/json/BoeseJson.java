@@ -7,6 +7,10 @@ import java.util.Map.Entry;
 
 import javax.json.*;
 
+/**
+ * This class is the base for all Boese Json Messages.
+ * It also provides methods to parse Json to Boese Message and vies versa.
+ */
 public class BoeseJson {
 	protected MessageType messageType = null;
 	protected int connectorId = -1;
@@ -15,24 +19,43 @@ public class BoeseJson {
 	protected int status = -1;
 	protected long timestamp = -1;
 	
+	/**
+	 * Enumeration with all available message types
+	 */
 	public enum MessageType {
 		REQUESTCONNECTION, CONFIRMCONNECTION, REQUESTALLDEVICES, SENDDEVICES, CONFIRMDEVICES, REQUESTDEVICECOMPONENTS,
 		SENDDEVICECOMPONENTS, CONFIRMDEVICECOMPONENTS, SENDVALUE, CONFIRMVALUE
 	}
 
+	/**
+	 * Getter for the message type
+	 * @return the message type
+	 */
 	public MessageType getType() {
 		return messageType;
 	}
 	
+	/**
+	 * Getter for the connector ID
+	 * @return the connector ID 
+	 */
 	public int getConnectorId() {
 		return connectorId;
 	}
 	
+	/**
+	 * Getter for the sequence number
+	 * @return the sequence number
+	 */
 	public int getSeqenceNr() {
 		return seqNr;
 	}
 	
-	public int getAcknolageId() {
+	/**
+	 * Getter for the acknowledge number
+	 * @return the acknowledge number
+	 */
+	public int getAcknowledgeId() {
 		return ackNr;
 	}
 	
@@ -40,10 +63,23 @@ public class BoeseJson {
 		return status;
 	}
 	
+	/**
+	 * Getter for the status flag
+	 * @return the status flag
+	 */
 	public long getTimestamp() {
 		return status;
 	}
 	
+	/**
+	 * Protected constructor for child classes only
+	 * @param messageType
+	 * @param connectorId
+	 * @param seqNr
+	 * @param ackNr
+	 * @param status
+	 * @param timestamp
+	 */
 	protected BoeseJson(MessageType messageType, int connectorId, int seqNr, int ackNr, int status, long timestamp) {
 		this.messageType = messageType;
 		this.connectorId = connectorId;
@@ -53,6 +89,12 @@ public class BoeseJson {
 		this.timestamp = timestamp;
 	}
 	
+	/**
+	 * Reads an input stream and parses it to a BoeseJson Message type.
+	 * With getType() method you can check which message is returned.
+	 * @param is InputStream with Json message
+	 * @return an BoeseJson object
+	 */
 	public static BoeseJson readMessage(InputStream is) {
 		JsonReader jr = Json.createReader(is);
 		JsonObject jo = jr.readObject();
@@ -69,7 +111,7 @@ public class BoeseJson {
 		}
 		headerConnectorID = header.getInt("ConnectorId", -1);
 		headerSeqNr = header.getInt("SequenceNr", -1);
-		headerAckNr = header.getInt("AcknolageNr", -1);
+		headerAckNr = header.getInt("AcknowledgeNr", -1);
 		headerStatus = header.getInt("Status", -1);
 		headerTimestamp = header.getInt("Timestamp", -1);
 		
@@ -146,38 +188,54 @@ public class BoeseJson {
 		return bj;
 	}
 	
+	/**
+	 * Private method to create a JsonObject with the Json header
+	 * @param messageType
+	 * @param connectorId
+	 * @param seqNr
+	 * @param ackNr
+	 * @param status
+	 * @param timestamp
+	 * @return JsonObjectBuilder containing the Message Header
+	 */
 	private static JsonObjectBuilder addHeader(int messageType, int connectorId, int seqNr, int ackNr, int status, long timestamp) {
 		JsonObjectBuilder header = Json.createObjectBuilder();
 		header.add("MessageType", messageType);
 		header.add("ConnectorId", connectorId);
 		header.add("SequenceNr", seqNr);
-		header.add("AcknolageNr", connectorId);
+		header.add("AcknowledgeNr", connectorId);
 		header.add("Status", ackNr);
 		header.add("Timestamp", timestamp);
 		return header;
 	}
 	
+	/**
+	 * Writes a BoeseJson Message to a given output stream
+	 * @param message the BoeseJson Message
+	 * @param os the OutputStream to write in
+	 * @return true, if writing was successful
+	 */
 	public static boolean parseMessage(BoeseJson message, OutputStream os) {
-		boolean output = false;
+		boolean output = true;
 		JsonObjectBuilder job = Json.createObjectBuilder();
 		switch (message.getType()) {
 		case REQUESTCONNECTION:
 			RequestConnection rc = (RequestConnection)message;
-			job.add("Header", addHeader(3, rc.getConnectorId(), rc.getSeqenceNr(), rc.getAcknolageId(), rc.getStatus(), rc.getTimestamp()));
+			job.add("Header", addHeader(3, rc.getConnectorId(), rc.getSeqenceNr(), rc.getAcknowledgeId(), rc.getStatus(), rc.getTimestamp()));
 			job.add("ConnectorName", rc.getConnectorName());
 			break;
 		case CONFIRMCONNECTION:
 			ConfirmConnection cc = (ConfirmConnection)message;
-			job.add("Header", addHeader(2, cc.getConnectorId(), cc.getSeqenceNr(), cc.getAcknolageId(), cc.getStatus(), cc.getTimestamp()));
+			job.add("Header", addHeader(2, cc.getConnectorId(), cc.getSeqenceNr(), cc.getAcknowledgeId(), cc.getStatus(), cc.getTimestamp()));
 			job.add("Password", cc.getPassword());
 			break;
 		case REQUESTALLDEVICES:
 			RequestAllDevices rad = (RequestAllDevices)message;
-			job.add("Header", addHeader(3, rad.getConnectorId(), rad.getSeqenceNr(), rad.getAcknolageId(), rad.getStatus(), rad.getTimestamp()));
+			job.add("Header", addHeader(3, rad.getConnectorId(), rad.getSeqenceNr(), rad.getAcknowledgeId(), rad.getStatus(), rad.getTimestamp()));
 			break;
 		case SENDDEVICES:
 			SendDevices sd = (SendDevices)message;
-			job.add("Header", addHeader(4, sd.getConnectorId(), sd.getSeqenceNr(), sd.getAcknolageId(), sd.getStatus(), sd.getTimestamp()));
+			job.add("Header", addHeader(4, sd.getConnectorId(), sd.getSeqenceNr(), sd.getAcknowledgeId(), sd.getStatus(), sd.getTimestamp()));
 			JsonArrayBuilder devicesSDAr = Json.createArrayBuilder();
 			JsonObjectBuilder deviceSD;
 			for (Entry<String, Integer> entry : sd.getDevices().entrySet()) {
@@ -189,7 +247,7 @@ public class BoeseJson {
 			job.add("Components", devicesSDAr);
 		case CONFIRMDEVICES:
 			ConfirmDevices cd = (ConfirmDevices)message;
-			job.add("Header", addHeader(5, cd.getConnectorId(), cd.getSeqenceNr(), cd.getAcknolageId(), cd.getStatus(), cd.getTimestamp()));
+			job.add("Header", addHeader(5, cd.getConnectorId(), cd.getSeqenceNr(), cd.getAcknowledgeId(), cd.getStatus(), cd.getTimestamp()));
 			JsonArrayBuilder devicesCDAr = Json.createArrayBuilder();
 			JsonObjectBuilder deviceCD;
 			for (Entry<String, Integer> entry : cd.getDevices().entrySet()) {
@@ -202,12 +260,12 @@ public class BoeseJson {
 			break;
 		case REQUESTDEVICECOMPONENTS:
 			RequestDeviceComponents rdc = (RequestDeviceComponents)message;
-			job.add("Header", addHeader(6, rdc.getConnectorId(), rdc.getSeqenceNr(), rdc.getAcknolageId(), rdc.getStatus(), rdc.getTimestamp()));
+			job.add("Header", addHeader(6, rdc.getConnectorId(), rdc.getSeqenceNr(), rdc.getAcknowledgeId(), rdc.getStatus(), rdc.getTimestamp()));
 			job.add("DeviceId", rdc.getDeviceId());
 			break;
 		case SENDDEVICECOMPONENTS:
 			SendDeviceComponents sdc = (SendDeviceComponents)message;
-			job.add("Header", addHeader(7, sdc.getConnectorId(), sdc.getSeqenceNr(), sdc.getAcknolageId(), sdc.getStatus(), sdc.getTimestamp()));
+			job.add("Header", addHeader(7, sdc.getConnectorId(), sdc.getSeqenceNr(), sdc.getAcknowledgeId(), sdc.getStatus(), sdc.getTimestamp()));
 			job.add("DeviceId", sdc.getDeviceId());
 			JsonArrayBuilder deviceComponentsSDCAr = Json.createArrayBuilder();
 			JsonObjectBuilder deviceComponentSDC;
@@ -223,7 +281,7 @@ public class BoeseJson {
 			break;
 		case CONFIRMDEVICECOMPONENTS:
 			ConfirmDeviceComponents cdc = (ConfirmDeviceComponents)message;
-			job.add("Header", addHeader(8, cdc.getConnectorId(), cdc.getSeqenceNr(), cdc.getAcknolageId(), cdc.getStatus(), cdc.getTimestamp()));
+			job.add("Header", addHeader(8, cdc.getConnectorId(), cdc.getSeqenceNr(), cdc.getAcknowledgeId(), cdc.getStatus(), cdc.getTimestamp()));
 			job.add("DeviceId", cdc.getDeviceId());
 			JsonArrayBuilder componentsCDCAr = Json.createArrayBuilder();
 			JsonObjectBuilder componentCDC;
@@ -237,7 +295,7 @@ public class BoeseJson {
 			break;
 		case SENDVALUE:
 			SendValue sv = (SendValue)message;
-			job.add("Header", addHeader(9, sv.getConnectorId(), sv.getSeqenceNr(), sv.getAcknolageId(), sv.getStatus(), sv.getTimestamp()));
+			job.add("Header", addHeader(9, sv.getConnectorId(), sv.getSeqenceNr(), sv.getAcknowledgeId(), sv.getStatus(), sv.getTimestamp()));
 			job.add("DeviceId", sv.getDeviceId());
 			job.add("DeviceComponentId", sv.getDeviceComponentId());
 			job.add("Value", sv.getValue());
@@ -245,7 +303,7 @@ public class BoeseJson {
 			break;
 		case CONFIRMVALUE:
 			ConfirmValue cv = (ConfirmValue)message;
-			job.add("Header", addHeader(10, cv.getConnectorId(), cv.getSeqenceNr(), cv.getAcknolageId(), cv.getStatus(), cv.getTimestamp()));
+			job.add("Header", addHeader(10, cv.getConnectorId(), cv.getSeqenceNr(), cv.getAcknowledgeId(), cv.getStatus(), cv.getTimestamp()));
 			job.add("DeviceId", ((ConfirmValue)message).getDeviceId());
 			job.add("DeviceComponentId", ((SendValue)message).getDeviceComponentId());
 			break;
