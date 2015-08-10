@@ -19,7 +19,7 @@
         </property>
         <set name="deviceComponents" table="device_component" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="SeID" not-null="true" />
+                <column name="CoID" not-null="true" />
             </key>
             <one-to-many class="de.bo.aid.boese.model.DeviceComponent" />
         </set>

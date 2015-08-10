@@ -3,11 +3,12 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 30.07.2015 11:14:41 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="de.bo.aid.boese.model.Device" table="device" schema="public" optimistic-lock="version">
-        <id name="deId" type="int">
-            <column name="DeID" />
-            <generator class="assigned" />
-        </id>
+    <class name="de.bo.aid.boese.model.Device" table="device" schema="public" optimistic-lock="version">        
+        <id name="DeId" type="int">
+	        <generator class="sequence">
+                <param name="sequence">person_id_sequence</param>
+        	</generator>
+	    </id>
         <many-to-one name="connector" class="de.bo.aid.boese.model.Connector" fetch="select">
             <column name="CoID" not-null="true" />
         </many-to-one>
@@ -18,7 +19,7 @@
             <column name="Alias" length="125" not-null="true" />
         </property>
         <property name="serialNumber" type="string">
-            <column name="SerialNumber" length="125" not-null="true" />
+            <column name="SerialNumber" length="125" not-null="false" />
         </property>
         <property name="purchaseDate" type="date">
             <column name="PurchaseDate" length="13" />

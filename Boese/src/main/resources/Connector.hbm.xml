@@ -4,15 +4,19 @@
 <!-- Generated 30.07.2015 11:14:41 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="de.bo.aid.boese.model.Connector" table="connector" schema="public" optimistic-lock="version">
-        <id name="coId" type="int">
-            <column name="CoID" />
-            <generator class="assigned" />
-        </id>
+        <id name="CoId" type="int">
+	        <generator class="sequence">
+                <param name="sequence">person_id_sequence</param>
+        	</generator>
+	    </id>
         <property name="name" type="string">
             <column name="Name" length="25" not-null="true" />
         </property>
         <property name="webadress" type="string">
             <column name="Webadress" length="125" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="secret" length="125" not-null="true" />
         </property>
         <set name="historyLogConnectors" table="history_log_connector" inverse="true" lazy="true" fetch="select">
             <key>
