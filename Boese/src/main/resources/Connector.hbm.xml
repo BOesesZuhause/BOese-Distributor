@@ -15,6 +15,9 @@
         <property name="webadress" type="string">
             <column name="Webadress" length="125" not-null="true" />
         </property>
+        <property name="password" type="string">
+            <column name="secret" length="125" not-null="true" />
+        </property>
         <set name="historyLogConnectors" table="history_log_connector" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="CoID" not-null="true" />
