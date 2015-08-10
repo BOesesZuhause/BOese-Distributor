@@ -10,7 +10,7 @@ public class RequestConnection extends BoeseJson {
 		this.name = name;
 	}
 	
-	public String getName() {
+	public String getConnectorName() {
 		return name;
 	}
 }

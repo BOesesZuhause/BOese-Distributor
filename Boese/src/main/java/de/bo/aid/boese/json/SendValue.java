@@ -17,11 +17,11 @@ public class SendValue extends BoeseJson {
 		this.valueTimestamp = timestamp;
 	}
 
-	public int getIdDevice() {
+	public int getDeviceId() {
 		return deviceId;
 	}
 
-	public int getIdDeviceComponent() {
+	public int getDeviceComponentId() {
 		return deviceComponentId;
 	}
 
