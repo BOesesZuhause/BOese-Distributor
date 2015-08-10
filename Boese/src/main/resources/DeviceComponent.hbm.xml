@@ -9,10 +9,10 @@
             <generator class="assigned" />
         </id>
         <many-to-one name="component" class="de.bo.aid.boese.model.Component" fetch="select">
-            <column name="SeID" not-null="true" />
+            <column name="CoID" not-null="true" />
         </many-to-one>
         <many-to-one name="device" class="de.bo.aid.boese.model.Device" fetch="select">
-            <column name="GeID" not-null="true" />
+            <column name="DeID" not-null="true" />
         </many-to-one>
         <property name="status" type="java.lang.Short">
             <column name="Status" />
