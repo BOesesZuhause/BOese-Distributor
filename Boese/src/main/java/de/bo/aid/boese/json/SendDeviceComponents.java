@@ -6,7 +6,7 @@ public class SendDeviceComponents extends BoeseJson {
 	private HashSet<DeviceComponents> components;
 	private int deviceId;
 
-	protected SendDeviceComponents(int deviceId, HashSet<DeviceComponents> components, int connectorId, int seqNr, int ackNr, int status,
+	public SendDeviceComponents(int deviceId, HashSet<DeviceComponents> components, int connectorId, int seqNr, int ackNr, int status,
 			long timestamp) {
 		super(MessageType.SENDDEVICECOMPONENTS, connectorId, seqNr, ackNr, status, timestamp);
 		this.components = components;

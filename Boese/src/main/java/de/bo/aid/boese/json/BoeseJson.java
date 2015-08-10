@@ -133,7 +133,7 @@ public class BoeseJson {
 			break;
 		case 2: // ConfirmConnection
 			String passwordCC = jo.getString("Password");
-			bj = new ConfirmConnection(passwordCC, headerConnectorID, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			bj = new ConfirmConnection(passwordCC, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
 			break;
 		case 3: // RequestAllDevices
 			bj = new RequestAllDevices(headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
@@ -177,7 +177,7 @@ public class BoeseJson {
 			JsonArray compCDC = jo.getJsonArray("Components");
 			for (int i = 0; i < compCDC.size(); i++) {
 				JsonObject device = compCDC.getJsonObject(i);
-				componentsCDC.put(device.getString("ComponentName"), device.getInt("ComponentId", -1));
+				componentsCDC.put(device.getString("ComponentName"), device.getInt("DeviceComponentId", -1));
 			}
 			bj = new ConfirmDeviceComponents(deviceIdCDC, componentsCDC, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
 			break;
@@ -264,7 +264,8 @@ public class BoeseJson {
 				deviceSD.add("DeviceId", entry.getValue());
 				devicesSDAr.add(deviceSD);
 			}
-			job.add("Components", devicesSDAr);
+			job.add("Devices", devicesSDAr);
+			break;
 		case CONFIRMDEVICES:
 			ConfirmDevices cd = (ConfirmDevices)message;
 			job.add("Header", addHeader(5, cd.getConnectorId(), cd.getSeqenceNr(), cd.getAcknowledgeId(), cd.getStatus(), cd.getTimestamp()));
@@ -276,7 +277,7 @@ public class BoeseJson {
 				deviceCD.add("DeviceId", entry.getValue());
 				devicesCDAr.add(deviceCD);
 			}
-			job.add("Components", devicesCDAr);
+			job.add("Devices", devicesCDAr);
 			break;
 		case REQUESTDEVICECOMPONENTS:
 			RequestDeviceComponents rdc = (RequestDeviceComponents)message;
@@ -307,8 +308,8 @@ public class BoeseJson {
 			JsonObjectBuilder componentCDC;
 			for (Entry<String, Integer> entry : cdc.getComponents().entrySet()) {
 				componentCDC = Json.createObjectBuilder();
+				componentCDC.add("DeviceComponentId", entry.getValue());
 				componentCDC.add("ComponentName", entry.getKey());
-				componentCDC.add("ComponentId", entry.getValue());
 				componentsCDCAr.add(componentCDC);
 			}
 			job.add("Components", componentsCDCAr);
@@ -319,13 +320,13 @@ public class BoeseJson {
 			job.add("DeviceId", sv.getDeviceId());
 			job.add("DeviceComponentId", sv.getDeviceComponentId());
 			job.add("Value", sv.getValue());
-			job.add("Timestamp", sv.getTimestamp());
+			job.add("Timestamp", sv.getValueTimestamp());
 			break;
 		case CONFIRMVALUE:
 			ConfirmValue cv = (ConfirmValue)message;
 			job.add("Header", addHeader(10, cv.getConnectorId(), cv.getSeqenceNr(), cv.getAcknowledgeId(), cv.getStatus(), cv.getTimestamp()));
-			job.add("DeviceId", ((ConfirmValue)message).getDeviceId());
-			job.add("DeviceComponentId", ((SendValue)message).getDeviceComponentId());
+			job.add("DeviceId", cv.getDeviceId());
+			job.add("DeviceComponentId", (cv.getDeviceComponentId()));
 			break;
 		case REQUESTVALUE:
 			RequestValue rv = (RequestValue)message;
