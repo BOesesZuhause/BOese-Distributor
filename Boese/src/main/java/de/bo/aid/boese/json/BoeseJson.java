@@ -68,7 +68,7 @@ public class BoeseJson {
 	 * @return the status flag
 	 */
 	public long getTimestamp() {
-		return status;
+		return timestamp;
 	}
 	
 	/**
@@ -203,8 +203,8 @@ public class BoeseJson {
 		header.add("MessageType", messageType);
 		header.add("ConnectorId", connectorId);
 		header.add("SequenceNr", seqNr);
-		header.add("AcknowledgeNr", connectorId);
-		header.add("Status", ackNr);
+		header.add("AcknowledgeNr", ackNr);
+		header.add("Status", status);
 		header.add("Timestamp", timestamp);
 		return header;
 	}
@@ -221,7 +221,7 @@ public class BoeseJson {
 		switch (message.getType()) {
 		case REQUESTCONNECTION:
 			RequestConnection rc = (RequestConnection)message;
-			job.add("Header", addHeader(3, rc.getConnectorId(), rc.getSeqenceNr(), rc.getAcknowledgeId(), rc.getStatus(), rc.getTimestamp()));
+			job.add("Header", addHeader(1, rc.getConnectorId(), rc.getSeqenceNr(), rc.getAcknowledgeId(), rc.getStatus(), rc.getTimestamp()));
 			job.add("ConnectorName", rc.getConnectorName());
 			break;
 		case CONFIRMCONNECTION:
