@@ -24,7 +24,7 @@ public class BoeseJson {
 	 */
 	public enum MessageType {
 		REQUESTCONNECTION, CONFIRMCONNECTION, REQUESTALLDEVICES, SENDDEVICES, CONFIRMDEVICES, REQUESTDEVICECOMPONENTS,
-		SENDDEVICECOMPONENTS, CONFIRMDEVICECOMPONENTS, SENDVALUE, CONFIRMVALUE
+		SENDDEVICECOMPONENTS, CONFIRMDEVICECOMPONENTS, SENDVALUE, CONFIRMVALUE, REQUESTVALUE
 	}
 
 	/**
@@ -193,6 +193,12 @@ public class BoeseJson {
 			int deviceIdCV = jo.getInt("DeviceId", -1);
 			int deviceComponentIdCV = jo.getInt("DeviceComponentId", -1);
 			bj = new ConfirmValue(deviceIdCV, deviceComponentIdCV, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			break;
+		case 11:
+			int deviceIdRV = jo.getInt("DeviceId", -1);
+			int deviceComponentIdRV = jo.getInt("DeviceComponentId", -1);
+			bj = new RequestValue(deviceIdRV, deviceComponentIdRV, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			break;
 		default:
 			break;
 		}
@@ -321,6 +327,11 @@ public class BoeseJson {
 			job.add("DeviceId", ((ConfirmValue)message).getDeviceId());
 			job.add("DeviceComponentId", ((SendValue)message).getDeviceComponentId());
 			break;
+		case REQUESTVALUE:
+			RequestValue rv = (RequestValue)message;
+			job.add("Header", addHeader(9, rv.getConnectorId(), rv.getSeqenceNr(), rv.getAcknowledgeId(), rv.getStatus(), rv.getTimestamp()));
+			job.add("DeviceId", rv.getDeviceId());
+			job.add("DeviceComponentId", rv.getDeviceComponentId());
 		default:
 			output = false;
 			break;
