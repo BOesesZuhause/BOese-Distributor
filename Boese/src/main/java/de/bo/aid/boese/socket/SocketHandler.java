@@ -9,6 +9,8 @@ import java.util.logging.Logger;
 import javax.json.JsonObject;
 import javax.websocket.Session;
 
+import javassist.bytecode.ByteArray;
+
 
 public class SocketHandler {
 	
@@ -28,16 +30,16 @@ public class SocketHandler {
 	}
 	
 	
-	private void sendToSession(Session session, JsonObject message) {
+	private void sendToSession(Session session, String message) {
         try {
-            session.getBasicRemote().sendText(message.toString());
+            session.getBasicRemote().sendText(message);
         } catch (IOException ex) {
             sessions.remove(session);
             Logger.getLogger(SocketHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 	
-	 private void sendToAllConnectedSessions(JsonObject message) {
+	 private void sendToAllConnectedSessions(String message) {
 	        for (Session session : sessions) {
 	            sendToSession(session, message);
 	        }

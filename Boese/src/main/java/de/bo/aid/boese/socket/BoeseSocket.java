@@ -10,6 +10,8 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import de.bo.aid.boese.main.MainClass;
+
 @ClientEndpoint
 @ServerEndpoint("/events/")
 public class BoeseSocket {
@@ -35,6 +37,6 @@ public class BoeseSocket {
 
 	@OnMessage
 	public void handleMessage(String message, Session session) {
-		
+		MainClass.handleMessage(message);
 	}
 }

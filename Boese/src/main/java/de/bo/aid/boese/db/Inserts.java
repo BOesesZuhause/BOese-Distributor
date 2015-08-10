@@ -51,13 +51,13 @@ public class Inserts {
 		return dc.getDeCoId();
 	}
 	
-	public static int connector(String name, String adress){
+	public static int connector(String name, String pw){
 		Session session = connection.getSession();
 		session.beginTransaction();
  
 		Connector con = new Connector();
 		con.setName(name);
-		con.setWebadress(adress);
+		con.setPassword(pw);
  
 		session.save(con);
 		session.getTransaction().commit();
