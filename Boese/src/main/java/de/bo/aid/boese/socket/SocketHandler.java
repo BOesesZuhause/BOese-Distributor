@@ -35,6 +35,17 @@ public class SocketHandler {
 		return conId;
 	}
 	
+	public void rejectConnection(int connectorId) {
+		Session session = sessions.get(new  Integer(connectorId));
+		try {
+			session.close();
+		} catch (IOException e) {
+			// TODO!!!!
+			e.printStackTrace();
+		}
+		sessions.remove(new  Integer(connectorId));
+	}
+	
 	public int addSession(Session session) {
 		sessions.put(new Integer(--currentId), session);
 		return currentId;

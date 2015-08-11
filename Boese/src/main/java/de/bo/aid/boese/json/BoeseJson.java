@@ -128,7 +128,10 @@ public class BoeseJson {
 		switch(header.getInt("MessageType")) {
 		case 1: // RequestConnection
 			String connectorNameRC = jo.getString("ConnectorName");
-			String passwordRC = jo.getString("Password");
+			String passwordRC = null;
+			if (jo.containsKey("Password")) {
+				passwordRC = jo.getString("Password");
+			}
 			bj = new RequestConnection(connectorNameRC, passwordRC, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
 			break;
 		case 2: // ConfirmConnection
