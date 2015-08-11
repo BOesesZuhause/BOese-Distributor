@@ -11,7 +11,6 @@ public class Connector implements java.io.Serializable {
 
 	private int coId;
 	private String name;
-	private String webadress;
 	private String password;
 	private Set historyLogConnectors = new HashSet(0);
 	private Set devices = new HashSet(0);
@@ -20,18 +19,16 @@ public class Connector implements java.io.Serializable {
 	public Connector() {
 	}
 
-	public Connector(int coId, String name, String webadress, String password) {
+	public Connector(int coId, String name, String password) {
 		this.coId = coId;
 		this.name = name;
-		this.webadress = webadress;
 		this.password = password;
 	}
 
-	public Connector(int coId, String name, String webadress, String password,
+	public Connector(int coId, String name, String password,
 			Set historyLogConnectors, Set devices, Set logConnectors) {
 		this.coId = coId;
 		this.name = name;
-		this.webadress = webadress;
 		this.password = password;
 		this.historyLogConnectors = historyLogConnectors;
 		this.devices = devices;
@@ -54,13 +51,6 @@ public class Connector implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public String getWebadress() {
-		return this.webadress;
-	}
-
-	public void setWebadress(String webadress) {
-		this.webadress = webadress;
-	}
 
 	public String getPassword() {
 		return password;

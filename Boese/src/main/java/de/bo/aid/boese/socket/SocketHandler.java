@@ -65,7 +65,7 @@ public class SocketHandler {
         sendToSession(sessions.get(new Integer(connectorId)), message);
     }
 	
-	private void sendToSession(Session session, String message) {
+	public void sendToSession(Session session, String message) {
         try {
             session.getBasicRemote().sendText(message);
         } catch (IOException ex) {
