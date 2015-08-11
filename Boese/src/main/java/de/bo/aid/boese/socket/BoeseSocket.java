@@ -22,7 +22,6 @@ public class BoeseSocket {
 	public void open(Session session) {
 		System.out.println("Socket Connected: " + session);
 		handler = SocketHandler.getInstance();
-		handler.addSession(session);
 	}
 
 	@OnClose
@@ -37,6 +36,7 @@ public class BoeseSocket {
 
 	@OnMessage
 	public void handleMessage(String message, Session session) {
-		MainClass.handleMessage(message);
+		//TODO observer pattern
+		MainClass.handleMessage(message, handler.getConnectorId(session));
 	}
 }

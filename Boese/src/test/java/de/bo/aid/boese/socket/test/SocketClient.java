@@ -3,6 +3,7 @@ import java.net.URI;
 
 import javax.websocket.ClientEndpoint;
 import javax.websocket.ContainerProvider;
+import javax.websocket.OnMessage;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
@@ -13,8 +14,15 @@ import de.bo.aid.boese.socket.BoeseSocket;
 public class SocketClient
 {
 	
+	@OnMessage
+	 public void onMessage(String message) {
+		System.out.println("Received Message: " + message);
+	}
+	 
 	public static Session connect(URI uri) throws Exception {
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+        
+        
 
         try {
             // Attempt Connect
