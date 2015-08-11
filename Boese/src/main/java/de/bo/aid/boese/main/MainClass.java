@@ -30,10 +30,11 @@ import de.bo.aid.boese.socket.SocketHandler;
 public class MainClass {
 	//TODO handle Acknowledge abgleich
 	
+	
 	private static void handleRequestConnections(RequestConnection rc, int connectorId) {
 		int seqNr = rc.getSeqenceNr();
 		if (rc.getPassword() == null && rc.getConnectorId() == -1) {
-
+ 
 			//TODO User muss bestätigen tun
 
 			SecureRandom sr = new SecureRandom();
@@ -169,5 +170,6 @@ public class MainClass {
 		server.start();
 
 	}
+
 
 }
