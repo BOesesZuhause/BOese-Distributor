@@ -1,75 +1,132 @@
 package de.bo.aid.boese.socket.test;
 
-import static org.junit.Assert.*;
-
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.net.URI;
+import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 
-import javax.websocket.Session;
+import de.bo.aid.boese.json.BoeseJson;
+import de.bo.aid.boese.json.ConfirmConnection;
+import de.bo.aid.boese.json.ConfirmDevices;
+import de.bo.aid.boese.json.RequestAllDevices;
+import de.bo.aid.boese.json.RequestConnection;
+import de.bo.aid.boese.json.SendDevices;
+import de.bo.aid.boese.socket.test.SocketClientStandalone.MessageHandler;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import de.bo.aid.boese.socket.BoeseServer;
-
-public class Simulation {
+/**
+ * This class simulates a connector.
+ * 
+ * @author Sebastian
+ *
+ */
+public class Simulation implements MessageHandler {
 	
-//	private BoeseServer server;
-//	
-//    @Before
-//    public void startServer() throws Exception {
-//        server = new BoeseServer();
-//        server.start();
-//    }
-//	
-//
-//	@Test
-//	public void simulation() throws Exception {
-//		URI uri = URI.create("ws://localhost:8081/events/");
-//		SocketClientStandalone client = new SocketClientStandalone(uri);
-//		
-//		String message = "{"
-//				+ "\"Header\":{"
-//				+ "\"MessageType\":1,"
-//				+ "\"ConnectorId\":-1,"
-//				+ "\"SequenceNr\":0,"
-//				+ "\"AcknowledgeNr\":0,"
-//				+ "\"Status\":0,"
-//				+ "\"Timestamp\":" + new Date().getTime()
-//				+ "},"
-//				+ "\"ConnectorName\":\"Konnektor1\""
-//				+ "}";
-//		
-//		client.sendMessage(message);
-//		
-//		//wait for answer
-//		Thread.sleep(5000);
-//		
-//		message = "{"
-//				+ "\"Header\":{"
-//				+ "\"MessageType\":1,"
-//				+ "\"ConnectorId\":-1,"
-//				+ "\"SequenceNr\":0,"
-//				+ "\"AcknowledgeNr\":0,"
-//				+ "\"Status\":0,"
-//				+ "\"Timestamp\":" + new Date().getTime()
-//				+ "},"
-//				+ "\"ConnectorName\":\"Konnektor1\""
-//				+ "}";
-//		
-//		client.sendMessage(message);
-//		
-//		//Wait for answer
-//		Thread.sleep(1000);
-//		
-//		assertTrue(true);
-//		
-//	}
-//	
-//	   @After
-//	    public void shutdown() throws Exception {
-//	        server.stop();
-//	    }
+	SocketClientStandalone client;
 
+	// Connector details
+	private int conId = -1;
+	private String password = null;
+	private final String NAME = "KonnektorSim";
+	private HashMap<String, Integer> devices = new HashMap<>(); //TODO save device-Ids
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.bo.aid.boese.socket.test.SocketClientStandalone.MessageHandler#
+	 * handleMessage(java.lang.String)
+	 */
+	public void handleMessage(String message) {
+		System.out.println("Client received Message: " + message);
+
+		BoeseJson bjMessage = BoeseJson.readMessage(new ByteArrayInputStream(message.getBytes()));
+
+		if (bjMessage == null) {
+			return; // TODO
+		}
+
+		switch (bjMessage.getType()) {
+
+		case CONFIRMCONNECTION:
+			handleConfirmconnection((ConfirmConnection) bjMessage);
+			break;
+
+		case REQUESTALLDEVICES:
+			handleRequestAllDevices((RequestAllDevices) bjMessage);
+			break;
+
+		case CONFIRMDEVICES:
+			handleConfirmDevices((ConfirmDevices) bjMessage);
+			break;
+
+		case REQUESTDEVICECOMPONENTS:
+
+			break;
+
+		case CONFIRMDEVICECOMPONENTS:
+
+			break;
+
+		case CONFIRMVALUE:
+
+			break;
+
+		}
+	}
+
+	private void handleConfirmDevices(ConfirmDevices bjMessage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void handleRequestAllDevices(RequestAllDevices bjMessage) {
+		System.out.println("Server requests Devices");
+		
+		int seqNr = bjMessage.getSeqenceNr();
+
+		SendDevices sendDevs = new SendDevices(devices, conId, seqNr + 1, seqNr, 0, new Date().getTime());
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(sendDevs, os);
+		client.sendMessage(os.toString());
+	}
+
+	private void handleConfirmconnection(ConfirmConnection bjMessage) {
+		this.password = bjMessage.getPassword();
+		this.conId = bjMessage.getConnectorId();
+		System.out.println("Client swas confirmed by Server");
+	}
+
+	/**
+	 * Starts the Connector Simulation
+	 * 
+	 */
+	public void start() {
+		// Initialize Attributes
+		devices.put("Heizung", -1);
+		devices.put("Schalter", -1);
+		devices.put("Tuersensor", -1);
+
+		// Initialize client
+		URI uri = URI.create("ws://localhost:8081/events/");
+		client = new SocketClientStandalone();
+		client.addMessageHandler(this);
+		client.connect(uri);
+
+		// Request connection
+		RequestConnection reqCon = new RequestConnection(NAME, password, conId, 0, 0, 0, new Date().getTime());
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(reqCon, os);
+		client.sendMessage(os.toString());
+
+		// wait for answer
+		try {
+			Thread.sleep(5000); //TODO connection should be open until rejected
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 }

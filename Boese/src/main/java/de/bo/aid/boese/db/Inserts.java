@@ -7,7 +7,9 @@ import de.bo.aid.boese.model.*;
 public class Inserts {
 	private static Connection connection = Connection.getConnection();
 	
-	public static int device(int coid, int zoid, String name){
+	//TODO andere möglichkeit der Nutzung von sessions suchen oder immer alles aufraeumen
+	
+	public static int device(int coid, int zoid, String name, String serial){
 		Session session = connection.getSession();
 		session.beginTransaction();
  
@@ -22,9 +24,18 @@ public class Inserts {
 		device.setZone(zone);
 		
 		device.setAlias(name);
+		
+		device.setSerialNumber(serial);
  
 		session.save(device);
 		session.getTransaction().commit();
+		
+		//clean up 
+		//Wenn dies nicht gemacht wird, bleiben die Objekte mit ihrer zugehörigen Id in der Session gespeichert
+		//und es gibt einen Fehler beim laden eines Objekts wenn schon eines in der Session mit derselben Id vorhanden ist
+		session.evict(con);
+		session.evict(zone);
+		session.evict(device);
 		
 		return device.getDeId();
 	}
@@ -48,6 +59,14 @@ public class Inserts {
 		session.save(dc);
 		session.getTransaction().commit();
 		
+		//clean up 
+		//Wenn dies nicht gemacht wird, bleiben die Objekte mit ihrer zugehörigen Id in der Session gespeichert
+		//und es gibt einen Fehler beim laden eines Objekts wenn schon eines in der Session mit derselben Id vorhanden ist
+		session.evict(dc);
+		session.evict(device);
+		session.evict(comp);
+		
+		
 		return dc.getDeCoId();
 	}
 	
@@ -61,6 +80,11 @@ public class Inserts {
  
 		session.save(con);
 		session.getTransaction().commit();
+		
+		//clean up 
+		//Wenn dies nicht gemacht wird, bleiben die Objekte mit ihrer zugehörigen Id in der Session gespeichert
+		//und es gibt einen Fehler beim laden eines Objekts wenn schon eines in der Session mit derselben Id vorhanden ist
+		session.evict(con);
 		
 		return con.getCoId();
 	}
