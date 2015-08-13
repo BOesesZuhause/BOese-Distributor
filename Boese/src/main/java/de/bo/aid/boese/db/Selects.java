@@ -33,8 +33,8 @@ public class Selects {
 		for(Object o: erg){
 			device.add((Device) o);
 		}
-		
 		session.getTransaction().commit();
+		session.evict(device);
 		
 		return device;
 	}
@@ -75,6 +75,7 @@ public class Selects {
 		}
 		
 		session.getTransaction().commit();
+		session.evict(zone);
 		
 		return zone;
 	}

@@ -55,12 +55,6 @@ public class Inserts {
  
 		session.save(dc);
 		session.getTransaction().commit();
-		session.evict(device);
-		session.evict(comp);
-		
-		//clean up 
-		//Wenn dies nicht gemacht wird, bleiben die Objekte mit ihrer zugehörigen Id in der Session gespeichert
-		//und es gibt einen Fehler beim laden eines Objekts wenn schon eines in der Session mit derselben Id vorhanden ist
 		session.evict(dc);
 		session.evict(device);
 		session.evict(comp);
@@ -79,10 +73,6 @@ public class Inserts {
  
 		session.save(con);
 		session.getTransaction().commit();
-		
-		//clean up 
-		//Wenn dies nicht gemacht wird, bleiben die Objekte mit ihrer zugehörigen Id in der Session gespeichert
-		//und es gibt einen Fehler beim laden eines Objekts wenn schon eines in der Session mit derselben Id vorhanden ist
 		session.evict(con);
 		
 		return con.getCoId();
