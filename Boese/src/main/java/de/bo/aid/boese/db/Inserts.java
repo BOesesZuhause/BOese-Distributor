@@ -1,5 +1,8 @@
 package de.bo.aid.boese.db;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 import org.hibernate.Session;
 
 import de.bo.aid.boese.model.*;
@@ -25,6 +28,8 @@ public class Inserts {
  
 		session.save(device);
 		session.getTransaction().commit();
+		session.evict(con);
+		session.evict(zone);
 		
 		return device.getDeId();
 	}
@@ -47,6 +52,8 @@ public class Inserts {
  
 		session.save(dc);
 		session.getTransaction().commit();
+		session.evict(device);
+		session.evict(comp);
 		
 		return dc.getDeCoId();
 	}
@@ -63,5 +70,26 @@ public class Inserts {
 		session.getTransaction().commit();
 		
 		return con.getCoId();
+	}
+	
+	public static boolean value(int decoid, Date timestamp, double value){
+		Session session = connection.getSession();
+		session.beginTransaction();
+ 
+		DeviceComponent deco = new DeviceComponent();
+		session.load(deco, new Integer(decoid));
+		deco.setCurrentValue(new BigDecimal(value));
+		session.save(deco);
+		
+		LogComponent logcomp = new LogComponent();
+		logcomp.setDeviceComponent(deco);
+		logcomp.setTimestamp(timestamp);
+		logcomp.setValue(new BigDecimal(value));
+		session.save(logcomp);
+		session.getTransaction().commit();
+		session.evict(deco);
+		
+		//ToDo Fehlerbehandlung
+		return true;
 	}
 }

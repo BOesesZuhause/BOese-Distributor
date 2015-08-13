@@ -19,11 +19,12 @@ public class Selects {
 		Connector con = new Connector();
 		session.load(con, new Integer(coid));
 		session.getTransaction().commit();
+		session.evict(con);
 		
 		return con;
 	}
 	
-	public static List<Device> device(int coid){
+	public static List<Device> connectorDeviceList(int coid){
 		Session session = connection.getSession();
 		session.beginTransaction();
  
@@ -42,11 +43,40 @@ public class Selects {
 		Session session = connection.getSession();
 		session.beginTransaction();
  
-		double d = 0.0;
-		session.load(d, new Integer(decoid));
+		DeviceComponent deco = new DeviceComponent();
+		session.load(deco, new Integer(decoid));
+		double d = deco.getCurrentValue().doubleValue();
 		session.getTransaction().commit();
+		session.evict(deco);
 		
 		return d;
+	}
+	
+	public static Device device (int deid){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		Device dev = new Device();
+		session.load(dev, new Integer(deid));
+		session.getTransaction().commit();
+		session.evict(dev);
+		
+		return dev;
+	}
+	
+	public static List<Zone> allZones(){
+		Session session = connection.getSession();
+		session.beginTransaction();
+ 
+		List erg = session.createQuery("from Zone").list();
+		List<Zone> zone = new ArrayList<Zone>();
+		for(Object o: erg){
+			zone.add((Zone) o);
+		}
+		
+		session.getTransaction().commit();
+		
+		return zone;
 	}
 
 }

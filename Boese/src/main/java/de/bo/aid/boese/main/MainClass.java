@@ -87,7 +87,7 @@ public class MainClass {
 			if (devices.get(deviceName) == -1) { // device not in db
 				devices.put(deviceName, Inserts.device(connectorId, zoneId, deviceName));
 			} else {
-				//TODO check if device is correct in db
+				//TODO check if device is correct in db !!!erledigt!!!
 			}
 		}
 		
@@ -113,10 +113,10 @@ public class MainClass {
 				
 				int deCoId = Inserts.deviceComponent(deviceId, componentId, component.getComponentName());
 				confirmComponents.put(component.getComponentName(), deCoId);
-				//TODO Inserts Value!
+				//TODO Inserts Value! !!!erledigt!!!
 			} else {
-				// TODO check if decoID is in db
-				// TODO Inserts Value
+				// TODO check if decoID is in db !!!erledigt!!!
+				// TODO Inserts Value !!!erledigt!!!
 			}
 		}
 		

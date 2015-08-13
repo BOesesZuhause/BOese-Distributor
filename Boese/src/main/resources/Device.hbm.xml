@@ -40,7 +40,7 @@
         </set>
         <set name="deviceComponents" table="device_component" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="GeID" not-null="true" />
+                <column name="DeID" not-null="true" />
             </key>
             <one-to-many class="de.bo.aid.boese.model.DeviceComponent" />
         </set>
