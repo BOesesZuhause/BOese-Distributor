@@ -46,12 +46,14 @@
       <groupId>org.eclipse.jetty.websocket</groupId>
       <artifactId>javax-websocket-client-impl</artifactId>
       <version>${jetty-version}</version>
-    </dependency>    
+    </dependency>  
+    <!-- To compile javax.json-->  
     <dependency>
 	<groupId>javax.json</groupId>
 	<artifactId>javax.json-api</artifactId>
 	<version>1.0</version>
 </dependency>
+<!-- To run javax.json -->
 <dependency>
     <groupId>org.glassfish</groupId>
     <artifactId>javax.json</artifactId>

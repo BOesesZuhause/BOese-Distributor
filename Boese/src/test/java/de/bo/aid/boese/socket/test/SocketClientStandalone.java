@@ -11,19 +11,26 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
+
 @ClientEndpoint
 public class SocketClientStandalone {
 	
     Session userSession = null;
     private MessageHandler messageHandler;
 
-    public SocketClientStandalone(URI endpointURI) {
-        try {
-            WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-            container.connectToServer(this, endpointURI);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    
+    /**
+     * Opens a Connection to a Websocketserver
+     * 
+     * @param endpointURI URI of the Websocketserver to which the connection should be opened.
+     */
+    public void connect(URI endpointURI){
+    	 try {
+             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+             container.connectToServer(this, endpointURI);
+         } catch (Exception e) {
+             throw new RuntimeException(e);
+         }
     }
 
     /**
@@ -59,7 +66,6 @@ public class SocketClientStandalone {
         if (this.messageHandler != null) {
             this.messageHandler.handleMessage(message);
         }
-        System.out.println("Client received Message: " + message);
     }
 
     /**
@@ -82,12 +88,18 @@ public class SocketClientStandalone {
     }
 
     /**
-     * Message handler.
+     * Interface for Message Handlers, which can subscribe to the WebsocketClient.
      *
-     * @author Jiji_Sasidharan
      */
     public static interface MessageHandler {
+    	
 
+        /**
+         * 
+         * Method for handling Messages.
+         * 
+         * @param message Message which should be handled
+         */
         public void handleMessage(String message);
     }
 
