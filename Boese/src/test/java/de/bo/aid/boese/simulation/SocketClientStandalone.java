@@ -1,15 +1,20 @@
-package de.bo.aid.boese.socket.test;
+package de.bo.aid.boese.simulation;
 
 import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
 import javax.websocket.ContainerProvider;
 import javax.websocket.OnClose;
+import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
+
+import de.bo.aid.boese.socket.BoeseSocket;
 
 
 @ClientEndpoint
@@ -53,6 +58,7 @@ public class SocketClientStandalone {
     @OnClose
     public void onClose(Session userSession, CloseReason reason) {
         System.out.println("closing websocket");
+        messageHandler.closeConnection();
         this.userSession = null;
     }
 
@@ -66,6 +72,12 @@ public class SocketClientStandalone {
         if (this.messageHandler != null) {
             this.messageHandler.handleMessage(message);
         }
+    }
+    
+    @OnError
+    public void onError(Throwable error){
+    	messageHandler.closeConnection();
+    	Logger.getLogger(BoeseSocket.class.getName()).log(Level.SEVERE, null, error);
     }
 
     /**
@@ -101,6 +113,8 @@ public class SocketClientStandalone {
          * @param message Message which should be handled
          */
         public void handleMessage(String message);
+        
+        public void closeConnection();
     }
 
 }

@@ -85,7 +85,7 @@ public class MainClass {
 			//TODO find zone ID
 			int zoneId = 0;
 			if (devices.get(deviceName) == -1) { // device not in db
-				//TODO get Serialnumber for Insert or remove NotNull-Constraint
+				//TODO get Serialnumber for Insert
 				devices.put(deviceName, Inserts.device(connectorId, zoneId, deviceName, "serial"));
 			} else {
 				//TODO check if device is correct in db !!!erledigt!!!

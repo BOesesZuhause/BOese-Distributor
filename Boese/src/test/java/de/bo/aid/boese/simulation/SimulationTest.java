@@ -1,4 +1,4 @@
-package de.bo.aid.boese.socket.test;
+package de.bo.aid.boese.simulation;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.bo.aid.boese.db.Connection;
 import de.bo.aid.boese.socket.BoeseServer;
 
 public class SimulationTest {
@@ -21,6 +22,7 @@ public class SimulationTest {
     public void startServer() throws Exception {
         server = new BoeseServer();
         server.start();
+        Connection.getConnection();
     }
     
 

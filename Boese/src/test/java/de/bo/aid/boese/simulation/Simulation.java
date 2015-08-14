@@ -1,12 +1,14 @@
-package de.bo.aid.boese.socket.test;
+package de.bo.aid.boese.simulation;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.ConfirmConnection;
@@ -14,7 +16,7 @@ import de.bo.aid.boese.json.ConfirmDevices;
 import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.json.RequestConnection;
 import de.bo.aid.boese.json.SendDevices;
-import de.bo.aid.boese.socket.test.SocketClientStandalone.MessageHandler;
+import de.bo.aid.boese.simulation.SocketClientStandalone.MessageHandler;
 
 /**
  * This class simulates a connector.
@@ -25,12 +27,14 @@ import de.bo.aid.boese.socket.test.SocketClientStandalone.MessageHandler;
 public class Simulation implements MessageHandler {
 	
 	SocketClientStandalone client;
+	boolean connectionClosed = false;
 
 	// Connector details
 	private int conId = -1;
 	private String password = null;
 	private final String NAME = "KonnektorSim";
-	private HashMap<String, Integer> devices = new HashMap<>(); //TODO save device-Ids
+	//private HashMap<String, Integer> devices = new HashMap<>(); //TODO save device-Ids
+	private List<Device> devices = new ArrayList<Device>();
 
 	/*
 	 * (non-Javadoc)
@@ -77,8 +81,17 @@ public class Simulation implements MessageHandler {
 	}
 
 	private void handleConfirmDevices(ConfirmDevices bjMessage) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Server confirmed Devices");
+	
+		HashMap<String, Integer> devMap = bjMessage.getDevices();
+		for (String deviceName : devMap.keySet()) {	
+			for(Device dev : devices){
+				if(dev.getName().equals(deviceName)){
+					dev.setId(devMap.get(deviceName));
+				}
+			}
+		}
+		closeConnection(); //Simulation stoppen
 	}
 
 	private void handleRequestAllDevices(RequestAllDevices bjMessage) {
@@ -86,7 +99,13 @@ public class Simulation implements MessageHandler {
 		
 		int seqNr = bjMessage.getSeqenceNr();
 
-		SendDevices sendDevs = new SendDevices(devices, conId, seqNr + 1, seqNr, 0, new Date().getTime());
+		
+		HashMap<String, Integer> devHash = new HashMap<>();
+		for(Device dev : devices){
+			devHash.put(dev.getName(), dev.getId());
+		}
+		
+		SendDevices sendDevs = new SendDevices(devHash, conId, seqNr + 1, seqNr, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(sendDevs, os);
 		client.sendMessage(os.toString());
@@ -97,16 +116,38 @@ public class Simulation implements MessageHandler {
 		this.conId = bjMessage.getConnectorId();
 		System.out.println("Client swas confirmed by Server");
 	}
+	
+	private void initializeData(){
+		// Initialize Attributes
+		Device heizung = new Device(-1, "Heizung");
+		Component c1 = new Component("Temperatursensor", -1, 24, new Date().getTime());
+		Component c2 = new Component("Temperaturregler", -1, -1, new Date().getTime());
+		heizung.addComponent(c1);
+		heizung.addComponent(c2);
+		
+		Device steckerleiste = new Device(-1, "steckerleiste");
+		Component c3 = new Component("Fernseher", -1, 50, new Date().getTime());
+		Component c4 = new Component("Lampe", -1, 40, new Date().getTime());
+		Component c5 = new Component("Kuehlschrank", -1, 200, new Date().getTime());
+		steckerleiste.addComponent(c3);
+		steckerleiste.addComponent(c4);
+		steckerleiste.addComponent(c5);
+		
+		Device tuersensor = new Device(-1, "Tuersensor");
+		Component c6 = new Component("Tuersensor", -1, 0, new Date().getTime());
+		tuersensor.addComponent(c6);
+		
+		devices.add(heizung);
+		devices.add(steckerleiste);
+		devices.add(tuersensor);
+	}
 
 	/**
 	 * Starts the Connector Simulation
 	 * 
 	 */
 	public void start() {
-		// Initialize Attributes
-		devices.put("Heizung", -1);
-		devices.put("Schalter", -1);
-		devices.put("Tuersensor", -1);
+		initializeData();
 
 		// Initialize client
 		URI uri = URI.create("ws://localhost:8081/events/");
@@ -120,13 +161,22 @@ public class Simulation implements MessageHandler {
 		BoeseJson.parseMessage(reqCon, os);
 		client.sendMessage(os.toString());
 
-		// wait for answer
-		try {
-			Thread.sleep(5000); //TODO connection should be open until rejected
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+// wait for answer
+while(!connectionClosed){
+	try {
+		Thread.sleep(50);
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+}
 
+	}
+
+	@Override
+	public void closeConnection() {
+		connectionClosed = true;
+		
 	}
 }

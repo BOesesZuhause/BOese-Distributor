@@ -7,6 +7,8 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
 
+import de.bo.aid.boese.db.Connection;
+
 public class BoeseServer
 {
 	
