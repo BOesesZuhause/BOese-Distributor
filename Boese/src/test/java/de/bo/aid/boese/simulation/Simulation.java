@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,8 +12,11 @@ import java.util.List;
 import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.ConfirmConnection;
 import de.bo.aid.boese.json.ConfirmDevices;
+import de.bo.aid.boese.json.DeviceComponents;
 import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.json.RequestConnection;
+import de.bo.aid.boese.json.RequestDeviceComponents;
+import de.bo.aid.boese.json.SendDeviceComponents;
 import de.bo.aid.boese.json.SendDevices;
 import de.bo.aid.boese.simulation.SocketClientStandalone.MessageHandler;
 
@@ -28,12 +30,16 @@ public class Simulation implements MessageHandler {
 	
 	SocketClientStandalone client;
 	boolean connectionClosed = false;
+	
+	
+	
+	//For time measurements
+	private long sendTime;
 
 	// Connector details
 	private int conId = -1;
 	private String password = null;
 	private final String NAME = "KonnektorSim";
-	//private HashMap<String, Integer> devices = new HashMap<>(); //TODO save device-Ids
 	private List<Device> devices = new ArrayList<Device>();
 
 	/*
@@ -66,7 +72,7 @@ public class Simulation implements MessageHandler {
 			break;
 
 		case REQUESTDEVICECOMPONENTS:
-
+			handleRequestDeviceComponents((RequestDeviceComponents) bjMessage);
 			break;
 
 		case CONFIRMDEVICECOMPONENTS:
@@ -76,12 +82,33 @@ public class Simulation implements MessageHandler {
 		case CONFIRMVALUE:
 
 			break;
+		default:
+			break;
 
 		}
 	}
 
+	private void handleRequestDeviceComponents(RequestDeviceComponents bjMessage) {
+		System.out.println("Server requests DeviceComponents for Device with id: " + bjMessage.getDeviceId());
+		
+		Device requestedDevice = null;
+		for(Device dev : devices){
+			if(dev.getId() == bjMessage.getDeviceId()){
+				requestedDevice = dev;
+			}
+		}
+		
+		int seqNr = bjMessage.getSeqenceNr();
+		
+		sendTime = new Date().getTime();
+		SendDeviceComponents sendDevComp = new SendDeviceComponents(requestedDevice.getId(), requestedDevice.getComponents(), conId, seqNr+1, seqNr, 0, sendTime);
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(sendDevComp, os);
+		client.sendMessage(os.toString());
+	}
+
 	private void handleConfirmDevices(ConfirmDevices bjMessage) {
-		System.out.println("Server confirmed Devices");
+		System.out.println("Server confirmed Devices "  + "Duration: " + (new Date().getTime() - sendTime) + "ms");
 	
 		HashMap<String, Integer> devMap = bjMessage.getDevices();
 		for (String deviceName : devMap.keySet()) {	
@@ -91,7 +118,6 @@ public class Simulation implements MessageHandler {
 				}
 			}
 		}
-		closeConnection(); //Simulation stoppen
 	}
 
 	private void handleRequestAllDevices(RequestAllDevices bjMessage) {
@@ -105,7 +131,8 @@ public class Simulation implements MessageHandler {
 			devHash.put(dev.getName(), dev.getId());
 		}
 		
-		SendDevices sendDevs = new SendDevices(devHash, conId, seqNr + 1, seqNr, 0, new Date().getTime());
+		sendTime = new Date().getTime();
+		SendDevices sendDevs = new SendDevices(devHash, conId, seqNr + 1, seqNr, 0, sendTime);
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(sendDevs, os);
 		client.sendMessage(os.toString());
@@ -114,27 +141,27 @@ public class Simulation implements MessageHandler {
 	private void handleConfirmconnection(ConfirmConnection bjMessage) {
 		this.password = bjMessage.getPassword();
 		this.conId = bjMessage.getConnectorId();
-		System.out.println("Client swas confirmed by Server");
+		System.out.println("Client swas confirmed by Server Duration:" + (new Date().getTime() - sendTime) + "ms");
 	}
 	
 	private void initializeData(){
 		// Initialize Attributes
 		Device heizung = new Device(-1, "Heizung");
-		Component c1 = new Component("Temperatursensor", -1, 24, new Date().getTime());
-		Component c2 = new Component("Temperaturregler", -1, -1, new Date().getTime());
+		DeviceComponents c1 = new DeviceComponents(-1, "Temperatursensor", 24, new Date().getTime());
+		DeviceComponents c2 = new DeviceComponents(-1, "Temperaturregler", -1, new Date().getTime());
 		heizung.addComponent(c1);
 		heizung.addComponent(c2);
 		
 		Device steckerleiste = new Device(-1, "steckerleiste");
-		Component c3 = new Component("Fernseher", -1, 50, new Date().getTime());
-		Component c4 = new Component("Lampe", -1, 40, new Date().getTime());
-		Component c5 = new Component("Kuehlschrank", -1, 200, new Date().getTime());
+		DeviceComponents c3 = new DeviceComponents(-1, "Fernseher", 50, new Date().getTime());
+		DeviceComponents c4 = new DeviceComponents(-1,"Lampe",  40, new Date().getTime());
+		DeviceComponents c5 = new DeviceComponents(-1, "Kuehlschrank", 200, new Date().getTime());
 		steckerleiste.addComponent(c3);
 		steckerleiste.addComponent(c4);
 		steckerleiste.addComponent(c5);
 		
 		Device tuersensor = new Device(-1, "Tuersensor");
-		Component c6 = new Component("Tuersensor", -1, 0, new Date().getTime());
+		DeviceComponents c6 = new DeviceComponents(-1,"Tuersensor",  0, new Date().getTime());
 		tuersensor.addComponent(c6);
 		
 		devices.add(heizung);
@@ -156,21 +183,22 @@ public class Simulation implements MessageHandler {
 		client.connect(uri);
 
 		// Request connection
-		RequestConnection reqCon = new RequestConnection(NAME, password, conId, 0, 0, 0, new Date().getTime());
+		sendTime = new Date().getTime();
+		RequestConnection reqCon = new RequestConnection(NAME, password, conId, 0, 0, 0, sendTime);
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(reqCon, os);
 		client.sendMessage(os.toString());
-
+		
 		
 // wait for answer
-while(!connectionClosed){
-	try {
-		Thread.sleep(50);
-	} catch (InterruptedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-}
+//while(!connectionClosed){
+//	try {
+//		Thread.sleep(1);
+//	} catch (InterruptedException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+//}
 
 	}
 

@@ -18,6 +18,7 @@ import de.bo.aid.boese.json.ConfirmValue;
 import de.bo.aid.boese.json.DeviceComponents;
 import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.json.RequestConnection;
+import de.bo.aid.boese.json.RequestDeviceComponents;
 import de.bo.aid.boese.json.SendDeviceComponents;
 import de.bo.aid.boese.json.SendDevices;
 import de.bo.aid.boese.json.SendValue;
@@ -54,6 +55,8 @@ public class MainClass {
 			os = new ByteArrayOutputStream();
 			BoeseJson.parseMessage(rad, os);
 			SocketHandler.getInstance().sendToConnector(conId, os.toString());
+			
+			
 		} else {
 			String pw = rc.getPassword();
 			int conId = rc.getConnectorId();
@@ -92,10 +95,21 @@ public class MainClass {
 			}
 		}
 		
+		//send Confirm Devices
 		BoeseJson cd = new ConfirmDevices(devices, connectorId, seqNr+1, seqNr, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(cd, os);
 		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+		
+		
+		//Send Request Device Components		
+		for (Integer deviceId : devices.values()){
+			BoeseJson rdc = new RequestDeviceComponents(deviceId, connectorId, seqNr+1, seqNr, 0, new Date().getTime());
+			os = new ByteArrayOutputStream();
+			BoeseJson.parseMessage(rdc, os);
+			SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+		}
+
 	}
 	
 	private static void handleSendDeviceComponents(SendDeviceComponents sdc, int connectorId) {

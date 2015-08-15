@@ -37,6 +37,27 @@ public class Inserts {
 		return device.getDeId();
 	}
 	
+	public static int component(String name, int unitId, boolean sensor){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		Unit unit = new Unit();
+		session.load(unit, new Integer(unitId));
+		
+		Component comp = new Component();
+		comp.setName(name);
+		comp.setSensor(sensor);
+		comp.setUnit(unit);
+		
+		session.save(comp);
+		session.getTransaction().commit();
+		
+		session.evict(unit);
+		session.evict(comp);
+		
+		return comp.getCoId();	
+	}
+	
 	public static int deviceComponent(int deid, int coid, String name){
 		Session session = connection.getSession();
 		session.beginTransaction();

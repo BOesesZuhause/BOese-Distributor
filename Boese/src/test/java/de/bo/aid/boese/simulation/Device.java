@@ -1,7 +1,10 @@
 package de.bo.aid.boese.simulation;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+
+import de.bo.aid.boese.json.DeviceComponents;
 
 public class Device {
 	
@@ -9,13 +12,12 @@ public class Device {
 	
 	private String name;
 	
-	private List<Component> components = new ArrayList<>();
+	private HashSet<DeviceComponents> components = new HashSet<>();
 
 	public Device(int id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.components = components;
 	}
 
 	public int getId() {
@@ -34,11 +36,11 @@ public class Device {
 		this.name = name;
 	}
 
-	public List<Component> getComponents() {
+	public HashSet<DeviceComponents> getComponents() {
 		return components;
 	}
 
-	public void addComponent(Component component) {
+	public void addComponent(DeviceComponents component) {
 		components.add(component);
 	}
 	

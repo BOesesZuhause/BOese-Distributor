@@ -34,7 +34,9 @@ public class SimulationTest {
 		Simulation sim = new Simulation();
 		sim.start();
 		
-		assertTrue(true);
+		Thread.sleep(5000);
+		
+		sim.closeConnection();
 		
 	}
 	
