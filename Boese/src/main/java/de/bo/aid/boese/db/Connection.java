@@ -7,7 +7,7 @@ import de.bo.aid.boese.hibernate.util.HibernateUtil;
 
 public class Connection {
 
-	private static Connection instance = new Connection();
+	private static Connection instance;
 	
 	private SessionFactory sessionFactory;
 	private Session session;
@@ -18,11 +18,20 @@ public class Connection {
 	}
 	
 	public static Connection getConnection (){
+		if(instance == null){
+			instance = new Connection();
+		}
 		return instance;
 	}
 	
 	public Session getSession(){
 		return session;
+	}
+	
+	public void close(){
+		sessionFactory = null;
+		session = null;
+		instance = null;
 	}
 	
 }

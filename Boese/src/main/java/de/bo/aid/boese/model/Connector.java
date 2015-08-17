@@ -17,6 +17,11 @@ public class Connector implements java.io.Serializable {
 	private Set logConnectors = new HashSet(0);
 
 	public Connector() {
+	
+	}
+	
+	public Connector(int coId) {
+		this.coId = coId;
 	}
 
 	public Connector(int coId, String name, String password) {

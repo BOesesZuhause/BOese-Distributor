@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 
+import de.bo.aid.boese.constants.Errors;
 import de.bo.aid.boese.model.*;
 
 public class Selects {
@@ -17,8 +19,16 @@ public class Selects {
 		session.beginTransaction();
 		
 		Connector con = new Connector();
-		session.load(con, new Integer(coid));
-		session.getTransaction().commit();
+		try{
+			session.load(con, new Integer(coid));
+			session.getTransaction().commit();
+		}
+		catch (ObjectNotFoundException onfe){
+			session.evict(con);
+			session.getTransaction().rollback();
+			return new Connector(Errors.objectNotFound);
+		}
+		
 		session.evict(con);
 		
 		return con;
@@ -33,8 +43,8 @@ public class Selects {
 		for(Object o: erg){
 			device.add((Device) o);
 		}
+		
 		session.getTransaction().commit();
-		session.evict(device);
 		
 		return device;
 	}
@@ -44,9 +54,18 @@ public class Selects {
 		session.beginTransaction();
  
 		DeviceComponent deco = new DeviceComponent();
-		session.load(deco, new Integer(decoid));
-		double d = deco.getCurrentValue().doubleValue();
-		session.getTransaction().commit();
+		double d = 0.0;
+		try{
+			session.load(deco, new Integer(decoid));
+			d = deco.getCurrentValue().doubleValue();
+			session.getTransaction().commit();
+		}
+		catch (ObjectNotFoundException onfe){
+			session.evict(deco);
+			session.getTransaction().rollback();
+			return Errors.objectNotFound;
+		}
+		
 		session.evict(deco);
 		
 		return d;
@@ -57,8 +76,16 @@ public class Selects {
 		session.beginTransaction();
 		
 		Device dev = new Device();
-		session.load(dev, new Integer(deid));
-		session.getTransaction().commit();
+		try{
+			session.load(dev, new Integer(deid));
+			session.getTransaction().commit();
+		}
+		catch (ObjectNotFoundException onfe){
+			session.evict(dev);
+			session.getTransaction().rollback();
+			return new Device(Errors.objectNotFound);
+		}
+		
 		session.evict(dev);
 		
 		return dev;
@@ -75,7 +102,6 @@ public class Selects {
 		}
 		
 		session.getTransaction().commit();
-		session.evict(zone);
 		
 		return zone;
 	}

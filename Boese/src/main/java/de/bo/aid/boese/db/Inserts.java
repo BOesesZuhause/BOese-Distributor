@@ -3,8 +3,11 @@ package de.bo.aid.boese.db;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.hibernate.ObjectNotFoundException;
+import org.hibernate.PropertyValueException;
 import org.hibernate.Session;
 
+import de.bo.aid.boese.constants.Errors;
 import de.bo.aid.boese.model.*;
 
 public class Inserts {
@@ -17,19 +20,36 @@ public class Inserts {
 		Device device = new Device();
 		
 		Connector con = new Connector();
-		session.load(con, new Integer(coid));
-		device.setConnector(con);
-		
 		Zone zone = new Zone();
-		session.load(zone, new Integer(zoid));
-		device.setZone(zone);
+		try{
+			session.load(con, new Integer(coid));
+			device.setConnector(con);
+			session.load(zone, new Integer(zoid));
+			device.setZone(zone);
+		}
+		catch (ObjectNotFoundException onfe){
+			session.evict(con);
+			session.evict(zone);
+			session.evict(device);
+			session.getTransaction().rollback();
+			return Errors.objectNotFound;
+		}
 		
 		device.setAlias(name);
-		
 		device.setSerialNumber(serial);
  
-		session.save(device);
-		session.getTransaction().commit();
+		try{
+			session.save(device);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.evict(con);
+			session.evict(zone);
+			session.evict(device);
+			session.getTransaction().rollback();
+			return Errors.NotNullValueNull;
+		}
+		
 		session.evict(con);
 		session.evict(zone);
 		session.evict(device);
@@ -49,8 +69,16 @@ public class Inserts {
 		comp.setSensor(sensor);
 		comp.setUnit(unit);
 		
-		session.save(comp);
-		session.getTransaction().commit();
+		try{
+			session.save(comp);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.evict(unit);
+			session.evict(comp);
+			session.getTransaction().rollback();
+			return Errors.NotNullValueNull;
+		}
 		
 		session.evict(unit);
 		session.evict(comp);
@@ -65,17 +93,35 @@ public class Inserts {
 		DeviceComponent dc = new DeviceComponent();
 		
 		Device device = new Device();
-		session.load(device, new Integer(deid));
-		dc.setDevice(device);
-		
 		Component comp = new Component();
-		session.load(comp, new Integer(coid));
-		dc.setComponent(comp);
+		try{
+			session.load(device, new Integer(deid));
+			dc.setDevice(device);
+			session.load(comp, new Integer(coid));
+			dc.setComponent(comp);
+		}
+		catch (ObjectNotFoundException onfe){
+			session.evict(dc);
+			session.evict(device);
+			session.evict(comp);
+			session.getTransaction().rollback();
+			return Errors.objectNotFound;
+		}
 		
 		dc.setStatus((short) 1);
  
-		session.save(dc);
-		session.getTransaction().commit();
+		try{
+			session.save(dc);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.evict(dc);
+			session.evict(device);
+			session.evict(comp);
+			session.getTransaction().rollback();
+			return Errors.NotNullValueNull;
+		}		
+		
 		session.evict(dc);
 		session.evict(device);
 		session.evict(comp);
@@ -92,31 +138,68 @@ public class Inserts {
 		con.setName(name);
 		con.setPassword(pw);
  
-		session.save(con);
-		session.getTransaction().commit();
+		try{
+			session.save(con);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.evict(con);
+			session.getTransaction().rollback();
+			return Errors.NotNullValueNull;
+		}
+		
 		session.evict(con);
 		
 		return con.getCoId();
 	}
 	
-	public static boolean value(int decoid, Date timestamp, double value){
+	public static int value(int decoid, Date timestamp, double value){
 		Session session = connection.getSession();
 		session.beginTransaction();
  
 		DeviceComponent deco = new DeviceComponent();
-		session.load(deco, new Integer(decoid));
-		deco.setCurrentValue(new BigDecimal(value));
-		session.save(deco);
+		try{
+			session.load(deco, new Integer(decoid));
+			deco.setCurrentValue(new BigDecimal(value));
+		}
+		catch (ObjectNotFoundException onfe){
+			session.evict(deco);
+			session.evict(timestamp);
+			session.getTransaction().rollback();
+			return Errors.objectNotFound;
+		}
+		try{
+			session.save(deco);
+		}
+		catch(PropertyValueException pve){
+			session.evict(deco);
+			session.evict(timestamp);
+			session.getTransaction().rollback();
+			return Errors.NotNullValueNull;
+		}
 		
 		LogComponent logcomp = new LogComponent();
 		logcomp.setDeviceComponent(deco);
 		logcomp.setTimestamp(timestamp);
 		logcomp.setValue(new BigDecimal(value));
-		session.save(logcomp);
-		session.getTransaction().commit();
+		
+		try{
+			session.save(logcomp);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.evict(deco);
+			session.evict(logcomp);
+			session.evict(timestamp);
+			session.getTransaction().rollback();
+			return Errors.NotNullValueNull;
+		}
+		
 		session.evict(deco);
+		session.evict(logcomp);
+		session.evict(timestamp);
 		
 		//ToDo Fehlerbehandlung
-		return true;
+		return Errors.OK;
 	}
 }

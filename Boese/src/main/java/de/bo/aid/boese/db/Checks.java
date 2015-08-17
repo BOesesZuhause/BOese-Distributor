@@ -21,6 +21,7 @@ public class Checks {
 			return true;
 		}
 		catch(org.hibernate.ObjectNotFoundException onfe){
+			session.getTransaction().rollback();
 			return false;
 		}
 	}

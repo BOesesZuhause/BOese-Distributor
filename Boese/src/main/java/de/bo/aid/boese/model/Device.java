@@ -21,6 +21,11 @@ public class Device implements java.io.Serializable {
 	private Set deviceComponents = new HashSet(0);
 
 	public Device() {
+		
+	}
+	
+	public Device(int deId) {
+		this.deId = deId;
 	}
 
 	public Device(int deId, Connector connector, Zone zone, String alias, String serialNumber) {
