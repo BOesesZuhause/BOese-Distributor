@@ -36,6 +36,11 @@ public class SimulationTest {
 		
 		Thread.sleep(5000);
 		
+		sim.sendValue();
+		
+		Thread.sleep(2000);
+		
+		
 		sim.closeConnection();
 		
 	}

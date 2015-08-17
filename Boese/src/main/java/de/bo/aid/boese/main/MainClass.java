@@ -123,9 +123,13 @@ public class MainClass {
 		HashMap<String, Integer> confirmComponents = new HashMap<>();
 		for (DeviceComponents component : components) {
 			if (component.getDeviceComponentId() == -1) {
+				
+				
 				// TODO User muss componentID zuweisen
 				int componentId = 0;
-				
+				//TODO user muss Unit zuweisen
+				int unitId = 0;
+
 				int deCoId = Inserts.deviceComponent(deviceId, componentId, component.getComponentName());
 				confirmComponents.put(component.getComponentName(), deCoId);
 				//TODO Inserts Value! !!!erledigt!!!

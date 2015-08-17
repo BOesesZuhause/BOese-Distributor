@@ -7,17 +7,21 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.ConfirmConnection;
+import de.bo.aid.boese.json.ConfirmDeviceComponents;
 import de.bo.aid.boese.json.ConfirmDevices;
+import de.bo.aid.boese.json.ConfirmValue;
 import de.bo.aid.boese.json.DeviceComponents;
 import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.json.RequestConnection;
 import de.bo.aid.boese.json.RequestDeviceComponents;
 import de.bo.aid.boese.json.SendDeviceComponents;
 import de.bo.aid.boese.json.SendDevices;
+import de.bo.aid.boese.json.SendValue;
 import de.bo.aid.boese.simulation.SocketClientStandalone.MessageHandler;
 
 /**
@@ -41,6 +45,9 @@ public class Simulation implements MessageHandler {
 	private String password = null;
 	private final String NAME = "KonnektorSim";
 	private List<Device> devices = new ArrayList<Device>();
+	private Device heizung;
+	private Device steckerleiste;
+	private Device tuersensor;
 
 	/*
 	 * (non-Javadoc)
@@ -54,7 +61,7 @@ public class Simulation implements MessageHandler {
 		BoeseJson bjMessage = BoeseJson.readMessage(new ByteArrayInputStream(message.getBytes()));
 
 		if (bjMessage == null) {
-			return; // TODO
+			return; // TODO Fehlermeldungen
 		}
 
 		switch (bjMessage.getType()) {
@@ -76,16 +83,53 @@ public class Simulation implements MessageHandler {
 			break;
 
 		case CONFIRMDEVICECOMPONENTS:
-
+			handleConfirmDeviceComponents((ConfirmDeviceComponents) bjMessage);
 			break;
 
 		case CONFIRMVALUE:
-
+			handleConfirmValue((ConfirmValue) bjMessage);
 			break;
 		default:
 			break;
 
 		}
+	}
+
+	private void handleConfirmValue(ConfirmValue bjMessage) {
+		System.out.println("Server Confirmed Value "   + "Duration: " + (new Date().getTime() - sendTime) + "ms");
+		//TODO What to do with confirm-message?
+	}
+
+	private void handleConfirmDeviceComponents(ConfirmDeviceComponents bjMessage) {
+		System.out.println("Server confirmed DeviceComponents "  + "Duration: " + (new Date().getTime() - sendTime) + "ms");
+		
+		//find Device
+		int deviceId = bjMessage.getDeviceId();	
+		Device dev = null;
+		for(Device d : devices){
+			if(d.getId()== deviceId){
+				dev = d;
+			}
+		}
+		if(dev == null){
+			//TODO add Error handling
+		}
+		
+		//Confirmed Components
+		HashMap<String, Integer> compMap = bjMessage.getComponents();
+		
+		//actual Components
+		HashSet<DeviceComponents> actualCompMap = dev.getComponents();	
+		
+		
+		for (String componentName : compMap.keySet()) {	
+			for(DeviceComponents devComp : actualCompMap){
+				if(devComp.getComponentName().equals(componentName)){
+					devComp.setDeviceComponentId(compMap.get(componentName));
+				}
+			}
+		}
+		
 	}
 
 	private void handleRequestDeviceComponents(RequestDeviceComponents bjMessage) {
@@ -146,13 +190,13 @@ public class Simulation implements MessageHandler {
 	
 	private void initializeData(){
 		// Initialize Attributes
-		Device heizung = new Device(-1, "Heizung");
+		heizung = new Device(-1, "Heizung");
 		DeviceComponents c1 = new DeviceComponents(-1, "Temperatursensor", 24, new Date().getTime());
 		DeviceComponents c2 = new DeviceComponents(-1, "Temperaturregler", -1, new Date().getTime());
 		heizung.addComponent(c1);
 		heizung.addComponent(c2);
 		
-		Device steckerleiste = new Device(-1, "steckerleiste");
+		steckerleiste = new Device(-1, "steckerleiste");
 		DeviceComponents c3 = new DeviceComponents(-1, "Fernseher", 50, new Date().getTime());
 		DeviceComponents c4 = new DeviceComponents(-1,"Lampe",  40, new Date().getTime());
 		DeviceComponents c5 = new DeviceComponents(-1, "Kuehlschrank", 200, new Date().getTime());
@@ -160,7 +204,7 @@ public class Simulation implements MessageHandler {
 		steckerleiste.addComponent(c4);
 		steckerleiste.addComponent(c5);
 		
-		Device tuersensor = new Device(-1, "Tuersensor");
+		tuersensor = new Device(-1, "Tuersensor");
 		DeviceComponents c6 = new DeviceComponents(-1,"Tuersensor",  0, new Date().getTime());
 		tuersensor.addComponent(c6);
 		
@@ -188,8 +232,7 @@ public class Simulation implements MessageHandler {
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(reqCon, os);
 		client.sendMessage(os.toString());
-		
-		
+
 // wait for answer
 //while(!connectionClosed){
 //	try {
@@ -201,6 +244,27 @@ public class Simulation implements MessageHandler {
 //}
 
 	}
+	
+	public void sendValue(){
+		int devId = heizung.getId();
+		int devCompId = 0;
+		
+		for(DeviceComponents devComp : heizung.getComponents()){
+			if(devComp.getComponentName().equals("Temperatursensor")){
+				devCompId = devComp.getDeviceComponentId();
+			}
+		}
+		
+		if(devCompId == 0){
+			//TODO add Error handling
+		}
+		
+		sendTime = new Date().getTime();
+		SendValue sendval = new SendValue(devId, devCompId, 23.0, sendTime, conId, 0, 0, 0, sendTime);
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(sendval, os);
+		client.sendMessage(os.toString());
+			}
 
 	@Override
 	public void closeConnection() {

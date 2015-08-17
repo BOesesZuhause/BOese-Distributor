@@ -13,6 +13,22 @@ public class DeviceComponents {
 		this.timestamp = timestamp;
 	}
 
+	public void setDeviceComponentId(int deviceComponentId) {
+		this.deviceComponentId = deviceComponentId;
+	}
+
+	public void setComponentName(String componentName) {
+		this.componentName = componentName;
+	}
+
+	public void setValue(double value) {
+		this.value = value;
+	}
+
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+
 	public int getDeviceComponentId() {
 		return deviceComponentId;
 	}
