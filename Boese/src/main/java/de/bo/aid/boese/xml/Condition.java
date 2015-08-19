@@ -26,9 +26,6 @@ public class Condition extends BoeseXML {
 			case "OR":
 				conditionList.orConditions.add(parseNodeList(node.getChildNodes()));
 				break;
-			case "XOR":
-				conditionList.xorConditions.add(parseNodeList(node.getChildNodes()));
-				break;
 			default:
 				break;
 			}
@@ -60,10 +57,6 @@ public class Condition extends BoeseXML {
 		Iterator<ConditionList> itOr = list.getOrConditions().iterator();
 		while (itOr.hasNext()) {
 			return containsSensor(sensorID, itOr.next());
-		}
-		Iterator<ConditionList> itXor = list.getXorConditions().iterator();
-		while (itXor.hasNext()) {
-			return containsSensor(sensorID, itXor.next());
 		}
 		return returnValue;
 	}

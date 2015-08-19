@@ -7,8 +7,8 @@ public class Sensor extends Component{
 	
 	protected Comperator comperator;
 	
-	public Sensor(int id, double value, long startTime, long endTime, long duration, Comperator comperator) {
-		super(id, value, startTime, endTime, duration);
+	public Sensor(int id, double value, long startTime, long duration, Comperator comperator) {
+		super(id, value, startTime, duration);
 		this.comperator = comperator;
 	}
 	

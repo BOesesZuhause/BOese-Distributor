@@ -124,7 +124,7 @@ public class MainClass {
 		for (DeviceComponents component : components) {
 			if (component.getDeviceComponentId() == -1) { // Component has no DeCoId
 				// TODO User muss componentID zuweisen
-				int componentId = 0;
+				int componentId = Inserts.component(component.getComponentName(), 0, true); // TODO!!!!
 				int deCoId = Inserts.deviceComponent(deviceId, componentId, component.getComponentName());
 				confirmComponents.put(component.getComponentName(), deCoId);
 				Inserts.value(deCoId, new Date(component.getTimestamp()), component.getValue());

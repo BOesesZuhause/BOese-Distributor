@@ -6,13 +6,11 @@ import java.util.Set;
 public class ConditionList {
 	HashSet<ConditionList> andConditions;
 	HashSet<ConditionList> orConditions;
-	HashSet<ConditionList> xorConditions;
 	HashSet<Sensor> sensors;
 	
 	public ConditionList() {
 		andConditions = new HashSet<>();
 		orConditions = new HashSet<>();
-		xorConditions = new HashSet<>();
 		sensors = new HashSet<>();
 	};
 	
@@ -38,14 +36,6 @@ public class ConditionList {
 	
 	public Set<ConditionList> getOrConditions() {
 		return orConditions;
-	}
-	
-	public void addXorCondition(ConditionList xorCondition) {
-		xorConditions.add(xorCondition);
-	}
-	
-	public Set<ConditionList> getXorConditions() {
-		return xorConditions;
 	}
 
 }

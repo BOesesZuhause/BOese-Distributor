@@ -43,7 +43,6 @@ public class Action extends BoeseXML {
 						Integer.valueOf(element.getAttribute("ACTORID")), 
 						Double.valueOf(element.getAttribute("VALUE")), 
 						Long.valueOf(element.getAttribute("STARTTIME")),
-						Long.valueOf(element.getAttribute("ENDTIME")),
 						Long.valueOf(element.getAttribute("DURATION"))
 						));
 			}
