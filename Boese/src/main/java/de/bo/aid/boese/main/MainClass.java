@@ -7,6 +7,7 @@ import java.security.SecureRandom;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
@@ -55,8 +56,6 @@ public class MainClass {
 			os = new ByteArrayOutputStream();
 			BoeseJson.parseMessage(rad, os);
 			SocketHandler.getInstance().sendToConnector(conId, os.toString());
-			
-			
 		} else {
 			String pw = rc.getPassword();
 			int conId = rc.getConnectorId();
@@ -113,6 +112,7 @@ public class MainClass {
 	}
 	
 	private static void handleSendDeviceComponents(SendDeviceComponents sdc, int connectorId) {
+		// TODO Regelparsing mit component values
 		int seqNr = sdc.getSeqenceNr();
 		if (connectorId != sdc.getConnectorId()) {
 			SocketHandler.getInstance().rejectConnection(connectorId);
@@ -122,20 +122,28 @@ public class MainClass {
 		HashSet<DeviceComponents> components = sdc.getComponents();
 		HashMap<String, Integer> confirmComponents = new HashMap<>();
 		for (DeviceComponents component : components) {
-			if (component.getDeviceComponentId() == -1) {
-				
-				
+			if (component.getDeviceComponentId() == -1) { // Component has no DeCoId
 				// TODO User muss componentID zuweisen
 				int componentId = 0;
-				//TODO user muss Unit zuweisen
-				int unitId = 0;
-
 				int deCoId = Inserts.deviceComponent(deviceId, componentId, component.getComponentName());
 				confirmComponents.put(component.getComponentName(), deCoId);
-				//TODO Inserts Value! !!!erledigt!!!
-			} else {
-				// TODO check if decoID is in db !!!erledigt!!!
-				// TODO Inserts Value !!!erledigt!!!
+				Inserts.value(deCoId, new Date(component.getTimestamp()), component.getValue());
+			} else { // Component has DeCoId
+				Device device = Selects.device(deviceId);
+				if (device == null) { // Device does not exist
+					// TODO was tun wir, wenn der Konnector eine Device ID nennt, die nicht in der DB ist?
+				} else {
+					@SuppressWarnings("unchecked")
+					Iterator<DeviceComponent> itDc = device.getDeviceComponents().iterator();
+					while (itDc.hasNext()) { // search for devicecomponent in db
+						DeviceComponent dc = itDc.next();
+						if (dc.getDeCoId() == component.getDeviceComponentId()) { // deviceComponent gefunden
+							confirmComponents.put(component.getComponentName(), dc.getDeCoId());
+							Inserts.value(dc.getDeCoId(), new Date(component.getTimestamp()), component.getValue());
+							break;
+						} // TODO was passiert wenn DeCo nicht beim device dabei ist?
+					}
+				}
 			}
 		}
 		
@@ -153,7 +161,7 @@ public class MainClass {
 		}
 		int deviceId = sv.getDeviceId();
 		int deviceComponentId = sv.getDeviceComponentId();
-		// TODO Insert Value
+		Inserts.value(deviceComponentId, new Date(sv.getValueTimestamp()), sv.getValue());
 		
 		BoeseJson cv = new ConfirmValue(deviceId, deviceComponentId, connectorId, seqNr+1, seqNr, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
@@ -161,6 +169,11 @@ public class MainClass {
 		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
+	/**
+	 * Method to handle Json messages and act depednding on the type and content
+	 * @param message A string containing the Json message
+	 * @param connectorId The Id of the connector.
+	 */
 	public static void handleMessage(String message, int connectorId) {
 		BoeseJson bjMessage = BoeseJson.readMessage(new ByteArrayInputStream(message.getBytes()));
 		if (bjMessage == null) {

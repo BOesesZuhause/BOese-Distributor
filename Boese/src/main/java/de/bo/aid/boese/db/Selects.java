@@ -26,7 +26,7 @@ public class Selects {
 		catch (ObjectNotFoundException onfe){
 			session.evict(con);
 			session.getTransaction().rollback();
-			return new Connector(Errors.objectNotFound);
+			return new Connector(Errors.OBJECT_NOT_FOUND);
 		}
 		
 		session.evict(con);
@@ -63,7 +63,7 @@ public class Selects {
 		catch (ObjectNotFoundException onfe){
 			session.evict(deco);
 			session.getTransaction().rollback();
-			return Errors.objectNotFound;
+			return Errors.OBJECT_NOT_FOUND;
 		}
 		
 		session.evict(deco);
@@ -83,7 +83,7 @@ public class Selects {
 		catch (ObjectNotFoundException onfe){
 			session.evict(dev);
 			session.getTransaction().rollback();
-			return new Device(Errors.objectNotFound);
+			return new Device(Errors.OBJECT_NOT_FOUND);
 		}
 		
 		session.evict(dev);

@@ -1,4 +1,5 @@
 package de.bo.aid.boese.json;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -232,7 +233,7 @@ public class BoeseJson {
 	/**
 	 * Writes a BoeseJson Message to a given output stream
 	 * @param message the BoeseJson Message
-	 * @param os the OutputStream to write in
+	 * @param os the OutputStream to write in. If null a new ByteArrayOutputStream is generated.
 	 * @return true, if writing was successful
 	 */
 	public static boolean parseMessage(BoeseJson message, OutputStream os) {
@@ -339,6 +340,9 @@ public class BoeseJson {
 		default:
 			output = false;
 			break;
+		}
+		if (os == null) {
+			os = new ByteArrayOutputStream();
 		}
 		JsonWriter writer = Json.createWriter(os);
 		writer.writeObject(job.build());

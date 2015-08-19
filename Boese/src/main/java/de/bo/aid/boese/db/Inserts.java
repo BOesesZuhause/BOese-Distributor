@@ -32,7 +32,7 @@ public class Inserts {
 			session.evict(zone);
 			session.evict(device);
 			session.getTransaction().rollback();
-			return Errors.objectNotFound;
+			return Errors.OBJECT_NOT_FOUND;
 		}
 		
 		device.setAlias(name);
@@ -47,7 +47,7 @@ public class Inserts {
 			session.evict(zone);
 			session.evict(device);
 			session.getTransaction().rollback();
-			return Errors.NotNullValueNull;
+			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
 		session.evict(con);
@@ -77,7 +77,7 @@ public class Inserts {
 			session.evict(unit);
 			session.evict(comp);
 			session.getTransaction().rollback();
-			return Errors.NotNullValueNull;
+			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
 		session.evict(unit);
@@ -105,7 +105,7 @@ public class Inserts {
 			session.evict(device);
 			session.evict(comp);
 			session.getTransaction().rollback();
-			return Errors.objectNotFound;
+			return Errors.OBJECT_NOT_FOUND;
 		}
 		
 		dc.setStatus((short) 1);
@@ -119,7 +119,7 @@ public class Inserts {
 			session.evict(device);
 			session.evict(comp);
 			session.getTransaction().rollback();
-			return Errors.NotNullValueNull;
+			return Errors.NOT_NULL_VALUE_NULL;
 		}		
 		
 		session.evict(dc);
@@ -145,7 +145,7 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.evict(con);
 			session.getTransaction().rollback();
-			return Errors.NotNullValueNull;
+			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
 		session.evict(con);
@@ -166,7 +166,7 @@ public class Inserts {
 			session.evict(deco);
 			session.evict(timestamp);
 			session.getTransaction().rollback();
-			return Errors.objectNotFound;
+			return Errors.OBJECT_NOT_FOUND;
 		}
 		try{
 			session.save(deco);
@@ -175,7 +175,7 @@ public class Inserts {
 			session.evict(deco);
 			session.evict(timestamp);
 			session.getTransaction().rollback();
-			return Errors.NotNullValueNull;
+			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
 		LogComponent logcomp = new LogComponent();
@@ -192,7 +192,7 @@ public class Inserts {
 			session.evict(logcomp);
 			session.evict(timestamp);
 			session.getTransaction().rollback();
-			return Errors.NotNullValueNull;
+			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
 		session.evict(deco);
