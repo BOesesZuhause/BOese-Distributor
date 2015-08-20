@@ -96,12 +96,12 @@ public class Simulation implements MessageHandler {
 	}
 
 	private void handleConfirmValue(ConfirmValue bjMessage) {
-		System.out.println("Server Confirmed Value "   + "Duration: " + (new Date().getTime() - sendTime) + "ms");
+		System.out.println("Server Confirmed Value "   + "Duration: " + (new Date().getTime() - sendTime) + "ms\n");
 		//TODO What to do with confirm-message?
 	}
 
 	private void handleConfirmDeviceComponents(ConfirmDeviceComponents bjMessage) {
-		System.out.println("Server confirmed DeviceComponents "  + "Duration: " + (new Date().getTime() - sendTime) + "ms");
+		System.out.println("Server confirmed DeviceComponents "  + "Duration: " + (new Date().getTime() - sendTime) + "ms\n");
 		
 		//find Device
 		int deviceId = bjMessage.getDeviceId();	
@@ -134,7 +134,6 @@ public class Simulation implements MessageHandler {
 
 	private void handleRequestDeviceComponents(RequestDeviceComponents bjMessage) {
 		System.out.println("Server requests DeviceComponents for Device with id: " + bjMessage.getDeviceId());
-		
 		Device requestedDevice = null;
 		for(Device dev : devices){
 			if(dev.getId() == bjMessage.getDeviceId()){
@@ -149,10 +148,10 @@ public class Simulation implements MessageHandler {
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(sendDevComp, os);
 		client.sendMessage(os.toString());
-	}
+		}
 
 	private void handleConfirmDevices(ConfirmDevices bjMessage) {
-		System.out.println("Server confirmed Devices "  + "Duration: " + (new Date().getTime() - sendTime) + "ms");
+		System.out.println("Server confirmed Devices "  + "Duration: " + (new Date().getTime() - sendTime) + "ms\n");
 	
 		HashMap<String, Integer> devMap = bjMessage.getDevices();
 		for (String deviceName : devMap.keySet()) {	
@@ -185,7 +184,7 @@ public class Simulation implements MessageHandler {
 	private void handleConfirmconnection(ConfirmConnection bjMessage) {
 		this.password = bjMessage.getPassword();
 		this.conId = bjMessage.getConnectorId();
-		System.out.println("Client swas confirmed by Server Duration:" + (new Date().getTime() - sendTime) + "ms");
+		System.out.println("Client swas confirmed by Server Duration:" + (new Date().getTime() - sendTime) + "ms\n");
 	}
 	
 	private void initializeData(){
@@ -245,7 +244,7 @@ public class Simulation implements MessageHandler {
 
 	}
 	
-	public void sendValue(){
+	public void sendValue(double value){
 		int devId = heizung.getId();
 		int devCompId = 0;
 		
@@ -260,7 +259,7 @@ public class Simulation implements MessageHandler {
 		}
 		
 		sendTime = new Date().getTime();
-		SendValue sendval = new SendValue(devId, devCompId, 23.0, sendTime, conId, 0, 0, 0, sendTime);
+		SendValue sendval = new SendValue(devId, devCompId, value, sendTime, conId, 0, 0, 0, sendTime);
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(sendval, os);
 		client.sendMessage(os.toString());

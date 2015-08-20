@@ -6,7 +6,9 @@
     <class name="de.bo.aid.boese.model.Component" table="component" schema="public" optimistic-lock="version">
         <id name="coId" type="int">
             <column name="CoID" />
-            <generator class="assigned" />
+            	        <generator class="sequence">
+                <param name="sequence">person_id_sequence</param>
+        	</generator>
         </id>
         <many-to-one name="unit" class="de.bo.aid.boese.model.Unit" fetch="select">
             <column name="UnID" not-null="true" />

@@ -36,7 +36,7 @@ public class SimulationTest {
 		
 		Thread.sleep(5000);
 		
-		sim.sendValue();
+		sim.sendValue(99.8);
 		
 		Thread.sleep(2000);
 		

@@ -197,7 +197,7 @@ public class Inserts {
 		
 		session.evict(deco);
 		session.evict(logcomp);
-		session.evict(timestamp);
+		//session.evict(timestamp);
 		
 		//ToDo Fehlerbehandlung
 		return Errors.OK;

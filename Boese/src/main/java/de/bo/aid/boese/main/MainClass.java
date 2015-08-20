@@ -84,8 +84,9 @@ public class MainClass {
 		}
 		HashMap<String, Integer> devices = sd.getDevices();
 		for (String deviceName : devices.keySet()) {
-			//TODO find zone ID
+			//TODO find zone ID (is set by user)
 			int zoneId = 0;
+			//Device is inserted by user
 			if (devices.get(deviceName) == -1) { // device not in db
 				//TODO get Serialnumber for Insert
 				devices.put(deviceName, Inserts.device(connectorId, zoneId, deviceName, "serial"));
@@ -127,7 +128,7 @@ public class MainClass {
 				int componentId = Inserts.component(component.getComponentName(), 0, true); // TODO!!!!
 				int deCoId = Inserts.deviceComponent(deviceId, componentId, component.getComponentName());
 				confirmComponents.put(component.getComponentName(), deCoId);
-				Inserts.value(deCoId, new Date(component.getTimestamp()), component.getValue());
+				//Inserts.value(deCoId, new Date(component.getTimestamp()), component.getValue()); //TODO
 			} else { // Component has DeCoId
 				Device device = Selects.device(deviceId);
 				if (device == null) { // Device does not exist
@@ -201,6 +202,14 @@ public class MainClass {
 		BoeseServer server = new BoeseServer();
 		server.start();
 
+	}
+	
+	public static void confirmDevice(){
+		//TODO complete
+	}
+	
+	public static void confirmDeviceComponent(){
+		//TODO complete
 	}
 
 
