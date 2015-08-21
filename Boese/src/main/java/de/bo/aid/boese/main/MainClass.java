@@ -4,10 +4,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
@@ -28,35 +31,27 @@ import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceComponent;
 import de.bo.aid.boese.socket.BoeseServer;
 import de.bo.aid.boese.socket.SocketHandler;
+import javassist.NotFoundException;
 
 public class MainClass {
 	//TODO handle Acknowledge abgleich
 	
+	//Lists for unconfirmed Objects
+	private static List<Connector> tempConnectors = new CopyOnWriteArrayList<Connector>();
+	private static List<Device> tempDevices = new CopyOnWriteArrayList<Device>();
+	private static List<DeviceComponents> tempDeviceComponents = new CopyOnWriteArrayList<DeviceComponents>();
 	
-	private static void handleRequestConnections(RequestConnection rc, int connectorId) {
+	private static void handleRequestConnections(RequestConnection rc, int tempId) {
 		int seqNr = rc.getSeqenceNr();
 		if (rc.getPassword() == null && rc.getConnectorId() == -1) {
  
-			//TODO User muss bestätigen tun
+			//Add requesting Connector to tempConnectors
+			Connector con = new Connector();
+			con.setCoId(tempId);
+			con.setName(rc.getConnectorName());
+			tempConnectors.add(con);
 
-			SecureRandom sr = new SecureRandom();
-			String pw = String.valueOf(sr.nextLong());
-
-			int conId = Inserts.connector(rc.getConnectorName(), pw);
-			SocketHandler.getInstance().setConnectorId(connectorId, conId);
-
-			// Send ConfirmConnection
-			BoeseJson cc = new ConfirmConnection(pw, conId, seqNr+1, seqNr, 0, new Date().getTime());
-			OutputStream os = new ByteArrayOutputStream();
-			BoeseJson.parseMessage(cc, os);
-			SocketHandler.getInstance().sendToConnector(conId, os.toString());
-
-			// Send RequestAllDevices
-			BoeseJson rad = new RequestAllDevices(conId, seqNr+2, seqNr+1, 0, new Date().getTime());
-			os = new ByteArrayOutputStream();
-			BoeseJson.parseMessage(rad, os);
-			SocketHandler.getInstance().sendToConnector(conId, os.toString());
-		} else {
+		} else { //TODO test
 			String pw = rc.getPassword();
 			int conId = rc.getConnectorId();
 			String conName = rc.getConnectorName();
@@ -64,7 +59,7 @@ public class MainClass {
 			Connector con = Selects.connector(conId);
 
 			if (con.getName().compareTo(conName) == 0 && con.getPassword().compareTo(pw) == 0) {
-				SocketHandler.getInstance().setConnectorId(connectorId, conId);
+				SocketHandler.getInstance().setConnectorId(tempId, conId);
 				BoeseJson cc = new ConfirmConnection(pw, conId, seqNr+1, seqNr, 0, new Date().getTime());
 				
 				OutputStream os = new ByteArrayOutputStream();
@@ -202,6 +197,43 @@ public class MainClass {
 		BoeseServer server = new BoeseServer();
 		server.start();
 
+	}
+	
+	public static List<Connector> getTempConnectors(){
+		return tempConnectors;
+	}
+	
+	public static void confirmConnector(int tempId) throws NotFoundException{
+		
+		Connector con = null;
+		for(Connector c : tempConnectors){
+			if(c.getCoId() == tempId){
+				con = c;
+			}
+		}
+		
+		if(con == null){
+			throw new NotFoundException("Connector with tempId " + tempId + " not Found");
+		}
+		tempConnectors.remove(con);
+	
+		SecureRandom sr = new SecureRandom();
+		String pw = String.valueOf(sr.nextLong());
+
+		int conId = Inserts.connector(con.getName(), pw);
+		SocketHandler.getInstance().setConnectorId(tempId, conId);
+
+		// Send ConfirmConnection
+		BoeseJson cc = new ConfirmConnection(pw, conId, 0, 0, 0, new Date().getTime());
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(cc, os);
+		SocketHandler.getInstance().sendToConnector(conId, os.toString());
+
+		// Send RequestAllDevices
+		BoeseJson rad = new RequestAllDevices(conId, 0, 0, 0, new Date().getTime());
+		os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(rad, os);
+		SocketHandler.getInstance().sendToConnector(conId, os.toString());
 	}
 	
 	public static void confirmDevice(){

@@ -31,8 +31,12 @@ public class SimulationTest {
 	@Test
 	public void simulation() throws Exception {
 
-		Simulation sim = new Simulation();
+		ConnectorSimulation sim = new ConnectorSimulation();
+		UserSimulation userSim = new UserSimulation();
 		sim.start();
+		Thread.sleep(2000);
+		
+		userSim.confirmConnectors();
 		
 		Thread.sleep(5000);
 		

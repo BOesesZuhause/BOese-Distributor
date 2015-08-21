@@ -30,7 +30,7 @@ import de.bo.aid.boese.simulation.SocketClientStandalone.MessageHandler;
  * @author Sebastian
  *
  */
-public class Simulation implements MessageHandler {
+public class ConnectorSimulation implements MessageHandler {
 	
 	SocketClientStandalone client;
 	boolean connectionClosed = false;
