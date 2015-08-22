@@ -2,7 +2,6 @@ package de.bo.aid.boese.db;
 
 import org.hibernate.Session;
 
-import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceComponent;
 
 public class Checks {

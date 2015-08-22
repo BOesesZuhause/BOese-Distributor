@@ -184,7 +184,7 @@ public class ConnectorSimulation implements MessageHandler {
 	private void handleConfirmconnection(ConfirmConnection bjMessage) {
 		this.password = bjMessage.getPassword();
 		this.conId = bjMessage.getConnectorId();
-		System.out.println("Client swas confirmed by Server Duration:" + (new Date().getTime() - sendTime) + "ms\n");
+		System.out.println("Client was confirmed by Server Duration:" + (new Date().getTime() - sendTime) + "ms\n");
 	}
 	
 	private void initializeData(){

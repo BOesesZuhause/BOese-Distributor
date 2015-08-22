@@ -8,8 +8,6 @@ import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
 import org.eclipse.jetty.util.component.LifeCycle;
-
-import de.bo.aid.boese.socket.BoeseSocket;
 @ClientEndpoint
 public class SocketClient
 {

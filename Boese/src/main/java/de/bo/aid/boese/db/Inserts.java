@@ -164,7 +164,7 @@ public class Inserts {
 		}
 		catch (ObjectNotFoundException onfe){
 			session.evict(deco);
-			session.evict(timestamp);
+			//session.evict(timestamp);
 			session.getTransaction().rollback();
 			return Errors.OBJECT_NOT_FOUND;
 		}

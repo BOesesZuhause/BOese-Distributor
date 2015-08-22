@@ -1,15 +1,10 @@
 package de.bo.aid.boese.socket;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.json.JsonObject;
 import javax.websocket.Session;
-
-import javassist.bytecode.ByteArray;
 
 
 public class SocketHandler {

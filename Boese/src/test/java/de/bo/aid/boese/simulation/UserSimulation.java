@@ -1,6 +1,8 @@
 package de.bo.aid.boese.simulation;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import de.bo.aid.boese.main.MainClass;
 import de.bo.aid.boese.model.Connector;
@@ -10,11 +12,11 @@ public class UserSimulation {
 	
 
 	public void confirmConnectors(){
-		List<Connector> connectors = MainClass.getTempConnectors();
-		for(Connector c : connectors){
+		HashMap<Integer, String> connectors = MainClass.getTempConnectors();
+		for(Integer key : connectors.keySet()){
 			try {
-				MainClass.confirmConnector(c.getCoId());
-				System.out.println("User confirmed Conector with name: " + c.getName() + "\n");
+				MainClass.confirmConnector(key);
+				//Hier ist der Connector schon entfernt (connectors zeigt auf die Map in der MainClass)
 			} catch (NotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

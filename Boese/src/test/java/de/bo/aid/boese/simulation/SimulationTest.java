@@ -1,12 +1,5 @@
 package de.bo.aid.boese.simulation;
 
-import static org.junit.Assert.*;
-
-import java.net.URI;
-import java.util.Date;
-
-import javax.websocket.Session;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
