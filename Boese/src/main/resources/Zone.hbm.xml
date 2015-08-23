@@ -6,7 +6,9 @@
     <class name="de.bo.aid.boese.model.Zone" table="zone" schema="public" optimistic-lock="version">
         <id name="zoId" type="int">
             <column name="ZoID" />
-            <generator class="assigned" />
+            <generator class="sequence">
+                <param name="sequence">zone_id_generator</param>
+        	</generator>
         </id>
         <many-to-one name="zone" class="de.bo.aid.boese.model.Zone" fetch="select">
             <column name="SuZoID" not-null="true" />

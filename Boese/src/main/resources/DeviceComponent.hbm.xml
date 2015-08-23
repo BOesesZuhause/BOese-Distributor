@@ -6,8 +6,8 @@
     <class name="de.bo.aid.boese.model.DeviceComponent" table="device_component" schema="public" optimistic-lock="version">
         <id name="deCoId" type="int">
             <column name="DeCoID" />
-           	        <generator class="sequence">
-                <param name="sequence">person_id_sequence</param>
+			<generator class="sequence">
+                <param name="sequence">deviceComponent_id_generator</param>
         	</generator>
         </id>
         <many-to-one name="component" class="de.bo.aid.boese.model.Component" fetch="select">
@@ -34,11 +34,11 @@
             </key>
             <one-to-many class="de.bo.aid.boese.model.DeviceComponenteReplace" />
         </set>
-        <set name="historyLogComponents" table="history_log_component" inverse="true" lazy="true" fetch="select">
+        <set name="historyLogDeviceComponents" table="history_log_devicecomponent" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="DeCoID" not-null="true" />
             </key>
-            <one-to-many class="de.bo.aid.boese.model.HistoryLogComponent" />
+            <one-to-many class="de.bo.aid.boese.model.HistoryLogDeviceComponent" />
         </set>
         <set name="deviceComponenteReplacesForDeCoIdreplaced" table="device_componente_replace" inverse="true" lazy="true" fetch="select">
             <key>
@@ -46,11 +46,11 @@
             </key>
             <one-to-many class="de.bo.aid.boese.model.DeviceComponenteReplace" />
         </set>
-        <set name="logComponents" table="log_component" inverse="true" lazy="true" fetch="select">
+        <set name="logDeviceComponents" table="log_devicecomponent" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="DeCoID" not-null="true" />
             </key>
-            <one-to-many class="de.bo.aid.boese.model.LogComponent" />
+            <one-to-many class="de.bo.aid.boese.model.LogDeviceComponent" />
         </set>
     </class>
 </hibernate-mapping>

@@ -3,10 +3,12 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 30.07.2015 11:14:41 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="de.bo.aid.boese.model.LogComponent" table="log_component" schema="public">
-        <id name="loCoId" type="int">
-            <column name="LoCoID" />
-            <generator class="assigned" />
+    <class name="de.bo.aid.boese.model.HistoryLogDeviceComponent" table="history_log_devicecomponent" schema="public">
+        <id name="hiLoCoId" type="int">
+            <column name="HiLoCoID" />
+            <generator class="sequence">
+                <param name="sequence">historyLogDeviceComponent_id_generator</param>
+        	</generator>
         </id>
         <timestamp name="timestamp" column="Timestamp" />
         <many-to-one name="deviceComponent" class="de.bo.aid.boese.model.DeviceComponent" fetch="select">

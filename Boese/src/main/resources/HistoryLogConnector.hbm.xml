@@ -6,7 +6,9 @@
     <class name="de.bo.aid.boese.model.HistoryLogConnector" table="history_log_connector" schema="public" optimistic-lock="version">
         <id name="hiLoCoId" type="int">
             <column name="HiLoCoID" />
-            <generator class="assigned" />
+            <generator class="sequence">
+                <param name="sequence">historyLogConnector_id_generator</param>
+        	</generator>
         </id>
         <many-to-one name="connector" class="de.bo.aid.boese.model.Connector" fetch="select">
             <column name="CoID" not-null="true" />

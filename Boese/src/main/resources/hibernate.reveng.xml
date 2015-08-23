@@ -13,14 +13,14 @@
 	<table-filter match-name="Group" match-schema="public"></table-filter>
 	<table-filter match-name="GroupUser" match-schema="public"></table-filter>
 	<table-filter match-name="GroupZone" match-schema="public"></table-filter>
-	<table-filter match-name="HistoryLogComponente"
+	<table-filter match-name="HistoryLogDeviceComponente"
 		match-schema="public">
 	</table-filter>
 	<table-filter match-name="HistoryLogConnector"
 		match-schema="public">
 	</table-filter>
 	<table-filter match-name="HistoryLogRule" match-schema="public"></table-filter>
-	<table-filter match-name="LogComponent" match-schema="public"></table-filter>
+	<table-filter match-name="LogDeviceComponent" match-schema="public"></table-filter>
 	<table-filter match-name="LogConnector" match-schema="public"></table-filter>
 	<table-filter match-name="LogRule" match-schema="public"></table-filter>
 	<table-filter match-name="Rule" match-schema="public"></table-filter>

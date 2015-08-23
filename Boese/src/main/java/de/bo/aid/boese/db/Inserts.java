@@ -178,7 +178,7 @@ public class Inserts {
 			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
-		LogComponent logcomp = new LogComponent();
+		LogDeviceComponent logcomp = new LogDeviceComponent();
 		logcomp.setDeviceComponent(deco);
 		logcomp.setTimestamp(timestamp);
 		logcomp.setValue(new BigDecimal(value));
