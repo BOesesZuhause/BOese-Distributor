@@ -23,11 +23,11 @@ public class DeviceComponentRule {
 		this.id = id;
 	}
 
-	public DeviceComponent getDeviceComponent() {
+	public DeviceComponent getDevicecomponent() {
 		return this.devicecomponent;
 	}
 
-	public void setDeviceComponent(DeviceComponent device) {
+	public void setDevicecomponent(DeviceComponent device) {
 		this.devicecomponent = device;
 	}
 
