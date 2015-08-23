@@ -41,5 +41,6 @@
         <mapping resource="Connector.hbm.xml" />
         <mapping resource="GroupUser.hbm.xml" />
         <mapping resource="Zone.hbm.xml" />
+        <mapping resource="DeviceComponentRule.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

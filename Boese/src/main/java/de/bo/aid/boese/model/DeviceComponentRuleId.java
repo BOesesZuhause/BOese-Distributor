@@ -1,6 +1,6 @@
 package de.bo.aid.boese.model;
 
-public class DeviceComponentRuleId {
+public class DeviceComponentRuleId implements java.io.Serializable {
 
 	private int deCoId;
 	private int ruId;
