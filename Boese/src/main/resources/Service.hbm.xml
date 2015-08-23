@@ -6,7 +6,9 @@
     <class name="de.bo.aid.boese.model.Service" table="service" schema="public" optimistic-lock="version">
         <id name="seId" type="int">
             <column name="SeID" />
-            <generator class="assigned" />
+            <generator class="sequence">
+                <param name="sequence">service_id_generator</param>
+        	</generator>
         </id>
         <property name="description" type="string">
             <column name="Description" length="125" not-null="true" />

@@ -6,7 +6,9 @@
     <class name="de.bo.aid.boese.model.Unit" table="unit" schema="public" optimistic-lock="version">
         <id name="unId" type="int">
             <column name="UnID" />
-            <generator class="assigned" />
+            <generator class="sequence">
+                <param name="sequence">unit_id_generator</param>
+        	</generator>
         </id>
         <property name="name" type="string">
             <column name="Name" length="25" />

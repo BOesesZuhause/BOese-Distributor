@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 30.07.2015 11:14:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="de.bo.aid.boese.model.DeviceComponentRule" table="device_component_rule" schema="public" optimistic-lock="version">
+        <composite-id name="id" class="de.bo.aid.boese.model.DeviceComponentRuleId">
+            <key-property name="deCoId" type="int">
+                <column name="DeCoID" />
+            </key-property>
+            <key-property name="ruId" type="int">
+                <column name="RuID" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="devicecomponent" class="de.bo.aid.boese.model.DeviceComponent" update="false" insert="false" fetch="select">
+            <column name="DeCoID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="rule" class="de.bo.aid.boese.model.Rule" update="false" insert="false" fetch="select">
+            <column name="RuID" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

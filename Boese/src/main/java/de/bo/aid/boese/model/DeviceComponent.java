@@ -18,9 +18,9 @@ public class DeviceComponent implements java.io.Serializable {
 	private BigDecimal logRule;
 	private BigDecimal currentValue;
 	private Set deviceComponenteReplacesForDeCoId = new HashSet(0);
-	private Set historyLogComponents = new HashSet(0);
+	private Set historyLogDeviceComponents = new HashSet(0);
 	private Set deviceComponenteReplacesForDeCoIdreplaced = new HashSet(0);
-	private Set logComponents = new HashSet(0);
+	private Set logDeviceComponents = new HashSet(0);
 
 	public DeviceComponent() {
 	}
@@ -33,7 +33,7 @@ public class DeviceComponent implements java.io.Serializable {
 
 	public DeviceComponent(int deCoId, Component component, Device device, Short status, String description,
 			BigDecimal logRule, BigDecimal currentValue, Set deviceComponenteReplacesForDeCoId,
-			Set historyLogComponents, Set deviceComponenteReplacesForDeCoIdreplaced, Set logComponents) {
+			Set historyLogDeviceComponents, Set deviceComponenteReplacesForDeCoIdreplaced, Set logDeviceComponents) {
 		this.deCoId = deCoId;
 		this.component = component;
 		this.device = device;
@@ -42,9 +42,9 @@ public class DeviceComponent implements java.io.Serializable {
 		this.logRule = logRule;
 		this.currentValue = currentValue;
 		this.deviceComponenteReplacesForDeCoId = deviceComponenteReplacesForDeCoId;
-		this.historyLogComponents = historyLogComponents;
+		this.historyLogDeviceComponents = historyLogDeviceComponents;
 		this.deviceComponenteReplacesForDeCoIdreplaced = deviceComponenteReplacesForDeCoIdreplaced;
-		this.logComponents = logComponents;
+		this.logDeviceComponents = logDeviceComponents;
 	}
 
 	public int getDeCoId() {
@@ -111,12 +111,12 @@ public class DeviceComponent implements java.io.Serializable {
 		this.deviceComponenteReplacesForDeCoId = deviceComponenteReplacesForDeCoId;
 	}
 
-	public Set getHistoryLogComponents() {
-		return this.historyLogComponents;
+	public Set getHistoryLogDeviceComponents() {
+		return this.historyLogDeviceComponents;
 	}
 
-	public void setHistoryLogComponents(Set historyLogComponents) {
-		this.historyLogComponents = historyLogComponents;
+	public void setHistoryLogDeviceComponents(Set historyLogDeviceComponents) {
+		this.historyLogDeviceComponents = historyLogDeviceComponents;
 	}
 
 	public Set getDeviceComponenteReplacesForDeCoIdreplaced() {
@@ -127,12 +127,12 @@ public class DeviceComponent implements java.io.Serializable {
 		this.deviceComponenteReplacesForDeCoIdreplaced = deviceComponenteReplacesForDeCoIdreplaced;
 	}
 
-	public Set getLogComponents() {
-		return this.logComponents;
+	public Set getLogDeviceComponents() {
+		return this.logDeviceComponents;
 	}
 
-	public void setLogComponents(Set logComponents) {
-		this.logComponents = logComponents;
+	public void setLogDeviceComponents(Set logDeviceComponents) {
+		this.logDeviceComponents = logDeviceComponents;
 	}
 
 }

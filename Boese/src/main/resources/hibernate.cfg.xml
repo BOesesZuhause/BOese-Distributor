@@ -30,13 +30,13 @@
         <mapping resource="Rule.hbm.xml" />
         <mapping resource="LogRule.hbm.xml" />
         <mapping resource="DeviceComponenteReplace.hbm.xml" />
-        <mapping resource="LogComponent.hbm.xml" />
+        <mapping resource="LogDeviceComponent.hbm.xml" />
         <mapping resource="Device.hbm.xml" />
         <mapping resource="Unit.hbm.xml" />
         <mapping resource="GroupZone.hbm.xml" />
         <mapping resource="Component.hbm.xml" />
         <mapping resource="User.hbm.xml" />
-        <mapping resource="HistoryLogComponent.hbm.xml" />
+        <mapping resource="HistoryLogDeviceComponent.hbm.xml" />
         <mapping resource="LogConnector.hbm.xml" />
         <mapping resource="Connector.hbm.xml" />
         <mapping resource="GroupUser.hbm.xml" />

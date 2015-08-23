@@ -6,7 +6,7 @@
     <class name="de.bo.aid.boese.model.Device" table="device" schema="public" optimistic-lock="version">        
         <id name="DeId" type="int">
 	        <generator class="sequence">
-                <param name="sequence">person_id_sequence</param>
+                <param name="sequence">device_id_generator</param>
         	</generator>
 	    </id>
         <many-to-one name="connector" class="de.bo.aid.boese.model.Connector" fetch="select">
