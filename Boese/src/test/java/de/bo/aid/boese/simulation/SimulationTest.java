@@ -27,10 +27,12 @@ public class SimulationTest {
 		ConnectorSimulation sim = new ConnectorSimulation();
 		UserSimulation userSim = new UserSimulation();
 		sim.start();
-		Thread.sleep(2000);
-		
+		Thread.sleep(2000);		
 		userSim.confirmConnectors();
-		
+		Thread.sleep(2000);
+		userSim.confirmDevices();
+		Thread.sleep(2000);
+		userSim.confirmDeviceComponents();
 		Thread.sleep(5000);
 		
 		sim.sendValue(99.8);

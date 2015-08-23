@@ -26,6 +26,8 @@ import de.bo.aid.boese.json.RequestDeviceComponents;
 import de.bo.aid.boese.json.SendDeviceComponents;
 import de.bo.aid.boese.json.SendDevices;
 import de.bo.aid.boese.json.SendValue;
+import de.bo.aid.boese.main.model.TempComponent;
+import de.bo.aid.boese.main.model.TempDevice;
 import de.bo.aid.boese.model.Connector;
 import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceComponent;
@@ -38,11 +40,12 @@ public class MainClass {
 	
 	//hashmaps for unconfirmed Objects with a temporary Id as key
 	private static HashMap<Integer, String> tempConnectors = new HashMap<Integer, String>();
-	private static HashMap<Integer, String> tempDevices = new HashMap<Integer, String>();
-	private static HashMap<Integer, String> tempDeviceComponents = new HashMap<Integer, String>();
+	private static HashMap<Integer, TempDevice> tempDevices = new HashMap<Integer, TempDevice>();
+	private static HashMap<Integer, TempComponent> tempDeviceComponents = new HashMap<Integer, TempComponent>();
 	
 	//tempIds for unconfirmed Objects
-	static int tempIdDevice = 1;
+	static int tempDeviceId = 1;
+	static int tempCompId = 1;
 	int tempIdDeviceComponents = 1;
 	
 	private static void handleRequestConnections(RequestConnection rc, int tempId) {
@@ -85,16 +88,16 @@ public class MainClass {
 		
 		
 		for (String deviceName : devices.keySet()) {
-			//TODO find zone ID (is set by user)
-			int zoneId = 0;
-			//Device is inserted by user
 			if (devices.get(deviceName) == -1) { // device not in db
-				//TODO save ConnectorId with tempDevice
-				tempDevices.put(tempIdDevice++, deviceName);
+				
+				TempDevice temp = new TempDevice();
+				temp.setName(deviceName);
+				temp.setConnectorID(connectorId);
+				tempDevices.put(tempDeviceId++, temp);
 				
 				
 				
-			} else {
+			} else { //device already in db
 				//TODO check if device is correct in db !!!erledigt!!!
 				//TODO müssen bekannte Devices bestätigt werden?
 			}
@@ -113,7 +116,7 @@ public class MainClass {
 		}
 		int deviceId = sdc.getDeviceId();
 		
-		HashSet<DeviceComponents> components = sdc.getComponents(); //TODO tempComponents
+		HashSet<DeviceComponents> components = sdc.getComponents(); 
 		
 		
 		
@@ -121,12 +124,13 @@ public class MainClass {
 		for (DeviceComponents component : components) {
 			if (component.getDeviceComponentId() == -1) { // Component has no DeCoId
 				
+				TempComponent temp = new TempComponent();
+				temp.setConnectorId(connectorId);
+				temp.setDeviceId(deviceId);
+				temp.setName(component.getComponentName());
+				tempDeviceComponents.put(tempCompId++, temp);
 				
-				// TODO User muss componentID zuweisen
-				int componentId = Inserts.component(component.getComponentName(), 0, true); // TODO!!!!
-				int deCoId = Inserts.deviceComponent(deviceId, componentId, component.getComponentName());
-				confirmComponents.put(component.getComponentName(), deCoId);
-				//Inserts.value(deCoId, new Date(component.getTimestamp()), component.getValue()); //TODO
+				
 
 			
 			} else { // Component has DeCoId
@@ -216,8 +220,7 @@ public class MainClass {
 		if(name == null){
 			throw new NotFoundException("Connector with tempId " + tempId + " not Found");
 		}
-		System.out.println("User confirmed Connector with name: " + name + "\n");
-		tempConnectors.remove(tempId);
+
 	
 		SecureRandom sr = new SecureRandom();
 		String pw = String.valueOf(sr.nextLong());
@@ -236,32 +239,84 @@ public class MainClass {
 		os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(rad, os);
 		SocketHandler.getInstance().sendToConnector(conId, os.toString());
+		
+		System.out.println("User confirmed Connector with name: " + name + "\n");
+		tempConnectors.remove(tempId);
 	}
 	
-	public static void confirmDevice(int tempId){
-		//TODO complete
-		//TODO get ConnectorId
-		HashMap<String, Integer> devices;
-//		devices.put(deviceName, Inserts.device(connectorId, zoneId, deviceName, "serial"));
-//		
-//		//send Confirm Devices
-//				BoeseJson cd = new ConfirmDevices(devices, connectorId, seqNr+1, seqNr, 0, new Date().getTime());
-//				OutputStream os = new ByteArrayOutputStream();
-//				BoeseJson.parseMessage(cd, os);
-//				SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
-//				
-//				
-//				//Send Request Device Components		
-//				for (Integer deviceId : devices.values()){
-//					BoeseJson rdc = new RequestDeviceComponents(deviceId, connectorId, seqNr+1, seqNr, 0, new Date().getTime());
-//					os = new ByteArrayOutputStream();
-//					BoeseJson.parseMessage(rdc, os);
-//					SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
-//				}
+	public static void confirmDevice(int tempId, int zoneId, String name) throws NotFoundException{
+
+		TempDevice temp = tempDevices.get(tempId);
+		
+		if(temp == null){
+			throw new NotFoundException("Device with tempId " + tempId + " not found");
+		}
+		if(name == null){
+			name = temp.getName();
+		}
+		
+		int connectorId = temp.getConnectorID();
+		
+		
+		HashMap<String, Integer> devices = new HashMap<String, Integer>();
+		devices.put(name, Inserts.device(connectorId, zoneId, name, "serial"));
+		
+		//send Confirm Devices
+				BoeseJson cd = new ConfirmDevices(devices, connectorId, 0, 0, 0, new Date().getTime());
+				OutputStream os = new ByteArrayOutputStream();
+				BoeseJson.parseMessage(cd, os);
+				SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+				
+				
+				//Send Request Device Components		
+				for (Integer deviceId : devices.values()){
+					BoeseJson rdc = new RequestDeviceComponents(deviceId, connectorId, 0, 0, 0, new Date().getTime());
+					os = new ByteArrayOutputStream();
+					BoeseJson.parseMessage(rdc, os);
+					SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+				}
+				
+				System.out.println("User confirmed Device with name: " + name + "\n");	
+				tempDevices.remove(temp);
 	}
 	
-	public static void confirmDeviceComponent(){
-		//TODO complete
+	
+	
+	public static HashMap<Integer, TempDevice> getTempDevices() {
+		return tempDevices;
+	}
+
+	public static void confirmDeviceComponent(int tempId, int unitId, String name) throws NotFoundException{
+		TempComponent temp = tempDeviceComponents.get(tempId);
+		if(temp == null){
+			throw new NotFoundException("Component with tempId " + tempId + " not found");
+		}
+		if (name == null){
+			name = temp.getName();
+		}
+		int deviceId = temp.getDeviceId();
+		int connectorId = temp.getConnectorId();
+		
+
+		
+		int componentId = Inserts.component(name, unitId, true); 
+		int deCoId = Inserts.deviceComponent(deviceId, componentId);
+		HashMap<String, Integer> confirmComponents = new HashMap<String, Integer>();
+		confirmComponents.put(name, deCoId);
+		//Inserts.value(deCoId, new Date(component.getTimestamp()), component.getValue()); //TODO
+		
+		//Send ConfirmDeviceComponents
+		BoeseJson cdc = new ConfirmDeviceComponents(deviceId, confirmComponents, connectorId, 0, 0, 0, new Date().getTime());
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(cdc, os);
+		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+		
+		System.out.println("User confirmed Component with name: " + name + " and Device with id: " + deviceId + "\n");	
+		tempDevices.remove(temp);
+	}
+	
+	public static HashMap<Integer, TempComponent> getTempComponents(){
+		return tempDeviceComponents;
 	}
 
 

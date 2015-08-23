@@ -6,32 +6,24 @@ import org.hibernate.SessionFactory;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 
 public class Connection {
+	
+	private static Connection instance = new Connection();
 
-	private static Connection instance;
+	//SessionFactory is Expensive and Threadsafe
+	private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
 	
-	private SessionFactory sessionFactory;
-	private Session session;
-	
-	private Connection(){
-		this.sessionFactory = HibernateUtil.getSessionFactory();
-		this.session = sessionFactory.openSession();
-	}
-	
-	public static Connection getConnection (){
-		if(instance == null){
-			instance = new Connection();
-		}
+	public static Connection getConnection(){
 		return instance;
 	}
 	
+	//Session is not Threadsafe (One Session per Transaction)
 	public Session getSession(){
-		return session;
+		return sessionFactory.openSession();
 	}
 	
 	public void close(){
 		sessionFactory = null;
-		session = null;
-		instance = null;
 	}
 	
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import de.bo.aid.boese.main.MainClass;
+import de.bo.aid.boese.main.model.TempComponent;
+import de.bo.aid.boese.main.model.TempDevice;
 import de.bo.aid.boese.model.Connector;
 import javassist.NotFoundException;
 
@@ -25,11 +27,28 @@ public class UserSimulation {
 	}
 	
 	public void confirmDevices(){
+		HashMap<Integer, TempDevice> devices = MainClass.getTempDevices();
+		for(Integer key : devices.keySet()){
+			try {
+				MainClass.confirmDevice(key, 0, null);
+				} catch (NotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 	}
 	
 	public void confirmDeviceComponents(){
-		
+		HashMap<Integer, TempComponent> devices = MainClass.getTempComponents();
+		for(Integer key : devices.keySet()){
+			try {
+				MainClass.confirmDeviceComponent(key, 0, null);
+				} catch (NotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

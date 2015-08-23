@@ -86,7 +86,7 @@ public class Inserts {
 		return comp.getCoId();	
 	}
 	
-	public static int deviceComponent(int deid, int coid, String name){
+	public static int deviceComponent(int deid, int coid){
 		Session session = connection.getSession();
 		session.beginTransaction();
  
