@@ -2,6 +2,7 @@ package de.bo.aid.boese.db;
 
 import org.hibernate.Session;
 
+import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceComponent;
 
 public class Checks {
@@ -17,10 +18,12 @@ public class Checks {
 			session.load(devcomp, new Integer(decoid));
 			session.getTransaction().commit();
 			session.evict(devcomp);
+			session.close();
 			return true;
 		}
 		catch(org.hibernate.ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
+			session.close();
 			return false;
 		}
 	}

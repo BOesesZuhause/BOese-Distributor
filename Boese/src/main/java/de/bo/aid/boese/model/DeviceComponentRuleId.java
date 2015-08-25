@@ -8,7 +8,7 @@ public class DeviceComponentRuleId implements java.io.Serializable {
 	public DeviceComponentRuleId() {
 	}
 
-	public DeviceComponentRuleId(int deCoId, short ruId) {
+	public DeviceComponentRuleId(int deCoId, int ruId) {
 		this.deCoId = deCoId;
 		this.ruId = ruId;
 	}
@@ -25,7 +25,7 @@ public class DeviceComponentRuleId implements java.io.Serializable {
 		return this.ruId;
 	}
 
-	public void setRuId(short ruId) {
+	public void setRuId(int ruId) {
 		this.ruId = ruId;
 	}
 

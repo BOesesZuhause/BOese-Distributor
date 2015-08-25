@@ -19,13 +19,13 @@
         <property name="modifyDate" type="date">
             <column name="ModifyDate" length="13" />
         </property>
-        <property name="permissions" type="serializable">
+        <property name="permissions" type="de.bo.aid.boese.hibernate.util.SQLXMLUserType">
             <column name="Permissions" />
         </property>
-        <property name="conditions" type="serializable">
+        <property name="conditions" type="de.bo.aid.boese.hibernate.util.SQLXMLUserType">
             <column name="Conditions" />
         </property>
-        <property name="actions" type="serializable">
+        <property name="actions" type="de.bo.aid.boese.hibernate.util.SQLXMLUserType">
             <column name="Actions" />
         </property>
         <set name="logRules" table="log_rule" inverse="true" lazy="true" fetch="select">

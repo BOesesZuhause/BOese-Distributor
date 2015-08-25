@@ -15,9 +15,9 @@ public class Rule implements java.io.Serializable {
 	private Boolean active;
 	private Date insertDate;
 	private Date modifyDate;
-	private Serializable permissions;
-	private Serializable conditions;
-	private Serializable actions;
+	private String permissions;
+	private String conditions;
+	private String actions;
 	private Set logRules = new HashSet(0);
 	private Set historyLogRules = new HashSet(0);
 
@@ -28,8 +28,8 @@ public class Rule implements java.io.Serializable {
 		this.ruId = ruId;
 	}
 
-	public Rule(int ruId, Boolean active, Date insertDate, Date modifyDate, Serializable permissions,
-			Serializable conditions, Serializable actions, Set logRules, Set historyLogRules) {
+	public Rule(int ruId, Boolean active, Date insertDate, Date modifyDate, String permissions,
+			String conditions, String actions, Set logRules, Set historyLogRules) {
 		this.ruId = ruId;
 		this.active = active;
 		this.insertDate = insertDate;
@@ -73,27 +73,27 @@ public class Rule implements java.io.Serializable {
 		this.modifyDate = modifyDate;
 	}
 
-	public Serializable getPermissions() {
+	public String getPermissions() {
 		return this.permissions;
 	}
 
-	public void setPermissions(Serializable permissions) {
+	public void setPermissions(String permissions) {
 		this.permissions = permissions;
 	}
 
-	public Serializable getConditions() {
+	public String getConditions() {
 		return this.conditions;
 	}
 
-	public void setConditions(Serializable conditions) {
+	public void setConditions(String conditions) {
 		this.conditions = conditions;
 	}
 
-	public Serializable getActions() {
+	public String getActions() {
 		return this.actions;
 	}
 
-	public void setActions(Serializable actions) {
+	public void setActions(String actions) {
 		this.actions = actions;
 	}
 

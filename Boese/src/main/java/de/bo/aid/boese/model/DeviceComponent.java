@@ -23,6 +23,11 @@ public class DeviceComponent implements java.io.Serializable {
 	private Set logDeviceComponents = new HashSet(0);
 
 	public DeviceComponent() {
+	
+	}
+	
+	public DeviceComponent(int deCoId){
+		this.deCoId = deCoId;
 	}
 
 	public DeviceComponent(int deCoId, Component component, Device device) {

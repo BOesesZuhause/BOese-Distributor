@@ -2,6 +2,7 @@ package de.bo.aid.boese.db;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.PropertyValueException;
@@ -32,6 +33,7 @@ public class Inserts {
 			session.evict(zone);
 			session.evict(device);
 			session.getTransaction().rollback();
+			session.close();
 			return Errors.OBJECT_NOT_FOUND;
 		}
 		
@@ -47,12 +49,14 @@ public class Inserts {
 			session.evict(zone);
 			session.evict(device);
 			session.getTransaction().rollback();
+			session.close();
 			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
 		session.evict(con);
 		session.evict(zone);
 		session.evict(device);
+		session.close();
 		
 		return device.getDeId();
 	}
@@ -62,7 +66,15 @@ public class Inserts {
 		session.beginTransaction();
 		
 		Unit unit = new Unit();
-		session.load(unit, new Integer(unitId));
+		try{
+			session.load(unit, new Integer(unitId));
+		}
+		catch (ObjectNotFoundException onfe){
+			session.evict(unit);
+			session.getTransaction().rollback();
+			session.close();
+			return Errors.OBJECT_NOT_FOUND;
+		}
 		
 		Component comp = new Component();
 		comp.setName(name);
@@ -77,11 +89,13 @@ public class Inserts {
 			session.evict(unit);
 			session.evict(comp);
 			session.getTransaction().rollback();
+			session.close();
 			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
 		session.evict(unit);
 		session.evict(comp);
+		session.close();
 		
 		return comp.getCoId();	
 	}
@@ -105,6 +119,7 @@ public class Inserts {
 			session.evict(device);
 			session.evict(comp);
 			session.getTransaction().rollback();
+			session.close();
 			return Errors.OBJECT_NOT_FOUND;
 		}
 		
@@ -119,12 +134,14 @@ public class Inserts {
 			session.evict(device);
 			session.evict(comp);
 			session.getTransaction().rollback();
+			session.close();
 			return Errors.NOT_NULL_VALUE_NULL;
 		}		
 		
 		session.evict(dc);
 		session.evict(device);
 		session.evict(comp);
+		session.close();
 		
 		
 		return dc.getDeCoId();
@@ -145,10 +162,12 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.evict(con);
 			session.getTransaction().rollback();
+			session.close();
 			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
 		session.evict(con);
+		session.close();
 		
 		return con.getCoId();
 	}
@@ -164,8 +183,8 @@ public class Inserts {
 		}
 		catch (ObjectNotFoundException onfe){
 			session.evict(deco);
-			//session.evict(timestamp);
 			session.getTransaction().rollback();
+			session.close();
 			return Errors.OBJECT_NOT_FOUND;
 		}
 		try{
@@ -175,6 +194,7 @@ public class Inserts {
 			session.evict(deco);
 			session.evict(timestamp);
 			session.getTransaction().rollback();
+			session.close();
 			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
@@ -190,16 +210,100 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.evict(deco);
 			session.evict(logcomp);
-			session.evict(timestamp);
 			session.getTransaction().rollback();
+			session.close();
 			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
 		session.evict(deco);
 		session.evict(logcomp);
-		//session.evict(timestamp);
+		session.close();
 		
-		//ToDo Fehlerbehandlung
 		return Errors.OK;
+	}
+	
+	public static int unit(String name, String symbol){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		Unit unit = new Unit();
+		unit.setName(name);
+		unit.setSymbol(symbol);
+		
+		try{
+			session.save(unit);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.evict(unit);
+			session.getTransaction().rollback();
+			session.close();
+			return Errors.NOT_NULL_VALUE_NULL;
+		}
+		
+		session.evict(unit);
+		session.close();
+		
+		return unit.getUnId();
+	}
+	
+	public static int rule(List<Integer> deCoID, String permissions, String conditions, String actions){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		Rule rule = new Rule();
+		rule.setActive(true);
+		rule.setInsertDate(new Date());
+		rule.setModifyDate(new Date());
+		rule.setPermissions(permissions);
+		rule.setConditions(conditions);
+		rule.setActions(actions);
+		
+		try{
+			session.save(rule);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.evict(rule);
+			session.getTransaction().rollback();
+			session.close();
+			return Errors.NOT_NULL_VALUE_NULL;
+		}
+		
+		session.evict(rule);
+		
+		int ruID = rule.getRuId();
+		
+		try{
+			for(int decoid : deCoID){
+				session.beginTransaction();
+				DeviceComponent deco = Selects.deviceComponent(decoid);
+				if (deco.getDeCoId() > -1){
+					DeviceComponentRule decorule = new DeviceComponentRule();
+					decorule.setDevicecomponent(deco);
+					decorule.setRule(rule);
+					session.save(decorule);
+					session.getTransaction().commit();
+					session.evict(rule);
+					session.evict(deco);
+					session.evict(decorule);
+				}
+				else{
+					session.evict(rule);
+					session.getTransaction().rollback();
+					session.close();
+					return deco.getDeCoId();
+				}
+			}
+		}
+		catch(PropertyValueException pve){
+			session.evict(rule);
+			session.getTransaction().rollback();
+			session.close();
+			return Errors.NOT_NULL_VALUE_NULL;
+		}
+
+		session.close();
+		return ruID;
 	}
 }

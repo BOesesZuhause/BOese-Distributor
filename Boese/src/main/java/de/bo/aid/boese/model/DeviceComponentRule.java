@@ -27,8 +27,8 @@ public class DeviceComponentRule {
 		return this.devicecomponent;
 	}
 
-	public void setDevicecomponent(DeviceComponent device) {
-		this.devicecomponent = device;
+	public void setDevicecomponent(DeviceComponent devicecomponent) {
+		this.devicecomponent = devicecomponent;
 	}
 
 	public Rule getRule() {
