@@ -29,9 +29,6 @@ public class Inserts {
 			device.setZone(zone);
 		}
 		catch (ObjectNotFoundException onfe){
-			session.evict(con);
-			session.evict(zone);
-			session.evict(device);
 			session.getTransaction().rollback();
 			session.close();
 			return Errors.OBJECT_NOT_FOUND;
@@ -45,17 +42,11 @@ public class Inserts {
 			session.getTransaction().commit();
 		}
 		catch(PropertyValueException pve){
-			session.evict(con);
-			session.evict(zone);
-			session.evict(device);
 			session.getTransaction().rollback();
 			session.close();
 			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
-		session.evict(con);
-		session.evict(zone);
-		session.evict(device);
 		session.close();
 		
 		return device.getDeId();
@@ -70,7 +61,6 @@ public class Inserts {
 			session.load(unit, new Integer(unitId));
 		}
 		catch (ObjectNotFoundException onfe){
-			session.evict(unit);
 			session.getTransaction().rollback();
 			session.close();
 			return Errors.OBJECT_NOT_FOUND;
@@ -86,15 +76,12 @@ public class Inserts {
 			session.getTransaction().commit();
 		}
 		catch(PropertyValueException pve){
-			session.evict(unit);
-			session.evict(comp);
 			session.getTransaction().rollback();
 			session.close();
 			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
-		session.evict(unit);
-		session.evict(comp);
+
 		session.close();
 		
 		return comp.getCoId();	
@@ -115,9 +102,6 @@ public class Inserts {
 			dc.setComponent(comp);
 		}
 		catch (ObjectNotFoundException onfe){
-			session.evict(dc);
-			session.evict(device);
-			session.evict(comp);
 			session.getTransaction().rollback();
 			session.close();
 			return Errors.OBJECT_NOT_FOUND;
@@ -130,19 +114,12 @@ public class Inserts {
 			session.getTransaction().commit();
 		}
 		catch(PropertyValueException pve){
-			session.evict(dc);
-			session.evict(device);
-			session.evict(comp);
 			session.getTransaction().rollback();
 			session.close();
 			return Errors.NOT_NULL_VALUE_NULL;
 		}		
 		
-		session.evict(dc);
-		session.evict(device);
-		session.evict(comp);
 		session.close();
-		
 		
 		return dc.getDeCoId();
 	}
@@ -160,13 +137,11 @@ public class Inserts {
 			session.getTransaction().commit();
 		}
 		catch(PropertyValueException pve){
-			session.evict(con);
 			session.getTransaction().rollback();
 			session.close();
 			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
-		session.evict(con);
 		session.close();
 		
 		return con.getCoId();
@@ -182,7 +157,6 @@ public class Inserts {
 			deco.setCurrentValue(new BigDecimal(value));
 		}
 		catch (ObjectNotFoundException onfe){
-			session.evict(deco);
 			session.getTransaction().rollback();
 			session.close();
 			return Errors.OBJECT_NOT_FOUND;
@@ -191,8 +165,6 @@ public class Inserts {
 			session.save(deco);
 		}
 		catch(PropertyValueException pve){
-			session.evict(deco);
-			session.evict(timestamp);
 			session.getTransaction().rollback();
 			session.close();
 			return Errors.NOT_NULL_VALUE_NULL;
@@ -208,15 +180,11 @@ public class Inserts {
 			session.getTransaction().commit();
 		}
 		catch(PropertyValueException pve){
-			session.evict(deco);
-			session.evict(logcomp);
 			session.getTransaction().rollback();
 			session.close();
 			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
-		session.evict(deco);
-		session.evict(logcomp);
 		session.close();
 		
 		return Errors.OK;
@@ -235,13 +203,11 @@ public class Inserts {
 			session.getTransaction().commit();
 		}
 		catch(PropertyValueException pve){
-			session.evict(unit);
 			session.getTransaction().rollback();
 			session.close();
 			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
-		session.evict(unit);
 		session.close();
 		
 		return unit.getUnId();
@@ -264,13 +230,11 @@ public class Inserts {
 			session.getTransaction().commit();
 		}
 		catch(PropertyValueException pve){
-			session.evict(rule);
 			session.getTransaction().rollback();
 			session.close();
 			return Errors.NOT_NULL_VALUE_NULL;
 		}
 		
-		session.evict(rule);
 		
 		int ruID = rule.getRuId();
 		
@@ -284,12 +248,8 @@ public class Inserts {
 					decorule.setRule(rule);
 					session.save(decorule);
 					session.getTransaction().commit();
-					session.evict(rule);
-					session.evict(deco);
-					session.evict(decorule);
 				}
 				else{
-					session.evict(rule);
 					session.getTransaction().rollback();
 					session.close();
 					return deco.getDeCoId();
@@ -297,7 +257,6 @@ public class Inserts {
 			}
 		}
 		catch(PropertyValueException pve){
-			session.evict(rule);
 			session.getTransaction().rollback();
 			session.close();
 			return Errors.NOT_NULL_VALUE_NULL;
@@ -306,4 +265,101 @@ public class Inserts {
 		session.close();
 		return ruID;
 	}
+	
+	public static int service(String description){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		Service service = new Service();
+		service.setDescription(description);
+		
+		try{
+			session.save(service);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.getTransaction().rollback();
+			session.close();
+			return Errors.NOT_NULL_VALUE_NULL;
+		}
+		
+		session.close();
+		
+		return service.getSeId();
+	}
+	
+	public static int group(String name){
+		Session session = connection.getSession();
+		session.beginTransaction();
+
+		Group grp = new Group();
+		grp.setName(name);
+		
+		try{
+			session.save(grp);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.getTransaction().rollback();
+			session.close();
+			return Errors.NOT_NULL_VALUE_NULL;
+		}
+		
+		session.close();
+		
+		return grp.getGrId();
+	}
+	
+	public static int User(String surname, String firstname, String password, boolean gender, Date birth, String username, String mail){
+		Session session = connection.getSession();
+		session.beginTransaction();
+
+		User user = new User();
+		user.setSurname(surname);
+		user.setFirstName(firstname);
+		user.setPassword(password);
+		user.setGender(gender);
+		user.setBirthdate(birth);
+		user.setUserName(username);
+		user.setEmail(mail);
+		
+		try{
+			session.save(user);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.getTransaction().rollback();
+			session.close();
+			return Errors.NOT_NULL_VALUE_NULL;
+		}
+		
+		session.close();
+		
+		return user.getUsId();
+	}
+	
+	public static int zone(String name, Zone suzone){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		Zone zone = new Zone();
+		zone.setName(name);
+		zone.setZone(suzone);
+		
+		try{
+			session.save(zone);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.getTransaction().rollback();
+			session.close();
+			return Errors.NOT_NULL_VALUE_NULL;
+		}
+		
+		session.close();
+		
+		return zone.getZoId();
+	}
+	
+	
 }

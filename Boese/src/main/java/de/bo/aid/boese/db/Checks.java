@@ -17,7 +17,6 @@ public class Checks {
 			DeviceComponent devcomp = new DeviceComponent();
 			session.load(devcomp, new Integer(decoid));
 			session.getTransaction().commit();
-			session.evict(devcomp);
 			session.close();
 			return true;
 		}
@@ -27,5 +26,4 @@ public class Checks {
 			return false;
 		}
 	}
-
 }

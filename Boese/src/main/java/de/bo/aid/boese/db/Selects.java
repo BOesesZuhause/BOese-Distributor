@@ -23,13 +23,11 @@ public class Selects {
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
-			session.evict(con);
 			session.getTransaction().rollback();
 			session.close();
 			return new Connector(Errors.OBJECT_NOT_FOUND);
 		}
 		
-		session.evict(con);
 		session.close();
 		
 		return con;
@@ -63,13 +61,11 @@ public class Selects {
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
-			session.evict(deco);
 			session.getTransaction().rollback();
 			session.close();
 			return Errors.OBJECT_NOT_FOUND;
 		}
 		
-		session.evict(deco);
 		session.close();
 		
 		return d;
@@ -85,13 +81,11 @@ public class Selects {
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
-			session.evict(dev);
 			session.getTransaction().rollback();
 			session.close();
 			return new Device(Errors.OBJECT_NOT_FOUND);
 		}
 		
-		session.evict(dev);
 		session.close();
 		
 		return dev;
@@ -123,13 +117,11 @@ public class Selects {
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
-			session.evict(deco);
 			session.getTransaction().rollback();
 			session.close();
 			return new DeviceComponent(Errors.OBJECT_NOT_FOUND);
 		}
 		
-		session.evict(deco);
 		session.close();
 		
 		return deco;
@@ -168,16 +160,128 @@ public class Selects {
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
-			session.evict(rule);
 			session.getTransaction().rollback();
 			session.close();
 			return new Rule(Errors.OBJECT_NOT_FOUND);
 		}
 		
-		session.evict(rule);
 		session.close();		
 		
 		return rule;
+	}
+	
+	public static Unit unit(int uid){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		Unit unit = new Unit();
+		try{
+			session.load(unit, new Integer(uid));
+			session.getTransaction().commit();
+		}
+		catch (ObjectNotFoundException onfe){
+			session.getTransaction().rollback();
+			session.close();
+			return new Unit(Errors.OBJECT_NOT_FOUND);
+		}
+		
+		session.close();
+		return unit;
+	}
+
+	public static Component component(int coid) {
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		Component comp = new Component();
+		try{
+			session.load(comp, new Integer(coid));
+			session.getTransaction().commit();
+		}
+		catch (ObjectNotFoundException onfe){
+			session.getTransaction().rollback();
+			session.close();
+			return new Component();
+		}
+		
+		session.close();
+		return comp;
+	}
+
+	public static Service service (int seid) {
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		Service service = new Service();
+		try{
+			session.load(service, new Integer(seid));
+			session.getTransaction().commit();
+		}
+		catch (ObjectNotFoundException onfe){
+			session.getTransaction().rollback();
+			session.close();
+			return new Service();
+		}
+		
+		session.close();
+		return service;
+	}
+
+	public static Group group(int grid) {
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		Group grp = new Group();
+		try{
+			session.load(grp, new Integer(grid));
+			session.getTransaction().commit();
+		}
+		catch (ObjectNotFoundException onfe){
+			session.getTransaction().rollback();
+			session.close();
+			return new Group();
+		}
+		
+		session.close();
+		return grp;
+	}
+
+	public static User user(int uid) {
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		User user = new User();
+		try{
+			session.load(user, new Integer(uid));
+			session.getTransaction().commit();
+		}
+		catch (ObjectNotFoundException onfe){
+			session.getTransaction().rollback();
+			session.close();
+			return new User();
+		}
+		
+		session.close();
+		return user;
+	}
+
+	public static Zone zone(int zoid) {
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		Zone zone = new Zone();
+		try{
+			session.load(zone, new Integer(zoid));
+			session.getTransaction().commit();
+		}
+		catch (ObjectNotFoundException onfe){
+			session.getTransaction().rollback();
+			session.close();
+			return new Zone();
+		}
+		
+		session.close();
+		return zone;
 	}
 
 }

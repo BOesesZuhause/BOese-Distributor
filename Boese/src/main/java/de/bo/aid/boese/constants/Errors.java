@@ -6,5 +6,4 @@ public class Errors {
 	public static final int OBJECT_NOT_FOUND = -1001;
 	public static final int OK = 0;
 	
-
 }
