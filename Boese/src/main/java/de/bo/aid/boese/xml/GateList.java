@@ -18,26 +18,52 @@ public class GateList {
 		this.gateType = null;
 	}
 
+	/**
+	 * Adds a new component to this Gate
+	 * @param component
+	 */
 	public void addComponent(Component component) {
 		sensors.add(component);
 	}
 	
+	/**
+	 * Returns a Set with all components of this Gate
+	 * @return
+	 */
 	public Set<Component> getComponents() {
 		return sensors;
 	}
 	
+	/**
+	 * Adds a new gate to this Gate
+	 * @param gate
+	 */
 	public void addGate(GateList gate) {
 		gates.add(gate);
 	}
 	
+	/**
+	 * Returns a Set with all subgates
+	 * @return
+	 */
 	public Set<GateList> getGate() {
 		return gates;
 	}
 
+	/**
+	 * Returns the type of this gate.
+	 * Null for no type
+	 * @return
+	 */
 	public GateType getGateType() {
 		return gateType;
 	}
 	
+	/**
+	 * Set the type of this gate.
+	 * Null for no type
+	 * @param gateType
+	 */
 	public void setGateType(GateType gateType) {
 		this.gateType = gateType;
 	}
