@@ -15,12 +15,12 @@ public class Permission extends BoeseXML {
 		this.xmlType = type;
 		this.doc = doc;
 		groupIds = new HashSet<>();
-		NodeList nList = doc.getElementsByTagName("GROUPIDS");
+		NodeList nList = doc.getElementsByTagName("GROUP_ID");
 		for (int i = 0; i < nList.getLength(); i++) {
 			Node node = nList.item(i);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
 				Element element = (Element) node;
-				groupIds.add(Integer.valueOf(element.getElementsByTagName("GROUPID").item(0).getTextContent()));
+				groupIds.add(Integer.valueOf(element.getTextContent()));
 			}
 		}
 	}

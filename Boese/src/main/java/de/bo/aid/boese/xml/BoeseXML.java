@@ -37,14 +37,14 @@ public class BoeseXML {
 			Document doc = xmlBuilder.parse(is);
 			doc.getDocumentElement().normalize();
 			switch(doc.getDocumentElement().getNodeName()) {
-			case "Action":
+			case "ACTION":
 				returnXML = new Action(XMLType.ACTION, doc);
 				break;
-			case "Condition":
+			case "CONDITION":
 				returnXML = new Condition(XMLType.CONDITION, doc);
 				break;
 				
-			case "Permission":
+			case "PERMISSION":
 				returnXML = new Permission(XMLType.PERMISSION, doc);
 			default: 
 				break;

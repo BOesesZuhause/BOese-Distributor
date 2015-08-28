@@ -18,33 +18,56 @@ public class Action extends BoeseXML {
 		activateRuleList = new HashSet<>();
 		deactivateRuleList = new HashSet<>();
 		actorList = new HashSet<>();
-		NodeList nList = doc.getElementsByTagName("ACTIVATERULES");
+		NodeList nList = doc.getElementsByTagName("ACTIVATE_RULE_ID");
 		for (int i = 0; i < nList.getLength(); i++) {
 			Node node = nList.item(i);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
 				Element element = (Element) node;
-				activateRuleList.add(Integer.valueOf(element.getElementsByTagName("ACTIVATE_RULEID").item(0).getTextContent()));
+				activateRuleList.add(Integer.valueOf(element.getTextContent()));
 			}
 		}
-		nList = doc.getElementsByTagName("DEACTIVATERULES");
+		nList = doc.getElementsByTagName("DEACTIVATE_RULE_ID");
 		for (int i = 0; i < nList.getLength(); i++) {
 			Node node = nList.item(i);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
 				Element element = (Element) node;
-				deactivateRuleList.add(Integer.valueOf(element.getElementsByTagName("DEACTIVATE_RULEID").item(0).getTextContent()));
+				deactivateRuleList.add(Integer.valueOf(element.getTextContent()));
 			}
 		}
-		nList = doc.getElementsByTagName("ACTORS");
+		nList = doc.getElementsByTagName("ACTOR");
 		for (int i = 0; i < nList.getLength(); i++) {
 			Node node = nList.item(i);
-			if (node.getNodeType() == Node.ELEMENT_NODE) {
-				Element element = (Element) node;
-				actorList.add(new Component(
-						Integer.valueOf(element.getAttribute("ACTORID")), 
-						Double.valueOf(element.getAttribute("VALUE")), 
-						Long.valueOf(element.getAttribute("STARTTIME")),
-						Long.valueOf(element.getAttribute("DURATION"))
-						));
+			if (node.hasChildNodes()) {
+				NodeList nActorList = node.getChildNodes();
+				int actorID = -1;
+				double actorValue = -1;
+				double actorResetValue = -1;
+				long actorStartTime = -1;
+				long actorDuration = -1;
+				
+				for (int j = 0; j < nActorList.getLength(); j++) {
+					Node nActor = nActorList.item(j);
+					switch (nActor.getNodeName()) {
+					case "ID":
+						actorID = new Integer(nActor.getTextContent()).intValue();
+						break;
+					case "VALUE":
+						actorValue = new Double(nActor.getTextContent()).doubleValue();
+						break;
+					case "RESET_VALUE":
+						actorResetValue = new Double(nActor.getTextContent()).doubleValue();
+						break;
+					case "START_TIME":
+						actorStartTime = new Long(nActor.getTextContent()).longValue();
+						break;
+					case "DURATION":
+						actorDuration = new Long(nActor.getTextContent()).longValue();
+						break;
+					default:
+						break;
+					}
+				}
+				actorList.add(new Component(actorID, actorValue, actorResetValue, actorStartTime, actorDuration));
 			}
 		}
 	}
