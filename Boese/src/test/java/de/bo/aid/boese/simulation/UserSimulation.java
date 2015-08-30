@@ -1,13 +1,11 @@
 package de.bo.aid.boese.simulation;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 import de.bo.aid.boese.main.MainClass;
 import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempDevice;
-import de.bo.aid.boese.model.Connector;
 import javassist.NotFoundException;
 
 public class UserSimulation {

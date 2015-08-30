@@ -5,6 +5,7 @@
 <hibernate-mapping>
     <class name="de.bo.aid.boese.model.Connector" table="connector" schema="public" optimistic-lock="version">
         <id name="CoId" type="int">
+        <column name="CoID" />
 	        <generator class="sequence">
                 <param name="sequence">connector_id_generator</param>
         	</generator>

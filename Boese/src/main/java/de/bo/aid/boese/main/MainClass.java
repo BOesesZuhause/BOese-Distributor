@@ -46,6 +46,7 @@ public class MainClass {
 	//tempIds for unconfirmed Objects
 	static int tempDeviceId = 1;
 	static int tempCompId = 1;
+	private static boolean autoConfirm = true; //Debugging
 	int tempIdDeviceComponents = 1;
 	
 	private static void handleRequestConnections(RequestConnection rc, int tempId) {
@@ -54,6 +55,11 @@ public class MainClass {
  
 			//Add requesting Connector to tempConnectors with tempId from SocketHandler
 			tempConnectors.put(tempId, rc.getConnectorName());
+			
+			if(autoConfirm){
+				//For Debugging
+				confirmConnectors();
+			}
 
 		} else { //TODO test
 			String pw = rc.getPassword();
@@ -97,10 +103,16 @@ public class MainClass {
 				
 				
 				
+				
 			} else { //device already in db
 				//TODO check if device is correct in db !!!erledigt!!!
 				//TODO müssen bekannte Devices bestätigt werden?
 			}
+		}
+		
+		//For Debugging
+		if(autoConfirm){
+			confirmDevices();
 		}
 		
 		
@@ -151,11 +163,16 @@ public class MainClass {
 				}
 			}
 		}
-		
+	//For Debugging	
+if(autoConfirm){
+	confirmDeviceComponents();
+}
+		if(confirmComponents.size() != 0){
 		BoeseJson cdc = new ConfirmDeviceComponents(deviceId, confirmComponents, connectorId, seqNr+1, seqNr, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(cdc, os);
 		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+	}
 	}
 	
 	private static void handleSendValue(SendValue sv, int connectorId) {
@@ -317,6 +334,40 @@ public class MainClass {
 	
 	public static HashMap<Integer, TempComponent> getTempComponents(){
 		return tempDeviceComponents;
+	}
+	
+	public static void confirmConnectors(){
+		for(Integer key : tempConnectors.keySet()){
+			try {
+				confirmConnector(key);
+				} catch (NotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static void confirmDevices(){
+		for(Integer key : tempDevices.keySet()){
+			try {
+				confirmDevice(key, 0, null);
+				} catch (NotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	public static void confirmDeviceComponents(){
+		for(Integer key : tempDevices.keySet()){
+			try {
+				confirmDeviceComponent(key, 0, null);
+				} catch (NotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 
