@@ -58,7 +58,7 @@ public class MainClass {
 			
 			if(autoConfirm){
 				//For Debugging
-				confirmConnectors();
+				confirmConnectors(tempId);
 			}
 
 		} else { //TODO test
@@ -99,8 +99,12 @@ public class MainClass {
 				TempDevice temp = new TempDevice();
 				temp.setName(deviceName);
 				temp.setConnectorID(connectorId);
-				tempDevices.put(tempDeviceId++, temp);
-				
+				tempDevices.put(tempDeviceId, temp);
+				//For Debugging
+				if(autoConfirm){
+					confirmDevices(tempDeviceId);
+				}
+				tempDeviceId++;
 				
 				
 				
@@ -110,10 +114,7 @@ public class MainClass {
 			}
 		}
 		
-		//For Debugging
-		if(autoConfirm){
-			confirmDevices();
-		}
+
 		
 		
 
@@ -140,9 +141,12 @@ public class MainClass {
 				temp.setConnectorId(connectorId);
 				temp.setDeviceId(deviceId);
 				temp.setName(component.getComponentName());
-				tempDeviceComponents.put(tempCompId++, temp);
-				
-				
+				tempDeviceComponents.put(tempCompId, temp);
+				//For Debugging	
+				if(autoConfirm){
+					confirmDeviceComponents(tempCompId);
+				}
+				tempCompId++;
 
 			
 			} else { // Component has DeCoId
@@ -163,10 +167,7 @@ public class MainClass {
 				}
 			}
 		}
-	//For Debugging	
-if(autoConfirm){
-	confirmDeviceComponents();
-}
+
 		if(confirmComponents.size() != 0){
 		BoeseJson cdc = new ConfirmDeviceComponents(deviceId, confirmComponents, connectorId, seqNr+1, seqNr, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
@@ -336,38 +337,32 @@ if(autoConfirm){
 		return tempDeviceComponents;
 	}
 	
-	public static void confirmConnectors(){
-		for(Integer key : tempConnectors.keySet()){
+	public static void confirmConnectors(int tempId){
+
 			try {
-				confirmConnector(key);
+				confirmConnector(tempId);
 				} catch (NotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
 	}
 	
-	public static void confirmDevices(){
-		for(Integer key : tempDevices.keySet()){
+	public static void confirmDevices(int tempDeviceId){
 			try {
-				confirmDevice(key, 0, null);
+				confirmDevice(tempDeviceId, 0, null);
 				} catch (NotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		
 	}
 	
-	public static void confirmDeviceComponents(){
-		for(Integer key : tempDevices.keySet()){
+	public static void confirmDeviceComponents(int tempCompId){
 			try {
-				confirmDeviceComponent(key, 0, null);
+				confirmDeviceComponent(tempCompId, 0, null);
 				} catch (NotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
 	}
 
 
