@@ -1,6 +1,5 @@
 package de.bo.aid.boese.xml;
 
-import de.bo.aid.boese.xml.Component.Comperator;
 
 public class Component {
 	protected int id;
