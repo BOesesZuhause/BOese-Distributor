@@ -361,5 +361,29 @@ public class Inserts {
 		return zone.getZoId();
 	}
 	
+	public static void deviceGroup(int deid, short grid, short rights) throws Exception{
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		Device dev = Selects.device(deid);
+		Group grp = Selects.group(grid);
+		DeviceGroup devgrp = new DeviceGroup();
+		devgrp.setDevice(dev);
+		devgrp.setGroup(grp);
+		devgrp.setRights(rights);
+		devgrp.setId(new DeviceGroupId(deid, grid));
+		
+		try{
+			session.save(devgrp);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.getTransaction().rollback();
+			session.close();
+			throw new Exception("NotNullColumnIsNull");
+		}
+		
+		session.close();
+	}
 	
 }

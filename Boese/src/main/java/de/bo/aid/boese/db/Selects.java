@@ -227,13 +227,13 @@ public class Selects {
 		return service;
 	}
 
-	public static Group group(int grid) {
+	public static Group group(short grid) {
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
 		Group grp = new Group();
 		try{
-			session.load(grp, new Integer(grid));
+			session.load(grp, new Short(grid));
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
