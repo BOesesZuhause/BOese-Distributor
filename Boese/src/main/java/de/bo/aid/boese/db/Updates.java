@@ -141,7 +141,7 @@ public class Updates {
 		session.close();
 	}
 	
-	public static void group(int grid, String name){
+	public static void group(short grid, String name){
 		Session session = connection.getSession();
 		session.beginTransaction();
 
