@@ -220,5 +220,29 @@ public class Updates {
 		session.getTransaction().commit();
 		session.close();
 	}
+	
+	public static void activateRule(int ruid){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		Rule rule = Selects.rule(ruid);
+		rule.setActive(true);
+		
+		session.save(rule);
+		session.getTransaction().commit();
+		session.close();
+	}
+	
+	public static void deactivateRule(int ruid){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		Rule rule = Selects.rule(ruid);
+		rule.setActive(false);
+		
+		session.save(rule);
+		session.getTransaction().commit();
+		session.close();
+	}
 
 }

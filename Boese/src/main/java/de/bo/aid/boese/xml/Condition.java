@@ -16,6 +16,10 @@ public class Condition extends BoeseXML {
 	GateList conditions;
 	HashSet<Integer> componentIds;
 	
+	public HashSet<Integer> getComponentIds() {
+		return componentIds;
+	}
+
 	private GateList parseNodeList(NodeList nList) {
 		GateList gateList = new GateList();
 		GateList gate = null;

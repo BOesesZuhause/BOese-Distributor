@@ -3,7 +3,6 @@ package de.bo.aid.boese.ruler;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.bo.aid.boese.xml.Action;
 import de.bo.aid.boese.xml.BoeseXML;
 import de.bo.aid.boese.xml.Component;
 import de.bo.aid.boese.xml.Condition;
