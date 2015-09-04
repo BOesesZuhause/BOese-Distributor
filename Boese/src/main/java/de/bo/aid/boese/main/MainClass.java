@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,6 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.hibernate.LazyInitializationException;
 
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
@@ -31,8 +34,11 @@ import de.bo.aid.boese.main.model.TempDevice;
 import de.bo.aid.boese.model.Connector;
 import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceComponent;
+import de.bo.aid.boese.ruler.Controll;
+import de.bo.aid.boese.ruler.Inquiry;
 import de.bo.aid.boese.socket.BoeseServer;
 import de.bo.aid.boese.socket.SocketHandler;
+import de.bo.aid.boese.xml.Component;
 import javassist.NotFoundException;
 
 public class MainClass {
@@ -126,6 +132,7 @@ public class MainClass {
 		
 		HashSet<DeviceComponents> components = sdc.getComponents(); 
 		HashMap<String, Integer> confirmComponents = new HashMap<>();
+		ArrayList<Inquiry> inquiryList = new ArrayList<>();
 		
 		for (DeviceComponents component : components) {
 			if (component.getDeviceComponentId() == -1) { // Component has no DeCoId
@@ -143,23 +150,31 @@ public class MainClass {
 				if (device == null) { // Device does not exist
 					// TODO was tun wir, wenn der Konnector eine Device ID nennt, die nicht in der DB ist?
 				} else {
-					@SuppressWarnings("unchecked")
-					Iterator<DeviceComponent> itDc = device.getDeviceComponents().iterator();
-					while (itDc.hasNext()) { // search for devicecomponent in db
-						DeviceComponent dc = itDc.next();
-						if (dc.getDeCoId() == component.getDeviceComponentId()) { // found deviceComponent
-							confirmComponents.put(component.getComponentName(), dc.getDeCoId());
-							Inserts.value(dc.getDeCoId(), new Date(component.getTimestamp()), component.getValue());
-							break;
-						} else {
-							// TODO was passiert wenn DeCo nicht beim device dabei ist?
-						}
+					Iterator<DeviceComponent> itDc = null;
+					try {
+						itDc = device.getDeviceComponents().iterator();
+					} catch (LazyInitializationException lix){
+						
+					}
+					if (itDc != null) {
+						while (itDc.hasNext()) { // search for devicecomponent in db
+							DeviceComponent dc = itDc.next();
+							if (dc.getDeCoId() == component.getDeviceComponentId()) { // found deviceComponent
+								confirmComponents.put(component.getComponentName(), dc.getDeCoId());
+								inquiryList.add(new Inquiry(dc.getDeCoId(), component.getTimestamp(), component.getValue()));
+//								Inserts.value(dc.getDeCoId(), new Date(component.getTimestamp()), component.getValue());
+								break;
+							} else {
+								// TODO was passiert wenn DeCo nicht beim device dabei ist?
+							}
+						}						
 					}
 				}
 			}
 		}
 
 		if(!confirmComponents.isEmpty()){
+			sendToDos(insertValues(inquiryList));
 			sendConfirmComponent(deviceId, confirmComponents, seqNr, connectorId);
 		}
 	}
@@ -172,7 +187,9 @@ public class MainClass {
 		}
 		int deviceId = sv.getDeviceId();
 		int deviceComponentId = sv.getDeviceComponentId();
-		Inserts.value(deviceComponentId, new Date(sv.getValueTimestamp()), sv.getValue());
+		ArrayList<Inquiry> inquiryList = new ArrayList<>();
+		inquiryList.add(new Inquiry(deviceComponentId, sv.getTimestamp(), sv.getValue()));
+		sendToDos(insertValues(inquiryList));
 		
 		BoeseJson cv = new ConfirmValue(deviceId, deviceComponentId, connectorId, seqNr+1, seqNr, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
@@ -306,7 +323,9 @@ public class MainClass {
 		int deCoId = Inserts.deviceComponent(deviceId, componentId);
 		HashMap<String, Integer> confirmComponents = new HashMap<String, Integer>();
 		confirmComponents.put(name, deCoId);
-		Inserts.value(deCoId, new Date(temp.getValueTimestamp()), temp.getValue()); //TODO
+		ArrayList<Inquiry> inquiryList = new ArrayList<>();
+		inquiryList.add(new Inquiry(deCoId, temp.getValueTimestamp(), temp.getValue()));
+		sendToDos(insertValues(inquiryList));
 		
 		sendConfirmComponent(deviceId, confirmComponents, 0, connectorId);
 		
@@ -362,5 +381,22 @@ public class MainClass {
 	public static HashMap<Integer, TempComponent> getTempComponents(){
 		return tempDeviceComponents;
 	}
-
+	
+	public static List<Component> insertValues(List<Inquiry> inquirys) {
+		for (Inquiry inq : inquirys) {
+			Inserts.value(inq.getDeviceComponentId(), new Date(inq.getTimestamp()), inq.getValue());
+		}
+		Controll controll = new Controll();
+		List<Component> todos = controll.getToDos(inquirys);
+		return todos;
+	}
+	
+	public static void sendToDos(List<Component> todos) {
+		for (Component component : todos) {
+			int deCoId = component.getId();
+			int deviceId = Selects.deviceComponent(deCoId).getDevice().getDeId();
+			int idConnector = Selects.device(deviceId).getConnector().getCoId();
+			sendValue(deviceId, deCoId, component.getValue(), new Date().getTime(), idConnector, -1);
+		}
+	}
 }
