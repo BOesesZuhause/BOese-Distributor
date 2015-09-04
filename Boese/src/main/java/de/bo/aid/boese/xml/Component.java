@@ -8,6 +8,7 @@ public class Component {
 	protected long startTime;
 	protected long duration;
 	protected Comperator comperator;
+	protected int repeatAfterEnd;
 	
 	public enum Comperator {
 		LOWERTHEN, GREATERTHEN, LOWEREQUAL, GREATEREQUAL, EQUAL, NOTEQUAL
@@ -20,15 +21,21 @@ public class Component {
 		this.startTime = startTime;
 		this.duration = duration;
 		this.comperator = comperator;
+		repeatAfterEnd = 0;
 	}
 	
-	public Component(int id, double value, double resetValue,long startTime, long duration) {
+	public Component(int id, double value, double resetValue,long startTime, long duration, int repeatAfterEnd) {
 		this.id = id;
 		this.value = value;
 		this.resetValue = resetValue;
 		this.startTime = startTime;
 		this.duration = duration;
+		this.repeatAfterEnd = repeatAfterEnd;
 		this.comperator = null;
+	}
+	
+	public int getReatAfterEnd() {
+		return repeatAfterEnd;
 	}
 	
 	public Comperator getComperator() {
