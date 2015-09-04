@@ -227,13 +227,13 @@ public class MainClass {
 	}
 
 	public static void main(String[] args) {
-		ArrayList<Integer> decoIdL = new ArrayList<>();
-		decoIdL.add(29);
-		decoIdL.add(30);
-		String conditions = "<CONDITIONS><AND><COMPONENT><ID>29</ID><COMPERATOR>==</COMPERATOR><VALUE>1.0</VALUE><START_TIME>123123</START_TIME><DURATION>1</DURATION></COMPONENT></AND></CONDITIONS>";
-		String actions = "<ACTION><AKTOR><ID>30</ID><VALUE>1.0</VALUE><RESET_VALUE>0</RESET_VALUE><START_TIME>123123</START_TIME><DURATION>5</DURATION><REPEAT_AFTER_END>0</REPEAT_AFTER_END></AKTOR></ACTION>";
-		
-		Inserts.rule(decoIdL, "", conditions, actions);
+//		ArrayList<Integer> decoIdL = new ArrayList<>();
+//		decoIdL.add(29);
+//		decoIdL.add(30);
+//		String conditions = "<CONDITIONS><AND><COMPONENT><ID>16</ID><COMPERATOR>==</COMPERATOR><VALUE>1.0</VALUE><START_TIME>123123</START_TIME><DURATION>1</DURATION></COMPONENT></AND></CONDITIONS>";
+//		String actions = "<ACTION><AKTOR><ID>21</ID><VALUE>1.0</VALUE><RESET_VALUE>0</RESET_VALUE><START_TIME>123123</START_TIME><DURATION>5</DURATION><REPEAT_AFTER_END>0</REPEAT_AFTER_END></AKTOR></ACTION>";
+//		
+//		Inserts.rule(decoIdL, "", conditions, actions);
 		BoeseServer server = new BoeseServer();
 		server.start();
 

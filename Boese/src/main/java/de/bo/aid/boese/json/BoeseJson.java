@@ -170,8 +170,22 @@ public class BoeseJson {
 			JsonArray sendArSDC = jo.getJsonArray("Components");
 			for (int i = 0; i < sendArSDC.size(); i++) {
 				JsonObject components = sendArSDC.getJsonObject(i);
-				componentsSDC.add(new DeviceComponents(components.getInt("DeviceComponentId", -1), components.getString("ComponentName"), 
-						components.getJsonNumber("Value").doubleValue(), components.getJsonNumber("Timestamp").longValue()));
+				String unit = null; //TODO wenn unit != null soll in db angelegt werden
+				if (components.getJsonString("Unit") != null) {
+					unit = components.getString("Unit");
+				}
+				String description = null;
+				if (components.getJsonString("Description") != null) {
+					description = components.getString("Description");
+				}
+				componentsSDC.add(
+						new DeviceComponents(components.getInt("DeviceComponentId", -1), 
+								components.getString("ComponentName"), 
+								components.getJsonNumber("Value").doubleValue(), 
+								components.getJsonNumber("Timestamp").longValue(),
+								unit,
+								description,
+								components.getBoolean("Actor", false)));
 			}
 			bj = new SendDeviceComponents(deviceIdSDC, componentsSDC, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
 			break;
@@ -300,6 +314,13 @@ public class BoeseJson {
 				deviceComponentSDC.add("ComponentName", deviceComponent.getComponentName());
 				deviceComponentSDC.add("Value", deviceComponent.getValue());
 				deviceComponentSDC.add("Timestamp", deviceComponent.getTimestamp());
+				if (deviceComponent.getUnit() != null) {
+					deviceComponentSDC.add("Unit", deviceComponent.getUnit());
+				}
+				if (deviceComponent.getDescription() != null) {					
+					deviceComponentSDC.add("Description", deviceComponent.getDescription());
+				}
+				deviceComponentSDC.add("Actor", deviceComponent.isActor());
 				deviceComponentsSDCAr.add(deviceComponentSDC);
 			}
 			job.add("Components", deviceComponentsSDCAr);

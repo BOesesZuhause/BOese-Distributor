@@ -331,13 +331,14 @@ public class protokollTest {
 				+ "\"DeviceComponentId\":-1,"
 				+ "\"ComponentName\":\"Horst\","
 				+ "\"Value\":42.1234,"
-				+ "\"Timestamp\":111111111"
+				+ "\"Timestamp\":111111111,"
+				+ "\"Actor\":false"
 				+ "}]"
 				+ "}";
 		
 		OutputStream os = new ByteArrayOutputStream();
 		HashSet<DeviceComponents> components = new HashSet<>();
-		components.add(new DeviceComponents(-1, "Horst", 42.1234, 111111111));
+		components.add(new DeviceComponents(-1, "Horst", 42.1234, 111111111, null, null, false));
 		SendDeviceComponents reqDevComp = new SendDeviceComponents(123, components, 1, 0, 0, 0, 111222334);
 		BoeseJson.parseMessage(reqDevComp, os);
 		assertEquals(os.toString(), message);			
@@ -362,7 +363,8 @@ public class protokollTest {
 				+ "\"DeviceComponentId\":-1,"
 				+ "\"ComponentName\":\"Horst\","
 				+ "\"Value\":42.1234,"
-				+ "\"Timestamp\":111111111"
+				+ "\"Timestamp\":111111111,"
+				+ "\"Actor\":false"
 				+ "}]"
 				+ "}";
 		

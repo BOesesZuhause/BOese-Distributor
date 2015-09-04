@@ -65,7 +65,7 @@ public class BoeseXML {
 			case "ACTION":
 				returnXML = new Action(XMLType.ACTION, doc);
 				break;
-			case "CONDITION":
+			case "CONDITIONS":
 				returnXML = new Condition(XMLType.CONDITION, doc);
 				break;
 				

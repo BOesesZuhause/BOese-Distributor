@@ -190,21 +190,21 @@ public class ConnectorSimulation implements MessageHandler {
 	private void initializeData(){
 		// Initialize Attributes
 		heizung = new Device(-1, "Heizung");
-		DeviceComponents c1 = new DeviceComponents(-1, "Temperatursensor", 24, new Date().getTime());
-		DeviceComponents c2 = new DeviceComponents(-1, "Temperaturregler", -1, new Date().getTime());
+		DeviceComponents c1 = new DeviceComponents(-1, "Temperatursensor", 24, new Date().getTime(), null, null, false);
+		DeviceComponents c2 = new DeviceComponents(-1, "Temperaturregler", -1, new Date().getTime(), null, null, false);
 		heizung.addComponent(c1);
 		heizung.addComponent(c2);
 		
 		steckerleiste = new Device(-1, "steckerleiste");
-		DeviceComponents c3 = new DeviceComponents(-1, "Fernseher", 50, new Date().getTime());
-		DeviceComponents c4 = new DeviceComponents(-1,"Lampe",  40, new Date().getTime());
-		DeviceComponents c5 = new DeviceComponents(-1, "Kuehlschrank", 200, new Date().getTime());
+		DeviceComponents c3 = new DeviceComponents(-1, "Fernseher", 50, new Date().getTime(), null, null, false);
+		DeviceComponents c4 = new DeviceComponents(-1,"Lampe",  40, new Date().getTime(), null, null, false);
+		DeviceComponents c5 = new DeviceComponents(-1, "Kuehlschrank", 200, new Date().getTime(), null, null, false);
 		steckerleiste.addComponent(c3);
 		steckerleiste.addComponent(c4);
 		steckerleiste.addComponent(c5);
 		
 		tuersensor = new Device(-1, "Tuersensor");
-		DeviceComponents c6 = new DeviceComponents(-1,"Tuersensor",  0, new Date().getTime());
+		DeviceComponents c6 = new DeviceComponents(-1,"Tuersensor",  0, new Date().getTime(), null, null, false);
 		tuersensor.addComponent(c6);
 		
 		devices.add(heizung);
