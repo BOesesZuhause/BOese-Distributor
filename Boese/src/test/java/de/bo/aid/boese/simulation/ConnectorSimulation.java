@@ -190,15 +190,15 @@ public class ConnectorSimulation implements MessageHandler {
 	private void initializeData(){
 		// Initialize Attributes
 		heizung = new Device(-1, "Heizung");
-		DeviceComponents c1 = new DeviceComponents(-1, "Temperatursensor", 24, new Date().getTime(), null, null, false);
-		DeviceComponents c2 = new DeviceComponents(-1, "Temperaturregler", -1, new Date().getTime(), null, null, false);
+		DeviceComponents c1 = new DeviceComponents(-1, "Temperatursensor", 24, new Date().getTime(), "C", "Temperatur messen", false);
+		DeviceComponents c2 = new DeviceComponents(-1, "Temperaturregler", -1, new Date().getTime(), null, "Temperatur regeln", true);
 		heizung.addComponent(c1);
 		heizung.addComponent(c2);
 		
 		steckerleiste = new Device(-1, "steckerleiste");
-		DeviceComponents c3 = new DeviceComponents(-1, "Fernseher", 50, new Date().getTime(), null, null, false);
-		DeviceComponents c4 = new DeviceComponents(-1,"Lampe",  40, new Date().getTime(), null, null, false);
-		DeviceComponents c5 = new DeviceComponents(-1, "Kuehlschrank", 200, new Date().getTime(), null, null, false);
+		DeviceComponents c3 = new DeviceComponents(-1, "Fernseher", 50, new Date().getTime(), null, "Fernseher schalten", true);
+		DeviceComponents c4 = new DeviceComponents(-1,"Lampe",  40, new Date().getTime(), null, "Lampe schalten", true);
+		DeviceComponents c5 = new DeviceComponents(-1, "Kuehlschrank", 200, new Date().getTime(), "Kuehlschrank schalten", null, true);
 		steckerleiste.addComponent(c3);
 		steckerleiste.addComponent(c4);
 		steckerleiste.addComponent(c5);

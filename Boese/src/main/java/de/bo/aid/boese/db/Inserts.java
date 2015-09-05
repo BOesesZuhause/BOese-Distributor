@@ -87,7 +87,7 @@ public class Inserts {
 		return comp.getCoId();	
 	}
 	
-	public static int deviceComponent(int deid, int coid){
+	public static int deviceComponent(int deid, int coid, String description){
 		Session session = connection.getSession();
 		session.beginTransaction();
  
@@ -100,6 +100,7 @@ public class Inserts {
 			dc.setDevice(device);
 			session.load(comp, new Integer(coid));
 			dc.setComponent(comp);
+			dc.setDescription(description);
 		}
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();

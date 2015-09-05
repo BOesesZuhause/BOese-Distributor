@@ -28,11 +28,11 @@ public class SimulationTest {
 		UserSimulation userSim = new UserSimulation();
 		sim.start();
 		Thread.sleep(2000);		
-		userSim.confirmConnectors();
+		//userSim.confirmConnectors();
 		Thread.sleep(2000);
-		userSim.confirmDevices();
+		//userSim.confirmDevices();
 		Thread.sleep(2000);
-		userSim.confirmDeviceComponents();
+		//userSim.confirmDeviceComponents();
 		Thread.sleep(5000);
 		
 		sim.sendValue(99.8);

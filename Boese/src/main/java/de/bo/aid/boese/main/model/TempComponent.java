@@ -7,13 +7,43 @@ public class TempComponent {
 	private String name;
 	private long valueTimestamp;
 	private double value;
+	private String description;
+	private boolean actor;
+	private String unit;
 	
-	public TempComponent(int deviceId, String deviceName, double value, long valueTimestamp, int connectorId) {
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public TempComponent(int deviceId, String deviceName, double value, long valueTimestamp, int connectorId, String description, String unit, boolean actor) {
 		this.connectorId = connectorId;
 		this.deviceId = deviceId;
 		this.name = deviceName;
 		this.value = value;
 		this.valueTimestamp = valueTimestamp;
+		this.description = description;
+		this.actor = actor;
+		this.unit = unit;
+	}
+
+	public boolean isActor() {
+		return actor;
+	}
+
+	public void setActor(boolean actor) {
+		this.actor = actor;
+	}
+
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
 
 	public long getValueTimestamp() {

@@ -138,7 +138,7 @@ public class MainClass {
 			if (component.getDeviceComponentId() == -1) { // Component has no DeCoId
 				
 				TempComponent temp = new TempComponent(deviceId, component.getComponentName(), component.getValue(), 
-							component.getTimestamp(),connectorId);
+							component.getTimestamp(),connectorId, component.getDescription(), component.getUnit(), component.isActor());
 				tempDeviceComponents.put(tempCompId, temp);
 				//For Debugging	
 				if(autoConfirm){
@@ -326,8 +326,8 @@ public class MainClass {
 		int deviceId = temp.getDeviceId();
 		int connectorId = temp.getConnectorId();
 		
-		int componentId = Inserts.component(name, unitId, true); 
-		int deCoId = Inserts.deviceComponent(deviceId, componentId);
+		int componentId = Inserts.component(name, unitId, !temp.isActor()); 
+		int deCoId = Inserts.deviceComponent(deviceId, componentId, temp.getDescription());
 		HashMap<String, Integer> confirmComponents = new HashMap<String, Integer>();
 		confirmComponents.put(name, deCoId);
 		ArrayList<Inquiry> inquiryList = new ArrayList<>();
