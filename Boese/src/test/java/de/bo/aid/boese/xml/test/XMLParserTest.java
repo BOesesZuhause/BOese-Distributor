@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.xml.test;
 
 import static org.junit.Assert.*;
@@ -18,18 +19,31 @@ import de.bo.aid.boese.xml.Condition;
 import de.bo.aid.boese.xml.GateList.GateType;
 import de.bo.aid.boese.xml.Permission;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class XMLParserTest.
+ */
 public class XMLParserTest {
 	
+	/**
+	 * Permissioin test before.
+	 */
 	@Before
 	public void permissioinTestBefore() {
 		
 	}
 	
+	/**
+	 * Permissioin test after.
+	 */
 	@After
 	public void permissioinTestAfter() {
 		
 	}
 	
+	/**
+	 * Permissioin test.
+	 */
 	@Test
 	public void permissioinTest() {
 		

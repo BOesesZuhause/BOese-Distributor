@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.simulation;
 
 import java.io.ByteArrayInputStream;
@@ -24,6 +25,7 @@ import de.bo.aid.boese.json.SendDevices;
 import de.bo.aid.boese.json.SendValue;
 import de.bo.aid.boese.simulation.SocketClientStandalone.MessageHandler;
 
+// TODO: Auto-generated Javadoc
 /**
  * This class simulates a connector.
  * 
@@ -32,21 +34,38 @@ import de.bo.aid.boese.simulation.SocketClientStandalone.MessageHandler;
  */
 public class ConnectorSimulation implements MessageHandler {
 	
+	/** The client. */
 	SocketClientStandalone client;
+	
+	/** The connection closed. */
 	boolean connectionClosed = false;
 	
 	
 	
+	/** The send time. */
 	//For time measurements
 	private long sendTime;
 
+	/** The con id. */
 	// Connector details
 	private int conId = -1;
+	
+	/** The password. */
 	private String password = null;
+	
+	/** The name. */
 	private final String NAME = "KonnektorSim";
+	
+	/** The devices. */
 	private List<Device> devices = new ArrayList<Device>();
+	
+	/** The heizung. */
 	private Device heizung;
+	
+	/** The steckerleiste. */
 	private Device steckerleiste;
+	
+	/** The tuersensor. */
 	private Device tuersensor;
 
 	/*
@@ -95,11 +114,21 @@ public class ConnectorSimulation implements MessageHandler {
 		}
 	}
 
+	/**
+	 * Handle confirm value.
+	 *
+	 * @param bjMessage the bj message
+	 */
 	private void handleConfirmValue(ConfirmValue bjMessage) {
 		System.out.println("Server Confirmed Value "   + "Duration: " + (new Date().getTime() - sendTime) + "ms\n");
 		//TODO What to do with confirm-message?
 	}
 
+	/**
+	 * Handle confirm device components.
+	 *
+	 * @param bjMessage the bj message
+	 */
 	private void handleConfirmDeviceComponents(ConfirmDeviceComponents bjMessage) {
 		System.out.println("Server confirmed DeviceComponents "  + "Duration: " + (new Date().getTime() - sendTime) + "ms\n");
 		
@@ -132,6 +161,11 @@ public class ConnectorSimulation implements MessageHandler {
 		
 	}
 
+	/**
+	 * Handle request device components.
+	 *
+	 * @param bjMessage the bj message
+	 */
 	private void handleRequestDeviceComponents(RequestDeviceComponents bjMessage) {
 		System.out.println("Server requests DeviceComponents for Device with id: " + bjMessage.getDeviceId());
 		Device requestedDevice = null;
@@ -150,6 +184,11 @@ public class ConnectorSimulation implements MessageHandler {
 		client.sendMessage(os.toString());
 		}
 
+	/**
+	 * Handle confirm devices.
+	 *
+	 * @param bjMessage the bj message
+	 */
 	private void handleConfirmDevices(ConfirmDevices bjMessage) {
 		System.out.println("Server confirmed Devices "  + "Duration: " + (new Date().getTime() - sendTime) + "ms\n");
 	
@@ -163,6 +202,11 @@ public class ConnectorSimulation implements MessageHandler {
 		}
 	}
 
+	/**
+	 * Handle request all devices.
+	 *
+	 * @param bjMessage the bj message
+	 */
 	private void handleRequestAllDevices(RequestAllDevices bjMessage) {
 		System.out.println("Server requests Devices");
 		
@@ -181,12 +225,20 @@ public class ConnectorSimulation implements MessageHandler {
 		client.sendMessage(os.toString());
 	}
 
+	/**
+	 * Handle confirmconnection.
+	 *
+	 * @param bjMessage the bj message
+	 */
 	private void handleConfirmconnection(ConfirmConnection bjMessage) {
 		this.password = bjMessage.getPassword();
 		this.conId = bjMessage.getConnectorId();
 		System.out.println("Client was confirmed by Server Duration:" + (new Date().getTime() - sendTime) + "ms\n");
 	}
 	
+	/**
+	 * Initialize data.
+	 */
 	private void initializeData(){
 		// Initialize Attributes
 		heizung = new Device(-1, "Heizung");
@@ -213,8 +265,7 @@ public class ConnectorSimulation implements MessageHandler {
 	}
 
 	/**
-	 * Starts the Connector Simulation
-	 * 
+	 * Starts the Connector Simulation.
 	 */
 	public void start() {
 		initializeData();
@@ -244,6 +295,11 @@ public class ConnectorSimulation implements MessageHandler {
 
 	}
 	
+	/**
+	 * Send value.
+	 *
+	 * @param value the value
+	 */
 	public void sendValue(double value){
 		int devId = heizung.getId();
 		int devCompId = 0;
@@ -265,6 +321,9 @@ public class ConnectorSimulation implements MessageHandler {
 		client.sendMessage(os.toString());
 			}
 
+	/* (non-Javadoc)
+	 * @see de.bo.aid.boese.simulation.SocketClientStandalone.MessageHandler#closeConnection()
+	 */
 	@Override
 	public void closeConnection() {
 		connectionClosed = true;

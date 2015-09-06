@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.simulation;
 
 import org.junit.After;
@@ -7,10 +8,20 @@ import org.junit.Test;
 import de.bo.aid.boese.db.Connection;
 import de.bo.aid.boese.socket.BoeseServer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SimulationTest.
+ */
 public class SimulationTest {
 	
+	/** The server. */
 	private BoeseServer server;
 	
+    /**
+     * Start server.
+     *
+     * @throws Exception the exception
+     */
     @Before
     public void startServer() throws Exception {
         server = new BoeseServer();
@@ -21,6 +32,11 @@ public class SimulationTest {
 
 	
 
+	/**
+	 * Simulation.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void simulation() throws Exception {
 
@@ -44,7 +60,12 @@ public class SimulationTest {
 		
 	}
 	
-	   @After
+	   /**
+   	 * Shutdown.
+   	 *
+   	 * @throws Exception the exception
+   	 */
+   	@After
 	    public void shutdown() throws Exception {
 	        server.stop();
 	    }

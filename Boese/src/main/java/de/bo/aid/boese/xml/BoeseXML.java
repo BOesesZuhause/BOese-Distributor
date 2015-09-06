@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.xml;
 
 import java.io.InputStream;
@@ -8,31 +9,43 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 
+// TODO: Auto-generated Javadoc
 /**
  * Class to handel XML rule parsing
- * Provides Methods to read xml in BoeseXML Java classes and to parse BoeseXML Java classes to xml
+ * Provides Methods to read xml in BoeseXML Java classes and to parse BoeseXML Java classes to xml.
  */
 public class BoeseXML {
+	
 	/**
-	 * Enumeration to define the typ of a BoeseXML object
+	 * Enumeration to define the typ of a BoeseXML object.
 	 */
 	public enum XMLType {
-		ACTION, PERMISSION, CONDITION
+		
+		/** The action. */
+		ACTION, 
+ /** The permission. */
+ PERMISSION, 
+ /** The condition. */
+ CONDITION
 	}
 	
+	/** The xml type. */
 	protected XMLType xmlType = null;
+	
+	/** The doc. */
 	protected Document doc = null;
 	
 	/**
-	 * Basic constructor
+	 * Basic constructor.
 	 */
 	public BoeseXML() {
 		
 	}
 	
 	/**
-	 * Returns the xml type of this object
-	 * @return
+	 * Returns the xml type of this object.
+	 *
+	 * @return the type
 	 */
 	public XMLType getType() {
 		return xmlType;

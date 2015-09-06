@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.main;
 
 import java.io.ByteArrayInputStream;
@@ -41,20 +42,42 @@ import de.bo.aid.boese.socket.SocketHandler;
 import de.bo.aid.boese.xml.Component;
 import javassist.NotFoundException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MainClass.
+ */
 public class MainClass {
 	//TODO handle Acknowledge abgleich
 	
+	/** The temp connectors. */
 	//hashmaps for unconfirmed Objects with a temporary Id as key
 	private static HashMap<Integer, String> tempConnectors = new HashMap<Integer, String>();
+	
+	/** The temp devices. */
 	private static HashMap<Integer, TempDevice> tempDevices = new HashMap<Integer, TempDevice>();
+	
+	/** The temp device components. */
 	private static HashMap<Integer, TempComponent> tempDeviceComponents = new HashMap<Integer, TempComponent>();
 	
+	/** The temp device id. */
 	//tempIds for unconfirmed Objects
 	static int tempDeviceId = 1;
+	
+	/** The temp comp id. */
 	static int tempCompId = 1;
+	
+	/** The auto confirm. */
 	private static boolean autoConfirm = true; //Debugging
+	
+	/** The temp id device components. */
 	int tempIdDeviceComponents = 1;
 	
+	/**
+	 * Handle request connections.
+	 *
+	 * @param rc the rc
+	 * @param tempId the temp id
+	 */
 	private static void handleRequestConnections(RequestConnection rc, int tempId) {
 		int seqNr = rc.getSeqenceNr();
 		if (rc.getPassword() == null && rc.getConnectorId() == -1) {
@@ -87,6 +110,12 @@ public class MainClass {
 		}
 	}
 	
+	/**
+	 * Handle send devices.
+	 *
+	 * @param sd the sd
+	 * @param connectorId the connector id
+	 */
 	private static void handleSendDevices(SendDevices sd, int connectorId) {
 		int seqNr = sd.getSeqenceNr();
 		if (connectorId != sd.getConnectorId()) {
@@ -121,6 +150,12 @@ public class MainClass {
 		}
 	}
 	
+	/**
+	 * Handle send device components.
+	 *
+	 * @param sdc the sdc
+	 * @param connectorId the connector id
+	 */
 	private static void handleSendDeviceComponents(SendDeviceComponents sdc, int connectorId) {
 		// TODO Regelparsing mit component values
 		int seqNr = sdc.getSeqenceNr();
@@ -179,6 +214,12 @@ public class MainClass {
 		}
 	}
 	
+	/**
+	 * Handle send value.
+	 *
+	 * @param sv the sv
+	 * @param connectorId the connector id
+	 */
 	private static void handleSendValue(SendValue sv, int connectorId) {
 		int seqNr = sv.getSeqenceNr();
 		if (connectorId != sv.getConnectorId()) {
@@ -198,7 +239,8 @@ public class MainClass {
 	}
 	
 	/**
-	 * Method to handle Json messages and act depednding on the type and content
+	 * Method to handle Json messages and act depednding on the type and content.
+	 *
 	 * @param message A string containing the Json message
 	 * @param connectorId The Id of the connector.
 	 */
@@ -226,6 +268,11 @@ public class MainClass {
 		}
 	}
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 //		ArrayList<Integer> decoIdL = new ArrayList<>();
 //		decoIdL.add(29);
@@ -239,10 +286,21 @@ public class MainClass {
 
 	}
 	
+	/**
+	 * Gets the temp connectors.
+	 *
+	 * @return the temp connectors
+	 */
 	public static HashMap<Integer, String> getTempConnectors(){
 		return tempConnectors;
 	}
 	
+	/**
+	 * Confirm connector.
+	 *
+	 * @param tempId the temp id
+	 * @throws NotFoundException the not found exception
+	 */
 	public static void confirmConnector(int tempId) throws NotFoundException{
 	
 		String name= tempConnectors.get(tempId);
@@ -273,6 +331,14 @@ public class MainClass {
 		tempConnectors.remove(tempId);
 	}
 	
+	/**
+	 * Confirm device.
+	 *
+	 * @param tempId the temp id
+	 * @param zoneId the zone id
+	 * @param name the name
+	 * @throws NotFoundException the not found exception
+	 */
 	public static void confirmDevice(int tempId, int zoneId, String name) throws NotFoundException{
 
 		TempDevice temp = tempDevices.get(tempId);
@@ -295,6 +361,13 @@ public class MainClass {
 		tempDevices.remove(temp);
 	}
 	
+	/**
+	 * Send confirm devices.
+	 *
+	 * @param devices the devices
+	 * @param seqNr the seq nr
+	 * @param connectorId the connector id
+	 */
 	public static void sendConfirmDevices(HashMap<String, Integer> devices, int seqNr, int connectorId) {
 		//send Confirm Devices
 		BoeseJson cd = new ConfirmDevices(devices, connectorId, seqNr+1, seqNr, 0, new Date().getTime());
@@ -311,10 +384,23 @@ public class MainClass {
 		}
 	}
 	
+	/**
+	 * Gets the temp devices.
+	 *
+	 * @return the temp devices
+	 */
 	public static HashMap<Integer, TempDevice> getTempDevices() {
 		return tempDevices;
 	}
 
+	/**
+	 * Confirm device component.
+	 *
+	 * @param tempId the temp id
+	 * @param unitId the unit id
+	 * @param name the name
+	 * @throws NotFoundException the not found exception
+	 */
 	public static void confirmDeviceComponent(int tempId, int unitId, String name) throws NotFoundException{
 		TempComponent temp = tempDeviceComponents.get(tempId);
 		if(temp == null){
@@ -340,6 +426,14 @@ public class MainClass {
 		tempDevices.remove(temp);
 	}
 	
+	/**
+	 * Send confirm component.
+	 *
+	 * @param deviceId the device id
+	 * @param components the components
+	 * @param seqNr the seq nr
+	 * @param connectorId the connector id
+	 */
 	public static void sendConfirmComponent(int deviceId, HashMap<String, Integer> components, int seqNr, int connectorId) {
 		//Send ConfirmDeviceComponents
 		BoeseJson cdc = new ConfirmDeviceComponents(deviceId, components, connectorId, seqNr+1, seqNr, 0, new Date().getTime());
@@ -348,6 +442,16 @@ public class MainClass {
 		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
+	/**
+	 * Send value.
+	 *
+	 * @param deId the de id
+	 * @param deCoId the de co id
+	 * @param value the value
+	 * @param valueTimestamp the value timestamp
+	 * @param connectorId the connector id
+	 * @param seqNr the seq nr
+	 */
 	public static void sendValue(int deId, int deCoId, double value, long valueTimestamp, int connectorId, int seqNr) {
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson sv = new SendValue(deId, deCoId, value, valueTimestamp, connectorId, seqNr+1, seqNr, 0, new Date().getTime());
@@ -356,6 +460,11 @@ public class MainClass {
 		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
+	/**
+	 * Confirm connectors.
+	 *
+	 * @param tempId the temp id
+	 */
 	//Asynchronous handler
 	public static void confirmConnectors(int tempId){
 		try {
@@ -366,6 +475,11 @@ public class MainClass {
 		}
 	}
 	
+	/**
+	 * Confirm devices.
+	 *
+	 * @param tempDeviceId the temp device id
+	 */
 	public static void confirmDevices(int tempDeviceId){
 		try {
 			confirmDevice(tempDeviceId, 0, null);
@@ -375,6 +489,11 @@ public class MainClass {
 		}
 	}
 	
+	/**
+	 * Confirm device components.
+	 *
+	 * @param tempCompId the temp comp id
+	 */
 	public static void confirmDeviceComponents(int tempCompId){
 		try {
 			confirmDeviceComponent(tempCompId, 0, null);
@@ -384,11 +503,22 @@ public class MainClass {
 		}
 	}
 
+	/**
+	 * Gets the temp components.
+	 *
+	 * @return the temp components
+	 */
 	// Helper
 	public static HashMap<Integer, TempComponent> getTempComponents(){
 		return tempDeviceComponents;
 	}
 	
+	/**
+	 * Insert values.
+	 *
+	 * @param inquirys the inquirys
+	 * @return the list
+	 */
 	public static List<Component> insertValues(List<Inquiry> inquirys) {
 		for (Inquiry inq : inquirys) {
 			Inserts.value(inq.getDeviceComponentId(), new Date(inq.getTimestamp()), inq.getValue());
@@ -398,6 +528,11 @@ public class MainClass {
 		return todos;
 	}
 	
+	/**
+	 * Send to dos.
+	 *
+	 * @param todos the todos
+	 */
 	public static void sendToDos(List<Component> todos) {
 		for (Component component : todos) {
 			int deCoId = component.getId();

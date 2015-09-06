@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.db;
 
 import java.util.ArrayList;
@@ -9,10 +10,21 @@ import org.hibernate.Session;
 import de.bo.aid.boese.constants.Errors;
 import de.bo.aid.boese.model.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Selects.
+ */
 public class Selects {
 	
+	/** The connection. */
 	private static Connection connection = Connection.getConnection();
 	
+	/**
+	 * Connector.
+	 *
+	 * @param coid the coid
+	 * @return the connector
+	 */
 	public static Connector connector(int coid){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -33,6 +45,12 @@ public class Selects {
 		return con;
 	}
 	
+	/**
+	 * Connector device list.
+	 *
+	 * @param coid the coid
+	 * @return the list
+	 */
 	public static List<Device> connectorDeviceList(int coid){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -49,6 +67,12 @@ public class Selects {
 		return device;
 	}
 	
+	/**
+	 * Current value.
+	 *
+	 * @param decoid the decoid
+	 * @return the double
+	 */
 	public static double currentValue(int decoid){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -71,6 +95,12 @@ public class Selects {
 		return d;
 	}
 	
+	/**
+	 * Device.
+	 *
+	 * @param deid the deid
+	 * @return the device
+	 */
 	public static Device device (int deid){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -91,6 +121,11 @@ public class Selects {
 		return dev;
 	}
 	
+	/**
+	 * All zones.
+	 *
+	 * @return the list
+	 */
 	public static List<Zone> allZones(){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -107,6 +142,12 @@ public class Selects {
 		return zone;
 	}
 	
+	/**
+	 * Device component.
+	 *
+	 * @param decoid the decoid
+	 * @return the device component
+	 */
 	public static DeviceComponent deviceComponent(int decoid){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -127,6 +168,12 @@ public class Selects {
 		return deco;
 	}
 	
+	/**
+	 * Rules by device component.
+	 *
+	 * @param decoid the decoid
+	 * @return the list
+	 */
 	public static List<Rule> rulesByDeviceComponent(int decoid){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -150,6 +197,12 @@ public class Selects {
 		return rule;
 	}
 	
+	/**
+	 * Rule.
+	 *
+	 * @param ruid the ruid
+	 * @return the rule
+	 */
 	public static Rule rule(int ruid){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -170,6 +223,12 @@ public class Selects {
 		return rule;
 	}
 	
+	/**
+	 * Unit.
+	 *
+	 * @param uid the uid
+	 * @return the unit
+	 */
 	public static Unit unit(int uid){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -189,6 +248,12 @@ public class Selects {
 		return unit;
 	}
 
+	/**
+	 * Component.
+	 *
+	 * @param coid the coid
+	 * @return the component
+	 */
 	public static Component component(int coid) {
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -208,6 +273,12 @@ public class Selects {
 		return comp;
 	}
 
+	/**
+	 * Service.
+	 *
+	 * @param seid the seid
+	 * @return the service
+	 */
 	public static Service service (int seid) {
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -227,6 +298,12 @@ public class Selects {
 		return service;
 	}
 
+	/**
+	 * Group.
+	 *
+	 * @param grid the grid
+	 * @return the group
+	 */
 	public static Group group(short grid) {
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -246,6 +323,12 @@ public class Selects {
 		return grp;
 	}
 
+	/**
+	 * User.
+	 *
+	 * @param uid the uid
+	 * @return the user
+	 */
 	public static User user(int uid) {
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -265,6 +348,12 @@ public class Selects {
 		return user;
 	}
 
+	/**
+	 * Zone.
+	 *
+	 * @param zoid the zoid
+	 * @return the zone
+	 */
 	public static Zone zone(int zoid) {
 		Session session = connection.getSession();
 		session.beginTransaction();

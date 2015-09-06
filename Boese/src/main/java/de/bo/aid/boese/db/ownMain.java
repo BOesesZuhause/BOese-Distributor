@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.db;
 
 import java.util.ArrayList;
@@ -6,8 +7,17 @@ import java.util.Map;
 
 import de.bo.aid.boese.model.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ownMain.
+ */
 public class ownMain {
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args){
 //		System.out.println(Checks.deviceComponentID(1));
 //		

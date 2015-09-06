@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.parser.test;
 
 import static org.junit.Assert.*;
@@ -24,8 +25,15 @@ import de.bo.aid.boese.json.SendDeviceComponents;
 import de.bo.aid.boese.json.SendDevices;
 import de.bo.aid.boese.json.SendValue;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class protokollTest.
+ */
 public class protokollTest {
 	
+	/**
+	 * Parses the request connection.
+	 */
 	@Test
 	public void parseRequestConnection(){
 		
@@ -48,6 +56,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);			
 	}
 	
+	/**
+	 * Read request connection.
+	 */
 	@Test
 	public void readRequestConnection(){
 		
@@ -73,6 +84,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message); 
 	}
 	
+	/**
+	 * Parses the confirm connection.
+	 */
 	@Test
 	public void parseConfirmConnection(){
 		
@@ -94,6 +108,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);			
 	}
 	
+	/**
+	 * Read confirm connection.
+	 */
 	@Test
 	public void readConfirmConnection(){
 		
@@ -118,6 +135,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message); 
 	}
 	
+	/**
+	 * Parses the request all devices.
+	 */
 	@Test
 	public void parseRequestAllDevices(){
 		
@@ -138,6 +158,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);			
 	}
 	
+	/**
+	 * Read request all devices.
+	 */
 	@Test
 	public void readRequestAllDevices(){
 		
@@ -161,6 +184,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message); 
 	}
 	
+	/**
+	 * Parses the send devices.
+	 */
 	@Test
 	public void parseSendDevices(){
 		
@@ -187,6 +213,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);			
 	}
 	
+	/**
+	 * Read send devices.
+	 */
 	@Test
 	public void readSendDevices(){
 		
@@ -214,6 +243,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message); 
 	}
 	
+	/**
+	 * Parses the confirm devices.
+	 */
 	@Test
 	public void parseConfirmDevices(){
 		
@@ -240,6 +272,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);			
 	}
 	
+	/**
+	 * Read confirm devices.
+	 */
 	@Test
 	public void readConfirmDevices(){
 		
@@ -267,6 +302,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message); 
 	}
 	
+	/**
+	 * Parses the request device components.
+	 */
 	@Test
 	public void parseRequestDeviceComponents(){
 		
@@ -288,6 +326,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);			
 	}
 	
+	/**
+	 * Read request device components.
+	 */
 	@Test
 	public void readRequestDeviceComponents(){
 		
@@ -312,6 +353,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message); 
 	}
 	
+	/**
+	 * Parses the send device components.
+	 */
 	//TODO Test mit mehreren Komponenten
 	@Test
 	public void parseSendDeviceComponents(){
@@ -344,6 +388,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);			
 	}
 	
+	/**
+	 * Read send device components.
+	 */
 	//TODO Test mit mehreren Komponenten
 	@Test
 	public void readSendDeviceComponents(){
@@ -377,6 +424,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message); 
 	}
 	
+	/**
+	 * Parses the confirm device components.
+	 */
 	//TODO Test mit mehreren Komponenten
 	@Test
 	public void parseConfirmDeviceComponents(){
@@ -406,6 +456,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);			
 	}
 	
+	/**
+	 * Read confirm device components.
+	 */
 	//TODO Test mit mehreren Komponenten
 	@Test
 	public void readConfirmDeviceComponents(){
@@ -437,6 +490,9 @@ public class protokollTest {
 	}
 	
 	
+	/**
+	 * Parses the send value.
+	 */
 	@Test
 	public void parseSendValue(){
 		
@@ -461,6 +517,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);			
 	}
 	
+	/**
+	 * Read send value.
+	 */
 	@Test
 	public void readSendValue(){
 		
@@ -488,6 +547,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message); 
 	}
 	
+	/**
+	 * Parses the confirm value.
+	 */
 	@Test
 	public void parseConfirmValue(){
 		
@@ -510,6 +572,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);			
 	}
 	
+	/**
+	 * Read confirm value.
+	 */
 	@Test
 	public void readConfirmValue(){
 		

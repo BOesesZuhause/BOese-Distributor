@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.simulation;
 
 import java.util.HashMap;
@@ -8,9 +9,16 @@ import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempDevice;
 import javassist.NotFoundException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UserSimulation.
+ */
 public class UserSimulation {
 	
 
+	/**
+	 * Confirm connectors.
+	 */
 	public void confirmConnectors(){
 		HashMap<Integer, String> connectors = MainClass.getTempConnectors();
 		for(Integer key : connectors.keySet()){
@@ -24,6 +32,9 @@ public class UserSimulation {
 		}
 	}
 	
+	/**
+	 * Confirm devices.
+	 */
 	public void confirmDevices(){
 		HashMap<Integer, TempDevice> devices = MainClass.getTempDevices();
 		for(Integer key : devices.keySet()){
@@ -37,6 +48,9 @@ public class UserSimulation {
 		
 	}
 	
+	/**
+	 * Confirm device components.
+	 */
 	public void confirmDeviceComponents(){
 		HashMap<Integer, TempComponent> devices = MainClass.getTempComponents();
 		for(Integer key : devices.keySet()){

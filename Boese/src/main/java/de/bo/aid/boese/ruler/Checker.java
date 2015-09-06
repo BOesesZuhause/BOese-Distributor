@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.ruler;
 
 import java.util.ArrayList;
@@ -13,8 +14,19 @@ import de.bo.aid.boese.xml.Component;
 import de.bo.aid.boese.xml.GateList;
 import de.bo.aid.boese.xml.GateList.GateType;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Checker.
+ */
 public class Checker {
 
+	/**
+	 * De co in condition.
+	 *
+	 * @param decoid the decoid
+	 * @param condition the condition
+	 * @return true, if successful
+	 */
 	public boolean deCoInCondition(int decoid, String condition){
 		if(condition.contains("<ID>" + decoid + "</ID>")){
 			return true;
@@ -24,6 +36,13 @@ public class Checker {
 		}
 	}
 	
+	/**
+	 * Condition.
+	 *
+	 * @param gate the gate
+	 * @param deCoValue the de co value
+	 * @return the boolean
+	 */
 	public Boolean condition(GateList gate, HashMap<Integer, Double> deCoValue){
 		Boolean b = null;
 		GateType gt = gate.getGateType();
@@ -58,6 +77,13 @@ public class Checker {
 
 	}
 	
+	/**
+	 * Condition.
+	 *
+	 * @param comp the comp
+	 * @param deCoValue the de co value
+	 * @return the boolean
+	 */
 	public Boolean condition(Component comp, HashMap<Integer, Double> deCoValue){
 		if(comp == null){
 			return false;
@@ -82,6 +108,12 @@ public class Checker {
 		}
 	}
 
+	/**
+	 * Action.
+	 *
+	 * @param action the action
+	 * @return the list
+	 */
 	public List<Component> action(Action action) {
 		for(int i : action.getActivateRules()){
 			Updates.activateRule(i);

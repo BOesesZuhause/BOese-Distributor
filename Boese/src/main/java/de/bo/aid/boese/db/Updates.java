@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.db;
 
 import java.math.BigDecimal;
@@ -8,10 +9,21 @@ import org.hibernate.Session;
 
 import de.bo.aid.boese.model.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Updates.
+ */
 public class Updates {
 	
+	/** The connection. */
 	private static Connection connection = Connection.getConnection();
 	
+	/**
+	 * Value.
+	 *
+	 * @param value the value
+	 * @param decoid the decoid
+	 */
 	public static void value(double value, int decoid){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -29,6 +41,13 @@ public class Updates {
 		session.close();
 	}
 	
+	/**
+	 * Unit.
+	 *
+	 * @param uid the uid
+	 * @param name the name
+	 * @param symbol the symbol
+	 */
 	public static void unit (int uid, String name, String symbol){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -46,6 +65,14 @@ public class Updates {
 		session.close();
 	}
 	
+	/**
+	 * Component.
+	 *
+	 * @param coid the coid
+	 * @param unit the unit
+	 * @param name the name
+	 * @param sensor the sensor
+	 */
 	public static void component (int coid, Unit unit, String name, boolean sensor){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -64,6 +91,14 @@ public class Updates {
 		session.close();
 	}
 
+	/**
+	 * Device component.
+	 *
+	 * @param decoid the decoid
+	 * @param status the status
+	 * @param description the description
+	 * @param logrule the logrule
+	 */
 	public static void DeviceComponent (int decoid, short status, String description, double logrule){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -84,6 +119,16 @@ public class Updates {
 		session.close();
 	}
 	
+	/**
+	 * Device.
+	 *
+	 * @param deid the deid
+	 * @param alias the alias
+	 * @param serial the serial
+	 * @param purchase the purchase
+	 * @param zone the zone
+	 * @param con the con
+	 */
 	public static void device (int deid, String alias, String serial, Date purchase, Zone zone, Connector con){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -110,6 +155,13 @@ public class Updates {
 		session.close();
 	}
 	
+	/**
+	 * Connector.
+	 *
+	 * @param conid the conid
+	 * @param name the name
+	 * @param pw the pw
+	 */
 	public static void connector(int conid, String name, String pw){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -127,6 +179,12 @@ public class Updates {
 		session.close();
 	}
 	
+	/**
+	 * Service.
+	 *
+	 * @param seid the seid
+	 * @param description the description
+	 */
 	public static void service(int seid, String description){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -141,6 +199,12 @@ public class Updates {
 		session.close();
 	}
 	
+	/**
+	 * Group.
+	 *
+	 * @param grid the grid
+	 * @param name the name
+	 */
 	public static void group(short grid, String name){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -155,6 +219,17 @@ public class Updates {
 		session.close();
 	}
 	
+	/**
+	 * User.
+	 *
+	 * @param uid the uid
+	 * @param surname the surname
+	 * @param firstname the firstname
+	 * @param pw the pw
+	 * @param gender the gender
+	 * @param username the username
+	 * @param mail the mail
+	 */
 	public static void user(int uid, String surname, String firstname, String pw, boolean gender, String username, String mail){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -182,6 +257,13 @@ public class Updates {
 		session.close();
 	}
 	
+	/**
+	 * Zone.
+	 *
+	 * @param zoid the zoid
+	 * @param name the name
+	 * @param suzone the suzone
+	 */
 	public static void zone(int zoid, String name, Zone suzone){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -199,6 +281,15 @@ public class Updates {
 		session.close();
 	}
 	
+	/**
+	 * Rule.
+	 *
+	 * @param ruid the ruid
+	 * @param active the active
+	 * @param permissions the permissions
+	 * @param conditions the conditions
+	 * @param actions the actions
+	 */
 	public static void rule(int ruid, boolean active, String permissions, String conditions, String actions){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -221,6 +312,11 @@ public class Updates {
 		session.close();
 	}
 	
+	/**
+	 * Activate rule.
+	 *
+	 * @param ruid the ruid
+	 */
 	public static void activateRule(int ruid){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -233,6 +329,11 @@ public class Updates {
 		session.close();
 	}
 	
+	/**
+	 * Deactivate rule.
+	 *
+	 * @param ruid the ruid
+	 */
 	public static void deactivateRule(int ruid){
 		Session session = connection.getSession();
 		session.beginTransaction();

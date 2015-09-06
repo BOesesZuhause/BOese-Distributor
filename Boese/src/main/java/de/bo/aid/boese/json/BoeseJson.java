@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.json;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -8,28 +9,64 @@ import java.util.Map.Entry;
 
 import javax.json.*;
 
+// TODO: Auto-generated Javadoc
 /**
  * This class is the base for all Boese Json Messages.
  * It also provides methods to parse Json to Boese Message and vies versa.
  */
 public class BoeseJson {
+	
+	/** The message type. */
 	protected MessageType messageType = null;
+	
+	/** The connector id. */
 	protected int connectorId = -1;
+	
+	/** The seq nr. */
 	protected int seqNr = -1;
+	
+	/** The ack nr. */
 	protected int ackNr = -1;
+	
+	/** The status. */
 	protected int status = -1;
+	
+	/** The timestamp. */
 	protected long timestamp = -1;
 	
 	/**
-	 * Enumeration with all available message types
+	 * Enumeration with all available message types.
 	 */
 	public enum MessageType {
-		REQUESTCONNECTION, CONFIRMCONNECTION, REQUESTALLDEVICES, SENDDEVICES, CONFIRMDEVICES, REQUESTDEVICECOMPONENTS,
-		SENDDEVICECOMPONENTS, CONFIRMDEVICECOMPONENTS, SENDVALUE, CONFIRMVALUE, REQUESTVALUE
+		
+		/** The requestconnection. */
+		REQUESTCONNECTION, 
+ /** The confirmconnection. */
+ CONFIRMCONNECTION, 
+ /** The requestalldevices. */
+ REQUESTALLDEVICES, 
+ /** The senddevices. */
+ SENDDEVICES, 
+ /** The confirmdevices. */
+ CONFIRMDEVICES, 
+ /** The requestdevicecomponents. */
+ REQUESTDEVICECOMPONENTS,
+		
+		/** The senddevicecomponents. */
+		SENDDEVICECOMPONENTS, 
+ /** The confirmdevicecomponents. */
+ CONFIRMDEVICECOMPONENTS, 
+ /** The sendvalue. */
+ SENDVALUE, 
+ /** The confirmvalue. */
+ CONFIRMVALUE, 
+ /** The requestvalue. */
+ REQUESTVALUE
 	}
 
 	/**
-	 * Getter for the message type
+	 * Getter for the message type.
+	 *
 	 * @return the message type
 	 */
 	public MessageType getType() {
@@ -37,15 +74,17 @@ public class BoeseJson {
 	}
 	
 	/**
-	 * Getter for the connector ID
-	 * @return the connector ID 
+	 * Getter for the connector ID.
+	 *
+	 * @return the connector ID
 	 */
 	public int getConnectorId() {
 		return connectorId;
 	}
 	
 	/**
-	 * Getter for the sequence number
+	 * Getter for the sequence number.
+	 *
 	 * @return the sequence number
 	 */
 	public int getSeqenceNr() {
@@ -53,7 +92,8 @@ public class BoeseJson {
 	}
 	
 	/**
-	 * Getter for the acknowledge number
+	 * Getter for the acknowledge number.
+	 *
 	 * @return the acknowledge number
 	 */
 	public int getAcknowledgeId() {
@@ -61,7 +101,8 @@ public class BoeseJson {
 	}
 	
 	/**
-	 * Getter for the status flag
+	 * Getter for the status flag.
+	 *
 	 * @return the status flag
 	 */
 	public int getStatus() {
@@ -69,7 +110,8 @@ public class BoeseJson {
 	}
 	
 	/**
-	 * Getter for the timestamp of the message
+	 * Getter for the timestamp of the message.
+	 *
 	 * @return the timestamp of the message
 	 */
 	public long getTimestamp() {
@@ -77,13 +119,14 @@ public class BoeseJson {
 	}
 	
 	/**
-	 * Protected constructor for child classes only
-	 * @param messageType
-	 * @param connectorId
-	 * @param seqNr
-	 * @param ackNr
-	 * @param status
-	 * @param timestamp
+	 * Protected constructor for child classes only.
+	 *
+	 * @param messageType the message type
+	 * @param connectorId the connector id
+	 * @param seqNr the seq nr
+	 * @param ackNr the ack nr
+	 * @param status the status
+	 * @param timestamp the timestamp
 	 */
 	protected BoeseJson(MessageType messageType, int connectorId, int seqNr, int ackNr, int status, long timestamp) {
 		this.messageType = messageType;
@@ -224,13 +267,14 @@ public class BoeseJson {
 	}
 	
 	/**
-	 * Private method to create a JsonObject with the Json header
-	 * @param messageType
-	 * @param connectorId
-	 * @param seqNr
-	 * @param ackNr
-	 * @param status
-	 * @param timestamp
+	 * Private method to create a JsonObject with the Json header.
+	 *
+	 * @param messageType the message type
+	 * @param connectorId the connector id
+	 * @param seqNr the seq nr
+	 * @param ackNr the ack nr
+	 * @param status the status
+	 * @param timestamp the timestamp
 	 * @return JsonObjectBuilder containing the Message Header
 	 */
 	private static JsonObjectBuilder addHeader(int messageType, int connectorId, int seqNr, int ackNr, int status, long timestamp) {
@@ -245,7 +289,8 @@ public class BoeseJson {
 	}
 	
 	/**
-	 * Writes a BoeseJson Message to a given output stream
+	 * Writes a BoeseJson Message to a given output stream.
+	 *
 	 * @param message the BoeseJson Message
 	 * @param os the OutputStream to write in. If null a new ByteArrayOutputStream is generated.
 	 * @return true, if writing was successful

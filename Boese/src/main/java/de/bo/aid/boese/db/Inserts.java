@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.db;
 
 import java.math.BigDecimal;
@@ -11,9 +12,24 @@ import org.hibernate.Session;
 import de.bo.aid.boese.constants.Errors;
 import de.bo.aid.boese.model.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Inserts.
+ */
 public class Inserts {
+	
+	/** The connection. */
 	private static Connection connection = Connection.getConnection();
 	
+	/**
+	 * Device.
+	 *
+	 * @param coid the coid
+	 * @param zoid the zoid
+	 * @param name the name
+	 * @param serial the serial
+	 * @return the int
+	 */
 	public static int device(int coid, int zoid, String name, String serial){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -52,6 +68,14 @@ public class Inserts {
 		return device.getDeId();
 	}
 	
+	/**
+	 * Component.
+	 *
+	 * @param name the name
+	 * @param unitId the unit id
+	 * @param sensor the sensor
+	 * @return the int
+	 */
 	public static int component(String name, int unitId, boolean sensor){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -87,6 +111,14 @@ public class Inserts {
 		return comp.getCoId();	
 	}
 	
+	/**
+	 * Device component.
+	 *
+	 * @param deid the deid
+	 * @param coid the coid
+	 * @param description the description
+	 * @return the int
+	 */
 	public static int deviceComponent(int deid, int coid, String description){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -125,6 +157,13 @@ public class Inserts {
 		return dc.getDeCoId();
 	}
 	
+	/**
+	 * Connector.
+	 *
+	 * @param name the name
+	 * @param pw the pw
+	 * @return the int
+	 */
 	public static int connector(String name, String pw){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -148,6 +187,14 @@ public class Inserts {
 		return con.getCoId();
 	}
 	
+	/**
+	 * Value.
+	 *
+	 * @param decoid the decoid
+	 * @param timestamp the timestamp
+	 * @param value the value
+	 * @return the int
+	 */
 	public static int value(int decoid, Date timestamp, double value){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -191,6 +238,13 @@ public class Inserts {
 		return Errors.OK;
 	}
 	
+	/**
+	 * Unit.
+	 *
+	 * @param name the name
+	 * @param symbol the symbol
+	 * @return the int
+	 */
 	public static int unit(String name, String symbol){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -214,6 +268,15 @@ public class Inserts {
 		return unit.getUnId();
 	}
 	
+	/**
+	 * Rule.
+	 *
+	 * @param deCoID the de co id
+	 * @param permissions the permissions
+	 * @param conditions the conditions
+	 * @param actions the actions
+	 * @return the int
+	 */
 	public static int rule(List<Integer> deCoID, String permissions, String conditions, String actions){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -267,6 +330,12 @@ public class Inserts {
 		return ruID;
 	}
 	
+	/**
+	 * Service.
+	 *
+	 * @param description the description
+	 * @return the int
+	 */
 	public static int service(String description){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -289,6 +358,12 @@ public class Inserts {
 		return service.getSeId();
 	}
 	
+	/**
+	 * Group.
+	 *
+	 * @param name the name
+	 * @return the int
+	 */
 	public static int group(String name){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -311,6 +386,18 @@ public class Inserts {
 		return grp.getGrId();
 	}
 	
+	/**
+	 * User.
+	 *
+	 * @param surname the surname
+	 * @param firstname the firstname
+	 * @param password the password
+	 * @param gender the gender
+	 * @param birth the birth
+	 * @param username the username
+	 * @param mail the mail
+	 * @return the int
+	 */
 	public static int User(String surname, String firstname, String password, boolean gender, Date birth, String username, String mail){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -339,6 +426,13 @@ public class Inserts {
 		return user.getUsId();
 	}
 	
+	/**
+	 * Zone.
+	 *
+	 * @param name the name
+	 * @param suzone the suzone
+	 * @return the int
+	 */
 	public static int zone(String name, Zone suzone){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -362,6 +456,14 @@ public class Inserts {
 		return zone.getZoId();
 	}
 	
+	/**
+	 * Device group.
+	 *
+	 * @param deid the deid
+	 * @param grid the grid
+	 * @param rights the rights
+	 * @throws Exception the exception
+	 */
 	public static void deviceGroup(int deid, short grid, short rights) throws Exception{
 		Session session = connection.getSession();
 		session.beginTransaction();

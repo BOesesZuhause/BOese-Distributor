@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.hibernateTest;
 
 
@@ -7,8 +8,15 @@ import org.junit.Test;
 
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class mappingTest.
+ */
 public class mappingTest {
 
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 		//DEPRECATED

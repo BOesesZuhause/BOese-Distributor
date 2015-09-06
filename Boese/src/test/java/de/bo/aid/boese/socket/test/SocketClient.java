@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.socket.test;
 import java.net.URI;
 
@@ -8,15 +9,32 @@ import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
 import org.eclipse.jetty.util.component.LifeCycle;
+// TODO: Auto-generated Javadoc
+
+/**
+ * The Class SocketClient.
+ */
 @ClientEndpoint
 public class SocketClient
 {
 	
+	/**
+	 * On message.
+	 *
+	 * @param message the message
+	 */
 	@OnMessage
 	 public void onMessage(String message) {
 		System.out.println("Received Message: " + message);
 	}
 	 
+	/**
+	 * Connect.
+	 *
+	 * @param uri the uri
+	 * @return the session
+	 * @throws Exception the exception
+	 */
 	public static Session connect(URI uri) throws Exception {
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         

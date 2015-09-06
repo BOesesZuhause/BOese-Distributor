@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.simulation;
 
 import java.net.URI;
@@ -17,16 +18,23 @@ import javax.websocket.WebSocketContainer;
 import de.bo.aid.boese.socket.BoeseSocket;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SocketClientStandalone.
+ */
 @ClientEndpoint
 public class SocketClientStandalone {
 	
+    /** The user session. */
     Session userSession = null;
+    
+    /** The message handler. */
     private MessageHandler messageHandler;
 
     
     /**
-     * Opens a Connection to a Websocketserver
-     * 
+     * Opens a Connection to a Websocketserver.
+     *
      * @param endpointURI URI of the Websocketserver to which the connection should be opened.
      */
     public void connect(URI endpointURI){
@@ -74,6 +82,11 @@ public class SocketClientStandalone {
         }
     }
     
+    /**
+     * On error.
+     *
+     * @param error the error
+     */
     @OnError
     public void onError(Throwable error){
     	messageHandler.closeConnection();
@@ -81,9 +94,9 @@ public class SocketClientStandalone {
     }
 
     /**
-     * register message handler
+     * register message handler.
      *
-     * @param message
+     * @param msgHandler the msg handler
      */
     public void addMessageHandler(MessageHandler msgHandler) {
         this.messageHandler = msgHandler;
@@ -92,8 +105,7 @@ public class SocketClientStandalone {
     /**
      * Send a message.
      *
-     * @param user
-     * @param message
+     * @param message the message
      */
     public void sendMessage(String message) {
         this.userSession.getAsyncRemote().sendText(message);
@@ -114,6 +126,9 @@ public class SocketClientStandalone {
          */
         public void handleMessage(String message);
         
+        /**
+         * Close connection.
+         */
         public void closeConnection();
     }
 

@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.xml;
 
 import java.util.HashSet;
@@ -9,17 +10,33 @@ import org.w3c.dom.NodeList;
 import de.bo.aid.boese.xml.Component.Comperator;
 import de.bo.aid.boese.xml.GateList.GateType;
 
+// TODO: Auto-generated Javadoc
 /**
- * Class that handles rule conditions
+ * Class that handles rule conditions.
  */
 public class Condition extends BoeseXML {
+	
+	/** The conditions. */
 	GateList conditions;
+	
+	/** The component ids. */
 	HashSet<Integer> componentIds;
 	
+	/**
+	 * Gets the component ids.
+	 *
+	 * @return the component ids
+	 */
 	public HashSet<Integer> getComponentIds() {
 		return componentIds;
 	}
 
+	/**
+	 * Parses the node list.
+	 *
+	 * @param nList the n list
+	 * @return the gate list
+	 */
 	private GateList parseNodeList(NodeList nList) {
 		GateList gateList = new GateList();
 		GateList gate = null;
@@ -101,8 +118,9 @@ public class Condition extends BoeseXML {
 	
 	/**
 	 * Constructor that will be called by BoeseXML.readXML()
-	 * @param type
-	 * @param doc
+	 *
+	 * @param type the type
+	 * @param doc the doc
 	 */
 	public Condition(XMLType type, Document doc) {
 		this.xmlType = type;
@@ -113,9 +131,10 @@ public class Condition extends BoeseXML {
 	}
 	
 	/**
-	 * Method to check if a certain device component is used in this rule condition
-	 * @param componentId
-	 * @return
+	 * Method to check if a certain device component is used in this rule condition.
+	 *
+	 * @param componentId the component id
+	 * @return true, if successful
 	 */
 	public boolean containsComponent(int componentId) {
 		return componentIds.contains(componentId);

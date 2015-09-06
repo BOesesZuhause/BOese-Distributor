@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.socket;
 
 import javax.websocket.server.ServerContainer;
@@ -8,11 +9,19 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BoeseServer.
+ */
 public class BoeseServer
 {
 	
+	/** The server. */
 	private Server server;
 
+	/**
+	 * Start.
+	 */
 	public void start()
     {
         server = new Server();
@@ -44,6 +53,9 @@ public class BoeseServer
         }
     }
 	
+	/**
+	 * Stop.
+	 */
 	public void stop(){
 		try {
 			server.stop();

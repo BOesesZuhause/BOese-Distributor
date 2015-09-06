@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.xml;
 
 import java.util.HashSet;
@@ -7,14 +8,36 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Action.
+ */
 public class Action extends BoeseXML {
+	
+	/** The activate rule list. */
 	private HashSet<Integer> activateRuleList;
+	
+	/** The deactivate rule list. */
 	private HashSet<Integer> deactivateRuleList;
+	
+	/** The deactivate todo list. */
 	private HashSet<Integer> deactivateTodoList;
+	
+	/** The activate todo list. */
 	private HashSet<Integer> activateTodoList;
+	
+	/** The delete todo list. */
 	private HashSet<Integer> deleteTodoList;
+	
+	/** The actor list. */
 	private HashSet<Component> actorList;
 	
+	/**
+	 * Instantiates a new action.
+	 *
+	 * @param type the type
+	 * @param doc the doc
+	 */
 	public Action(XMLType type, Document doc) {
 		this.xmlType = type;
 		this.doc = doc;
@@ -106,26 +129,56 @@ public class Action extends BoeseXML {
 		}
 	}
 	
+	/**
+	 * Gets the activate rules.
+	 *
+	 * @return the activate rules
+	 */
 	public HashSet<Integer> getActivateRules() {
 		return activateRuleList;
 	}
 	
+	/**
+	 * Gets the deactivate rules.
+	 *
+	 * @return the deactivate rules
+	 */
 	public HashSet<Integer> getDeactivateRules() {
 		return deactivateRuleList;
 	}
 	
+	/**
+	 * Gets the actors.
+	 *
+	 * @return the actors
+	 */
 	public HashSet<Component> getActors() {
 		return actorList;
 	}
 	
+	/**
+	 * Gets the activate todos.
+	 *
+	 * @return the activate todos
+	 */
 	public HashSet<Integer> getActivateTodos() {
 		return activateTodoList;
 	}
 	
+	/**
+	 * Gets the deactivate todos.
+	 *
+	 * @return the deactivate todos
+	 */
 	public HashSet<Integer> getDeactivateTodos() {
 		return deactivateTodoList;
 	}
 	
+	/**
+	 * Gets the delete todos.
+	 *
+	 * @return the delete todos
+	 */
 	public HashSet<Integer> getDeleteTodos() {
 		return deleteTodoList;
 	}

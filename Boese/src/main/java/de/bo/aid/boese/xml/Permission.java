@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.xml;
 
 import java.util.HashSet;
@@ -8,9 +9,21 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Permission.
+ */
 public class Permission extends BoeseXML {
+	
+	/** The group ids. */
 	private HashSet<Integer> groupIds;
 	
+	/**
+	 * Instantiates a new permission.
+	 *
+	 * @param type the type
+	 * @param doc the doc
+	 */
 	public Permission(XMLType type, Document doc) {
 		this.xmlType = type;
 		this.doc = doc;
@@ -25,6 +38,11 @@ public class Permission extends BoeseXML {
 		}
 	}
 	
+	/**
+	 * Gets the group id.
+	 *
+	 * @return the group id
+	 */
 	public Set<Integer> getGroupId() {
 		return groupIds;
 	}

@@ -1,3 +1,4 @@
+
 package de.bo.aid.boese.socket.test;
 
 import static org.junit.Assert.*;
@@ -12,10 +13,20 @@ import org.junit.Test;
 
 import de.bo.aid.boese.socket.BoeseServer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ConectionTest.
+ */
 public class ConectionTest {
 	
+	/** The server. */
 	private BoeseServer server;
 	
+    /**
+     * Start server.
+     *
+     * @throws Exception the exception
+     */
     @Before
     public void startServer() throws Exception {
         server = new BoeseServer();
@@ -23,6 +34,11 @@ public class ConectionTest {
     }
 	
 
+	/**
+	 * Test connection.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testConnection() throws Exception {
 		URI uri = URI.create("ws://localhost:8081/events/");
@@ -30,7 +46,12 @@ public class ConectionTest {
 		assertNotNull(s1);
 	}
 	
-	   @After
+	   /**
+   	 * Shutdown.
+   	 *
+   	 * @throws Exception the exception
+   	 */
+   	@After
 	    public void shutdown() throws Exception {
 	        server.stop();
 	    }
