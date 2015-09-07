@@ -19,7 +19,7 @@ import org.hibernate.engine.spi.SessionImplementor;
 public class SQLXMLUserType implements org.hibernate.usertype.UserType {
  
     /** The sql types supported. */
-    private final int[] sqlTypesSupported = new int[] { Types.VARCHAR };
+    private final int[] sqlTypesSupported = new int[] { Types.LONGVARCHAR };
  
     /* (non-Javadoc)
      * @see org.hibernate.usertype.UserType#sqlTypes()
