@@ -50,8 +50,6 @@ public class Controll {
 				if(check.deCoInCondition(id, rule.getConditions())){
 					InputStream is = new ByteArrayInputStream(rule.getConditions().getBytes());
 					System.out.println("Rule: " + rule.getRuId());
-System.out.println("Condition: " + rule.getConditions());
-System.out.println("Action: " + rule.getActions());
 					BoeseXML conBXML = BoeseXML.readXML(is);
 					is = new ByteArrayInputStream(rule.getActions().getBytes());
 					BoeseXML actBXML = BoeseXML.readXML(is);

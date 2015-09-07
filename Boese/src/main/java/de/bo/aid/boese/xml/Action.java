@@ -87,7 +87,7 @@ public class Action extends BoeseXML {
 				deleteTodoList.add(Integer.valueOf(element.getTextContent()));
 			}
 		}
-		nList = doc.getElementsByTagName("AKTOR");
+		nList = doc.getElementsByTagName("ACTOR");
 		for (int i = 0; i < nList.getLength(); i++) {
 			Node node = nList.item(i);
 			if (node.hasChildNodes()) {

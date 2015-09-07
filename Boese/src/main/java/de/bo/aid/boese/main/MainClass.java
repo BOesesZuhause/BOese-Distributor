@@ -3,7 +3,11 @@ package de.bo.aid.boese.main;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,8 +15,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.hibernate.LazyInitializationException;
 
@@ -29,6 +31,7 @@ import de.bo.aid.boese.json.RequestConnection;
 import de.bo.aid.boese.json.RequestDeviceComponents;
 import de.bo.aid.boese.json.SendDeviceComponents;
 import de.bo.aid.boese.json.SendDevices;
+import de.bo.aid.boese.json.SendNotification;
 import de.bo.aid.boese.json.SendValue;
 import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempDevice;
@@ -238,6 +241,35 @@ public class MainClass {
 		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
+	private static void handleSendNotification(SendNotification sn, int connectorId) {
+		int seqNr = sn.getSeqenceNr();
+		if (connectorId != sn.getConnectorId()) {
+			SocketHandler.getInstance().rejectConnection(connectorId);
+			return;
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append(new Date().getTime());
+		sb.append(",");
+		sb.append(sn.getConnectorId());
+		sb.append(",");
+		sb.append(sn.getDeviceId());
+		sb.append(",");
+		sb.append(sn.getDeviceComponentId());
+		sb.append(",");
+		sb.append(sn.getNotificationType());
+		sb.append(",");
+		sb.append(sn.getNotificationTimestamp());
+		sb.append(",");
+		sb.append(sn.getNotificationText());
+		sb.append("\n");
+		try {
+		    Files.write(Paths.get("logfile.csv"), sb.toString().getBytes(), StandardOpenOption.APPEND);
+		}catch (IOException e) {
+			System.out.println("Error while writing the log file");
+		}
+		
+	}
+	
 	/**
 	 * Method to handle Json messages and act depednding on the type and content.
 	 *
@@ -263,6 +295,8 @@ public class MainClass {
 		case SENDVALUE:
 			handleSendValue((SendValue)bjMessage, connectorId);
 			break;
+		case SENDNOTIFICATION:
+			handleSendNotification((SendNotification)bjMessage, connectorId);
 		default:
 			break;
 		}
@@ -277,8 +311,8 @@ public class MainClass {
 //		ArrayList<Integer> decoIdL = new ArrayList<>();
 //		decoIdL.add(29);
 //		decoIdL.add(30);
-//		String conditions = "<CONDITIONS><AND><COMPONENT><ID>16</ID><COMPERATOR>==</COMPERATOR><VALUE>1.0</VALUE><START_TIME>123123</START_TIME><DURATION>1</DURATION></COMPONENT></AND></CONDITIONS>";
-//		String actions = "<ACTION><AKTOR><ID>21</ID><VALUE>1.0</VALUE><RESET_VALUE>0</RESET_VALUE><START_TIME>123123</START_TIME><DURATION>5</DURATION><REPEAT_AFTER_END>0</REPEAT_AFTER_END></AKTOR></ACTION>";
+//		String conditions = "<CONDITION><AND><COMPONENT><ID>16</ID><COMPERATOR>==</COMPERATOR><VALUE>1.0</VALUE><START_TIME>123123</START_TIME><DURATION>1</DURATION></COMPONENT></AND></CONDITION>";
+//		String actions = "<ACTION><ACTOR><ID>21</ID><VALUE>1.0</VALUE><RESET_VALUE>0</RESET_VALUE><START_TIME>123123</START_TIME><DURATION>5</DURATION><REPEAT_AFTER_END>0</REPEAT_AFTER_END></ACTOR></ACTION>";
 //		
 //		Inserts.rule(decoIdL, "", conditions, actions);
 		BoeseServer server = new BoeseServer();

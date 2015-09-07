@@ -20,13 +20,12 @@ public class BoeseXML {
 	 * Enumeration to define the typ of a BoeseXML object.
 	 */
 	public enum XMLType {
-		
 		/** The action. */
 		ACTION, 
- /** The permission. */
- PERMISSION, 
- /** The condition. */
- CONDITION
+		/** The permission. */
+		PERMISSION, 
+		/** The condition. */
+		CONDITION
 	}
 	
 	/** The xml type. */
@@ -78,17 +77,16 @@ public class BoeseXML {
 			case "ACTION":
 				returnXML = new Action(XMLType.ACTION, doc);
 				break;
-			case "CONDITIONS":
+			case "CONDITION":
 				returnXML = new Condition(XMLType.CONDITION, doc);
 				break;
-				
 			case "PERMISSION":
 				returnXML = new Permission(XMLType.PERMISSION, doc);
 			default: 
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println();
 		}
 		
 		return returnXML;
