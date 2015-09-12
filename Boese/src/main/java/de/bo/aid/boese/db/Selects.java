@@ -372,5 +372,26 @@ public class Selects {
 		session.close();
 		return zone;
 	}
+	
+	/**
+	 * All devices.
+	 *
+	 * @return the list
+	 */
+	public static List<Device> allDevices(){
+		Session session = connection.getSession();
+		session.beginTransaction();
+ 
+		List erg = session.createQuery("from Device").list();
+		List<Device> dev = new ArrayList<Device>();
+		for(Object o: erg){
+			dev.add((Device) o);
+		}
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		return dev;
+	}
 
 }
