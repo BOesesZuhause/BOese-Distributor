@@ -1,4 +1,3 @@
-
 package de.bo.aid.boese.db;
 
 import java.math.BigDecimal;
@@ -342,6 +341,42 @@ public class Updates {
 		rule.setActive(false);
 		
 		session.save(rule);
+		session.getTransaction().commit();
+		session.close();
+	}
+	
+	/**
+	 * update status of a deviceComponent
+	 *
+	 * @param status the status
+	 * @param decoId the DeviceComponentID
+	 */
+	public static void deviceComponentStatus(short status, int decoId){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		DeviceComponent deco = Selects.deviceComponent(decoId);
+		deco.setStatus(status);
+		
+		session.save(deco);
+		session.getTransaction().commit();
+		session.close();
+	}
+	
+	/**
+	 * update status of a connector
+	 *
+	 * @param status the status
+	 * @param coId the ConnectorID
+	 */
+	public static void connectorStatus(short status, int coId){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		Connector co = Selects.connector(coId);
+		co.setStatus(status);
+		
+		session.save(co);
 		session.getTransaction().commit();
 		session.close();
 	}

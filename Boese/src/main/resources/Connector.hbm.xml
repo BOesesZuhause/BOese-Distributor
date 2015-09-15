@@ -16,6 +16,9 @@
         <property name="password" type="string">
             <column name="secret" length="125" not-null="true" />
         </property>
+        <property name="status" type="java.lang.Short">
+            <column name="Status" />
+        </property>
         <set name="historyLogConnectors" table="history_log_connector" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="CoID" not-null="true" />
