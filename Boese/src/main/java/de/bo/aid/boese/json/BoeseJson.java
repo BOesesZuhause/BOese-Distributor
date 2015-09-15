@@ -1,5 +1,6 @@
 
 package de.bo.aid.boese.json;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -174,7 +175,15 @@ public class BoeseJson {
 		headerTimestamp = header.getInt("Timestamp", -1);
 		
 		switch(header.getInt("MessageType")) {
-		case 0: //TODO multimessage
+		case 0: //TODO TEST
+			MultiMessage multi = new MultiMessage(headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			JsonArray messages = jo.getJsonArray("Messages");
+			for(JsonValue message : messages){
+				InputStream in = new ByteArrayInputStream(message.toString().getBytes());	
+				BoeseJson bs = readMessage(in);
+				multi.addMessage(bs);
+			}
+			bj = multi;
 			break;
 		case 1: // RequestConnection
 			String connectorNameRC = jo.getString("ConnectorName");
@@ -335,20 +344,20 @@ public class BoeseJson {
 		return header;
 	}
 	
-	/**
-	 * Writes a BoeseJson Message to a given output stream.
-	 *
-	 * @param message the BoeseJson Message
-	 * @param os the OutputStream to write in. If null a new ByteArrayOutputStream is generated.
-	 * @return true, if writing was successful
-	 */
-	public static boolean parseMessage(BoeseJson message, OutputStream os) {
-		boolean output = true;
+	private static JsonObjectBuilder generateBuilder(BoeseJson message) {
 		JsonObjectBuilder job = Json.createObjectBuilder();
 		switch (message.getType()) {
-		
 		case MULTI:
-			//TODO
+			//TODO TEST
+			MultiMessage multi = (MultiMessage)message;
+			job.add("Header", addHeader(0, multi.getConnectorId(), multi.getSeqenceNr(), multi.getAcknowledgeId(), multi.getStatus(), multi.getTimestamp()));
+			JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+			JsonObjectBuilder objectBuilder;
+			for(BoeseJson singleMessage : multi.getMessages()){
+				objectBuilder = generateBuilder(singleMessage);
+				arrayBuilder.add(objectBuilder);
+			}
+			job.add("Messages", arrayBuilder);
 			break;
 		case REQUESTCONNECTION:
 			RequestConnection rc = (RequestConnection)message;
@@ -514,9 +523,21 @@ public class BoeseJson {
 			}
 			job.add("Components", decosUSDC);
 		default:
-			output = false;
 			break;
 		}
+		return job;
+	}
+	
+	/**
+	 * Writes a BoeseJson Message to a given output stream.
+	 *
+	 * @param message the BoeseJson Message
+	 * @param os the OutputStream to write in. If null a new ByteArrayOutputStream is generated.
+	 * @return true, if writing was successful
+	 */
+	public static boolean parseMessage(BoeseJson message, OutputStream os) {
+		boolean output = true;
+		JsonObjectBuilder job = generateBuilder(message);
 		if (os == null) {
 			os = new ByteArrayOutputStream();
 		}

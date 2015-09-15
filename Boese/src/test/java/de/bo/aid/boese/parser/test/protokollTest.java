@@ -7,10 +7,18 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.stream.JsonParser;
+
+import org.json.JSONException;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 
 import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.ConfirmConnection;
@@ -18,6 +26,7 @@ import de.bo.aid.boese.json.ConfirmDeviceComponents;
 import de.bo.aid.boese.json.ConfirmDevices;
 import de.bo.aid.boese.json.ConfirmValue;
 import de.bo.aid.boese.json.DeviceComponents;
+import de.bo.aid.boese.json.MultiMessage;
 import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.json.RequestConnection;
 import de.bo.aid.boese.json.RequestDeviceComponents;
@@ -601,6 +610,144 @@ public class protokollTest {
 		BoeseJson.parseMessage(bs, os);
 		assertEquals(os.toString(), message); 
 	}
+	
+	@Test
+	public void parseMulti(){
+		
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":0,"
+				+ "\"ConnectorId\":1,"
+				+ "\"SequenceNr\":0,"
+				+ "\"AcknowledgeNr\":0,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"Messages\":["
+				
+				+"{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":8,"
+				+ "\"ConnectorId\":1,"
+				+ "\"SequenceNr\":0,"
+				+ "\"AcknowledgeNr\":0,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"DeviceId\":123,"
+				+ "\"Components\":"
+				+ "[{"
+				+ "\"DeviceComponentId\":5,"
+				+ "\"ComponentName\":\"Horst\""
+				+ "}]"
+				+ "},"
+				
+				+"{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":10,"
+				+ "\"ConnectorId\":1,"
+				+ "\"SequenceNr\":0,"
+				+ "\"AcknowledgeNr\":0,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"DeviceId\":123,"
+				+ "\"DeviceComponentId\":5"
+				+ "}"
+
+				
+				
+				+ "]"
+				+ "}";
+		
+		OutputStream os = new ByteArrayOutputStream();
+		MultiMessage multi = new MultiMessage(1, 0, 0, 0, 111222334);
+		multi.addMessage(new ConfirmValue(123, 5,1, 0, 0, 0, 111222334));
+		
+		HashMap<String, Integer> components = new HashMap<>();
+		components.put("Horst", 5);
+		multi.addMessage(new ConfirmDeviceComponents(123, components, 1, 0, 0, 0, 111222334));
+
+		BoeseJson.parseMessage(multi, os);
+
+
+		try {
+			JSONAssert.assertEquals(os.toString(), message, false);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Test
+	public void readMulti(){
+		
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":0,"
+				+ "\"ConnectorId\":1,"
+				+ "\"SequenceNr\":0,"
+				+ "\"AcknowledgeNr\":0,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"Messages\":["
+				
+				
+				+"{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":10,"
+				+ "\"ConnectorId\":1,"
+				+ "\"SequenceNr\":0,"
+				+ "\"AcknowledgeNr\":0,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"DeviceId\":123,"
+				+ "\"DeviceComponentId\":5"
+				+ "},"
+				
+				+"{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":8,"
+				+ "\"ConnectorId\":1,"
+				+ "\"SequenceNr\":0,"
+				+ "\"AcknowledgeNr\":0,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"DeviceId\":123,"
+				+ "\"Components\":"
+				+ "[{"
+				+ "\"DeviceComponentId\":5,"
+				+ "\"ComponentName\":\"Horst\""
+				+ "}]"
+				+ "}"
+				
+
+
+				
+				
+				+ "]"
+				+ "}";
+		
+		InputStream is = new ByteArrayInputStream(message.getBytes());
+		BoeseJson bs = BoeseJson.readMessage(is);
+		assertNotNull(bs);	
+		
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(bs, os);
+		try {
+			JSONAssert.assertEquals(os.toString(), message, false);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	
+	}
+
 	
 
 }

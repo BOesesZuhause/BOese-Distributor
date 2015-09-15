@@ -308,11 +308,17 @@ public class MainClass {
 		}
 	}
 	
-	private static void handleMultiMessages(MultiMessage urdc, int connectorId) {
-		int seqNr = urdc.getSeqenceNr();
-		if (connectorId != urdc.getConnectorId()) {
+	private static void handleMultiMessages(MultiMessage mm, int connectorId) {
+		int seqNr = mm.getSeqenceNr();
+		if (connectorId != mm.getConnectorId()) {
 			SocketHandler.getInstance().rejectConnection(connectorId);
 			return;
+		}
+		//TODO evt. schlechte Performance weil hin und her geparst wird
+		for(BoeseJson message : mm.getMessages()){ 
+			OutputStream os = new ByteArrayOutputStream();
+			BoeseJson.parseMessage(message, os);
+			handleMessage(os.toString(), connectorId);
 		}
 	}
 	
