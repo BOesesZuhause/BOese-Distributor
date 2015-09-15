@@ -1,4 +1,3 @@
-
 package de.bo.aid.boese.db;
 
 import java.util.ArrayList;
@@ -392,6 +391,58 @@ public class Selects {
 		session.close();
 		
 		return dev;
+	}
+	
+	/**
+	 * Select status of a deviceComponent
+	 *
+	 * @param decoId the DeviceComponentID
+	 * @return the status(short) 
+	 */
+	public static short deviceComponentStatus(int decoId){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		DeviceComponent deco = new DeviceComponent();
+		try{
+			session.load(deco, new Integer(decoId));
+			session.getTransaction().commit();
+		}
+		catch (ObjectNotFoundException onfe){
+			session.getTransaction().rollback();
+			session.close();
+			return -1;
+		}
+		
+		session.close();
+		
+		return deco.getStatus();
+	}
+	
+	/**
+	 * Select status of a Connector
+	 *
+	 * @param coId the ConnectorID
+	 * @return the status(short) 
+	 */
+	public static short ConnectorStatus(int coId){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		Connector con = new Connector();
+		try{
+			session.load(con, new Integer(coId));
+			session.getTransaction().commit();
+		}
+		catch (ObjectNotFoundException onfe){
+			session.getTransaction().rollback();
+			session.close();
+			return -1;
+		}
+		
+		session.close();
+		
+		return con.getStatus();
 	}
 
 }

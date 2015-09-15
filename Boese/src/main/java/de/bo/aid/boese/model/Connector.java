@@ -1,6 +1,4 @@
-
 package de.bo.aid.boese.model;
-// Generated 30.07.2015 11:14:41 by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +17,9 @@ public class Connector implements java.io.Serializable {
 	
 	/** The password. */
 	private String password;
+
+	/** The status. */
+	private short status;
 	
 	/** The history log connectors. */
 	private Set historyLogConnectors = new HashSet(0);
@@ -48,14 +49,16 @@ public class Connector implements java.io.Serializable {
 	/**
 	 * Instantiates a new connector.
 	 *
-	 * @param coId the co id
+	 * @param coId the connectorid
 	 * @param name the name
 	 * @param password the password
+	 * @param status the status
 	 */
-	public Connector(int coId, String name, String password) {
+	public Connector(int coId, String name, String password, short status) {
 		this.coId = coId;
 		this.name = name;
 		this.password = password;
+		this.status = status;
 	}
 
 	/**
@@ -68,11 +71,12 @@ public class Connector implements java.io.Serializable {
 	 * @param devices the devices
 	 * @param logConnectors the log connectors
 	 */
-	public Connector(int coId, String name, String password,
+	public Connector(int coId, String name, String password, short status,
 			Set historyLogConnectors, Set devices, Set logConnectors) {
 		this.coId = coId;
 		this.name = name;
 		this.password = password;
+		this.status = status;
 		this.historyLogConnectors = historyLogConnectors;
 		this.devices = devices;
 		this.logConnectors = logConnectors;
@@ -131,6 +135,14 @@ public class Connector implements java.io.Serializable {
 	 */
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public short getStatus() {
+		return status;
+	}
+
+	public void setStatus(short status) {
+		this.status = status;
 	}
 
 	/**
