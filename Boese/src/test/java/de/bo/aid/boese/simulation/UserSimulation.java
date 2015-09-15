@@ -23,7 +23,7 @@ public class UserSimulation {
 		HashMap<Integer, String> connectors = MainClass.getTempConnectors();
 		for(Integer key : connectors.keySet()){
 			try {
-				MainClass.confirmConnector(key);
+				MainClass.confirmConnector(key, false);
 				//Hier ist der Connector schon entfernt (connectors zeigt auf die Map in der MainClass)
 			} catch (NotFoundException e) {
 				// TODO Auto-generated catch block

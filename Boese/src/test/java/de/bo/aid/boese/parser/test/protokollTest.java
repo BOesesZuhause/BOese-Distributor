@@ -99,7 +99,8 @@ public class protokollTest {
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
-				+ "\"Password\":\"geheim\""
+				+ "\"Password\":\"geheim\","
+				+ "\"ConnectorId\":1"
 				+ "}";
 		
 		OutputStream os = new ByteArrayOutputStream();
@@ -123,7 +124,8 @@ public class protokollTest {
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
-				+ "\"Password\":\"geheim\""
+				+ "\"Password\":\"geheim\","
+				+ "\"ConnectorId\":1"
 				+ "}";
 		
 		InputStream is = new ByteArrayInputStream(message.getBytes());

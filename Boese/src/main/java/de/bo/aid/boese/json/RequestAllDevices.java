@@ -6,7 +6,7 @@ package de.bo.aid.boese.json;
  * The Class RequestAllDevices.
  */
 public class RequestAllDevices extends BoeseJson {
-
+	boolean userRequest = false;
 	/**
 	 * Instantiates a new request all devices.
 	 *
@@ -19,6 +19,16 @@ public class RequestAllDevices extends BoeseJson {
 	public RequestAllDevices(int connectorId, int seqNr, int ackNr, int status,
 			long timestamp) {
 		super(MessageType.REQUESTALLDEVICES, connectorId, seqNr, ackNr, status, timestamp);
+	}
+	
+	public RequestAllDevices(int connectorId, int seqNr, int ackNr, int status,
+			long timestamp, boolean isUserRequest) {
+		super(MessageType.USERREQUESTALLDEVICES, connectorId, seqNr, ackNr, status, timestamp);
+		this.userRequest = isUserRequest;
+	}
+	
+	public boolean isUserRequest() {
+		return userRequest;
 	}
 
 }

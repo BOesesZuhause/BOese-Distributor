@@ -28,6 +28,8 @@ public class DeviceComponents {
 	/** The description. */
 	private String description;
 	
+	private int status;
+	
 	/**
 	 * Instantiates a new device components.
 	 *
@@ -47,6 +49,22 @@ public class DeviceComponents {
 		this.actor = actor;
 		this.unit = unit;
 		this.description = description;
+		this.status = -1;
+	}
+	
+	public DeviceComponents(int deviceComponentId, String componentName, double value, long timestamp, String unit, String description, boolean actor, int status) {
+		this.deviceComponentId = deviceComponentId;
+		this.componentName = componentName;
+		this.value = value;
+		this.timestamp = timestamp;
+		this.actor = actor;
+		this.unit = unit;
+		this.description = description;
+		this.status = status;
+	}
+	
+	public int getStatus(){
+		return status;
 	}
 	
 	/**

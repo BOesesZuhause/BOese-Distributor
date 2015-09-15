@@ -15,8 +15,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.LazyInitializationException;
+import org.hibernate.sql.Select;
 
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
@@ -26,6 +28,7 @@ import de.bo.aid.boese.json.ConfirmDeviceComponents;
 import de.bo.aid.boese.json.ConfirmDevices;
 import de.bo.aid.boese.json.ConfirmValue;
 import de.bo.aid.boese.json.DeviceComponents;
+import de.bo.aid.boese.json.MultiMessage;
 import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.json.RequestConnection;
 import de.bo.aid.boese.json.RequestDeviceComponents;
@@ -33,6 +36,9 @@ import de.bo.aid.boese.json.SendDeviceComponents;
 import de.bo.aid.boese.json.SendDevices;
 import de.bo.aid.boese.json.SendNotification;
 import de.bo.aid.boese.json.SendValue;
+import de.bo.aid.boese.json.UserDevice;
+import de.bo.aid.boese.json.UserRequestDeviceComponents;
+import de.bo.aid.boese.json.UserSendDevices;
 import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempDevice;
 import de.bo.aid.boese.model.Connector;
@@ -90,7 +96,7 @@ public class MainClass {
 			
 			if(autoConfirm){
 				//For Debugging
-				confirmConnectors(tempId);
+				confirmConnectors(tempId, rc.isUserConnector());
 			}
 
 		} else { //TODO test
@@ -266,9 +272,50 @@ public class MainClass {
 		    Files.write(Paths.get("logfile.csv"), sb.toString().getBytes(), StandardOpenOption.APPEND);
 		}catch (IOException e) {
 			System.out.println("Error while writing the log file");
-		}
-		
+		}	
 	}
+	
+	private static void handleUserRequestAllDevices(RequestAllDevices urad, int connectorId) {
+		int seqNr = urad.getSeqenceNr();
+		if (connectorId != urad.getConnectorId()) {
+			SocketHandler.getInstance().rejectConnection(connectorId);
+			return;
+		}
+		List<Device> devList = Selects.allDevices();
+		HashSet<UserDevice> deviceList = new HashSet<>();
+		for (Device dev : devList) {
+			deviceList.add(new UserDevice(dev.getAlias(), dev.getDeId(), dev.getZone().getZoId(), dev.getConnector().getCoId()));
+		}
+		BoeseJson usd = new UserSendDevices(deviceList, connectorId, seqNr+1, seqNr, 0, new Date().getTime());
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(usd, os);
+		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+	}
+	
+	private static void handleUserRequestDeviceComponents(UserRequestDeviceComponents urdc, int connectorId) {
+		int seqNr = urdc.getSeqenceNr();
+		if (connectorId != urdc.getConnectorId()) {
+			SocketHandler.getInstance().rejectConnection(connectorId);
+			return;
+		}
+		HashSet<Integer> deIDList = urdc.getDeviceIds();
+		for (Integer devId : deIDList) {
+			
+			Set<DeviceComponent> decoSet = (Set<DeviceComponent>)Selects.device(devId.intValue()).getDeviceComponents();
+			for (DeviceComponent deco : decoSet) {
+				
+			}
+		}
+	}
+	
+	private static void handleMultiMessages(MultiMessage urdc, int connectorId) {
+		int seqNr = urdc.getSeqenceNr();
+		if (connectorId != urdc.getConnectorId()) {
+			SocketHandler.getInstance().rejectConnection(connectorId);
+			return;
+		}
+	}
+	
 	
 	/**
 	 * Method to handle Json messages and act depednding on the type and content.
@@ -283,6 +330,9 @@ public class MainClass {
 			SocketHandler.getInstance().rejectConnection(connectorId);
 		}
 		switch (bjMessage.getType()) {
+		case MULTI:
+			handleMultiMessages((MultiMessage)bjMessage, connectorId);
+			break;
 		case REQUESTCONNECTION:
 			handleRequestConnections((RequestConnection)bjMessage, connectorId);
 			break;
@@ -297,6 +347,13 @@ public class MainClass {
 			break;
 		case SENDNOTIFICATION:
 			handleSendNotification((SendNotification)bjMessage, connectorId);
+			break;
+		case USERREQUESTALLDEVICES:
+			handleUserRequestAllDevices((RequestAllDevices)bjMessage, connectorId);
+			break;
+		case USERREQUESTDEVICECOMPONENTS:
+			handleUserRequestDeviceComponents((UserRequestDeviceComponents)bjMessage, connectorId);
+			break;
 		default:
 			break;
 		}
@@ -335,7 +392,7 @@ public class MainClass {
 	 * @param tempId the temp id
 	 * @throws NotFoundException the not found exception
 	 */
-	public static void confirmConnector(int tempId) throws NotFoundException{
+	public static void confirmConnector(int tempId, boolean isUserConnector) throws NotFoundException{
 	
 		String name= tempConnectors.get(tempId);
 		
@@ -355,11 +412,13 @@ public class MainClass {
 		BoeseJson.parseMessage(cc, os);
 		SocketHandler.getInstance().sendToConnector(conId, os.toString());
 
-		// Send RequestAllDevices
-		BoeseJson rad = new RequestAllDevices(conId, 0, 0, 0, new Date().getTime());
-		os = new ByteArrayOutputStream();
-		BoeseJson.parseMessage(rad, os);
-		SocketHandler.getInstance().sendToConnector(conId, os.toString());
+		if (!isUserConnector) {			
+			// Send RequestAllDevices
+			BoeseJson rad = new RequestAllDevices(conId, 0, 0, 0, new Date().getTime());
+			os = new ByteArrayOutputStream();
+			BoeseJson.parseMessage(rad, os);
+			SocketHandler.getInstance().sendToConnector(conId, os.toString());
+		}
 		
 		System.out.println("User confirmed Connector with name: " + name + "\n");
 		tempConnectors.remove(tempId);
@@ -500,9 +559,9 @@ public class MainClass {
 	 * @param tempId the temp id
 	 */
 	//Asynchronous handler
-	public static void confirmConnectors(int tempId){
+	public static void confirmConnectors(int tempId, boolean isUserConnector){
 		try {
-			confirmConnector(tempId);
+			confirmConnector(tempId, isUserConnector);
 			} catch (NotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

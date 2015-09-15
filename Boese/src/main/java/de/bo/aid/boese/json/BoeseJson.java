@@ -38,7 +38,7 @@ public class BoeseJson {
 	 * Enumeration with all available message types.
 	 */
 	public enum MessageType {
-		
+		MULTI,
 		/** The requestconnection. */
 		REQUESTCONNECTION, 
 		/** The confirmconnection. */
@@ -61,7 +61,11 @@ public class BoeseJson {
 		CONFIRMVALUE, 
 		/** The requestvalue. */
 		REQUESTVALUE,
-		SENDNOTIFICATION
+		SENDNOTIFICATION,
+		USERREQUESTALLDEVICES,
+		USERSENDDEVICES,
+		USERREQUESTDEVICECOMPONENTS,
+		USERSENDDEVICECOMPONENT
 	}
 
 	/**
@@ -170,13 +174,19 @@ public class BoeseJson {
 		headerTimestamp = header.getInt("Timestamp", -1);
 		
 		switch(header.getInt("MessageType")) {
+		case 0: //TODO multimessage
+			break;
 		case 1: // RequestConnection
 			String connectorNameRC = jo.getString("ConnectorName");
 			String passwordRC = null;
+			boolean userConnectorRC = false;
 			if (jo.containsKey("Password")) {
 				passwordRC = jo.getString("Password");
 			}
-			bj = new RequestConnection(connectorNameRC, passwordRC, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			if (jo.containsKey("IsUserConnector")) {
+				userConnectorRC = jo.getBoolean("IsUserConnector");
+			}
+			bj = new RequestConnection(connectorNameRC, passwordRC, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp, userConnectorRC);
 			break;
 		case 2: // ConfirmConnection
 			String passwordCC = jo.getString("Password");
@@ -268,6 +278,35 @@ public class BoeseJson {
 			String notificationStringSN = jo.getString("NotificationText", "");
 			bj = new SendNotification(deviceIdSN, deviceComponentIdSN, notificationType, timestampSN, notificationStringSN, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
 			break;
+		case 50: // UserRequestAllDevices
+			bj = new RequestAllDevices(headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp, true);
+			break;
+		case 51: // UserSendDevices
+			bj = new UserSendDevices(headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			break;
+		case 52: // UserRequestDeviceComponents
+			HashSet<Integer> devIdSetURDC = new HashSet<>();
+			JsonArray devIdsURDC = jo.getJsonArray("Components");
+			for (int i = 0; i < devIdsURDC.size(); i++) {
+				JsonObject dekoId = devIdsURDC.getJsonObject(i);
+				devIdSetURDC.add(dekoId.getInt("DeviceIds"));
+			}
+			bj = new UserRequestDeviceComponents(devIdSetURDC, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			break;
+		case 53: // UserSendDeviceComponents
+			HashSet<DeviceComponents> decoSetUSDC = new HashSet<>();
+			JsonArray decosUSDC = jo.getJsonArray("Components");
+			for (int i = 0; i < decosUSDC.size(); i++) {
+				JsonObject decoUSDC = decosUSDC.getJsonObject(i);
+				decoSetUSDC.add(new DeviceComponents(decoUSDC.getInt("DeviceComponentId"), 
+													decoUSDC.getString("ComponentName"), 
+													decoUSDC.getJsonNumber("Value").doubleValue(), 
+													decoUSDC.getJsonNumber("Timestamp").longValue(), 
+													decoUSDC.getString("Unit"), 
+													decoUSDC.getString("Description"), 
+													decoUSDC.getBoolean("Actor", false)));
+			}
+			bj = new UserSendDeviceComponent(jo.getInt("DeviceId"), decoSetUSDC, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
 		default:
 			break;
 		}
@@ -307,6 +346,10 @@ public class BoeseJson {
 		boolean output = true;
 		JsonObjectBuilder job = Json.createObjectBuilder();
 		switch (message.getType()) {
+		
+		case MULTI:
+			//TODO
+			break;
 		case REQUESTCONNECTION:
 			RequestConnection rc = (RequestConnection)message;
 			job.add("Header", addHeader(1, rc.getConnectorId(), rc.getSeqenceNr(), rc.getAcknowledgeId(), rc.getStatus(), rc.getTimestamp()));
@@ -319,6 +362,7 @@ public class BoeseJson {
 			ConfirmConnection cc = (ConfirmConnection)message;
 			job.add("Header", addHeader(2, cc.getConnectorId(), cc.getSeqenceNr(), cc.getAcknowledgeId(), cc.getStatus(), cc.getTimestamp()));
 			job.add("Password", cc.getPassword());
+			job.add("ConnectorId", cc.getConnectorId());
 			break;
 		case REQUESTALLDEVICES:
 			RequestAllDevices rad = (RequestAllDevices)message;
@@ -382,15 +426,15 @@ public class BoeseJson {
 			ConfirmDeviceComponents cdc = (ConfirmDeviceComponents)message;
 			job.add("Header", addHeader(8, cdc.getConnectorId(), cdc.getSeqenceNr(), cdc.getAcknowledgeId(), cdc.getStatus(), cdc.getTimestamp()));
 			job.add("DeviceId", cdc.getDeviceId());
-			JsonArrayBuilder componentsCDCAr = Json.createArrayBuilder();
+			JsonArrayBuilder componentsCDCA = Json.createArrayBuilder();
 			JsonObjectBuilder componentCDC;
 			for (Entry<String, Integer> entry : cdc.getComponents().entrySet()) {
 				componentCDC = Json.createObjectBuilder();
 				componentCDC.add("DeviceComponentId", entry.getValue());
 				componentCDC.add("ComponentName", entry.getKey());
-				componentsCDCAr.add(componentCDC);
+				componentsCDCA.add(componentCDC);
 			}
-			job.add("Components", componentsCDCAr);
+			job.add("Components", componentsCDCA);
 			break;
 		case SENDVALUE:
 			SendValue sv = (SendValue)message;
@@ -408,19 +452,67 @@ public class BoeseJson {
 			break;
 		case REQUESTVALUE:
 			RequestValue rv = (RequestValue)message;
-			job.add("Header", addHeader(9, rv.getConnectorId(), rv.getSeqenceNr(), rv.getAcknowledgeId(), rv.getStatus(), rv.getTimestamp()));
+			job.add("Header", addHeader(11, rv.getConnectorId(), rv.getSeqenceNr(), rv.getAcknowledgeId(), rv.getStatus(), rv.getTimestamp()));
 			job.add("DeviceId", rv.getDeviceId());
 			job.add("DeviceComponentId", rv.getDeviceComponentId());
 			break;
 		case SENDNOTIFICATION:
 			SendNotification sn = (SendNotification)message;
-			job.add("Header", addHeader(9, sn.getConnectorId(), sn.getSeqenceNr(), sn.getAcknowledgeId(), sn.getStatus(), sn.getTimestamp()));
+			job.add("Header", addHeader(12, sn.getConnectorId(), sn.getSeqenceNr(), sn.getAcknowledgeId(), sn.getStatus(), sn.getTimestamp()));
 			job.add("DeviceId", sn.getDeviceId());
 			job.add("DeviceComponentId", sn.getDeviceComponentId());
 			job.add("NotificationType", sn.getNotificationType());
 			job.add("Timestamp", sn.getNotificationTimestamp());
 			job.add("NotificationText", sn.getNotificationText());
 			break;
+		case USERREQUESTALLDEVICES:
+			RequestAllDevices urad = (RequestAllDevices)message;
+			job.add("Header", addHeader(50, urad.getConnectorId(), urad.getSeqenceNr(), urad.getAcknowledgeId(), urad.getStatus(), urad.getTimestamp()));
+			job.add("IsUserRequest", urad.isUserRequest());
+			break;
+		case USERSENDDEVICES:
+			UserSendDevices usd = (UserSendDevices)message;
+			job.add("Header", addHeader(51, usd.getConnectorId(), usd.getSeqenceNr(), usd.getAcknowledgeId(), usd.getStatus(), usd.getTimestamp()));
+			JsonArrayBuilder devicesUSD = Json.createArrayBuilder();
+			JsonObjectBuilder deviceUSD;
+			for (UserDevice dev : usd.getDevices()) {
+				deviceUSD = Json.createObjectBuilder();
+				deviceUSD.add("DeviceName", dev.getDeviceName());
+				deviceUSD.add("DeviceId", dev.getDeviceId());
+				deviceUSD.add("ZoneId", dev.getZoneId());
+				deviceUSD.add("ConnectorId", dev.getConnectorId());
+				devicesUSD.add(deviceUSD);
+			}
+			job.add("Devices", devicesUSD);
+			break;
+		case USERREQUESTDEVICECOMPONENTS:
+			UserRequestDeviceComponents urdc = (UserRequestDeviceComponents)message;
+			job.add("Header", addHeader(52, urdc.getConnectorId(), urdc.getSeqenceNr(), urdc.getAcknowledgeId(), urdc.getStatus(), urdc.getTimestamp()));
+			JsonArrayBuilder devicesURDC = Json.createArrayBuilder();
+			for (Integer devIdURDC : urdc.getDeviceIds()) {
+				devicesURDC.add(devIdURDC.intValue());
+			}
+			job.add("DeviceIds", devicesURDC);
+			break;
+		case USERSENDDEVICECOMPONENT:
+			UserSendDeviceComponent usdc = (UserSendDeviceComponent)message;
+			job.add("Header", addHeader(52, usdc.getConnectorId(), usdc.getSeqenceNr(), usdc.getAcknowledgeId(), usdc.getStatus(), usdc.getTimestamp()));
+			job.add("DeviceId", usdc.getDeviceId());
+			JsonArrayBuilder decosUSDC = Json.createArrayBuilder();
+			JsonObjectBuilder decoUSDC;
+			for (DeviceComponents deco : usdc.getComponentList()) {
+				decoUSDC = Json.createObjectBuilder();
+				decoUSDC.add("DeviceComponentId", deco.getDeviceComponentId());
+				decoUSDC.add("Description", deco.getDescription());
+				decoUSDC.add("ComponentName", deco.getComponentName());
+				decoUSDC.add("Value", deco.getValue());
+				decoUSDC.add("Timestamp", deco.getTimestamp());
+				decoUSDC.add("Status", deco.getStatus());
+				decoUSDC.add("Aktor", deco.isActor());
+				decoUSDC.add("Unit", deco.getUnit());
+				decosUSDC.add(decoUSDC);
+			}
+			job.add("Components", decosUSDC);
 		default:
 			output = false;
 			break;
