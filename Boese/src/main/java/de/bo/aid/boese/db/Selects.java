@@ -121,27 +121,6 @@ public class Selects {
 	}
 	
 	/**
-	 * All zones.
-	 *
-	 * @return the list
-	 */
-	public static List<Zone> allZones(){
-		Session session = connection.getSession();
-		session.beginTransaction();
- 
-		List erg = session.createQuery("from Zone").list();
-		List<Zone> zone = new ArrayList<Zone>();
-		for(Object o: erg){
-			zone.add((Zone) o);
-		}
-		
-		session.getTransaction().commit();
-		session.close();
-		
-		return zone;
-	}
-	
-	/**
 	 * Device component.
 	 *
 	 * @param decoid the decoid
