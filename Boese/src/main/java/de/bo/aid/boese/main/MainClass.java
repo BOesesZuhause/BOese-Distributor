@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.LazyInitializationException;
-import org.hibernate.sql.Select;
 
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
