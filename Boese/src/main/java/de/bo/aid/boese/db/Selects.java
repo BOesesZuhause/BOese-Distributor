@@ -36,7 +36,7 @@ public class Selects {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return new Connector(Errors.OBJECT_NOT_FOUND);
+			throw onfe;
 		}
 		
 		session.close();
@@ -86,7 +86,7 @@ public class Selects {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.OBJECT_NOT_FOUND;
+			throw onfe;
 		}
 		
 		session.close();
@@ -112,7 +112,7 @@ public class Selects {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return new Device(Errors.OBJECT_NOT_FOUND);
+			throw onfe;
 		}
 		
 		session.close();
@@ -138,7 +138,7 @@ public class Selects {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return new DeviceComponent(Errors.OBJECT_NOT_FOUND);
+			throw onfe;
 		}
 		
 		session.close();
@@ -193,7 +193,7 @@ public class Selects {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return new Rule(Errors.OBJECT_NOT_FOUND);
+			throw onfe;
 		}
 		
 		session.close();		
@@ -219,7 +219,7 @@ public class Selects {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return new Unit(Errors.OBJECT_NOT_FOUND);
+			throw onfe;
 		}
 		
 		session.close();
@@ -244,7 +244,7 @@ public class Selects {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return new Component();
+			throw onfe;
 		}
 		
 		session.close();
@@ -269,7 +269,7 @@ public class Selects {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return new Service();
+			throw onfe;
 		}
 		
 		session.close();
@@ -294,7 +294,7 @@ public class Selects {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return new Group();
+			throw onfe;
 		}
 		
 		session.close();
@@ -319,7 +319,7 @@ public class Selects {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return new User();
+			throw onfe;
 		}
 		
 		session.close();
@@ -344,7 +344,7 @@ public class Selects {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return new Zone();
+			throw onfe;
 		}
 		
 		session.close();
@@ -390,7 +390,7 @@ public class Selects {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return -1;
+			throw onfe;
 		}
 		
 		session.close();
@@ -416,7 +416,7 @@ public class Selects {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return -1;
+			throw onfe;
 		}
 		
 		session.close();
