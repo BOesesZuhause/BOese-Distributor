@@ -47,7 +47,7 @@ public class Inserts {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.OBJECT_NOT_FOUND;
+			throw onfe;
 		}
 		
 		device.setAlias(name);
@@ -60,7 +60,7 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.NOT_NULL_VALUE_NULL;
+			throw pve; //not null Value is null
 		}
 		
 		session.close();
@@ -87,7 +87,7 @@ public class Inserts {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.OBJECT_NOT_FOUND;
+			throw onfe;
 		}
 		
 		Component comp = new Component();
@@ -102,7 +102,7 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.NOT_NULL_VALUE_NULL;
+			throw pve; //not null Value is null
 		}
 		
 
@@ -137,7 +137,7 @@ public class Inserts {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.OBJECT_NOT_FOUND;
+			throw onfe;
 		}
 		
 		dc.setStatus((short) 1);
@@ -149,7 +149,7 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.NOT_NULL_VALUE_NULL;
+			throw pve; //not null Value is null
 		}		
 		
 		session.close();
@@ -179,7 +179,7 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.NOT_NULL_VALUE_NULL;
+			throw pve; //not null Value is null
 		}
 		
 		session.close();
@@ -207,7 +207,7 @@ public class Inserts {
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.OBJECT_NOT_FOUND;
+			throw onfe;
 		}
 		try{
 			session.save(deco);
@@ -215,7 +215,7 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.NOT_NULL_VALUE_NULL;
+			throw pve; //not null Value is null
 		}
 		
 		LogDeviceComponent logcomp = new LogDeviceComponent();
@@ -230,7 +230,7 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.NOT_NULL_VALUE_NULL;
+			throw pve; //not null Value is null
 		}
 		
 		session.close();
@@ -260,7 +260,7 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.NOT_NULL_VALUE_NULL;
+			throw pve; //not null Value is null
 		}
 		
 		session.close();
@@ -296,7 +296,7 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.NOT_NULL_VALUE_NULL;
+			throw pve; //not null Value is null
 		}
 		
 		
@@ -323,7 +323,7 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.NOT_NULL_VALUE_NULL;
+			throw pve; //not null Value is null
 		}
 
 		session.close();
@@ -350,7 +350,7 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.NOT_NULL_VALUE_NULL;
+			throw pve; //not null Value is null
 		}
 		
 		session.close();
@@ -378,7 +378,7 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.NOT_NULL_VALUE_NULL;
+			throw pve; //not null Value is null
 		}
 		
 		session.close();
@@ -418,7 +418,7 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.NOT_NULL_VALUE_NULL;
+			throw pve; //not null Value is null
 		}
 		
 		session.close();
@@ -448,7 +448,7 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.getTransaction().rollback();
 			session.close();
-			return Errors.NOT_NULL_VALUE_NULL;
+			throw pve; //not null Value is null
 		}
 		
 		session.close();
@@ -483,7 +483,7 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.getTransaction().rollback();
 			session.close();
-			throw new Exception("NotNullColumnIsNull");
+			throw pve; //not null Value is null
 		}
 		
 		session.close();
