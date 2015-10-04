@@ -10,7 +10,7 @@
                 <param name="sequence">deviceComponent_id_generator</param>
         	</generator>
         </id>
-        <many-to-one name="component" class="de.bo.aid.boese.model.Component" fetch="select">
+        <many-to-one name="component" class="de.bo.aid.boese.model.Component" lazy="false" fetch="select">
             <column name="CoID" not-null="true" />
         </many-to-one>
         <many-to-one name="device" class="de.bo.aid.boese.model.Device" fetch="select">
@@ -28,7 +28,7 @@
         <property name="currentValue" type="big_decimal">
             <column name="CurrentValue" precision="1000" scale="0" />
         </property>
-        <set name="deviceComponenteReplacesForDeCoId" table="device_componente_replace" inverse="true" lazy="true" fetch="select">
+        <set name="deviceComponenteReplacesForDeCoId" table="device_componente_replace" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="DeCoID" not-null="true" />
             </key>
