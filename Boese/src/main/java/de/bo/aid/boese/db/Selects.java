@@ -352,27 +352,6 @@ public class Selects {
 	}
 	
 	/**
-	 * All devices.
-	 *
-	 * @return the list
-	 */
-	public static List<Device> allDevices(){
-		Session session = connection.getSession();
-		session.beginTransaction();
- 
-		List erg = session.createQuery("from Device").list();
-		List<Device> dev = new ArrayList<Device>();
-		for(Object o: erg){
-			dev.add((Device) o);
-		}
-		
-		session.getTransaction().commit();
-		session.close();
-		
-		return dev;
-	}
-	
-	/**
 	 * Select status of a deviceComponent
 	 *
 	 * @param decoId the DeviceComponentID
@@ -424,4 +403,41 @@ public class Selects {
 		return con.getStatus();
 	}
 
+	public static RepeatRule RepeatRule(int rrId) {
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		RepeatRule rr = new RepeatRule();
+		try{
+			session.load(rr, new Integer(rrId));
+			session.getTransaction().commit();
+		}
+		catch (ObjectNotFoundException onfe){
+			session.getTransaction().rollback();
+			session.close();
+			throw onfe;
+		}
+		
+		session.close();
+		return rr;
+	}
+
+	public static ToDo toDo(int toDoId) {
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		ToDo todo = new ToDo();
+		try{
+			session.load(todo, new Integer(toDoId));
+			session.getTransaction().commit();
+		}
+		catch (ObjectNotFoundException onfe){
+			session.getTransaction().rollback();
+			session.close();
+			throw onfe;
+		}
+		
+		session.close();
+		return todo;
+	}
 }

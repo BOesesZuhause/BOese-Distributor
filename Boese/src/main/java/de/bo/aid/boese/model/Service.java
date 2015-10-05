@@ -11,6 +11,8 @@ import java.util.Set;
  */
 public class Service implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The se id. */
 	private int seId;
 	
@@ -18,7 +20,7 @@ public class Service implements java.io.Serializable {
 	private String description;
 	
 	/** The devices. */
-	private Set devices = new HashSet(0);
+	private Set<Device> devices = new HashSet<Device>(0);
 
 	/**
 	 * Instantiates a new service.
@@ -44,7 +46,7 @@ public class Service implements java.io.Serializable {
 	 * @param description the description
 	 * @param devices the devices
 	 */
-	public Service(int seId, String description, Set devices) {
+	public Service(int seId, String description, Set<Device> devices) {
 		this.seId = seId;
 		this.description = description;
 		this.devices = devices;
@@ -91,7 +93,7 @@ public class Service implements java.io.Serializable {
 	 *
 	 * @return the devices
 	 */
-	public Set getDevices() {
+	public Set<Device> getDevices() {
 		return this.devices;
 	}
 
@@ -100,7 +102,7 @@ public class Service implements java.io.Serializable {
 	 *
 	 * @param devices the new devices
 	 */
-	public void setDevices(Set devices) {
+	public void setDevices(Set<Device> devices) {
 		this.devices = devices;
 	}
 

@@ -8,6 +8,8 @@ package de.bo.aid.boese.model;
  */
 public class DeviceComponenteReplaceId implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The de co id. */
 	private int deCoId;
 	

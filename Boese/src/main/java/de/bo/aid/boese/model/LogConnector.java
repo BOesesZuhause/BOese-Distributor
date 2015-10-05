@@ -11,6 +11,8 @@ import java.util.Date;
  */
 public class LogConnector implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The lo co id. */
 	private int loCoId;
 	

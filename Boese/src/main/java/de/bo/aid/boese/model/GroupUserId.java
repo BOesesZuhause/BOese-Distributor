@@ -8,6 +8,8 @@ package de.bo.aid.boese.model;
  */
 public class GroupUserId implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The gr id. */
 	private short grId;
 	

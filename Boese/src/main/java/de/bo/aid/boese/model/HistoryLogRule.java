@@ -10,6 +10,8 @@ import java.util.Date;
  */
 public class HistoryLogRule implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The hi lo ru id. */
 	private int hiLoRuId;
 	

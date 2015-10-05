@@ -12,6 +12,8 @@ import java.util.Set;
  */
 public class DeviceComponent implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The de co id. */
 	private int deCoId;
 	
@@ -34,16 +36,19 @@ public class DeviceComponent implements java.io.Serializable {
 	private BigDecimal currentValue;
 	
 	/** The device componente replaces for de co id. */
-	private Set deviceComponenteReplacesForDeCoId = new HashSet(0);
+	private Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoId = new HashSet<DeviceComponenteReplace>(0);
 	
 	/** The history log device components. */
-	private Set historyLogDeviceComponents = new HashSet(0);
+	private Set<HistoryLogDeviceComponent> historyLogDeviceComponents = new HashSet<HistoryLogDeviceComponent>(0);
 	
 	/** The device componente replaces for de co idreplaced. */
-	private Set deviceComponenteReplacesForDeCoIdreplaced = new HashSet(0);
+	private Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoIdreplaced = new HashSet<DeviceComponenteReplace>(0);
 	
 	/** The log device components. */
-	private Set logDeviceComponents = new HashSet(0);
+	private Set<LogDeviceComponent> logDeviceComponents = new HashSet<LogDeviceComponent>(0);
+	
+	/** The ToDos. */
+	private Set<ToDo> toDos = new HashSet<ToDo>(0);
 
 	/**
 	 * Instantiates a new device component.
@@ -90,8 +95,9 @@ public class DeviceComponent implements java.io.Serializable {
 	 * @param logDeviceComponents the log device components
 	 */
 	public DeviceComponent(int deCoId, Component component, Device device, Short status, String description,
-			BigDecimal logRule, BigDecimal currentValue, Set deviceComponenteReplacesForDeCoId,
-			Set historyLogDeviceComponents, Set deviceComponenteReplacesForDeCoIdreplaced, Set logDeviceComponents) {
+			BigDecimal logRule, BigDecimal currentValue, Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoId,
+			Set<HistoryLogDeviceComponent> historyLogDeviceComponents, Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoIdreplaced,
+			Set<LogDeviceComponent> logDeviceComponents, Set<ToDo> toDos) {
 		this.deCoId = deCoId;
 		this.component = component;
 		this.device = device;
@@ -103,6 +109,7 @@ public class DeviceComponent implements java.io.Serializable {
 		this.historyLogDeviceComponents = historyLogDeviceComponents;
 		this.deviceComponenteReplacesForDeCoIdreplaced = deviceComponenteReplacesForDeCoIdreplaced;
 		this.logDeviceComponents = logDeviceComponents;
+		this.toDos = toDos;
 	}
 
 	/**
@@ -236,7 +243,7 @@ public class DeviceComponent implements java.io.Serializable {
 	 *
 	 * @return the device componente replaces for de co id
 	 */
-	public Set getDeviceComponenteReplacesForDeCoId() {
+	public Set<DeviceComponenteReplace> getDeviceComponenteReplacesForDeCoId() {
 		return this.deviceComponenteReplacesForDeCoId;
 	}
 
@@ -245,7 +252,7 @@ public class DeviceComponent implements java.io.Serializable {
 	 *
 	 * @param deviceComponenteReplacesForDeCoId the new device componente replaces for de co id
 	 */
-	public void setDeviceComponenteReplacesForDeCoId(Set deviceComponenteReplacesForDeCoId) {
+	public void setDeviceComponenteReplacesForDeCoId(Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoId) {
 		this.deviceComponenteReplacesForDeCoId = deviceComponenteReplacesForDeCoId;
 	}
 
@@ -254,7 +261,7 @@ public class DeviceComponent implements java.io.Serializable {
 	 *
 	 * @return the history log device components
 	 */
-	public Set getHistoryLogDeviceComponents() {
+	public Set<HistoryLogDeviceComponent> getHistoryLogDeviceComponents() {
 		return this.historyLogDeviceComponents;
 	}
 
@@ -263,7 +270,7 @@ public class DeviceComponent implements java.io.Serializable {
 	 *
 	 * @param historyLogDeviceComponents the new history log device components
 	 */
-	public void setHistoryLogDeviceComponents(Set historyLogDeviceComponents) {
+	public void setHistoryLogDeviceComponents(Set<HistoryLogDeviceComponent> historyLogDeviceComponents) {
 		this.historyLogDeviceComponents = historyLogDeviceComponents;
 	}
 
@@ -272,7 +279,7 @@ public class DeviceComponent implements java.io.Serializable {
 	 *
 	 * @return the device componente replaces for de co idreplaced
 	 */
-	public Set getDeviceComponenteReplacesForDeCoIdreplaced() {
+	public Set<DeviceComponenteReplace> getDeviceComponenteReplacesForDeCoIdreplaced() {
 		return this.deviceComponenteReplacesForDeCoIdreplaced;
 	}
 
@@ -281,7 +288,7 @@ public class DeviceComponent implements java.io.Serializable {
 	 *
 	 * @param deviceComponenteReplacesForDeCoIdreplaced the new device componente replaces for de co idreplaced
 	 */
-	public void setDeviceComponenteReplacesForDeCoIdreplaced(Set deviceComponenteReplacesForDeCoIdreplaced) {
+	public void setDeviceComponenteReplacesForDeCoIdreplaced(Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoIdreplaced) {
 		this.deviceComponenteReplacesForDeCoIdreplaced = deviceComponenteReplacesForDeCoIdreplaced;
 	}
 
@@ -290,7 +297,7 @@ public class DeviceComponent implements java.io.Serializable {
 	 *
 	 * @return the log device components
 	 */
-	public Set getLogDeviceComponents() {
+	public Set<LogDeviceComponent> getLogDeviceComponents() {
 		return this.logDeviceComponents;
 	}
 
@@ -299,8 +306,16 @@ public class DeviceComponent implements java.io.Serializable {
 	 *
 	 * @param logDeviceComponents the new log device components
 	 */
-	public void setLogDeviceComponents(Set logDeviceComponents) {
+	public void setLogDeviceComponents(Set<LogDeviceComponent> logDeviceComponents) {
 		this.logDeviceComponents = logDeviceComponents;
+	}
+
+	public Set<ToDo> getToDos() {
+		return toDos;
+	}
+
+	public void setToDos(Set<ToDo> toDos) {
+		this.toDos = toDos;
 	}
 
 }

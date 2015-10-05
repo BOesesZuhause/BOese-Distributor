@@ -8,6 +8,8 @@ import java.util.Set;
 
 import org.hibernate.sql.Update;
 
+import de.bo.aid.boese.constants.Status;
+import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.db.Updates;
 import de.bo.aid.boese.xml.Action;
 import de.bo.aid.boese.xml.Component;
@@ -86,6 +88,10 @@ public class Checker {
 	 */
 	public Boolean condition(Component comp, HashMap<Integer, Double> deCoValue){
 		if(comp == null){
+			return false;
+		}
+		int status = Selects.deviceComponent(comp.getId()).getStatus();
+		if(status == Status.INACTIVE || status == Status.DEFECT || status == Status.UNAVAILABLE || status == Status.COMMUNICATION_FAILURE || status == Status.UNKNOWN || status == Status.DELETED ){
 			return false;
 		}
 		else{

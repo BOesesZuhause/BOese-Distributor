@@ -10,6 +10,8 @@ import java.util.Date;
  */
 public class LogRule implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The lo ru id. */
 	private int loRuId;
 	

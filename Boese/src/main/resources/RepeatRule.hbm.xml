@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 30.07.2015 11:14:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="de.bo.aid.boese.model.RepeatRule" table="Repeat_Rule" schema="public" optimistic-lock="version">
+        <id name="rrId" type="int">
+            <column name="RRID" />
+            <generator class="sequence">
+                <param name="sequence">repeatRule_id_generator</param>
+        	</generator>
+        </id>
+        <property name="repeat" type="string">
+            <column name="Repeat" length="100" not-null="true"/>
+        </property>
+        <property name="repeatsAfterEnd" type="int">
+            <column name="Repeats_After_Ende" not-null="true" />
+        </property>
+        <one-to-one name="toDo" class="de.bo.aid.boese.model.ToDo" cascade="save-update"></one-to-one>
+    </class>
+</hibernate-mapping>

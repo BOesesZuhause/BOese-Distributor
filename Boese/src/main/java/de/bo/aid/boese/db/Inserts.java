@@ -489,4 +489,51 @@ public class Inserts {
 		session.close();
 	}
 	
+	public static int repeatRule(String repeat, int repeatsAfterEnd){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		RepeatRule rr = new RepeatRule();
+		rr.setRepeat(repeat);
+		rr.setRepeatsAfterEnd(repeatsAfterEnd);
+		
+		try{
+			session.save(rr);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.getTransaction().rollback();
+			session.close();
+			throw pve; //not null Value is null
+		}
+		
+		session.close();
+		
+		return rr.getRrId();
+	}
+	
+	public static int toDo(Date date, int deCoId, int ruleId, int rrId){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		ToDo todo = new ToDo();
+		todo.setDate(date);
+		todo.setDeviceComponent(Selects.deviceComponent(deCoId));
+		todo.setRule(Selects.rule(ruleId));
+		todo.setRepeatRule(Selects.RepeatRule(rrId));
+		
+		try{
+			session.save(todo);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.getTransaction().rollback();
+			session.close();
+			throw pve; //not null Value is null
+		}
+		
+		session.close();
+		
+		return todo.getToDoId();
+	}
 }

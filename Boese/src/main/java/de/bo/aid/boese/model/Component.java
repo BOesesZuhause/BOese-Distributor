@@ -11,6 +11,8 @@ import java.util.Set;
  */
 public class Component implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The co id. */
 	private int coId;
 	
@@ -24,7 +26,7 @@ public class Component implements java.io.Serializable {
 	private boolean sensor;
 	
 	/** The device components. */
-	private Set deviceComponents = new HashSet(0);
+	private Set<DeviceComponent> deviceComponents = new HashSet<DeviceComponent>(0);
 
 	/**
 	 * Instantiates a new component.
@@ -56,7 +58,7 @@ public class Component implements java.io.Serializable {
 	 * @param sensor the sensor
 	 * @param deviceComponents the device components
 	 */
-	public Component(int coId, Unit unit, String name, boolean sensor, Set deviceComponents) {
+	public Component(int coId, Unit unit, String name, boolean sensor, Set<DeviceComponent> deviceComponents) {
 		this.coId = coId;
 		this.unit = unit;
 		this.name = name;
@@ -141,7 +143,7 @@ public class Component implements java.io.Serializable {
 	 *
 	 * @return the device components
 	 */
-	public Set getDeviceComponents() {
+	public Set<DeviceComponent> getDeviceComponents() {
 		return this.deviceComponents;
 	}
 
@@ -150,7 +152,7 @@ public class Component implements java.io.Serializable {
 	 *
 	 * @param deviceComponents the new device components
 	 */
-	public void setDeviceComponents(Set deviceComponents) {
+	public void setDeviceComponents(Set<DeviceComponent> deviceComponents) {
 		this.deviceComponents = deviceComponents;
 	}
 

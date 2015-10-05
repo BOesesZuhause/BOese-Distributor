@@ -380,5 +380,50 @@ public class Updates {
 		session.getTransaction().commit();
 		session.close();
 	}
-
+	
+	/**
+	 * RepeatRule.
+	 *
+	 * @param rrId the rrId
+	 * @param repeat the repeat
+	 * @param repeatsAfterEnd the repeatsAfterEnd
+	 */
+	public static void repeatRule(int rrId, String repeat, int repeatsAfterEnd){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		RepeatRule rr = Selects.RepeatRule(rrId);
+		if(repeat != null){
+			rr.setRepeat(repeat);
+		}
+		if(repeatsAfterEnd >= 0){
+			rr.setRepeatsAfterEnd(repeatsAfterEnd);
+		}
+		
+		session.save(rr);
+		session.getTransaction().commit();
+		session.close();
+	}
+	
+	/**
+	 * ToDo.
+	 *
+	 * @param toDoId the toDoId
+	 * @param active the active
+	 * @param date the date
+	 */
+	public static void toDo(int toDoId, Date date, boolean active){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		ToDo todo = Selects.toDo(toDoId);
+		todo.setActive(active);
+		if(date != null){
+			todo.setDate(date);
+		}
+		
+		session.save(todo);
+		session.getTransaction().commit();
+		session.close();
+	}
 }

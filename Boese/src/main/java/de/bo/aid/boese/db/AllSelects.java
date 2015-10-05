@@ -205,4 +205,47 @@ public class AllSelects {
 		
 		return user;
 	}
+	
+	/**
+	 * All repeatRules
+	 *
+	 * @return the list
+	 */
+	public static List<RepeatRule> repeatRules(){
+		Session session = connection.getSession();
+		session.beginTransaction();
+ 
+		List erg = session.createQuery("from Repeat_Rule").list();
+		List<RepeatRule> rr = new ArrayList<RepeatRule>();
+		for(Object o: erg){
+			rr.add((RepeatRule) o);
+		}
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		return rr;
+	}
+	
+	/**
+	 * All ToDos
+	 *
+	 * @return the list
+	 */
+	public static List<ToDo> toDos(){
+		Session session = connection.getSession();
+		session.beginTransaction();
+ 
+		List erg = session.createQuery("from ToDo").list();
+		List<ToDo> todo = new ArrayList<ToDo>();
+		for(Object o: erg){
+			todo.add((ToDo) o);
+		}
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		return todo;
+	}
+	
 }

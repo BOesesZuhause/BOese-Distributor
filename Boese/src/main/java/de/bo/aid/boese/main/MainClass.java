@@ -19,6 +19,7 @@ import java.util.Set;
 
 import org.hibernate.LazyInitializationException;
 
+import de.bo.aid.boese.db.AllSelects;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.json.BoeseJson;
@@ -280,7 +281,7 @@ public class MainClass {
 			SocketHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
-		List<Device> devList = Selects.allDevices();
+		List<Device> devList = AllSelects.Devices();
 		HashSet<UserDevice> deviceList = new HashSet<>();
 		for (Device dev : devList) {
 			deviceList.add(new UserDevice(dev.getAlias(), dev.getDeId(), dev.getZone().getZoId(), dev.getConnector().getCoId()));

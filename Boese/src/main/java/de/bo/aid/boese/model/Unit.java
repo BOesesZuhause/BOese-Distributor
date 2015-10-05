@@ -11,6 +11,8 @@ import java.util.Set;
  */
 public class Unit implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The un id. */
 	private int unId;
 	
@@ -21,7 +23,7 @@ public class Unit implements java.io.Serializable {
 	private String symbol;
 	
 	/** The components. */
-	private Set components = new HashSet(0);
+	private Set<Component> components = new HashSet<Component>(0);
 
 	/**
 	 * Instantiates a new unit.
@@ -46,7 +48,7 @@ public class Unit implements java.io.Serializable {
 	 * @param symbol the symbol
 	 * @param components the components
 	 */
-	public Unit(int unId, String name, String symbol, Set components) {
+	public Unit(int unId, String name, String symbol, Set<Component> components) {
 		this.unId = unId;
 		this.name = name;
 		this.symbol = symbol;
@@ -112,7 +114,7 @@ public class Unit implements java.io.Serializable {
 	 *
 	 * @return the components
 	 */
-	public Set getComponents() {
+	public Set<Component> getComponents() {
 		return this.components;
 	}
 
@@ -121,7 +123,7 @@ public class Unit implements java.io.Serializable {
 	 *
 	 * @param components the new components
 	 */
-	public void setComponents(Set components) {
+	public void setComponents(Set<Component> components) {
 		this.components = components;
 	}
 

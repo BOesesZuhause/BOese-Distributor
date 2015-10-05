@@ -42,5 +42,7 @@
         <mapping resource="GroupUser.hbm.xml" />
         <mapping resource="Zone.hbm.xml" />
         <mapping resource="DeviceComponentRule.hbm.xml" />
+        <mapping resource="RepeatRule.hbm.xml" />
+        <mapping resource="ToDo.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

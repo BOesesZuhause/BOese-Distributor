@@ -11,6 +11,11 @@ import java.util.Set;
  */
 public class Zone implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** The zo id. */
 	private int zoId;
 	
@@ -21,13 +26,13 @@ public class Zone implements java.io.Serializable {
 	private String name;
 	
 	/** The group zones. */
-	private Set groupZones = new HashSet(0);
+	private Set<GroupZone> groupZones = new HashSet<GroupZone>(0);
 	
 	/** The zones. */
-	private Set zones = new HashSet(0);
+	private Set<Zone> zones = new HashSet<Zone>(0);
 	
 	/** The devices. */
-	private Set devices = new HashSet(0);
+	private Set<Device> devices = new HashSet<Device>(0);
 
 	/**
 	 * Instantiates a new zone.
@@ -58,7 +63,7 @@ public class Zone implements java.io.Serializable {
 	 * @param zones the zones
 	 * @param devices the devices
 	 */
-	public Zone(int zoId, Zone zone, String name, Set groupZones, Set zones, Set devices) {
+	public Zone(int zoId, Zone zone, String name, Set<GroupZone> groupZones, Set<Zone> zones, Set<Device> devices) {
 		this.zoId = zoId;
 		this.zone = zone;
 		this.name = name;
@@ -126,7 +131,7 @@ public class Zone implements java.io.Serializable {
 	 *
 	 * @return the group zones
 	 */
-	public Set getGroupZones() {
+	public Set<GroupZone> getGroupZones() {
 		return this.groupZones;
 	}
 
@@ -135,7 +140,7 @@ public class Zone implements java.io.Serializable {
 	 *
 	 * @param groupZones the new group zones
 	 */
-	public void setGroupZones(Set groupZones) {
+	public void setGroupZones(Set<GroupZone> groupZones) {
 		this.groupZones = groupZones;
 	}
 
@@ -144,7 +149,7 @@ public class Zone implements java.io.Serializable {
 	 *
 	 * @return the zones
 	 */
-	public Set getZones() {
+	public Set<Zone> getZones() {
 		return this.zones;
 	}
 
@@ -153,7 +158,7 @@ public class Zone implements java.io.Serializable {
 	 *
 	 * @param zones the new zones
 	 */
-	public void setZones(Set zones) {
+	public void setZones(Set<Zone> zones) {
 		this.zones = zones;
 	}
 
@@ -162,7 +167,7 @@ public class Zone implements java.io.Serializable {
 	 *
 	 * @return the devices
 	 */
-	public Set getDevices() {
+	public Set<Device> getDevices() {
 		return this.devices;
 	}
 
@@ -171,7 +176,7 @@ public class Zone implements java.io.Serializable {
 	 *
 	 * @param devices the new devices
 	 */
-	public void setDevices(Set devices) {
+	public void setDevices(Set<Device> devices) {
 		this.devices = devices;
 	}
 

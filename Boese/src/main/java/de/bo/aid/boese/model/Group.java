@@ -11,6 +11,8 @@ import java.util.Set;
  */
 public class Group implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The gr id. */
 	private short grId;
 	
@@ -18,13 +20,13 @@ public class Group implements java.io.Serializable {
 	private String name;
 	
 	/** The group zones. */
-	private Set groupZones = new HashSet(0);
+	private Set<GroupZone> groupZones = new HashSet<GroupZone>(0);
 	
 	/** The device groups. */
-	private Set deviceGroups = new HashSet(0);
+	private Set<DeviceGroup> deviceGroups = new HashSet<DeviceGroup>(0);
 	
 	/** The group users. */
-	private Set groupUsers = new HashSet(0);
+	private Set<GroupUser> groupUsers = new HashSet<GroupUser>(0);
 
 	/**
 	 * Instantiates a new group.
@@ -52,7 +54,7 @@ public class Group implements java.io.Serializable {
 	 * @param deviceGroups the device groups
 	 * @param groupUsers the group users
 	 */
-	public Group(short grId, String name, Set groupZones, Set deviceGroups, Set groupUsers) {
+	public Group(short grId, String name, Set<GroupZone> groupZones, Set<DeviceGroup> deviceGroups, Set<GroupUser> groupUsers) {
 		this.grId = grId;
 		this.name = name;
 		this.groupZones = groupZones;
@@ -101,7 +103,7 @@ public class Group implements java.io.Serializable {
 	 *
 	 * @return the group zones
 	 */
-	public Set getGroupZones() {
+	public Set<GroupZone> getGroupZones() {
 		return this.groupZones;
 	}
 
@@ -110,7 +112,7 @@ public class Group implements java.io.Serializable {
 	 *
 	 * @param groupZones the new group zones
 	 */
-	public void setGroupZones(Set groupZones) {
+	public void setGroupZones(Set<GroupZone> groupZones) {
 		this.groupZones = groupZones;
 	}
 
@@ -119,7 +121,7 @@ public class Group implements java.io.Serializable {
 	 *
 	 * @return the device groups
 	 */
-	public Set getDeviceGroups() {
+	public Set<DeviceGroup> getDeviceGroups() {
 		return this.deviceGroups;
 	}
 
@@ -128,7 +130,7 @@ public class Group implements java.io.Serializable {
 	 *
 	 * @param deviceGroups the new device groups
 	 */
-	public void setDeviceGroups(Set deviceGroups) {
+	public void setDeviceGroups(Set<DeviceGroup> deviceGroups) {
 		this.deviceGroups = deviceGroups;
 	}
 
@@ -137,7 +139,7 @@ public class Group implements java.io.Serializable {
 	 *
 	 * @return the group users
 	 */
-	public Set getGroupUsers() {
+	public Set<GroupUser> getGroupUsers() {
 		return this.groupUsers;
 	}
 
@@ -146,7 +148,7 @@ public class Group implements java.io.Serializable {
 	 *
 	 * @param groupUsers the new group users
 	 */
-	public void setGroupUsers(Set groupUsers) {
+	public void setGroupUsers(Set<GroupUser> groupUsers) {
 		this.groupUsers = groupUsers;
 	}
 

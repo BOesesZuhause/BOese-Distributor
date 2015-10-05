@@ -40,5 +40,11 @@
             </key>
             <one-to-many class="de.bo.aid.boese.model.HistoryLogRule" />
         </set>
+        <set name="toDos" table="ToDo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="RuleID" not-null="true" />
+            </key>
+            <one-to-many class="de.bo.aid.boese.model.ToDo" />
+        </set>
     </class>
 </hibernate-mapping>

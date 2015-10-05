@@ -9,6 +9,8 @@ import java.util.Set;
  */
 public class Connector implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The co id. */
 	private int coId;
 	
@@ -22,13 +24,13 @@ public class Connector implements java.io.Serializable {
 	private short status;
 	
 	/** The history log connectors. */
-	private Set historyLogConnectors = new HashSet(0);
+	private Set<HistoryLogConnector> historyLogConnectors = new HashSet<HistoryLogConnector>(0);
 	
 	/** The devices. */
-	private Set devices = new HashSet(0);
+	private Set<Device> devices = new HashSet<Device>(0);
 	
 	/** The log connectors. */
-	private Set logConnectors = new HashSet(0);
+	private Set<LogConnector> logConnectors = new HashSet<LogConnector>(0);
 
 	/**
 	 * Instantiates a new connector.
@@ -72,7 +74,7 @@ public class Connector implements java.io.Serializable {
 	 * @param logConnectors the log connectors
 	 */
 	public Connector(int coId, String name, String password, short status,
-			Set historyLogConnectors, Set devices, Set logConnectors) {
+			Set<HistoryLogConnector> historyLogConnectors, Set<Device> devices, Set<LogConnector> logConnectors) {
 		this.coId = coId;
 		this.name = name;
 		this.password = password;
@@ -150,7 +152,7 @@ public class Connector implements java.io.Serializable {
 	 *
 	 * @return the history log connectors
 	 */
-	public Set getHistoryLogConnectors() {
+	public Set<HistoryLogConnector> getHistoryLogConnectors() {
 		return this.historyLogConnectors;
 	}
 
@@ -159,7 +161,7 @@ public class Connector implements java.io.Serializable {
 	 *
 	 * @param historyLogConnectors the new history log connectors
 	 */
-	public void setHistoryLogConnectors(Set historyLogConnectors) {
+	public void setHistoryLogConnectors(Set<HistoryLogConnector> historyLogConnectors) {
 		this.historyLogConnectors = historyLogConnectors;
 	}
 
@@ -168,7 +170,7 @@ public class Connector implements java.io.Serializable {
 	 *
 	 * @return the devices
 	 */
-	public Set getDevices() {
+	public Set<Device> getDevices() {
 		return this.devices;
 	}
 
@@ -177,7 +179,7 @@ public class Connector implements java.io.Serializable {
 	 *
 	 * @param devices the new devices
 	 */
-	public void setDevices(Set devices) {
+	public void setDevices(Set<Device> devices) {
 		this.devices = devices;
 	}
 
@@ -186,7 +188,7 @@ public class Connector implements java.io.Serializable {
 	 *
 	 * @return the log connectors
 	 */
-	public Set getLogConnectors() {
+	public Set<LogConnector> getLogConnectors() {
 		return this.logConnectors;
 	}
 
@@ -195,7 +197,7 @@ public class Connector implements java.io.Serializable {
 	 *
 	 * @param logConnectors the new log connectors
 	 */
-	public void setLogConnectors(Set logConnectors) {
+	public void setLogConnectors(Set<LogConnector> logConnectors) {
 		this.logConnectors = logConnectors;
 	}
 

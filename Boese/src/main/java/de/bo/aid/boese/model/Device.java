@@ -12,6 +12,8 @@ import java.util.Set;
  */
 public class Device implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The de id. */
 	private int deId;
 	
@@ -31,13 +33,13 @@ public class Device implements java.io.Serializable {
 	private Date purchaseDate;
 	
 	/** The device groups. */
-	private Set deviceGroups = new HashSet(0);
+	private Set<DeviceGroup> deviceGroups = new HashSet<DeviceGroup>(0);
 	
 	/** The services. */
-	private Set services = new HashSet(0);
+	private Set<Service> services = new HashSet<Service>(0);
 	
 	/** The device components. */
-	private Set deviceComponents = new HashSet(0);
+	private Set<DeviceComponent> deviceComponents = new HashSet<DeviceComponent>(0);
 
 	/**
 	 * Instantiates a new device.
@@ -86,7 +88,7 @@ public class Device implements java.io.Serializable {
 	 * @param deviceComponents the device components
 	 */
 	public Device(int deId, Connector connector, Zone zone, String alias, String serialNumber, Date purchaseDate,
-			Set deviceGroups, Set services, Set deviceComponents) {
+			Set<DeviceGroup> deviceGroups, Set<Service> services, Set<DeviceComponent> deviceComponents) {
 		this.deId = deId;
 		this.connector = connector;
 		this.zone = zone;
@@ -211,7 +213,7 @@ public class Device implements java.io.Serializable {
 	 *
 	 * @return the device groups
 	 */
-	public Set getDeviceGroups() {
+	public Set<DeviceGroup> getDeviceGroups() {
 		return this.deviceGroups;
 	}
 
@@ -220,7 +222,7 @@ public class Device implements java.io.Serializable {
 	 *
 	 * @param deviceGroups the new device groups
 	 */
-	public void setDeviceGroups(Set deviceGroups) {
+	public void setDeviceGroups(Set<DeviceGroup> deviceGroups) {
 		this.deviceGroups = deviceGroups;
 	}
 
@@ -229,7 +231,7 @@ public class Device implements java.io.Serializable {
 	 *
 	 * @return the services
 	 */
-	public Set getServices() {
+	public Set<Service> getServices() {
 		return this.services;
 	}
 
@@ -238,7 +240,7 @@ public class Device implements java.io.Serializable {
 	 *
 	 * @param services the new services
 	 */
-	public void setServices(Set services) {
+	public void setServices(Set<Service> services) {
 		this.services = services;
 	}
 
@@ -247,7 +249,7 @@ public class Device implements java.io.Serializable {
 	 *
 	 * @return the device components
 	 */
-	public Set getDeviceComponents() {
+	public Set<DeviceComponent> getDeviceComponents() {
 		return this.deviceComponents;
 	}
 
@@ -256,7 +258,7 @@ public class Device implements java.io.Serializable {
 	 *
 	 * @param deviceComponents the new device components
 	 */
-	public void setDeviceComponents(Set deviceComponents) {
+	public void setDeviceComponents(Set<DeviceComponent> deviceComponents) {
 		this.deviceComponents = deviceComponents;
 	}
 

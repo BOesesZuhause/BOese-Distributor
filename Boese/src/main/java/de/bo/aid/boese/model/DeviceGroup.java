@@ -8,6 +8,8 @@ package de.bo.aid.boese.model;
  */
 public class DeviceGroup implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The id. */
 	private DeviceGroupId id;
 	

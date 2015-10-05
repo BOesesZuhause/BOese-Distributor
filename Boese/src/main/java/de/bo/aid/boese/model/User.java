@@ -12,6 +12,8 @@ import java.util.Set;
  */
 public class User implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The us id. */
 	private int usId;
 	
@@ -37,7 +39,7 @@ public class User implements java.io.Serializable {
 	private String email;
 	
 	/** The group users. */
-	private Set groupUsers = new HashSet(0);
+	private Set<GroupUser> groupUsers = new HashSet<GroupUser>(0);
 
 	/**
 	 * Instantiates a new user.
@@ -76,7 +78,7 @@ public class User implements java.io.Serializable {
 	 * @param groupUsers the group users
 	 */
 	public User(int usId, String surname, String firstName, String password, Boolean gender, Date birthdate,
-			String userName, String email, Set groupUsers) {
+			String userName, String email, Set<GroupUser> groupUsers) {
 		this.usId = usId;
 		this.surname = surname;
 		this.firstName = firstName;
@@ -237,7 +239,7 @@ public class User implements java.io.Serializable {
 	 *
 	 * @return the group users
 	 */
-	public Set getGroupUsers() {
+	public Set<GroupUser> getGroupUsers() {
 		return this.groupUsers;
 	}
 
@@ -246,7 +248,7 @@ public class User implements java.io.Serializable {
 	 *
 	 * @param groupUsers the new group users
 	 */
-	public void setGroupUsers(Set groupUsers) {
+	public void setGroupUsers(Set<GroupUser> groupUsers) {
 		this.groupUsers = groupUsers;
 	}
 
