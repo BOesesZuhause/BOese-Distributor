@@ -10,7 +10,7 @@
                	<param name="sequence">component_id_generator</param>
        		</generator>
         </id>
-        <many-to-one name="unit" class="de.bo.aid.boese.model.Unit" fetch="select">
+        <many-to-one name="unit" class="de.bo.aid.boese.model.Unit" lazy="false" fetch="select">
             <column name="UnID" not-null="true" />
         </many-to-one>
         <property name="name" type="string">
@@ -19,7 +19,7 @@
         <property name="sensor" type="boolean">
             <column name="Sensor" not-null="true" />
         </property>
-        <set name="deviceComponents" table="device_component" inverse="true" lazy="true" fetch="select">
+        <set name="deviceComponents" table="device_component" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="CoID" not-null="true" />
             </key>

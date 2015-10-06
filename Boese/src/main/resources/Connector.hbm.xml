@@ -19,7 +19,7 @@
         <property name="status" type="java.lang.Short">
             <column name="Status" />
         </property>
-        <set name="historyLogConnectors" table="history_log_connector" inverse="true" lazy="true" fetch="select">
+        <set name="historyLogConnectors" table="history_log_connector" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="CoID" not-null="true" />
             </key>
@@ -31,7 +31,7 @@
             </key>
             <one-to-many class="de.bo.aid.boese.model.Device" />
         </set>
-        <set name="logConnectors" table="log_connector" inverse="true" lazy="true" fetch="select">
+        <set name="logConnectors" table="log_connector" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="CoID" not-null="true" />
             </key>

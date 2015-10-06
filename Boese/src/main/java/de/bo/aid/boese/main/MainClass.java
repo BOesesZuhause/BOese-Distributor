@@ -23,6 +23,7 @@ import de.bo.aid.boese.db.AllSelects;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.json.BoeseJson;
+import de.bo.aid.boese.json.BoeseJson.MessageType;
 import de.bo.aid.boese.json.ConfirmConnection;
 import de.bo.aid.boese.json.ConfirmDeviceComponents;
 import de.bo.aid.boese.json.ConfirmDevices;
@@ -32,13 +33,21 @@ import de.bo.aid.boese.json.MultiMessage;
 import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.json.RequestConnection;
 import de.bo.aid.boese.json.RequestDeviceComponents;
+import de.bo.aid.boese.json.Rule;
 import de.bo.aid.boese.json.SendDeviceComponents;
 import de.bo.aid.boese.json.SendDevices;
 import de.bo.aid.boese.json.SendNotification;
 import de.bo.aid.boese.json.SendValue;
 import de.bo.aid.boese.json.UserDevice;
+import de.bo.aid.boese.json.UserRequestConnectors;
 import de.bo.aid.boese.json.UserRequestDeviceComponents;
+import de.bo.aid.boese.json.UserRequestGeneral;
+import de.bo.aid.boese.json.UserSendConnectors;
+import de.bo.aid.boese.json.UserSendDeviceComponent;
 import de.bo.aid.boese.json.UserSendDevices;
+import de.bo.aid.boese.json.UserSendRules;
+import de.bo.aid.boese.json.UserSendZones;
+import de.bo.aid.boese.json.Zone;
 import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempDevice;
 import de.bo.aid.boese.model.Connector;
@@ -300,12 +309,79 @@ public class MainClass {
 		}
 		HashSet<Integer> deIDList = urdc.getDeviceIds();
 		for (Integer devId : deIDList) {
-			
-			Set<DeviceComponent> decoSet = (Set<DeviceComponent>)Selects.device(devId.intValue()).getDeviceComponents();
+			Set<DeviceComponent> decoSet = Selects.device(devId.intValue()).getDeviceComponents();
+			HashSet<DeviceComponents> decos = new HashSet<>();
 			for (DeviceComponent deco : decoSet) {
-				
+				decos.add(new DeviceComponents(deco.getDeCoId(), 
+											deco.getComponent().getName(), 
+											deco.getCurrentValue().doubleValue(), 
+											deco.getComponent().getUnit().getName(), 
+											deco.getDescription(), 
+											deco.getComponent().isSensor(),
+											deco.getStatus()));
 			}
+			BoeseJson usdc = new UserSendDeviceComponent(devId.intValue(), decos, connectorId, ++seqNr, seqNr-1, 0, new Date().getTime());
+			OutputStream os = new ByteArrayOutputStream();
+			BoeseJson.parseMessage(usdc, os);
+			SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
 		}
+	}
+	
+	private static void handleUserRequestConnectors(BoeseJson urc, int connectorId) {
+		int seqNr = urc.getSeqenceNr();
+		if (connectorId != urc.getConnectorId()) {
+			SocketHandler.getInstance().rejectConnection(connectorId);
+			return;
+		}
+		HashMap<Integer, String> connectors = new HashMap<>();
+		if (urc.getType() == MessageType.USERREQUESTCONNECTORS) {
+			HashSet<Integer> conIdList = ((UserRequestConnectors)urc).getConnectorIds();
+			for (Integer conId : conIdList) {
+				Connector con = Selects.connector(conId.intValue());
+				connectors.put(conId, con.getName());			
+			}
+		} else if (urc.getType() == MessageType.USERREQUESTALLCONNECTORS){
+			// TODO
+			System.out.println("Create connectors");
+		}
+		BoeseJson usc = new UserSendConnectors(connectors, connectorId, ++seqNr, seqNr-1, 0, new Date().getTime());
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(usc, os);
+		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+	}
+	
+	private static void handleUserRequestAllZones(UserRequestGeneral urg, int connectorId) {
+		int seqNr = urg.getSeqenceNr();
+		if (connectorId != urg.getConnectorId()) {
+			SocketHandler.getInstance().rejectConnection(connectorId);
+			return;
+		}
+		HashSet<Zone> zones = new HashSet<>();
+		// TODO
+//		List<de.bo.aid.boese.model.Zone> zoneList = Selects.allZones();
+//		for (de.bo.aid.boese.model.Zone zone : zoneList) {
+//			zones.add(new Zone(zone.getZoId(), zone.getZone().getZoId(), zone.getName()));
+//		}
+		
+		BoeseJson usc = new UserSendZones(zones, connectorId, ++seqNr, seqNr-1, 0, new Date().getTime());
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(usc, os);
+		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+	}
+	
+	private static void handleUserRequestAllRules(UserRequestGeneral urg, int connectorId) {
+		int seqNr = urg.getSeqenceNr();
+		if (connectorId != urg.getConnectorId()) {
+			SocketHandler.getInstance().rejectConnection(connectorId);
+			return;
+		}
+		HashSet<Rule> rules = new HashSet<>();
+		// TODO rules aus db in set
+		
+		BoeseJson usc = new UserSendRules(rules, connectorId, ++seqNr, seqNr-1, 0, new Date().getTime());
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(usc, os);
+		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
 	private static void handleMultiMessages(MultiMessage mm, int connectorId) {
@@ -333,8 +409,10 @@ public class MainClass {
 	public static void handleMessage(String message, int connectorId) { 
 		BoeseJson bjMessage = BoeseJson.readMessage(new ByteArrayInputStream(message.getBytes()));
 		if (bjMessage == null) {
+			System.out.println("No message");
 			SocketHandler.getInstance().rejectConnection(connectorId);
 		}
+		System.out.println(bjMessage.getType());
 		switch (bjMessage.getType()) {
 		case MULTI:
 			handleMultiMessages((MultiMessage)bjMessage, connectorId);
@@ -360,6 +438,17 @@ public class MainClass {
 		case USERREQUESTDEVICECOMPONENTS:
 			handleUserRequestDeviceComponents((UserRequestDeviceComponents)bjMessage, connectorId);
 			break;
+		case USERREQUESTCONNECTORS:
+			handleUserRequestConnectors(bjMessage, connectorId);
+			break;
+		case USERREQUESTALLCONNECTORS:
+			handleUserRequestConnectors(bjMessage, connectorId);
+			break;
+		case USERREQUESTALLZONES:
+			handleUserRequestAllZones((UserRequestGeneral)bjMessage, connectorId);
+			break;
+		case USERREQUESTALLRULES:
+			handleUserRequestAllRules((UserRequestGeneral)bjMessage, connectorId);
 		default:
 			break;
 		}

@@ -10,6 +10,9 @@ import java.util.Map.Entry;
 
 import javax.json.*;
 
+import de.bo.aid.boese.main.model.TempComponent;
+import de.bo.aid.boese.main.model.TempDevice;
+
 // TODO: Auto-generated Javadoc
 /**
  * This class is the base for all Boese Json Messages.
@@ -66,7 +69,17 @@ public class BoeseJson {
 		USERREQUESTALLDEVICES,
 		USERSENDDEVICES,
 		USERREQUESTDEVICECOMPONENTS,
-		USERSENDDEVICECOMPONENT
+		USERSENDDEVICECOMPONENT,
+		USERREQUESTCONNECTORS,
+		USERREQUESTALLCONNECTORS,
+		USERSENDCONNETORS,
+		USERREQUESTALLZONES,
+		USERSENDZONES,
+		USERREQUESTALLRULES,
+		USERSENDRULES,
+		USERREQUESTTEMPS,
+		USERSENDTEMPS,
+		USERCONFIRMTEMPS
 	}
 
 	/**
@@ -295,10 +308,9 @@ public class BoeseJson {
 			break;
 		case 52: // UserRequestDeviceComponents
 			HashSet<Integer> devIdSetURDC = new HashSet<>();
-			JsonArray devIdsURDC = jo.getJsonArray("Components");
-			for (int i = 0; i < devIdsURDC.size(); i++) {
-				JsonObject dekoId = devIdsURDC.getJsonObject(i);
-				devIdSetURDC.add(dekoId.getInt("DeviceIds"));
+			JsonArray devIdsURDC = jo.getJsonArray("DeviceIds");
+			for (JsonValue value : devIdsURDC) {
+				devIdSetURDC.add(Integer.parseInt(value.toString()));
 			}
 			bj = new UserRequestDeviceComponents(devIdSetURDC, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
 			break;
@@ -316,6 +328,98 @@ public class BoeseJson {
 													decoUSDC.getBoolean("Actor", false)));
 			}
 			bj = new UserSendDeviceComponent(jo.getInt("DeviceId"), decoSetUSDC, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			break;
+		case 54: // UserRequestConnectors
+			HashSet<Integer> conIdSetURCO = new HashSet<>();
+			JsonArray conIdsURCO = jo.getJsonArray("ConnectorIds");
+			for (JsonValue value : conIdsURCO) {
+				conIdSetURCO.add(Integer.parseInt(value.toString()));
+			}
+			bj = new UserRequestConnectors(conIdSetURCO, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			break;
+		case 55: // UserRequestAllConnectors
+			bj = new UserRequestGeneral(MessageType.USERREQUESTALLCONNECTORS, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			break;
+		case 56: // UserSendConnectors
+			HashMap<Integer, String> connectorMapUSC = new HashMap<Integer, String>();
+			JsonArray connectorsUSC = jo.getJsonArray("Connectors");
+			for (int i = 0; i < connectorsUSC.size(); i++) {
+				JsonObject conUSC = connectorsUSC.getJsonObject(i);
+				connectorMapUSC.put(conUSC.getInt("ConnectorId"), conUSC.getString("ConnectorName"));
+			}
+			bj = new UserSendConnectors(connectorMapUSC, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			break;
+		case 57: // UserRequestAllZones
+			bj = new UserRequestGeneral(MessageType.USERREQUESTALLZONES, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			break;
+		case 58: // UserSendZones
+			HashSet<Zone> zoneSetUSZ = new HashSet<Zone>();
+			JsonArray zonesUSZ = jo.getJsonArray("Zones");
+			for (int i = 0; i < zonesUSZ.size(); i++) {
+				JsonObject zoneUSZ = zonesUSZ.getJsonObject(i);
+				zoneSetUSZ.add(new Zone(
+							zoneUSZ.getInt("ZoneId"),
+							zoneUSZ.getInt("SuperZoneId"),
+							zoneUSZ.getString("ZoneName", "")));
+			}
+			bj = new UserSendZones(zoneSetUSZ, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			break;
+		case 59: // UserRequestAllRules
+			bj = new UserRequestGeneral(MessageType.USERREQUESTALLRULES, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			break;
+		case 60: // UserSendRules
+			HashSet<Rule> ruleSetURAR = new HashSet<>();
+			JsonArray rulesURAR = jo.getJsonArray("Rules");
+			for (int i = 0; i < rulesURAR.size(); i++) {
+				JsonObject ruleURAR = rulesURAR.getJsonObject(i);
+				ruleSetURAR.add(new Rule(ruleURAR.getInt("RuleId"), 
+								ruleURAR.getBoolean("Active"), 
+								ruleURAR.getJsonNumber("InsertDate").longValue(), 
+								ruleURAR.getJsonNumber("ModifyDate").longValue(), 
+								ruleURAR.getString("Permissions"), 
+								ruleURAR.getString("Conditions"), 
+								ruleURAR.getString("Actions")));
+			}
+			bj = new UserSendRules(ruleSetURAR, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			break;
+		case 80: // UserRequestTemps
+			bj = new UserRequestGeneral(MessageType.USERREQUESTTEMPS, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			break;
+		case 81: // UserSendTemps
+			HashMap<Integer, String> tempConnectorsUST = new HashMap<>();
+			HashMap<Integer, TempDevice> tempDevicesUST = new HashMap<>();
+			HashMap<Integer, TempComponent> tempDeviceComponentsUST = new HashMap<>();
+			JsonArray tempConsUST = jo.getJsonArray("TempConnectors");
+			for (int i = 0; i < tempConsUST.size(); i++) {
+				JsonObject con = tempConsUST.getJsonObject(i);
+				tempConnectorsUST.put(con.getInt("ConnectorTmpId"), con.getString("ConnectorName"));
+			}
+			JsonArray tempDevsUST = jo.getJsonArray("TempDevices");
+			for (int i = 0; i < tempDevsUST.size(); i++) {
+				JsonObject dev = tempDevsUST.getJsonObject(i);
+				tempDevicesUST.put(dev.getInt("ConnectorTmpId"), new TempDevice(dev.getInt("ConnectorId"), dev.getString("DeviceName")));
+			}
+			JsonArray tempDeCosUST = jo.getJsonArray("TempDevicesComponents");
+			for (int i = 0; i < tempDeCosUST.size(); i++) {
+				JsonObject deCo = tempDeCosUST.getJsonObject(i);
+				tempDeviceComponentsUST.put(deCo.getInt("ComponentTmpId"), new TempComponent(
+								deCo.getInt("ComponentTmpId"), 
+								deCo.getString("Name"), 
+								-1, 
+								-1, 
+								deCo.getInt("ConnectorId"), 
+								deCo.getString("Description"), 
+								deCo.getString("Unit"), 
+								deCo.getBoolean("Actor")));
+			}
+			bj = new UserSendTemps(tempConnectorsUST, tempDevicesUST, tempDeviceComponentsUST, 
+					headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			//TODO
+			break;
+		case 82: // UserConfirmTemps
+			bj = new UserRequestGeneral(MessageType.USERCONFIRMTEMPS, headerConnectorID, headerSeqNr, headerAckNr, headerStatus, headerTimestamp);
+			// TODO
+			break;
 		default:
 			break;
 		}
@@ -505,23 +609,93 @@ public class BoeseJson {
 			break;
 		case USERSENDDEVICECOMPONENT:
 			UserSendDeviceComponent usdc = (UserSendDeviceComponent)message;
-			job.add("Header", addHeader(52, usdc.getConnectorId(), usdc.getSeqenceNr(), usdc.getAcknowledgeId(), usdc.getStatus(), usdc.getTimestamp()));
+			job.add("Header", addHeader(53, usdc.getConnectorId(), usdc.getSeqenceNr(), usdc.getAcknowledgeId(), usdc.getStatus(), usdc.getTimestamp()));
 			job.add("DeviceId", usdc.getDeviceId());
 			JsonArrayBuilder decosUSDC = Json.createArrayBuilder();
-			JsonObjectBuilder decoUSDC;
+			JsonObjectBuilder decoUSDC;			
 			for (DeviceComponents deco : usdc.getComponentList()) {
+				String description = deco.getDescription() == null ? "" : deco.getDescription();
+				String componentName = deco.getComponentName() == null ? "" : deco.getComponentName();
+				String unit = deco.getUnit() == null ? "" : deco.getUnit();
 				decoUSDC = Json.createObjectBuilder();
 				decoUSDC.add("DeviceComponentId", deco.getDeviceComponentId());
-				decoUSDC.add("Description", deco.getDescription());
-				decoUSDC.add("ComponentName", deco.getComponentName());
+				decoUSDC.add("Description", description);
+				decoUSDC.add("ComponentName", componentName);
 				decoUSDC.add("Value", deco.getValue());
 				decoUSDC.add("Timestamp", deco.getTimestamp());
 				decoUSDC.add("Status", deco.getStatus());
 				decoUSDC.add("Aktor", deco.isActor());
-				decoUSDC.add("Unit", deco.getUnit());
+				decoUSDC.add("Unit", unit);
 				decosUSDC.add(decoUSDC);
 			}
 			job.add("Components", decosUSDC);
+			break;
+		case USERREQUESTCONNECTORS:
+			UserRequestConnectors urc = (UserRequestConnectors)message;
+			job.add("Header", addHeader(54, urc.getConnectorId(), urc.getSeqenceNr(), urc.getAcknowledgeId(), urc.getStatus(), urc.getTimestamp()));
+			JsonArrayBuilder connectorsURC = Json.createArrayBuilder();
+			for (Integer conIdURC : urc.getConnectorIds()) {
+				connectorsURC.add(conIdURC.intValue());
+			}
+			job.add("ConnectorIds", connectorsURC);
+			break;
+		case USERSENDCONNETORS:
+			UserSendConnectors usc = (UserSendConnectors)message;
+			job.add("Header", addHeader(56, usc.getConnectorId(), usc.getSeqenceNr(), usc.getAcknowledgeId(), usc.getStatus(), usc.getTimestamp()));
+			JsonArrayBuilder consUSC = Json.createArrayBuilder();
+			JsonObjectBuilder conUSC;
+			for (Entry<Integer, String> entry : usc.getConnectors().entrySet()) {
+				conUSC = Json.createObjectBuilder();
+				conUSC.add("ConnectorId", entry.getKey());
+				conUSC.add("ConnectorName", entry.getValue());
+				consUSC.add(conUSC);
+			}
+			job.add("Connectors", consUSC);
+			break;
+		case USERREQUESTALLCONNECTORS:
+			UserRequestGeneral urac = (UserRequestGeneral)message;
+			job.add("Header", addHeader(55, urac.getConnectorId(), urac.getSeqenceNr(), urac.getAcknowledgeId(), urac.getStatus(), urac.getTimestamp()));
+			break;
+		case USERREQUESTALLZONES:
+			UserRequestGeneral uraz = (UserRequestGeneral)message;
+			job.add("Header", addHeader(57, uraz.getConnectorId(), uraz.getSeqenceNr(), uraz.getAcknowledgeId(), uraz.getStatus(), uraz.getTimestamp()));
+			break;
+		case USERSENDZONES:
+			UserSendZones usz = (UserSendZones)message;
+			job.add("Header", addHeader(58, usz.getConnectorId(), usz.getSeqenceNr(), usz.getAcknowledgeId(), usz.getStatus(), usz.getTimestamp()));
+			JsonArrayBuilder zonesUSZ = Json.createArrayBuilder();
+			JsonObjectBuilder zoneUSZ;
+			for (Zone zone : usz.getZones()) {
+				zoneUSZ = Json.createObjectBuilder();
+				zoneUSZ.add("ZoneId", zone.getZoneId());
+				zoneUSZ.add("SuperZoneId", zone.getSuperZoneId());
+				zoneUSZ.add("ZoneName", zone.getZoneName());
+				zonesUSZ.add(zoneUSZ);
+			}
+			job.add("Zones", zonesUSZ);
+			break;
+		case USERREQUESTALLRULES:
+			UserRequestGeneral urar = (UserRequestGeneral)message;
+			job.add("Header", addHeader(59, urar.getConnectorId(), urar.getSeqenceNr(), urar.getAcknowledgeId(), urar.getStatus(), urar.getTimestamp()));
+			break;
+		case USERSENDRULES:
+			UserSendRules usr = (UserSendRules)message;
+			job.add("Header", addHeader(60, usr.getConnectorId(), usr.getSeqenceNr(), usr.getAcknowledgeId(), usr.getStatus(), usr.getTimestamp()));
+			JsonArrayBuilder rulesUSR = Json.createArrayBuilder();
+			JsonObjectBuilder ruleUSR;
+			for (Rule rule : usr.getRules()) {
+				ruleUSR = Json.createObjectBuilder();
+				ruleUSR.add("RuleId", rule.getRuleId());
+				ruleUSR.add("Active", rule.isActive());
+				ruleUSR.add("InsertDate", rule.getInsertDate());
+				ruleUSR.add("ModifyDate", rule.getModifyDate());
+				ruleUSR.add("Permissions", rule.getPermissions());
+				ruleUSR.add("Conditions", rule.getConditions());
+				ruleUSR.add("Actions", rule.getActions());
+				rulesUSR.add(ruleUSR);
+			}
+			job.add("Rules", rulesUSR);
+			break;
 		default:
 			break;
 		}
