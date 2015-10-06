@@ -26,6 +26,7 @@ public class RequestConnection extends BoeseJson {
 	 * @param ackNr the ack nr
 	 * @param status the status
 	 * @param headerTimestamp the header timestamp
+	 * @param userConnector if it is an user connector
 	 */
 	public RequestConnection(String name, String password,
 			int idConnector, int seqNr, int ackNr, int status, long headerTimestamp, boolean userConnector) {

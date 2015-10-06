@@ -13,6 +13,7 @@ import org.junit.Test;
 import de.bo.aid.boese.xml.Action;
 import de.bo.aid.boese.xml.BoeseXML;
 import de.bo.aid.boese.xml.BoeseXML.XMLType;
+import de.bo.aid.boese.xml.CalculationList.CalculationTypes;
 import de.bo.aid.boese.xml.Component;
 import de.bo.aid.boese.xml.Component.Comperator;
 import de.bo.aid.boese.xml.Condition;
@@ -92,7 +93,7 @@ public class XMLParserTest {
 				+ "</DEACTIVATE_RULE>"
 				+ "<ACTOR>"
 				+ "<ID>10</ID>"
-				+ "<VALUE>11.1</VALUE>"
+				+ "<VALUE><CONSTANT>11.1</CONSTANT></VALUE>"
 				+ "<RESET_VALUE>10</RESET_VALUE>"
 				+ "<START_TIME>12341234</START_TIME>"
 				+ "<DURATION>15</DURATION>"
@@ -116,7 +117,7 @@ public class XMLParserTest {
 		for (Component comp : ((Action)bXML).getActors()) {
 			if (comp.getId() == 10) {
 				assertTrue(comp.getComperator() == null);
-				assertTrue(comp.getValue() == 11.1);
+				assertTrue(comp.getCalculation().getConstants().iterator().next() == 11.1);
 				assertTrue(comp.getResetValue() == 10);
 				assertTrue(comp.getStartTime() == 12341234);
 				assertTrue(comp.getDuration() == 15);
@@ -130,7 +131,7 @@ public class XMLParserTest {
 		String rule = "<CONDITION>"
 				+ "<COMPONENT>"
 				+ "<ID>99</ID>"
-				+ "<VALUE>11.1</VALUE>"
+				+ "<VALUE><CONSTANT>11.1</CONSTANT></VALUE>"
 				+ "<RESET_VALUE>10</RESET_VALUE>"
 				+ "<START_TIME>12341234</START_TIME>"
 				+ "<DURATION>15</DURATION>"
@@ -138,7 +139,7 @@ public class XMLParserTest {
 				+ "</COMPONENT>"
 				+ "<COMPONENT>"
 				+ "<ID>100</ID>"
-				+ "<VALUE>21.1</VALUE>"
+				+ "<VALUE><CONSTANT>21.1</CONSTANT></VALUE>"
 				+ "<RESET_VALUE>20</RESET_VALUE>"
 				+ "<START_TIME>22341234</START_TIME>"
 				+ "<DURATION>25</DURATION>"
@@ -156,13 +157,13 @@ public class XMLParserTest {
 		for (Component comp : ((Condition)bXML).getRule().getComponents()) {
 			if (comp.getId() == 99) {
 				assertTrue(comp.getComperator() == Comperator.EQUAL);
-				assertTrue(comp.getValue() == 11.1);
+				assertTrue(comp.getCalculation().getConstants().iterator().next() == 11.1);
 				assertTrue(comp.getResetValue() == -1);
 				assertTrue(comp.getStartTime() == 12341234);
 				assertTrue(comp.getDuration() == 15);
 			} else if (comp.getId() == 100) {
 				assertTrue(comp.getComperator() == Comperator.NOTEQUAL);
-				assertTrue(comp.getValue() == 21.1);
+				assertTrue(comp.getCalculation().getConstants().iterator().next() == 21.1);
 				assertTrue(comp.getResetValue() == -1);
 				assertTrue(comp.getStartTime() == 22341234);
 				assertTrue(comp.getDuration() == 25);
@@ -180,7 +181,7 @@ public class XMLParserTest {
 				+ "<AND>"
 				+ 	"<COMPONENT>"
 				+ 		"<ID>99</ID>"
-				+ 		"<VALUE>11.1</VALUE>"
+				+ 		"<VALUE><CONSTANT>11.1</CONSTANT></VALUE>"
 				+ 		"<RESET_VALUE>10</RESET_VALUE>"
 				+ 		"<START_TIME>12341234</START_TIME>"
 				+ 		"<DURATION>15</DURATION>"
@@ -188,7 +189,7 @@ public class XMLParserTest {
 				+ 	"</COMPONENT>"
 				+ 	"<COMPONENT>"
 				+ 		"<ID>100</ID>"
-				+ 		"<VALUE>21.1</VALUE>"
+				+ 		"<VALUE><CONSTANT>21.1</CONSTANT></VALUE>"
 				+ 		"<RESET_VALUE>20</RESET_VALUE>"
 				+ 		"<START_TIME>22341234</START_TIME>"
 				+ 		"<DURATION>25</DURATION>"
@@ -210,19 +211,59 @@ public class XMLParserTest {
 		for (Component comp : ((Condition)bXML).getRule().getGate().iterator().next().getComponents()) {
 			if (comp.getId() == 99) {
 				assertTrue(comp.getComperator() == Comperator.EQUAL);
-				assertTrue(comp.getValue() == 11.1);
+				assertTrue(comp.getCalculation().getConstants().iterator().next() == 11.1);
 				assertTrue(comp.getResetValue() == -1);
 				assertTrue(comp.getStartTime() == 12341234);
 				assertTrue(comp.getDuration() == 15);
 			} else if (comp.getId() == 100) {
 				assertTrue(comp.getComperator() == Comperator.NOTEQUAL);
-				assertTrue(comp.getValue() == 21.1);
+				assertTrue(comp.getCalculation().getConstants().iterator().next() == 21.1);
 				assertTrue(comp.getResetValue() == -1);
 				assertTrue(comp.getStartTime() == 22341234);
 				assertTrue(comp.getDuration() == 25);
 			} else {
 				assertTrue(false);
 			}
+		}
+	}
+	
+	@Test
+	public void conditionTestAdd() {
+		String rule = "<CONDITION>"
+				+ "<AND>"
+				+ 	"<COMPONENT>"
+				+ 		"<ID>99</ID>"
+				+ 		"<VALUE>"
+				+			"<ADD>"
+				+ 				"<CONSTANT>11.1</CONSTANT>"
+				+				"<VARIABLE>2</VARIABLE>"
+				+			"</ADD>"
+				+		"</VALUE>"
+				+ 		"<RESET_VALUE>10</RESET_VALUE>"
+				+ 		"<START_TIME>12341234</START_TIME>"
+				+ 		"<DURATION>15</DURATION>"
+				+ 		"<COMPERATOR>==</COMPERATOR>"
+				+ 	"</COMPONENT>"
+				+ "</AND>"
+				+ "</CONDITION>";
+
+		InputStream is = new ByteArrayInputStream(rule.getBytes());
+		BoeseXML bXML = BoeseXML.readXML(is);
+		assertTrue(bXML.getClass() == Condition.class);
+		assertTrue(bXML.getType() == XMLType.CONDITION);
+		assertTrue(((Condition)bXML).containsComponent(99));
+		assertTrue(((Condition)bXML).getRule().getGate().size() == 1);
+		assertTrue(((Condition)bXML).getRule().getGate().iterator().next().getComponents().size() == 1);
+		assertTrue(((Condition)bXML).getRule().getGate().iterator().next().getGateType() == GateType.AND_GATE);
+		
+		for (Component comp : ((Condition)bXML).getRule().getGate().iterator().next().getComponents()) {
+			assertTrue(comp.getComperator() == Comperator.EQUAL);
+			assertTrue(comp.getCalculation().getCalculations().iterator().next().getCalculationType() == CalculationTypes.ADD);
+			assertTrue(comp.getCalculation().getCalculations().iterator().next().getConstants().iterator().next() == 11.1);
+			assertTrue(comp.getCalculation().getCalculations().iterator().next().getVariables().iterator().next() == 2.0);
+			assertTrue(comp.getResetValue() == -1);
+			assertTrue(comp.getStartTime() == 12341234);
+			assertTrue(comp.getDuration() == 15);
 		}
 	}
 }

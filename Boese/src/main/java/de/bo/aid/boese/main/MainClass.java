@@ -357,11 +357,10 @@ public class MainClass {
 			return;
 		}
 		HashSet<Zone> zones = new HashSet<>();
-		// TODO
-//		List<de.bo.aid.boese.model.Zone> zoneList = Selects.allZones();
-//		for (de.bo.aid.boese.model.Zone zone : zoneList) {
-//			zones.add(new Zone(zone.getZoId(), zone.getZone().getZoId(), zone.getName()));
-//		}
+		List<de.bo.aid.boese.model.Zone> zoneList = AllSelects.Zones();
+		for (de.bo.aid.boese.model.Zone zone : zoneList) {
+			zones.add(new Zone(zone.getZoId(), zone.getZone().getZoId(), zone.getName()));
+		}
 		
 		BoeseJson usc = new UserSendZones(zones, connectorId, ++seqNr, seqNr-1, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
@@ -485,6 +484,7 @@ public class MainClass {
 	 * Confirm connector.
 	 *
 	 * @param tempId the temp id
+	 * @param isUserConnector if it is an user connector
 	 * @throws NotFoundException the not found exception
 	 */
 	public static void confirmConnector(int tempId, boolean isUserConnector) throws NotFoundException{
@@ -652,6 +652,7 @@ public class MainClass {
 	 * Confirm connectors.
 	 *
 	 * @param tempId the temp id
+	 * @param isUserConnector if it is an user connector
 	 */
 	//Asynchronous handler
 	public static void confirmConnectors(int tempId, boolean isUserConnector){

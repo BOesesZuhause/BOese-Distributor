@@ -93,7 +93,7 @@ public class Action extends BoeseXML {
 			if (node.hasChildNodes()) {
 				NodeList nActorList = node.getChildNodes();
 				int actorID = -1;
-				double actorValue = -1;
+				CalculationList actorValue = null;
 				double actorResetValue = -1;
 				long actorStartTime = -1;
 				long actorDuration = -1;
@@ -106,7 +106,7 @@ public class Action extends BoeseXML {
 						actorID = new Integer(nActor.getTextContent()).intValue();
 						break;
 					case "VALUE":
-						actorValue = new Double(nActor.getTextContent()).doubleValue();
+						actorValue = parseCalculation(nActor.getChildNodes());
 						break;
 					case "RESET_VALUE":
 						actorResetValue = new Double(nActor.getTextContent()).doubleValue();

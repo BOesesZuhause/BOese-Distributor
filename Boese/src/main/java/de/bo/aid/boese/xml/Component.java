@@ -14,6 +14,8 @@ public class Component {
 	/** The value. */
 	protected double value;
 	
+	protected CalculationList calculation;
+	
 	/** The reset value. */
 	protected double resetValue;
 	
@@ -52,40 +54,44 @@ public class Component {
 	 * Instantiates a new component.
 	 *
 	 * @param id the id
-	 * @param value the value
+	 * @param calculation the calculation
 	 * @param resetValue the reset value
 	 * @param startTime the start time
 	 * @param duration the duration
 	 * @param comperator the comperator
 	 */
-	public Component(int id, double value, double resetValue,long startTime, long duration, Comperator comperator) {
+	public Component(int id, CalculationList calculation, double resetValue,long startTime, long duration, Comperator comperator) {
 		this.id = id;
-		this.value = value;
+		this.value = -1;
+		this.calculation = calculation;
 		this.resetValue = resetValue;
 		this.startTime = startTime;
 		this.duration = duration;
 		this.comperator = comperator;
 		repeatAfterEnd = 0;
+		value = -1;
 	}
 	
 	/**
 	 * Instantiates a new component.
 	 *
 	 * @param id the id
-	 * @param value the value
+	 * @param calculation the calculation
 	 * @param resetValue the reset value
 	 * @param startTime the start time
 	 * @param duration the duration
 	 * @param repeatAfterEnd the repeat after end
 	 */
-	public Component(int id, double value, double resetValue,long startTime, long duration, int repeatAfterEnd) {
+	public Component(int id, CalculationList calculation, double resetValue,long startTime, long duration, int repeatAfterEnd) {
 		this.id = id;
-		this.value = value;
+		this.value = -1;
+		this.calculation = calculation;
 		this.resetValue = resetValue;
 		this.startTime = startTime;
 		this.duration = duration;
 		this.repeatAfterEnd = repeatAfterEnd;
 		this.comperator = null;
+		value = -1;
 	}
 	
 	/**
@@ -106,6 +112,11 @@ public class Component {
 		return comperator;
 	}
 	
+	
+	public double getValue() {
+		return value;
+	}
+	
 	/**
 	 * Gets the id.
 	 *
@@ -115,13 +126,9 @@ public class Component {
 		return id;
 	}
 	
-	/**
-	 * Gets the value.
-	 *
-	 * @return the value
-	 */
-	public double getValue() {
-		return value;
+	
+	public CalculationList getCalculation() {
+		return calculation;
 	}
 	
 	/**

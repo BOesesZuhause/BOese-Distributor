@@ -46,7 +46,7 @@ public class Condition extends BoeseXML {
 			case "COMPONENT":
 				NodeList nComponentList = nList.item(j).getChildNodes();
 				int compID = -1;
-				double compValue = -1;
+				CalculationList compValue = null;
 				long compStartTime = -1;
 				long compDuration = -1;
 				Comperator compComperator = null;
@@ -83,7 +83,7 @@ public class Condition extends BoeseXML {
 						}
 						break;
 					case "VALUE":
-						compValue = new Double(nComponent.getTextContent()).doubleValue();
+						compValue = parseCalculation(nComponent.getChildNodes());
 						break;
 					case "START_TIME":
 						compStartTime = new Long(nComponent.getTextContent()).longValue();

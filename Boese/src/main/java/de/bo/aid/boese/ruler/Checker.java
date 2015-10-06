@@ -96,18 +96,19 @@ public class Checker {
 		}
 		else{
 			switch(comp.getComperator()){
-			case EQUAL:
-				return deCoValue.get(comp.getId()) == comp.getValue();
-			case NOTEQUAL:
-				return deCoValue.get(comp.getId()) != comp.getValue();
-			case GREATEREQUAL:
-				return deCoValue.get(comp.getId()) >= comp.getValue();
-			case LOWEREQUAL:
-				return deCoValue.get(comp.getId()) <= comp.getValue();
-			case GREATERTHEN:
-				return deCoValue.get(comp.getId()) > comp.getValue();
-			case LOWERTHEN:
-				return deCoValue.get(comp.getId()) < comp.getValue();
+			// TODO
+//			case EQUAL:
+//				return deCoValue.get(comp.getId()) == comp.getValue();
+//			case NOTEQUAL:
+//				return deCoValue.get(comp.getId()) != comp.getValue();
+//			case GREATEREQUAL:
+//				return deCoValue.get(comp.getId()) >= comp.getValue();
+//			case LOWEREQUAL:
+//				return deCoValue.get(comp.getId()) <= comp.getValue();
+//			case GREATERTHEN:
+//				return deCoValue.get(comp.getId()) > comp.getValue();
+//			case LOWERTHEN:
+//				return deCoValue.get(comp.getId()) < comp.getValue();
 			default:
 				return false;
 			}

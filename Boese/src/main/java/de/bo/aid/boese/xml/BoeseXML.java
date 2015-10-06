@@ -8,6 +8,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import de.bo.aid.boese.xml.CalculationList.CalculationTypes;
+import de.bo.aid.boese.xml.Component.Comperator;
+import de.bo.aid.boese.xml.GateList.GateType;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -90,5 +96,54 @@ public class BoeseXML {
 		}
 		
 		return returnXML;
+	}
+	
+	protected static CalculationList parseCalculation(NodeList nList) {
+		CalculationList calcList = new CalculationList();
+		CalculationList calculation = null;
+		for (int j = 0; j < nList.getLength(); j++) {
+			Node nChild = nList.item(j);
+			switch (nChild.getNodeName()) {
+			case "CONSTANT":
+				calcList.addConstant(new Double(nChild.getTextContent()).doubleValue());
+				break;
+			case "VARIABLE":
+				calcList.addValiable(new Integer(nChild.getTextContent()).intValue());
+				break;
+			case "ADD":
+				calculation = parseCalculation(nChild.getChildNodes());
+				calculation.setCalculationType(CalculationTypes.ADD);
+				calcList.addCalculation(calculation);
+				break;
+			case "SUB":
+				calculation = parseCalculation(nChild.getChildNodes());
+				calculation.setCalculationType(CalculationTypes.SUB);
+				calcList.addCalculation(calculation);
+				break;
+			case "MUL":
+				calculation = parseCalculation(nChild.getChildNodes());
+				calculation.setCalculationType(CalculationTypes.MUL);
+				calcList.addCalculation(calculation);
+				break;
+			case "DIV":
+				calculation = parseCalculation(nChild.getChildNodes());
+				calculation.setCalculationType(CalculationTypes.DIV);
+				calcList.addCalculation(calculation);
+				break;
+			case "MOD":
+				calculation = parseCalculation(nChild.getChildNodes());
+				calculation.setCalculationType(CalculationTypes.MOD);
+				calcList.addCalculation(calculation);
+				break;
+			case "ABS":
+				calculation = parseCalculation(nChild.getChildNodes());
+				calculation.setCalculationType(CalculationTypes.ABS);
+				calcList.addCalculation(calculation);
+				break;
+			default:
+				break;
+			}
+		}
+		return calcList;
 	}
 }
