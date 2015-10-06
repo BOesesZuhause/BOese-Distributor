@@ -175,10 +175,9 @@ public class ConnectorSimulation implements MessageHandler {
 			}
 		}
 		
-		int seqNr = bjMessage.getSeqenceNr();
-		
 		sendTime = new Date().getTime();
-		SendDeviceComponents sendDevComp = new SendDeviceComponents(requestedDevice.getId(), requestedDevice.getComponents(), conId, seqNr+1, seqNr, 0, sendTime);
+		SendDeviceComponents sendDevComp = new SendDeviceComponents(requestedDevice.getId(), requestedDevice.getComponents(), 
+				conId, 0, sendTime);
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(sendDevComp, os);
 		client.sendMessage(os.toString());
@@ -210,16 +209,13 @@ public class ConnectorSimulation implements MessageHandler {
 	private void handleRequestAllDevices(RequestAllDevices bjMessage) {
 		System.out.println("Server requests Devices");
 		
-		int seqNr = bjMessage.getSeqenceNr();
-
-		
 		HashMap<String, Integer> devHash = new HashMap<>();
 		for(Device dev : devices){
 			devHash.put(dev.getName(), dev.getId());
 		}
 		
 		sendTime = new Date().getTime();
-		SendDevices sendDevs = new SendDevices(devHash, conId, seqNr + 1, seqNr, 0, sendTime);
+		SendDevices sendDevs = new SendDevices(devHash, conId, 0, sendTime);
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(sendDevs, os);
 		client.sendMessage(os.toString());
@@ -278,7 +274,7 @@ public class ConnectorSimulation implements MessageHandler {
 
 		// Request connection
 		sendTime = new Date().getTime();
-		RequestConnection reqCon = new RequestConnection(NAME, password, conId, 0, 0, 0, sendTime);
+		RequestConnection reqCon = new RequestConnection(NAME, password, conId, 0, sendTime);
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(reqCon, os);
 		client.sendMessage(os.toString());
@@ -315,7 +311,7 @@ public class ConnectorSimulation implements MessageHandler {
 		}
 		
 		sendTime = new Date().getTime();
-		SendValue sendval = new SendValue(devId, devCompId, value, sendTime, conId, 0, 0, 0, sendTime);
+		SendValue sendval = new SendValue(devId, devCompId, value, sendTime, conId, 0, sendTime);
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(sendval, os);
 		client.sendMessage(os.toString());

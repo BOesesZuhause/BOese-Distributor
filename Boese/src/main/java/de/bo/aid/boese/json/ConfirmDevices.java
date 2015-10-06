@@ -17,13 +17,11 @@ private HashMap<String, Integer> devices;
 	 *
 	 * @param devices the devices
 	 * @param connectorId the connector id
-	 * @param seqNr the seq nr
-	 * @param ackNr the ack nr
 	 * @param status the status
 	 * @param timestamp the timestamp
 	 */
-	public ConfirmDevices(HashMap<String, Integer> devices, int connectorId, int seqNr, int ackNr, int status, long timestamp) {
-		super(MessageType.CONFIRMDEVICES, connectorId, seqNr, ackNr, status, timestamp);
+	public ConfirmDevices(HashMap<String, Integer> devices, int connectorId, int status, long timestamp) {
+		super(MessageType.CONFIRMDEVICES, connectorId, status, timestamp);
 		this.devices = devices;
 	}
 

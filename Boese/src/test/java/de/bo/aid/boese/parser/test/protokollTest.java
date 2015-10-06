@@ -50,8 +50,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":1,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -60,7 +58,7 @@ public class protokollTest {
 				+ "}";
 		
 		OutputStream os = new ByteArrayOutputStream();
-		RequestConnection recCon = new RequestConnection("Konnektor1", "sicher!", 1, 0, 0, 0, 111222334);
+		RequestConnection recCon = new RequestConnection("Konnektor1", "sicher!", 1, 0, 111222334);
 		BoeseJson.parseMessage(recCon, os);
 		assertEquals(os.toString(), message);			
 	}
@@ -75,8 +73,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":1,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -103,8 +99,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":2,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -113,7 +107,7 @@ public class protokollTest {
 				+ "}";
 		
 		OutputStream os = new ByteArrayOutputStream();
-		ConfirmConnection confCon = new ConfirmConnection("geheim", 1, 0, 0, 0, 111222334);
+		ConfirmConnection confCon = new ConfirmConnection("geheim", 1, 0, 111222334);
 		BoeseJson.parseMessage(confCon, os);
 		assertEquals(os.toString(), message);			
 	}
@@ -128,8 +122,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":2,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -156,15 +148,13 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":3,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "}"
 				+ "}";
 		
 		OutputStream os = new ByteArrayOutputStream();
-		RequestAllDevices reqAllDev = new RequestAllDevices(1, 0, 0, 0, 111222334);
+		RequestAllDevices reqAllDev = new RequestAllDevices(1, 0, 111222334);
 		BoeseJson.parseMessage(reqAllDev, os);
 		assertEquals(os.toString(), message);			
 	}
@@ -179,8 +169,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":3,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "}"
@@ -205,8 +193,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":4,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -219,7 +205,7 @@ public class protokollTest {
 		OutputStream os = new ByteArrayOutputStream();
 		HashMap<String, Integer> devices = new HashMap<>();
 		devices.put("Igor", -1);
-		SendDevices sendDev = new SendDevices(devices, 1, 0, 0, 0, 111222334);
+		SendDevices sendDev = new SendDevices(devices, 1, 0, 111222334);
 		BoeseJson.parseMessage(sendDev, os);
 		assertEquals(os.toString(), message);			
 	}
@@ -234,8 +220,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":4,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -264,8 +248,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":5,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -278,7 +260,7 @@ public class protokollTest {
 		OutputStream os = new ByteArrayOutputStream();
 		HashMap<String, Integer> devices = new HashMap<>();
 		devices.put("Igor", 123);
-		ConfirmDevices sendDev = new ConfirmDevices(devices, 1, 0, 0, 0, 111222334);
+		ConfirmDevices sendDev = new ConfirmDevices(devices, 1, 0, 111222334);
 		BoeseJson.parseMessage(sendDev, os);
 		assertEquals(os.toString(), message);			
 	}
@@ -293,8 +275,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":5,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -323,8 +303,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":6,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -332,7 +310,7 @@ public class protokollTest {
 				+ "}";
 		
 		OutputStream os = new ByteArrayOutputStream();
-		RequestDeviceComponents reqDevComp = new RequestDeviceComponents(123, 1, 0, 0, 0, 111222334);
+		RequestDeviceComponents reqDevComp = new RequestDeviceComponents(123, 1, 0, 111222334);
 		BoeseJson.parseMessage(reqDevComp, os);
 		assertEquals(os.toString(), message);			
 	}
@@ -347,8 +325,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":6,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -375,8 +351,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":7,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -394,7 +368,7 @@ public class protokollTest {
 		OutputStream os = new ByteArrayOutputStream();
 		HashSet<DeviceComponents> components = new HashSet<>();
 		components.add(new DeviceComponents(-1, "Horst", 42.1234, 111111111, null, null, false));
-		SendDeviceComponents reqDevComp = new SendDeviceComponents(123, components, 1, 0, 0, 0, 111222334);
+		SendDeviceComponents reqDevComp = new SendDeviceComponents(123, components, 1, 0, 111222334);
 		BoeseJson.parseMessage(reqDevComp, os);
 		assertEquals(os.toString(), message);			
 	}
@@ -410,8 +384,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":7,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -446,8 +418,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":8,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -462,7 +432,7 @@ public class protokollTest {
 		OutputStream os = new ByteArrayOutputStream();
 		HashMap<String, Integer> components = new HashMap<>();
 		components.put("Horst", 5);
-		ConfirmDeviceComponents confDevComp = new ConfirmDeviceComponents(123, components, 1, 0, 0, 0, 111222334);
+		ConfirmDeviceComponents confDevComp = new ConfirmDeviceComponents(123, components, 1, 0, 111222334);
 		BoeseJson.parseMessage(confDevComp, os);
 		assertEquals(os.toString(), message);			
 	}
@@ -478,8 +448,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":8,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -511,8 +479,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":9,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -523,7 +489,7 @@ public class protokollTest {
 				+ "}";
 		
 		OutputStream os = new ByteArrayOutputStream();
-		SendValue sendVal = new SendValue(123, 5, 44.12, 111111114 , 1, 0, 0, 0, 111222334);
+		SendValue sendVal = new SendValue(123, 5, 44.12, 111111114 , 1, 0, 111222334);
 		BoeseJson.parseMessage(sendVal, os);
 		assertEquals(os.toString(), message);			
 	}
@@ -538,8 +504,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":9,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -568,8 +532,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":10,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -578,7 +540,7 @@ public class protokollTest {
 				+ "}";
 		
 		OutputStream os = new ByteArrayOutputStream();
-		ConfirmValue sendVal = new ConfirmValue(123, 5,1, 0, 0, 0, 111222334);
+		ConfirmValue sendVal = new ConfirmValue(123, 5,1, 0, 111222334);
 		BoeseJson.parseMessage(sendVal, os);
 		assertEquals(os.toString(), message);			
 	}
@@ -593,8 +555,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":10,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -618,8 +578,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":0,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -629,8 +587,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":8,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -646,8 +602,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":10,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -655,18 +609,16 @@ public class protokollTest {
 				+ "\"DeviceComponentId\":5"
 				+ "}"
 
-				
-				
 				+ "]"
 				+ "}";
 		
 		OutputStream os = new ByteArrayOutputStream();
-		MultiMessage multi = new MultiMessage(1, 0, 0, 0, 111222334);
-		multi.addMessage(new ConfirmValue(123, 5,1, 0, 0, 0, 111222334));
+		MultiMessage multi = new MultiMessage(1, 0, 111222334);
+		multi.addMessage(new ConfirmValue(123, 5,1, 0, 111222334));
 		
 		HashMap<String, Integer> components = new HashMap<>();
 		components.put("Horst", 5);
-		multi.addMessage(new ConfirmDeviceComponents(123, components, 1, 0, 0, 0, 111222334));
+		multi.addMessage(new ConfirmDeviceComponents(123, components, 1, 0, 111222334));
 
 		BoeseJson.parseMessage(multi, os);
 
@@ -687,8 +639,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":0,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -699,8 +649,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":10,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
@@ -712,8 +660,6 @@ public class protokollTest {
 				+ "\"Header\":{"
 				+ "\"MessageType\":8,"
 				+ "\"ConnectorId\":1,"
-				+ "\"SequenceNr\":0,"
-				+ "\"AcknowledgeNr\":0,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"

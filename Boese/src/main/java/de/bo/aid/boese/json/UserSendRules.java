@@ -5,9 +5,9 @@ import java.util.HashSet;
 public class UserSendRules extends BoeseJson {
 	HashSet<Rule> rules;
 	
-	public UserSendRules(HashSet<Rule> rules, int connectorId, int seqNr, int ackNr, int status,
+	public UserSendRules(HashSet<Rule> rules, int connectorId, int status,
 			long timestamp) {
-		super(MessageType.USERSENDRULES, connectorId, seqNr, ackNr, status, timestamp);
+		super(MessageType.USERSENDRULES, connectorId, status, timestamp);
 		this.rules = rules;
 	}
 	

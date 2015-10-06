@@ -15,14 +15,11 @@ public class ConfirmConnection extends BoeseJson {
 	 *
 	 * @param password the password
 	 * @param connectorId the connector id
-	 * @param seqNr the seq nr
-	 * @param ackNr the ack nr
 	 * @param status the status
 	 * @param timestamp the timestamp
 	 */
-	public ConfirmConnection(String password, int connectorId, int seqNr, int ackNr, int status,
-			long timestamp) {
-		super(MessageType.CONFIRMCONNECTION, connectorId, seqNr, ackNr, status, timestamp);
+	public ConfirmConnection(String password, int connectorId, int status, long timestamp) {
+		super(MessageType.CONFIRMCONNECTION, connectorId, status, timestamp);
 		this.password = password;
 	}
 

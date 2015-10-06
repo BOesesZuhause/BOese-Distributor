@@ -22,13 +22,11 @@ public class ConfirmDeviceComponents extends BoeseJson {
 	 * @param deviceId the device id
 	 * @param components the components
 	 * @param connectorId the connector id
-	 * @param seqNr the seq nr
-	 * @param ackNr the ack nr
 	 * @param status the status
 	 * @param timestamp the timestamp
 	 */
-	public ConfirmDeviceComponents(int deviceId, HashMap<String, Integer> components, int connectorId, int seqNr, int ackNr, int status, long timestamp) {
-		super(MessageType.CONFIRMDEVICECOMPONENTS, connectorId, seqNr, ackNr, status, timestamp);
+	public ConfirmDeviceComponents(int deviceId, HashMap<String, Integer> components, int connectorId, int status, long timestamp) {
+		super(MessageType.CONFIRMDEVICECOMPONENTS, connectorId, status, timestamp);
 		this.components = components;
 		this.deviceId = deviceId;
 	}

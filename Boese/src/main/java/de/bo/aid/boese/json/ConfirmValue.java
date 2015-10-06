@@ -19,13 +19,11 @@ public class ConfirmValue extends BoeseJson {
 	 * @param deviceId the device id
 	 * @param deviceComponentId the device component id
 	 * @param connectorId the connector id
-	 * @param seqNr the seq nr
-	 * @param ackNr the ack nr
 	 * @param status the status
 	 * @param timestamp the timestamp
 	 */
-	public ConfirmValue(int deviceId, int deviceComponentId, int connectorId, int seqNr, int ackNr, int status, long timestamp) {
-		super(MessageType.CONFIRMVALUE, connectorId, seqNr, ackNr, status, timestamp);
+	public ConfirmValue(int deviceId, int deviceComponentId, int connectorId, int status, long timestamp) {
+		super(MessageType.CONFIRMVALUE, connectorId, status, timestamp);
 		this.deviceId = deviceId;
 		this.deviceComponentId = deviceComponentId;
 	}

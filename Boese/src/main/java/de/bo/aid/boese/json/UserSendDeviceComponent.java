@@ -6,9 +6,9 @@ public class UserSendDeviceComponent extends BoeseJson {
 	HashSet<DeviceComponents> componentList;
 	int deviceId;
 	
-	public UserSendDeviceComponent(int deviceId, HashSet<DeviceComponents> decoSet, int connectorId, int seqNr, int ackNr, int status,
+	public UserSendDeviceComponent(int deviceId, HashSet<DeviceComponents> decoSet, int connectorId, int status,
 			long timestamp) {
-		super(MessageType.USERSENDDEVICECOMPONENT, connectorId, seqNr, ackNr, status, timestamp);
+		super(MessageType.USERSENDDEVICECOMPONENT, connectorId, status, timestamp);
 		this.componentList = decoSet;
 		this.deviceId = deviceId;
 	}

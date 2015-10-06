@@ -21,14 +21,12 @@ public class SendDeviceComponents extends BoeseJson {
 	 * @param deviceId the device id
 	 * @param components the components
 	 * @param connectorId the connector id
-	 * @param seqNr the seq nr
-	 * @param ackNr the ack nr
 	 * @param status the status
 	 * @param timestamp the timestamp
 	 */
-	public SendDeviceComponents(int deviceId, HashSet<DeviceComponents> components, int connectorId, int seqNr, int ackNr, int status,
+	public SendDeviceComponents(int deviceId, HashSet<DeviceComponents> components, int connectorId, int status,
 			long timestamp) {
-		super(MessageType.SENDDEVICECOMPONENTS, connectorId, seqNr, ackNr, status, timestamp);
+		super(MessageType.SENDDEVICECOMPONENTS, connectorId, status, timestamp);
 		this.components = components;
 		this.deviceId = deviceId;
 	}

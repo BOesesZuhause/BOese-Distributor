@@ -29,14 +29,12 @@ public class SendValue extends BoeseJson {
 	 * @param value the value
 	 * @param timestamp the timestamp
 	 * @param idConnector the id connector
-	 * @param seqNr the seq nr
-	 * @param ackNr the ack nr
 	 * @param status the status
 	 * @param headerTimestamp the header timestamp
 	 */
 	public SendValue(int deviceId, int deviceComponentId, double value, long timestamp, 
-			int idConnector, int seqNr, int ackNr, int status, long headerTimestamp) {
-		super(MessageType.SENDVALUE, idConnector, seqNr, ackNr, status, headerTimestamp);
+			int idConnector, int status, long headerTimestamp) {
+		super(MessageType.SENDVALUE, idConnector, status, headerTimestamp);
 		this.deviceId = deviceId;
 		this.deviceComponentId = deviceComponentId;
 		this.value = value;

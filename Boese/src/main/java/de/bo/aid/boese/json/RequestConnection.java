@@ -22,15 +22,13 @@ public class RequestConnection extends BoeseJson {
 	 * @param name the name
 	 * @param password the password
 	 * @param idConnector the id connector
-	 * @param seqNr the seq nr
-	 * @param ackNr the ack nr
 	 * @param status the status
 	 * @param headerTimestamp the header timestamp
 	 * @param userConnector if it is an user connector
 	 */
 	public RequestConnection(String name, String password,
-			int idConnector, int seqNr, int ackNr, int status, long headerTimestamp, boolean userConnector) {
-		super(MessageType.REQUESTCONNECTION, idConnector, seqNr, ackNr, status, headerTimestamp);
+			int idConnector, int status, long headerTimestamp, boolean userConnector) {
+		super(MessageType.REQUESTCONNECTION, idConnector, status, headerTimestamp);
 		this.connectorName = name;
 		this.password = password;
 		this.userConnector = userConnector;
@@ -42,14 +40,12 @@ public class RequestConnection extends BoeseJson {
 	 * @param name the name
 	 * @param password the password
 	 * @param idConnector the id connector
-	 * @param seqNr the seq nr
-	 * @param ackNr the ack nr
 	 * @param status the status
 	 * @param headerTimestamp the header timestamp
 	 */
 	public RequestConnection(String name, String password,
-			int idConnector, int seqNr, int ackNr, int status, long headerTimestamp) {
-		super(MessageType.REQUESTCONNECTION, idConnector, seqNr, ackNr, status, headerTimestamp);
+			int idConnector, int status, long headerTimestamp) {
+		super(MessageType.REQUESTCONNECTION, idConnector, status, headerTimestamp);
 		this.connectorName = name;
 		this.password = password;
 		this.userConnector = false;

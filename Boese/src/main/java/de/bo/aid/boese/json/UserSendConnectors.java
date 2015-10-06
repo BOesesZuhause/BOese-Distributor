@@ -5,9 +5,9 @@ import java.util.HashMap;
 public class UserSendConnectors extends BoeseJson{
 	HashMap<Integer, String> connectors;
 
-	public UserSendConnectors(HashMap<Integer, String> connectors, int connectorId, int seqNr, int ackNr, int status,
+	public UserSendConnectors(HashMap<Integer, String> connectors, int connectorId, int status,
 			long timestamp) {
-		super(MessageType.USERSENDCONNETORS, connectorId, seqNr, ackNr, status, timestamp);
+		super(MessageType.USERSENDCONNETORS, connectorId, status, timestamp);
 		this.connectors = connectors;
 	}
 	

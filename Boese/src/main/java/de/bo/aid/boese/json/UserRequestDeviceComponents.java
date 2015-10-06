@@ -5,9 +5,8 @@ import java.util.HashSet;
 public class UserRequestDeviceComponents extends BoeseJson{
 	HashSet<Integer> deviceIds;
 	
-	public UserRequestDeviceComponents(HashSet<Integer> deviceIds, int connectorId, int seqNr, int ackNr, int status,
-			long timestamp) {
-		super(MessageType.USERREQUESTDEVICECOMPONENTS, connectorId, seqNr, ackNr, status, timestamp);
+	public UserRequestDeviceComponents(HashSet<Integer> deviceIds, int connectorId, int status, long timestamp) {
+		super(MessageType.USERREQUESTDEVICECOMPONENTS, connectorId, status, timestamp);
 		this.deviceIds = deviceIds;
 	}
 	

@@ -15,14 +15,11 @@ public class RequestDeviceComponents extends BoeseJson {
 	 *
 	 * @param deviceId the device id
 	 * @param connectorId the connector id
-	 * @param seqNr the seq nr
-	 * @param ackNr the ack nr
 	 * @param status the status
 	 * @param timestamp the timestamp
 	 */
-	public RequestDeviceComponents(int deviceId, int connectorId, int seqNr, int ackNr, int status,
-			long timestamp) {
-		super(MessageType.REQUESTDEVICECOMPONENTS, connectorId, seqNr, ackNr, status, timestamp);
+	public RequestDeviceComponents(int deviceId, int connectorId, int status, long timestamp) {
+		super(MessageType.REQUESTDEVICECOMPONENTS, connectorId, status, timestamp);
 		this.deviceId = deviceId;
 	}
 

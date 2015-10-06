@@ -12,8 +12,8 @@ public class UserSendTemps extends BoeseJson{
 
 	public UserSendTemps(HashMap<Integer, String> tempConnectors, HashMap<Integer, TempDevice> tempDevices, 
 			HashMap<Integer, TempComponent> tempDeviceComponents,
-			int connectorId, int seqNr, int ackNr, int status, long timestamp) {
-		super(MessageType.USERSENDTEMPS, connectorId, seqNr, ackNr, status, timestamp);
+			int connectorId, int status, long timestamp) {
+		super(MessageType.USERSENDTEMPS, connectorId, status, timestamp);
 		this.tempConnectors = tempConnectors;
 		this.tempDeviceComponents = tempDeviceComponents;
 		this.tempDevices = tempDevices;
