@@ -130,6 +130,11 @@ public class Inserts {
 		try{
 			session.load(device, new Integer(deid));
 			dc.setDevice(device);
+			System.out.println("Loading Component with id: " + coid);
+			
+			//Workaround for HibernateException
+			//comp = (Component) session.get(Component.class, coid); 
+			
 			session.load(comp, new Integer(coid));
 			dc.setComponent(comp);
 			dc.setDescription(description);
@@ -153,7 +158,7 @@ public class Inserts {
 		}		
 		
 		session.close();
-		
+
 		return dc.getDeCoId();
 	}
 	

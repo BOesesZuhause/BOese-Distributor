@@ -115,6 +115,7 @@ public class SocketHandler {
 	 */
 	public void sendToSession(Session session, String message) {
         try {
+        	System.out.println("Message sent: " + message);
             session.getBasicRemote().sendText(message);
         } catch (IOException ex) {
             sessions.remove(session);
