@@ -7,16 +7,22 @@ public class CalculationList {
 		ADD, SUB, MUL, DIV, MOD, ABS
 	}
 	
+	private CalculationList first;
 	private HashSet<CalculationList> calculations;
 	private HashSet<Integer> variables;
 	private HashSet<Double> constants;
 	private CalculationTypes calculationType;
 	
 	public CalculationList() {
+		first = null;
 		calculations = new HashSet<>();
 		variables = new HashSet<>();
 		constants = new HashSet<>();
 		this.calculationType = null;
+	}
+	
+	public void setFirst(CalculationList first) {
+		this.first = first;
 	}
 	
 	public void addCalculation(CalculationList calcList) {
@@ -33,6 +39,10 @@ public class CalculationList {
 	
 	public void setCalculationType(CalculationTypes type) {
 		calculationType = type;
+	}
+	
+	public CalculationList getFirst() {
+		return first;
 	}
 
 	public HashSet<CalculationList> getCalculations() {

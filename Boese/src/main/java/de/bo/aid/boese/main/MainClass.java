@@ -700,7 +700,14 @@ public class MainClass {
 			Inserts.value(inq.getDeviceComponentId(), new Date(inq.getTimestamp()), inq.getValue());
 		}
 		Controll controll = new Controll();
-		List<Component> todos = controll.getToDos(inquirys);
+		List<Component> todos;
+		try {
+			todos = controll.getToDos(inquirys);
+		} catch (Exception e) {
+			System.err.println("Bad XML: " + e.getMessage());
+			// TODO Exception Handling
+			todos = null;
+		}
 		return todos;
 	}
 	

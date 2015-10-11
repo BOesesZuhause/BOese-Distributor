@@ -110,6 +110,10 @@ public class BoeseXML {
 			case "VARIABLE":
 				calcList.addValiable(new Integer(nChild.getTextContent()).intValue());
 				break;
+			case "FIRST":
+				calculation = parseCalculation(nChild.getChildNodes());
+				calcList.setFirst(calculation);
+				break;
 			case "ADD":
 				calculation = parseCalculation(nChild.getChildNodes());
 				calculation.setCalculationType(CalculationTypes.ADD);

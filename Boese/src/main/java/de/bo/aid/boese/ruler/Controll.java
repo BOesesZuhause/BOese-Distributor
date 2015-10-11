@@ -39,8 +39,9 @@ public class Controll {
 	 *
 	 * @param inquirys the inquirys
 	 * @return the to dos
+	 * @throws Exception 
 	 */
-	public List<Component> getToDos(List<Inquiry> inquirys){
+	public List<Component> getToDos(List<Inquiry> inquirys) throws Exception{
 		List<Component> toDo = new ArrayList<Component>();
 		
 		for(Inquiry inquiry : inquirys){
@@ -66,7 +67,12 @@ public class Controll {
 					}
 					Boolean con = check.condition(((Condition)conBXML).getRule(), deCoValue);
 					if(con != null && con){
-						toDo.addAll(toDo.size(), (check.action((Action)actBXML)));
+						try {
+							toDo.addAll(toDo.size(), (check.action((Action)actBXML)));
+						} catch (Exception e) {
+							System.err.println("Bad XML: " + e.getMessage());
+							throw new Exception(e.getMessage());
+						}
 					}
 				}
 			}

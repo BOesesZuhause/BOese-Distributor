@@ -3,15 +3,15 @@ package de.bo.aid.boese.ruler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.hibernate.sql.Update;
 
 import de.bo.aid.boese.constants.Status;
 import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.db.Updates;
 import de.bo.aid.boese.xml.Action;
+import de.bo.aid.boese.xml.CalculationList;
 import de.bo.aid.boese.xml.Component;
 import de.bo.aid.boese.xml.GateList;
 import de.bo.aid.boese.xml.GateList.GateType;
@@ -75,6 +75,9 @@ public class Checker {
 				//b = b;
 			}				
 		}
+		if( b == null && gate.getGate().isEmpty() && !gate.getComponents().isEmpty()){
+			b = condition(gate.getComponents().iterator().next(), deCoValue);
+		}
 		return b;
 
 	}
@@ -95,20 +98,27 @@ public class Checker {
 			return false;
 		}
 		else{
+			double isValue = Selects.currentValue(comp.getId());
+			double comparativeValue = 0.0;
+			try {
+				comparativeValue = calculate(comp.getCalculation());
+			} catch (Exception e) {
+				System.err.println("Bad XML: " + e.getMessage());
+				return false;
+			}
 			switch(comp.getComperator()){
-			// TODO
-//			case EQUAL:
-//				return deCoValue.get(comp.getId()) == comp.getValue();
-//			case NOTEQUAL:
-//				return deCoValue.get(comp.getId()) != comp.getValue();
-//			case GREATEREQUAL:
-//				return deCoValue.get(comp.getId()) >= comp.getValue();
-//			case LOWEREQUAL:
-//				return deCoValue.get(comp.getId()) <= comp.getValue();
-//			case GREATERTHEN:
-//				return deCoValue.get(comp.getId()) > comp.getValue();
-//			case LOWERTHEN:
-//				return deCoValue.get(comp.getId()) < comp.getValue();
+			case EQUAL:
+				return isValue == comparativeValue;
+			case NOTEQUAL:
+				return isValue != comparativeValue;
+			case GREATEREQUAL:
+				return isValue >= comparativeValue;
+			case LOWEREQUAL:
+				return isValue <= comparativeValue;
+			case GREATERTHEN:
+				return isValue > comparativeValue;
+			case LOWERTHEN:
+				return isValue < comparativeValue;
 			default:
 				return false;
 			}
@@ -120,8 +130,9 @@ public class Checker {
 	 *
 	 * @param action the action
 	 * @return the list
+	 * @throws Exception 
 	 */
-	public List<Component> action(Action action) {
+	public List<Component> action(Action action) throws Exception {
 		for(int i : action.getActivateRules()){
 			Updates.activateRule(i);
 		}
@@ -130,8 +141,80 @@ public class Checker {
 		}
 		List<Component> toDos = new ArrayList<Component>();
 		for(Component actor : action.getActors()){
+			try {
+				actor.setValue(calculate(actor.getCalculation()));
+			} catch (Exception e) {
+				System.err.println("Bad XML: " + e.getMessage());
+				throw new Exception(e.getMessage());
+			}
 			toDos.add(actor);
 		}
 		return toDos;
 	}
+
+	public double calculate(CalculationList cl) throws Exception{
+		double erg = 0.0;
+		HashSet<Double> values = new HashSet<>();
+		for (double d : cl.getConstants()){
+			values.add(d);
+		}
+		for(int i : cl.getVariables()){
+			values.add(Selects.currentValue(i));
+		}
+		for(CalculationList next : cl.getCalculations()){
+			values.add(calculate(next));
+		}
+		switch(cl.getCalculationType()){
+		case ADD:
+			erg = 0.0;
+			for(double d : values){
+				erg += d;
+			}
+			break;
+		case SUB:
+			if(cl.getFirst() != null){
+				erg = calculate(cl.getFirst());
+				for(double d : values){
+					erg -= d;
+				}
+			}
+			else{
+				throw new Exception("No First for a SUB");
+			}
+			break;
+		case MUL:
+			erg = 1.0;
+			for(double d : values){
+				erg *= d;
+			}
+			break;
+		case DIV:
+			if(cl.getFirst() != null){
+				erg = calculate(cl.getFirst());
+				for(double d : values){
+					erg /= d;
+				}
+			}
+			else{
+				throw new Exception("No First for a DIV");
+			}
+			break;
+		case MOD:
+			if(cl.getFirst() != null){
+				erg = calculate(cl.getFirst()) % values.iterator().next();
+			}
+			else{
+				throw new Exception("No First for a MOD");
+			}
+			break;
+		case ABS:
+			erg = values.iterator().next();
+			if (erg < 0){
+				erg *= -1;
+			}
+			break;
+		}
+		return erg;
+	}
+
 }

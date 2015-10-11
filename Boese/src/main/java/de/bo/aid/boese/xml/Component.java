@@ -117,6 +117,10 @@ public class Component {
 		return value;
 	}
 	
+	public void setValue(double value) {
+		this.value = value;
+	}
+
 	/**
 	 * Gets the id.
 	 *
