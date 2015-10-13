@@ -9,7 +9,6 @@ import org.hibernate.ObjectNotFoundException;
 import org.hibernate.PropertyValueException;
 import org.hibernate.Session;
 
-import de.bo.aid.boese.constants.Errors;
 import de.bo.aid.boese.model.*;
 
 // TODO: Auto-generated Javadoc
@@ -240,7 +239,7 @@ public class Inserts {
 		
 		session.close();
 		
-		return Errors.OK;
+		return 0;
 	}
 	
 	/**
