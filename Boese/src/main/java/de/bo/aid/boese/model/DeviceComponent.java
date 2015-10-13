@@ -24,7 +24,7 @@ public class DeviceComponent implements java.io.Serializable {
 	private Device device;
 	
 	/** The status. */
-	private Short status;
+	private Integer status;
 	
 	/** The description. */
 	private String description;
@@ -94,7 +94,7 @@ public class DeviceComponent implements java.io.Serializable {
 	 * @param deviceComponenteReplacesForDeCoIdreplaced the device componente replaces for de co idreplaced
 	 * @param logDeviceComponents the log device components
 	 */
-	public DeviceComponent(int deCoId, Component component, Device device, Short status, String description,
+	public DeviceComponent(int deCoId, Component component, Device device, Integer status, String description,
 			BigDecimal logRule, BigDecimal currentValue, Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoId,
 			Set<HistoryLogDeviceComponent> historyLogDeviceComponents, Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoIdreplaced,
 			Set<LogDeviceComponent> logDeviceComponents, Set<ToDo> toDos) {
@@ -171,7 +171,7 @@ public class DeviceComponent implements java.io.Serializable {
 	 *
 	 * @return the status
 	 */
-	public Short getStatus() {
+	public Integer getStatus() {
 		return this.status;
 	}
 
@@ -180,7 +180,7 @@ public class DeviceComponent implements java.io.Serializable {
 	 *
 	 * @param status the new status
 	 */
-	public void setStatus(Short status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 

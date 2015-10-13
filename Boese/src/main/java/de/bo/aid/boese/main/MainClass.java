@@ -22,6 +22,7 @@ import org.hibernate.LazyInitializationException;
 import de.bo.aid.boese.db.AllSelects;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
+import de.bo.aid.boese.db.Updates;
 import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.BoeseJson.MessageType;
 import de.bo.aid.boese.json.ConfirmConnection;
@@ -37,6 +38,7 @@ import de.bo.aid.boese.json.Rule;
 import de.bo.aid.boese.json.SendDeviceComponents;
 import de.bo.aid.boese.json.SendDevices;
 import de.bo.aid.boese.json.SendNotification;
+import de.bo.aid.boese.json.SendStatus;
 import de.bo.aid.boese.json.SendValue;
 import de.bo.aid.boese.json.UserDevice;
 import de.bo.aid.boese.json.UserRequestConnectors;
@@ -387,6 +389,18 @@ public class MainClass {
 		}
 	}
 	
+	private static void handleSendStatus(SendStatus ss, int connectorId) {
+		if (connectorId != ss.getConnectorId()) {
+			SocketHandler.getInstance().rejectConnection(connectorId);
+			return;
+		}
+		Updates.deviceComponentStatus(ss.getStatusCode(), ss.getDeviceComponentId());
+		BoeseJson cs = new SendStatus(ss.getDeviceComponentId(), ss.getStatusCode(), ss.getStatusTimestamp(), false, connectorId, 0, new Date().getTime());
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(cs, os);
+		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+	}
+	
 	
 	/**
 	 * Method to handle Json messages and act depednding on the type and content.
@@ -401,7 +415,7 @@ public class MainClass {
 			System.out.println("No message");
 			SocketHandler.getInstance().rejectConnection(connectorId);
 		}
-		System.out.println(bjMessage.getType());
+		//System.out.println(bjMessage.getType());
 		switch (bjMessage.getType()) {
 		case MULTI:
 			handleMultiMessages((MultiMessage)bjMessage, connectorId);
@@ -421,6 +435,9 @@ public class MainClass {
 		case SENDNOTIFICATION:
 			handleSendNotification((SendNotification)bjMessage, connectorId);
 			break;
+		case SENDSTATUS:
+			handleSendStatus((SendStatus)bjMessage, connectorId);
+			break;
 		case USERREQUESTALLDEVICES:
 			handleUserRequestAllDevices((RequestAllDevices)bjMessage, connectorId);
 			break;
@@ -438,6 +455,7 @@ public class MainClass {
 			break;
 		case USERREQUESTALLRULES:
 			handleUserRequestAllRules((UserRequestGeneral)bjMessage, connectorId);
+			break;
 		default:
 			break;
 		}

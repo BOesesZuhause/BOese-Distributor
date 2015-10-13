@@ -21,7 +21,7 @@ public class Connector implements java.io.Serializable {
 	private String password;
 
 	/** The status. */
-	private short status;
+	private int status;
 	
 	/** The history log connectors. */
 	private Set<HistoryLogConnector> historyLogConnectors = new HashSet<HistoryLogConnector>(0);
@@ -56,7 +56,7 @@ public class Connector implements java.io.Serializable {
 	 * @param password the password
 	 * @param status the status
 	 */
-	public Connector(int coId, String name, String password, short status) {
+	public Connector(int coId, String name, String password, int status) {
 		this.coId = coId;
 		this.name = name;
 		this.password = password;
@@ -73,7 +73,7 @@ public class Connector implements java.io.Serializable {
 	 * @param devices the devices
 	 * @param logConnectors the log connectors
 	 */
-	public Connector(int coId, String name, String password, short status,
+	public Connector(int coId, String name, String password, int status,
 			Set<HistoryLogConnector> historyLogConnectors, Set<Device> devices, Set<LogConnector> logConnectors) {
 		this.coId = coId;
 		this.name = name;
@@ -139,11 +139,11 @@ public class Connector implements java.io.Serializable {
 		this.password = password;
 	}
 
-	public short getStatus() {
+	public int getStatus() {
 		return status;
 	}
 
-	public void setStatus(short status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 

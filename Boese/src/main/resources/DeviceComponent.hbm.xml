@@ -16,7 +16,7 @@
         <many-to-one name="device" class="de.bo.aid.boese.model.Device" fetch="select">
             <column name="DeID" not-null="true" />
         </many-to-one>
-        <property name="status" type="java.lang.Short">
+        <property name="status" type="java.lang.Integer">
             <column name="Status" />
         </property>
         <property name="description" type="string">

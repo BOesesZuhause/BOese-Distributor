@@ -145,7 +145,7 @@ public class Inserts {
 			throw onfe;
 		}
 		
-		dc.setStatus((short) 1);
+		dc.setStatus(1);
  
 		try{
 			session.save(dc);

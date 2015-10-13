@@ -98,7 +98,7 @@ public class Updates {
 	 * @param description the description
 	 * @param logrule the logrule
 	 */
-	public static void DeviceComponent (int decoid, short status, String description, double logrule){
+	public static void DeviceComponent (int decoid, int status, String description, double logrule){
 		Session session = connection.getSession();
 		session.beginTransaction();
 
@@ -161,7 +161,7 @@ public class Updates {
 	 * @param name the name
 	 * @param pw the pw
 	 */
-	public static void connector(int conid, String name, String pw){
+	public static void connector(int conid, String name, String pw, int status){
 		Session session = connection.getSession();
 		session.beginTransaction();
 
@@ -171,6 +171,9 @@ public class Updates {
 		}
 		if (pw != null){
 			con.setPassword(pw);
+		}
+		if (status != -1){
+			con.setStatus(status);;
 		}
 		
 		session.save(con);
@@ -351,7 +354,7 @@ public class Updates {
 	 * @param status the status
 	 * @param decoId the DeviceComponentID
 	 */
-	public static void deviceComponentStatus(short status, int decoId){
+	public static void deviceComponentStatus(int status, int decoId){
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -369,7 +372,7 @@ public class Updates {
 	 * @param status the status
 	 * @param coId the ConnectorID
 	 */
-	public static void connectorStatus(short status, int coId){
+	public static void connectorStatus(int status, int coId){
 		Session session = connection.getSession();
 		session.beginTransaction();
 		

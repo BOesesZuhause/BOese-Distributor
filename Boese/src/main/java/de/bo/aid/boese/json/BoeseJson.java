@@ -60,6 +60,8 @@ public class BoeseJson {
 		/** The requestvalue. */
 		REQUESTVALUE,
 		SENDNOTIFICATION,
+		SENDSTATUS,
+		CONFIRMSTATUS,
 		USERREQUESTALLDEVICES,
 		USERSENDDEVICES,
 		USERREQUESTDEVICECOMPONENTS,
@@ -269,6 +271,18 @@ public class BoeseJson {
 			long timestampSN = jo.getJsonNumber("Timestamp").longValue();
 			String notificationStringSN = jo.getString("NotificationText", "");
 			bj = new SendNotification(deviceIdSN, deviceComponentIdSN, notificationType, timestampSN, notificationStringSN, headerConnectorID, headerStatus, headerTimestamp);
+			break;
+		case 13: // SendStatus
+			int deviceComponentIdSS = jo.getInt("DeviceComponentId", -1);
+			int statusCodeSS = jo.getInt("StatusCode", -1);
+			long timestampSS = jo.getJsonNumber("Timestamp").longValue();
+			bj = new SendStatus(deviceComponentIdSS, statusCodeSS, timestampSS, true, headerConnectorID, headerStatus, headerTimestamp);
+			break;
+		case 14: // ConfirmStatus
+			int deviceComponentIdCS = jo.getInt("DeviceComponentId", -1);
+			int statusCodeCS = jo.getInt("StatusCode", -1);
+			long timestampCS = jo.getJsonNumber("Timestamp").longValue();
+			bj = new SendStatus(deviceComponentIdCS, statusCodeCS, timestampCS, false, headerConnectorID, headerStatus, headerTimestamp);
 			break;
 		case 50: // UserRequestAllDevices
 			bj = new RequestAllDevices(headerConnectorID, headerStatus, headerTimestamp, true);
@@ -543,6 +557,18 @@ public class BoeseJson {
 			job.add("NotificationType", sn.getNotificationType());
 			job.add("Timestamp", sn.getNotificationTimestamp());
 			job.add("NotificationText", sn.getNotificationText());
+			break;
+		case SENDSTATUS:
+			SendStatus ss = (SendStatus)message;
+			job.add("Header", addHeader(13, ss.getConnectorId(), ss.getStatus(), ss.getTimestamp()));
+			job.add("DeviceComponentId", ss.getDeviceComponentId());
+			job.add("Timestamp", ss.getStatusTimestamp());
+			break;
+		case CONFIRMSTATUS:
+			SendStatus cs = (SendStatus)message;
+			job.add("Header", addHeader(14, cs.getConnectorId(), cs.getStatus(), cs.getTimestamp()));
+			job.add("DeviceComponentId", cs.getDeviceComponentId());
+			job.add("Timestamp", cs.getStatusTimestamp());
 			break;
 		case USERREQUESTALLDEVICES:
 			RequestAllDevices urad = (RequestAllDevices)message;

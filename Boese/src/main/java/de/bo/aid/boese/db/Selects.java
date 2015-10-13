@@ -357,7 +357,7 @@ public class Selects {
 	 * @param decoId the DeviceComponentID
 	 * @return the status(short) 
 	 */
-	public static short deviceComponentStatus(int decoId){
+	public static int deviceComponentStatus(int decoId){
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -383,7 +383,7 @@ public class Selects {
 	 * @param coId the ConnectorID
 	 * @return the status(short) 
 	 */
-	public static short ConnectorStatus(int coId){
+	public static int ConnectorStatus(int coId){
 		Session session = connection.getSession();
 		session.beginTransaction();
 		

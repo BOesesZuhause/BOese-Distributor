@@ -94,7 +94,7 @@ public class Checker {
 			return false;
 		}
 		int status = Selects.deviceComponent(comp.getId()).getStatus();
-		if(status == Status.INACTIVE || status == Status.DEFECT || status == Status.UNAVAILABLE || status == Status.COMMUNICATION_FAILURE || status == Status.UNKNOWN || status == Status.DELETED ){
+		if(status == Status.NO_STATUS || status == Status.INACTIVE || status == Status.DEFECT || status == Status.UNAVAILABLE || status == Status.COMMUNICATION_FAILURE || status == Status.UNKNOWN || status == Status.DELETED ){
 			return false;
 		}
 		else{
