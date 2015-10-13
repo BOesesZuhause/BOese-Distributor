@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.hibernate.LazyInitializationException;
@@ -40,6 +41,7 @@ import de.bo.aid.boese.json.SendDevices;
 import de.bo.aid.boese.json.SendNotification;
 import de.bo.aid.boese.json.SendStatus;
 import de.bo.aid.boese.json.SendValue;
+import de.bo.aid.boese.json.UserConfirmTemps;
 import de.bo.aid.boese.json.UserDevice;
 import de.bo.aid.boese.json.UserRequestConnectors;
 import de.bo.aid.boese.json.UserRequestDeviceComponents;
@@ -48,7 +50,9 @@ import de.bo.aid.boese.json.UserSendConnectors;
 import de.bo.aid.boese.json.UserSendDeviceComponent;
 import de.bo.aid.boese.json.UserSendDevices;
 import de.bo.aid.boese.json.UserSendRules;
+import de.bo.aid.boese.json.UserSendTemps;
 import de.bo.aid.boese.json.UserSendZones;
+import de.bo.aid.boese.json.UserTempComponent;
 import de.bo.aid.boese.json.Zone;
 import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempDevice;
@@ -336,8 +340,10 @@ public class MainClass {
 				connectors.put(conId, con.getName());			
 			}
 		} else if (urc.getType() == MessageType.USERREQUESTALLCONNECTORS){
-			// TODO
-			System.out.println("Create connectors");
+			List<Connector> connectorList = AllSelects.Connector();
+			for (de.bo.aid.boese.model.Connector connector : connectorList) {
+				connectors.put(connector.getCoId(), connector.getName());
+			}
 		}
 		BoeseJson usc = new UserSendConnectors(connectors, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
@@ -362,18 +368,64 @@ public class MainClass {
 		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
+	
 	private static void handleUserRequestAllRules(UserRequestGeneral urg, int connectorId) {
 		if (connectorId != urg.getConnectorId()) {
 			SocketHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		HashSet<Rule> rules = new HashSet<>();
-		// TODO rules aus db in set
+		List<de.bo.aid.boese.model.Rule> ruleList = AllSelects.Rules();
+		for (de.bo.aid.boese.model.Rule rule : ruleList) {
+			rules.add(new Rule(rule.getRuId(), rule.getActive().booleanValue(), rule.getInsertDate().getTime(), rule.getModifyDate().getTime(), 
+					rule.getPermissions(), rule.getConditions(), rule.getActions()));
+		}
 		
 		BoeseJson usc = new UserSendRules(rules, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(usc, os);
 		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+	}
+	
+	
+	private static void handleUserRequestTemps(UserRequestGeneral urt, int connectorId) {
+		if (connectorId != urt.getConnectorId()) {
+			SocketHandler.getInstance().rejectConnection(connectorId);
+			return;
+		}
+		BoeseJson ust = new UserSendTemps(tempConnectors, tempDevices, tempDeviceComponents, connectorId, 0, new Date().getTime());
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(ust, os);
+		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+	}
+	
+	
+	private static void handleUserConfirmTemps(UserConfirmTemps uct, int connectorId) {
+		if (connectorId != uct.getConnectorId()) {
+			SocketHandler.getInstance().rejectConnection(connectorId);
+			return;
+		}
+		for (Integer con : uct.getTempConnectors()) {
+			try {
+				confirmConnector(con, false);
+			} catch(NotFoundException nfe) {
+				// TODO
+			}
+		}
+		for (Entry<Integer, Integer> entry : uct.getTempDevices().entrySet()) {
+			try {
+				confirmDevice(entry.getKey(), entry.getValue(), null);
+			} catch(NotFoundException nfe) {
+				// TODO
+			}
+		}
+		for (UserTempComponent comp : uct.getTempDeviceComponents()){
+			try {
+				confirmDeviceComponent(comp.getTempComponentId(), comp.getUnitId(), comp.getName());
+			} catch(NotFoundException nfe) {
+				// TODO
+			}
+		}
 	}
 	
 	private static void handleMultiMessages(MultiMessage mm, int connectorId) {
@@ -455,6 +507,12 @@ public class MainClass {
 			break;
 		case USERREQUESTALLRULES:
 			handleUserRequestAllRules((UserRequestGeneral)bjMessage, connectorId);
+			break;
+		case USERREQUESTTEMPS:
+			handleUserRequestTemps((UserRequestGeneral)bjMessage, connectorId);
+			break;
+		case USERCONFIRMTEMPS:
+			handleUserConfirmTemps((UserConfirmTemps)bjMessage, connectorId);
 			break;
 		default:
 			break;

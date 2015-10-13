@@ -398,11 +398,28 @@ public class BoeseJson {
 			}
 			bj = new UserSendTemps(tempConnectorsUST, tempDevicesUST, tempDeviceComponentsUST, 
 					headerConnectorID, headerStatus, headerTimestamp);
-			//TODO
 			break;
 		case 82: // UserConfirmTemps
-			bj = new UserRequestGeneral(MessageType.USERCONFIRMTEMPS, headerConnectorID, headerStatus, headerTimestamp);
-			// TODO
+			HashSet<Integer> tempConnectorsSetUCT = new HashSet<Integer>();
+			HashMap<Integer, Integer> tempDevicesSetUCT = new HashMap<>();
+			HashSet<UserTempComponent> tempDeviceComponentsUCT = new HashSet<>();
+			JsonArray tempConnectorsUCT = jo.getJsonArray("TempConnectors");
+			for (JsonValue value : tempConnectorsUCT) {
+				tempConnectorsSetUCT.add(Integer.parseInt(value.toString()));
+			}
+			JsonArray tempDevicesUCT = jo.getJsonArray("TempDevices");
+			for (int i = 0; i < tempDevicesUCT.size(); i++) {
+				JsonObject dev = tempDevicesUCT.getJsonObject(i);
+				tempDevicesSetUCT.put(dev.getInt("DeviceTmpId"), dev.getInt("ZoneId"));
+			}
+			JsonArray tempComponentsUST = jo.getJsonArray("TempDevices");
+			for (int i = 0; i < tempComponentsUST.size(); i++) {
+				JsonObject dev = tempComponentsUST.getJsonObject(i);
+				tempDeviceComponentsUCT.add(new UserTempComponent(dev.getInt("ComponentTmpId"), 
+						dev.getInt("UnitId"), dev.getString("Name")));
+			}
+			bj = new UserConfirmTemps(tempConnectorsSetUCT, tempDevicesSetUCT, tempDeviceComponentsUCT, 
+					headerConnectorID, headerStatus, headerTimestamp);
 			break;
 		default:
 			break;
@@ -687,6 +704,75 @@ public class BoeseJson {
 				rulesUSR.add(ruleUSR);
 			}
 			job.add("Rules", rulesUSR);
+			break;
+		case USERREQUESTTEMPS:
+			UserRequestGeneral urt = (UserRequestGeneral)message;
+			job.add("Header", addHeader(80, urt.getConnectorId(), urt.getStatus(), urt.getTimestamp()));
+			break;
+		case USERSENDTEMPS:
+			UserSendTemps ust = (UserSendTemps)message;
+			job.add("Header", addHeader(81, ust.getConnectorId(), ust.getStatus(), ust.getTimestamp()));
+			JsonArrayBuilder tempConnectorsUST = Json.createArrayBuilder();
+			JsonObjectBuilder tempConnectorUST;
+			for (Entry<Integer, String> entry : ust.getTempConnectors().entrySet()) {
+				tempConnectorUST = Json.createObjectBuilder();
+				tempConnectorUST.add("ConnectorTmpId", entry.getKey());
+				tempConnectorUST.add("ConnectorName", entry.getValue());
+				tempConnectorsUST.add(tempConnectorUST);
+			}
+			job.add("TmpConnectors", tempConnectorsUST);
+			JsonArrayBuilder tempDevicesUST = Json.createArrayBuilder();
+			JsonObjectBuilder tempDeviceUST;
+			for (Entry<Integer, TempDevice> entry : ust.getTempDevices().entrySet()) {
+				tempDeviceUST = Json.createObjectBuilder();
+				tempDeviceUST.add("DeviceTmpId", entry.getKey());
+				tempDeviceUST.add("DeviceName", entry.getValue().getName());
+				tempDeviceUST.add("ConnectorId", entry.getValue().getConnectorID());
+				tempDevicesUST.add(tempDeviceUST);
+			}
+			job.add("TmpDevices", tempDevicesUST);
+			JsonArrayBuilder tempDeviceComponentsUST = Json.createArrayBuilder();
+			JsonObjectBuilder tempDeviceComponentUST;
+			for (Entry<Integer, TempComponent> entry : ust.getTempDeviceComponents().entrySet()) {
+				tempDeviceComponentUST = Json.createObjectBuilder();
+				tempDeviceComponentUST.add("ComponentTmpId", entry.getKey());
+				tempDeviceComponentUST.add("DeviceId", entry.getValue().getDeviceId());
+				tempDeviceComponentUST.add("ConnectorId", entry.getValue().getConnectorId());
+				tempDeviceComponentUST.add("Name", entry.getValue().getName());
+				tempDeviceComponentUST.add("Description", entry.getValue().getDescription());
+				tempDeviceComponentUST.add("Aktor", entry.getValue().isActor());
+				tempDeviceComponentUST.add("Unit", entry.getValue().getValue());
+				tempDeviceComponentsUST.add(tempDeviceComponentUST);
+			}
+			job.add("TmpDeviceComponents", tempDeviceComponentsUST);
+			break;
+		case USERCONFIRMTEMPS:
+			UserConfirmTemps uct = (UserConfirmTemps)message;
+			job.add("Header", addHeader(82, uct.getConnectorId(), uct.getStatus(), uct.getTimestamp()));
+			JsonArrayBuilder tempConnectorsURC = Json.createArrayBuilder();
+			for (Integer conIdUCT : uct.getTempConnectors()) {
+				tempConnectorsURC.add(conIdUCT.intValue());
+			}
+			job.add("TmpConnectors", tempConnectorsURC);
+			JsonArrayBuilder tempDevicesURC = Json.createArrayBuilder();
+			JsonObjectBuilder tempDeviceURT;
+			for (Entry<Integer, Integer> entry : uct.getTempDevices().entrySet()) {
+				tempDeviceURT = Json.createObjectBuilder();
+				tempDeviceURT.add("DeviceTmpId", entry.getKey());
+				tempDeviceURT.add("ZoneId", entry.getValue());
+				tempDevicesURC.add(tempDeviceURT);
+			}
+			job.add("TmpDevices", tempDevicesURC);
+			JsonArrayBuilder tempDeviceComponentsUCT = Json.createArrayBuilder();
+			JsonObjectBuilder tempDeviceComponentUCT;
+			for (UserTempComponent utc : uct.getTempDeviceComponents()) {
+				tempDeviceComponentUCT = Json.createObjectBuilder();
+				tempDeviceComponentUCT.add("ComponentTmpId", utc.getTempComponentId());
+				tempDeviceComponentUCT.add("UnitID", utc.getUnitId());
+				tempDeviceComponentUCT.add("Name", utc.getName());
+				tempDeviceComponentsUCT.add(tempDeviceComponentUCT);
+			}
+			job.add("TmpDeviceComponents", tempDeviceComponentsUCT);
 			break;
 		default:
 			break;
