@@ -6,7 +6,6 @@ import java.util.List;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 
-import de.bo.aid.boese.constants.Errors;
 import de.bo.aid.boese.model.*;
 
 // TODO: Auto-generated Javadoc
