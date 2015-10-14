@@ -41,7 +41,9 @@ import de.bo.aid.boese.json.SendDevices;
 import de.bo.aid.boese.json.SendNotification;
 import de.bo.aid.boese.json.SendStatus;
 import de.bo.aid.boese.json.SendValue;
+import de.bo.aid.boese.json.UserConfirmRules;
 import de.bo.aid.boese.json.UserConfirmTemps;
+import de.bo.aid.boese.json.UserCreateRules;
 import de.bo.aid.boese.json.UserDevice;
 import de.bo.aid.boese.json.UserRequestConnectors;
 import de.bo.aid.boese.json.UserRequestDeviceComponents;
@@ -61,8 +63,10 @@ import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceComponent;
 import de.bo.aid.boese.ruler.Controll;
 import de.bo.aid.boese.ruler.Inquiry;
+import de.bo.aid.boese.ruler.Interpretor;
 import de.bo.aid.boese.socket.BoeseServer;
 import de.bo.aid.boese.socket.SocketHandler;
+import de.bo.aid.boese.xml.BoeseXML;
 import de.bo.aid.boese.xml.Component;
 import javassist.NotFoundException;
 
@@ -428,6 +432,26 @@ public class MainClass {
 		}
 	}
 	
+	private static void handleUserCreateRules(UserCreateRules ucr, int connectorId) {
+		if (connectorId != ucr.getConnectorId()) {
+			SocketHandler.getInstance().rejectConnection(connectorId);
+			return;
+		}
+		HashMap<Integer, Integer> tempRules = new HashMap<>();
+		List<Integer> ruleDeCoIds = new ArrayList<>();
+		Interpretor interpretor = new Interpretor();
+		int ruleId;
+		for (Rule rule : ucr.getRules()) {
+			ruleDeCoIds = interpretor.getAllDeCoIdsCondition(BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())));
+			ruleId = Inserts.rule(ruleDeCoIds, rule.getPermissions(), rule.getPermissions(), rule.getActions());
+			tempRules.put(rule.getTempRuleId(), ruleId);
+		}
+		BoeseJson ucor = new UserConfirmRules(tempRules, connectorId, 0, new Date().getTime());
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(ucor, os);
+		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+	}
+	
 	private static void handleMultiMessages(MultiMessage mm, int connectorId) {
 		if (connectorId != mm.getConnectorId()) {
 			SocketHandler.getInstance().rejectConnection(connectorId);
@@ -513,6 +537,9 @@ public class MainClass {
 			break;
 		case USERCONFIRMTEMPS:
 			handleUserConfirmTemps((UserConfirmTemps)bjMessage, connectorId);
+			break;
+		case USERCREATERULES:
+			handleUserCreateRules((UserCreateRules)bjMessage, connectorId);
 			break;
 		default:
 			break;

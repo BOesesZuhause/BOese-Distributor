@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -75,7 +76,9 @@ public class BoeseJson {
 		USERSENDRULES,
 		USERREQUESTTEMPS,
 		USERSENDTEMPS,
-		USERCONFIRMTEMPS
+		USERCONFIRMTEMPS,
+		USERCREATERULES,
+		USERCONFIRMRULES
 	}
 
 	/**
@@ -420,6 +423,27 @@ public class BoeseJson {
 			}
 			bj = new UserConfirmTemps(tempConnectorsSetUCT, tempDevicesSetUCT, tempDeviceComponentsUCT, 
 					headerConnectorID, headerStatus, headerTimestamp);
+			break;
+		case 90: // UserCreateRules
+			HashSet<Rule> rulesSetUCR = new HashSet<>();
+			JsonArray rulesUCR = jo.getJsonArray("Rules");
+			for (int i = 0; i < rulesUCR.size(); i++) {
+				JsonObject rule = rulesUCR.getJsonObject(i);
+				long currentDateUCR = new Date().getTime();
+				rulesSetUCR.add(new Rule(-1, rule.getInt("TempRuleId", -1), rule.getBoolean("Active", false), 
+						currentDateUCR, currentDateUCR, rule.getString("Permissions"), rule.getString("Conditions"), 
+						rule.getString("Actions")));
+			}
+			bj = new UserCreateRules(rulesSetUCR, headerConnectorID, headerStatus, headerTimestamp);
+			break;
+		case 91: // UserConfirmRules
+			HashMap<Integer, Integer> tempRuleMapUCoR = new HashMap<>();
+			JsonArray tempRuleUCoR = jo.getJsonArray("Rules");
+			for (int i = 0; i < tempRuleUCoR.size(); i++) {
+				JsonObject rule = tempRuleUCoR.getJsonObject(i);
+				tempRuleMapUCoR.put(rule.getInt("TempRuleId"), rule.getInt("RuleId"));
+			}
+			bj = new UserConfirmRules(tempRuleMapUCoR, headerConnectorID, headerStatus, headerTimestamp);
 			break;
 		default:
 			break;
@@ -773,6 +797,36 @@ public class BoeseJson {
 				tempDeviceComponentsUCT.add(tempDeviceComponentUCT);
 			}
 			job.add("TmpDeviceComponents", tempDeviceComponentsUCT);
+			break;
+		case USERCREATERULES:
+			UserCreateRules ucr = (UserCreateRules)message;
+			job.add("Header", addHeader(90, ucr.getConnectorId(), ucr.getStatus(), ucr.getTimestamp()));
+			JsonArrayBuilder rulesUCR = Json.createArrayBuilder();
+			JsonObjectBuilder ruleUCR;
+			for (Rule rule : ucr.getRules()) {
+				ruleUCR = Json.createObjectBuilder();
+				ruleUCR.add("RuleId", -1);
+				ruleUCR.add("TempRuleId", rule.getTempRuleId());
+				ruleUCR.add("Active", rule.isActive());
+				ruleUCR.add("Permissions", rule.getPermissions());
+				ruleUCR.add("Conditions", rule.getConditions());
+				ruleUCR.add("Actions", rule.getActions());
+				rulesUCR.add(ruleUCR);
+			}
+			job.add("Rules", rulesUCR);
+			break;
+		case USERCONFIRMRULES:
+			UserConfirmRules ucor = (UserConfirmRules)message;
+			job.add("Header", addHeader(91, ucor.getConnectorId(), ucor.getStatus(), ucor.getTimestamp()));
+			JsonArrayBuilder rulesUCoR = Json.createArrayBuilder();
+			JsonObjectBuilder ruleUCoR;
+			for (Entry<Integer, Integer> entry : ucor.getTempRules().entrySet()) {
+				ruleUCoR = Json.createObjectBuilder();
+				ruleUCoR.add("RuleId", entry.getValue());
+				ruleUCoR.add("TempRuleId", entry.getKey());
+				rulesUCoR.add(ruleUCoR);
+			}
+			job.add("Rules", rulesUCoR);
 			break;
 		default:
 			break;
