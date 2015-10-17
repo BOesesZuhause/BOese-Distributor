@@ -15,9 +15,6 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
-import de.bo.aid.boese.socket.BoeseSocket;
-
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class SocketClientStandalone.
@@ -90,7 +87,7 @@ public class SocketClientStandalone {
     @OnError
     public void onError(Throwable error){
     	messageHandler.closeConnection();
-    	Logger.getLogger(BoeseSocket.class.getName()).log(Level.SEVERE, null, error);
+    	Logger.getLogger(SocketClientStandalone.class.getName()).log(Level.SEVERE, null, error);
     }
 
     /**

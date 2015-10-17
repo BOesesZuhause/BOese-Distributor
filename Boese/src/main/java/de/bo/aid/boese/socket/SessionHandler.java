@@ -12,13 +12,13 @@ import javax.websocket.Session;
 /**
  * The Class SocketHandler.
  */
-public class SocketHandler {
+public class SessionHandler {
 	
 	/** The sessions. */
 	private final HashMap<Integer, Session> sessions = new HashMap<>();
 	
 	/** The instance. */
-	private static SocketHandler instance = new SocketHandler();
+	private static SessionHandler instance = new SessionHandler();
 	
 	/** The current id. */
 	private static int currentId;
@@ -26,7 +26,7 @@ public class SocketHandler {
 	/**
 	 * Instantiates a new socket handler.
 	 */
-	private SocketHandler(){
+	private SessionHandler(){
 		currentId = -1000;
 	}
 	
@@ -119,7 +119,7 @@ public class SocketHandler {
             session.getBasicRemote().sendText(message);
         } catch (IOException ex) {
             sessions.remove(session);
-            Logger.getLogger(SocketHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SessionHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 	
@@ -139,7 +139,7 @@ public class SocketHandler {
 	 *
 	 * @return single instance of SocketHandler
 	 */
-	public static SocketHandler getInstance() {
+	public static SessionHandler getInstance() {
 		return instance;
 	}
 

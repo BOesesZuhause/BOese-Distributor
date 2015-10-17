@@ -64,8 +64,8 @@ import de.bo.aid.boese.model.DeviceComponent;
 import de.bo.aid.boese.ruler.Controll;
 import de.bo.aid.boese.ruler.Inquiry;
 import de.bo.aid.boese.ruler.Interpretor;
-import de.bo.aid.boese.socket.BoeseServer;
-import de.bo.aid.boese.socket.SocketHandler;
+import de.bo.aid.boese.socket.SocketEndpoint;
+import de.bo.aid.boese.socket.SessionHandler;
 import de.bo.aid.boese.xml.BoeseXML;
 import de.bo.aid.boese.xml.Component;
 import javassist.NotFoundException;
@@ -126,14 +126,14 @@ public class MainClass {
 			Connector con = Selects.connector(conId);
 
 			if (con.getName().compareTo(conName) == 0 && con.getPassword().compareTo(pw) == 0) {
-				SocketHandler.getInstance().setConnectorId(tempId, conId);
+				SessionHandler.getInstance().setConnectorId(tempId, conId);
 				BoeseJson cc = new ConfirmConnection(pw, conId, 0, new Date().getTime());
 				
 				OutputStream os = new ByteArrayOutputStream();
 				BoeseJson.parseMessage(cc, os);
-				SocketHandler.getInstance().sendToConnector(conId, os.toString());			
+				SessionHandler.getInstance().sendToConnector(conId, os.toString());			
 			} else {
-				SocketHandler.getInstance().rejectConnection(conId);
+				SessionHandler.getInstance().rejectConnection(conId);
 			}
 		}
 	}
@@ -146,7 +146,7 @@ public class MainClass {
 	 */
 	private static void handleSendDevices(SendDevices sd, int connectorId) {
 		if (connectorId != sd.getConnectorId()) {
-			SocketHandler.getInstance().rejectConnection(connectorId);
+			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 
@@ -186,7 +186,7 @@ public class MainClass {
 	private static void handleSendDeviceComponents(SendDeviceComponents sdc, int connectorId) {
 		// TODO Regelparsing mit component values
 		if (connectorId != sdc.getConnectorId()) {
-			SocketHandler.getInstance().rejectConnection(connectorId);
+			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		int deviceId = sdc.getDeviceId();
@@ -248,7 +248,7 @@ public class MainClass {
 	 */
 	private static void handleSendValue(SendValue sv, int connectorId) {
 		if (connectorId != sv.getConnectorId()) {
-			SocketHandler.getInstance().rejectConnection(connectorId);
+			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		int deviceId = sv.getDeviceId();
@@ -260,12 +260,12 @@ public class MainClass {
 		BoeseJson cv = new ConfirmValue(deviceId, deviceComponentId, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(cv, os);
-		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
 	private static void handleSendNotification(SendNotification sn, int connectorId) {
 		if (connectorId != sn.getConnectorId()) {
-			SocketHandler.getInstance().rejectConnection(connectorId);
+			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		StringBuilder sb = new StringBuilder();
@@ -292,7 +292,7 @@ public class MainClass {
 	
 	private static void handleUserRequestAllDevices(RequestAllDevices urad, int connectorId) {
 		if (connectorId != urad.getConnectorId()) {
-			SocketHandler.getInstance().rejectConnection(connectorId);
+			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		List<Device> devList = AllSelects.Devices();
@@ -303,12 +303,12 @@ public class MainClass {
 		BoeseJson usd = new UserSendDevices(deviceList, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(usd, os);
-		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
 	private static void handleUserRequestDeviceComponents(UserRequestDeviceComponents urdc, int connectorId) {
 		if (connectorId != urdc.getConnectorId()) {
-			SocketHandler.getInstance().rejectConnection(connectorId);
+			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		HashSet<Integer> deIDList = urdc.getDeviceIds();
@@ -327,13 +327,13 @@ public class MainClass {
 			BoeseJson usdc = new UserSendDeviceComponent(devId.intValue(), decos, connectorId, 0, new Date().getTime());
 			OutputStream os = new ByteArrayOutputStream();
 			BoeseJson.parseMessage(usdc, os);
-			SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+			SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 		}
 	}
 	
 	private static void handleUserRequestConnectors(BoeseJson urc, int connectorId) {
 		if (connectorId != urc.getConnectorId()) {
-			SocketHandler.getInstance().rejectConnection(connectorId);
+			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		HashMap<Integer, String> connectors = new HashMap<>();
@@ -352,12 +352,12 @@ public class MainClass {
 		BoeseJson usc = new UserSendConnectors(connectors, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(usc, os);
-		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
 	private static void handleUserRequestAllZones(UserRequestGeneral urg, int connectorId) {
 		if (connectorId != urg.getConnectorId()) {
-			SocketHandler.getInstance().rejectConnection(connectorId);
+			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		HashSet<Zone> zones = new HashSet<>();
@@ -369,13 +369,13 @@ public class MainClass {
 		BoeseJson usc = new UserSendZones(zones, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(usc, os);
-		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
 	
 	private static void handleUserRequestAllRules(UserRequestGeneral urg, int connectorId) {
 		if (connectorId != urg.getConnectorId()) {
-			SocketHandler.getInstance().rejectConnection(connectorId);
+			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		HashSet<Rule> rules = new HashSet<>();
@@ -388,25 +388,25 @@ public class MainClass {
 		BoeseJson usc = new UserSendRules(rules, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(usc, os);
-		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
 	
 	private static void handleUserRequestTemps(UserRequestGeneral urt, int connectorId) {
 		if (connectorId != urt.getConnectorId()) {
-			SocketHandler.getInstance().rejectConnection(connectorId);
+			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		BoeseJson ust = new UserSendTemps(tempConnectors, tempDevices, tempDeviceComponents, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(ust, os);
-		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
 	
 	private static void handleUserConfirmTemps(UserConfirmTemps uct, int connectorId) {
 		if (connectorId != uct.getConnectorId()) {
-			SocketHandler.getInstance().rejectConnection(connectorId);
+			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		for (Integer con : uct.getTempConnectors()) {
@@ -434,7 +434,7 @@ public class MainClass {
 	
 	private static void handleUserCreateRules(UserCreateRules ucr, int connectorId) {
 		if (connectorId != ucr.getConnectorId()) {
-			SocketHandler.getInstance().rejectConnection(connectorId);
+			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		HashMap<Integer, Integer> tempRules = new HashMap<>();
@@ -449,12 +449,12 @@ public class MainClass {
 		BoeseJson ucor = new UserConfirmRules(tempRules, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(ucor, os);
-		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
 	private static void handleMultiMessages(MultiMessage mm, int connectorId) {
 		if (connectorId != mm.getConnectorId()) {
-			SocketHandler.getInstance().rejectConnection(connectorId);
+			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		//TODO evt. schlechte Performance weil hin und her geparst wird
@@ -467,14 +467,14 @@ public class MainClass {
 	
 	private static void handleSendStatus(SendStatus ss, int connectorId) {
 		if (connectorId != ss.getConnectorId()) {
-			SocketHandler.getInstance().rejectConnection(connectorId);
+			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		Updates.deviceComponentStatus(ss.getStatusCode(), ss.getDeviceComponentId());
 		BoeseJson cs = new SendStatus(ss.getDeviceComponentId(), ss.getStatusCode(), ss.getStatusTimestamp(), false, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(cs, os);
-		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
 	
@@ -489,7 +489,7 @@ public class MainClass {
 		BoeseJson bjMessage = BoeseJson.readMessage(new ByteArrayInputStream(message.getBytes()));
 		if (bjMessage == null) {
 			System.out.println("No message");
-			SocketHandler.getInstance().rejectConnection(connectorId);
+			SessionHandler.getInstance().rejectConnection(connectorId);
 		}
 		//System.out.println(bjMessage.getType());
 		switch (bjMessage.getType()) {
@@ -559,7 +559,7 @@ public class MainClass {
 //		String actions = "<ACTION><ACTOR><ID>21</ID><VALUE>1.0</VALUE><RESET_VALUE>0</RESET_VALUE><START_TIME>123123</START_TIME><DURATION>5</DURATION><REPEAT_AFTER_END>0</REPEAT_AFTER_END></ACTOR></ACTION>";
 //		
 //		Inserts.rule(decoIdL, "", conditions, actions);
-		BoeseServer server = new BoeseServer();
+		SocketEndpoint server = new SocketEndpoint();
 		server.start();
 
 	}
@@ -592,20 +592,20 @@ public class MainClass {
 		String pw = String.valueOf(sr.nextLong());
 
 		int conId = Inserts.connector(name, pw);
-		SocketHandler.getInstance().setConnectorId(tempId, conId);
+		SessionHandler.getInstance().setConnectorId(tempId, conId);
 
 		// Send ConfirmConnection
 		BoeseJson cc = new ConfirmConnection(pw, conId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(cc, os);
-		SocketHandler.getInstance().sendToConnector(conId, os.toString());
+		SessionHandler.getInstance().sendToConnector(conId, os.toString());
 
 		if (!isUserConnector) {			
 			// Send RequestAllDevices
 			BoeseJson rad = new RequestAllDevices(conId, 0, new Date().getTime());
 			os = new ByteArrayOutputStream();
 			BoeseJson.parseMessage(rad, os);
-			SocketHandler.getInstance().sendToConnector(conId, os.toString());
+			SessionHandler.getInstance().sendToConnector(conId, os.toString());
 		}
 		
 		System.out.println("User confirmed Connector with name: " + name + "\n");
@@ -653,14 +653,14 @@ public class MainClass {
 		BoeseJson cd = new ConfirmDevices(devices, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(cd, os);
-		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 
 		//Send Request Device Components		
 		for (Integer deviceId : devices.values()){
 			BoeseJson rdc = new RequestDeviceComponents(deviceId, connectorId, 0, new Date().getTime());
 			os = new ByteArrayOutputStream();
 			BoeseJson.parseMessage(rdc, os);
-			SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+			SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 		}
 	}
 	
@@ -718,7 +718,7 @@ public class MainClass {
 		BoeseJson cdc = new ConfirmDeviceComponents(deviceId, components, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(cdc, os);
-		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
 	/**
@@ -735,7 +735,7 @@ public class MainClass {
 		BoeseJson sv = new SendValue(deId, deCoId, value, valueTimestamp, connectorId, 0, new Date().getTime());
 		os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(sv, os);
-		SocketHandler.getInstance().sendToConnector(connectorId, os.toString());
+		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
 	/**
