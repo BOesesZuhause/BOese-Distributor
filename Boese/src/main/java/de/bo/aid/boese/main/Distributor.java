@@ -3,6 +3,9 @@ package de.bo.aid.boese.main;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -16,10 +19,17 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.LazyInitializationException;
 
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
+
+import de.bo.aid.boese.cli.Parameters;
 import de.bo.aid.boese.db.AllSelects;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
@@ -65,6 +75,7 @@ import de.bo.aid.boese.ruler.Controll;
 import de.bo.aid.boese.ruler.Inquiry;
 import de.bo.aid.boese.ruler.Interpretor;
 import de.bo.aid.boese.socket.SocketEndpoint;
+import de.bo.aid.boese.socket.MessageHandler;
 import de.bo.aid.boese.socket.SessionHandler;
 import de.bo.aid.boese.xml.BoeseXML;
 import de.bo.aid.boese.xml.Component;
@@ -74,7 +85,7 @@ import javassist.NotFoundException;
 /**
  * The Class MainClass.
  */
-public class MainClass {
+public class Distributor {
 	//TODO handle Acknowledge abgleich
 	
 	/** The temp connectors. */
@@ -99,6 +110,114 @@ public class MainClass {
 	
 	/** The temp id device components. */
 	int tempIdDeviceComponents = 1;
+	
+	private ProtocolHandler protocolHandler;
+	private int websocketPort;
+	private String configFilePath;
+	
+	/** The Constant logger for log4j. */
+	final  Logger logger = LogManager.getLogger(Distributor.class);
+	
+	
+	private void startWebsocketServer(){
+		SocketEndpoint endpoint = new SocketEndpoint();
+		//endpoint.setPort(websocketPort);
+		protocolHandler = new ProtocolHandler();
+		endpoint.setMessageHandler(protocolHandler);
+		endpoint.start(websocketPort);
+	}
+	
+	private void initDatabase(){
+		
+	}
+	
+	private void checkArguments(String[] args){
+		Parameters params = new Parameters();
+		JCommander cmd = new JCommander(params);
+
+		try {
+			cmd.parse(args);
+
+		} catch (ParameterException ex) {
+			System.out.println(ex.getMessage());
+			cmd.usage();
+			System.exit(0);
+		}
+		
+		configFilePath = params.getConfig();
+		
+		if (params.isGenConfig()) {
+			createDefaultProperties();
+			logger.info("created default properties-file at: " + configFilePath);
+			System.exit(0);
+		}
+		
+	}
+	
+	
+	/**
+	 * Load the properties-file.
+	 */
+	private void loadProperties() {
+
+		Properties props = new Properties();
+		FileInputStream file = null;
+
+		// load the file handle
+		try {
+			file = new FileInputStream(configFilePath);
+		} catch (FileNotFoundException e) {
+			logger.error("config File not found at: " + configFilePath);
+			e.printStackTrace();
+			System.exit(0);
+		}
+
+		// load all the properties from the file
+		try {
+			props.load(file);
+		} catch (IOException e) {
+			logger.error("IO-Exception while loading config-file");
+			e.printStackTrace();
+			System.exit(0);
+		}
+
+		// close the file handle
+		try {
+			file.close();
+		} catch (IOException e) {
+			logger.error("IO-Exception while closing config-file");
+			e.printStackTrace();
+			System.exit(0);
+		}
+
+		// retrieve the properties
+		websocketPort = Integer.parseInt(props.getProperty("WebsocketPort"));
+	}
+
+	/**
+	 * Creates the default properties-file.
+	 */
+	private void createDefaultProperties() {
+		Properties prop = new Properties();
+		OutputStream output = null;
+
+		prop.setProperty("WebsocketPort", "8081");
+		try {
+			output = new FileOutputStream(configFilePath);
+		} catch (FileNotFoundException e) {
+			logger.error("Could not open file: " + configFilePath);
+			e.printStackTrace();
+			System.exit(0);
+		}
+
+		try {
+			prop.store(output, null);
+		} catch (IOException e) {
+			logger.error("IO-Exception while saving default properties-file");
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
 	
 	/**
 	 * Handle request connections.
@@ -559,8 +678,13 @@ public class MainClass {
 //		String actions = "<ACTION><ACTOR><ID>21</ID><VALUE>1.0</VALUE><RESET_VALUE>0</RESET_VALUE><START_TIME>123123</START_TIME><DURATION>5</DURATION><REPEAT_AFTER_END>0</REPEAT_AFTER_END></ACTOR></ACTION>";
 //		
 //		Inserts.rule(decoIdL, "", conditions, actions);
-		SocketEndpoint server = new SocketEndpoint();
-		server.start();
+		Distributor distr = new Distributor();
+		distr.checkArguments(args);
+		distr.loadProperties();
+		distr.initDatabase();
+		distr.startWebsocketServer();
+//		SocketEndpoint server = new SocketEndpoint();
+//		server.start(8081);
 
 	}
 	

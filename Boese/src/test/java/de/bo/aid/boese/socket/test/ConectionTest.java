@@ -30,7 +30,7 @@ public class ConectionTest {
     @Before
     public void startServer() throws Exception {
         server = new SocketEndpoint();
-        server.start();
+        server.start(8081);
     }
 	
 

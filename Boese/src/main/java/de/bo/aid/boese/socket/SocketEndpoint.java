@@ -18,7 +18,7 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
 
-import de.bo.aid.boese.main.MainClass;
+import de.bo.aid.boese.main.Distributor;
 
 
 // TODO: Auto-generated Javadoc
@@ -31,17 +31,30 @@ import de.bo.aid.boese.main.MainClass;
 public class SocketEndpoint
 {
 	
+	public MessageHandler getMessageHandler() {
+		return messageHandler;
+	}
+
+	public void setMessageHandler(MessageHandler messageHandler) {
+		this.messageHandler = messageHandler;
+	}
+
 	/** The server. */
 	private Server server;
+	
+	private MessageHandler messageHandler;
+	
+	/** The handler. */
+	private SessionHandler handler = SessionHandler.getInstance();
 
 	/**
 	 * Start.
 	 */
-	public void start()
+	public void start(int port)
     {
         server = new Server();
         ServerConnector connector = new ServerConnector(server);
-        connector.setPort(8081);
+        connector.setPort(port);
         server.addConnector(connector);
 
         // Setup the basic application "context" for this application at "/"
@@ -80,8 +93,7 @@ public class SocketEndpoint
 		}
 	}
 	
-	/** The handler. */
-	SessionHandler handler = SessionHandler.getInstance();
+
 	
 	/**
 	 * Open.
@@ -124,6 +136,6 @@ public class SocketEndpoint
 	public void handleMessage(String message, Session session) {
 		//TODO observer pattern
 		System.out.println("Server received Message: " + message);
-		MainClass.handleMessage(message, handler.getConnectorId(session));
+		Distributor.handleMessage(message, handler.getConnectorId(session));
 	}
 }

@@ -25,7 +25,7 @@ public class SimulationTest {
     @Before
     public void startServer() throws Exception {
         server = new SocketEndpoint();
-        server.start();
+        server.start(8081);
         Connection.getConnection();
     }
     
