@@ -1,10 +1,4 @@
-
-
-
 package de.bo.aid.boese.socket;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.websocket.ClientEndpoint;
 import javax.websocket.OnClose;
@@ -15,30 +9,26 @@ import javax.websocket.Session;
 
 import javax.websocket.server.ServerEndpoint;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class BoeseServer.
  */
 
-@ClientEndpoint
+@ClientEndpoint //every connection creates a new SocketEndpoint Object. Therefore there is the SocketServer-Wrapper
 @ServerEndpoint("/events/")
 public class SocketEndpoint
 {
 	
-//	private static SocketEndpoint instance = new SocketEndpoint();
-//	
-//	private SocketEndpoint(){};
-//	
-//	public static SocketEndpoint getInstance(){
-//		return instance;
-//	}
-	
-
-	
 	/** The handler. */
 	private SessionHandler handler = SessionHandler.getInstance();
 
+	/** The Constant logger for log4j. */
+	final  Logger logger = LogManager.getLogger(SocketEndpoint.class);
 	
 	/**
 	 * Open.
@@ -68,7 +58,8 @@ public class SocketEndpoint
 	 */
 	@OnError
 	public void onError(Throwable error) {
-		Logger.getLogger(SocketEndpoint.class.getName()).log(Level.SEVERE, null, error);
+		logger.error("Websocketerror:");
+		error.printStackTrace();
 	}
 
 	/**
@@ -79,7 +70,7 @@ public class SocketEndpoint
 	 */
 	@OnMessage
 	public void handleMessage(String message, Session session) {
-		System.out.println("Server received Message: " + message);
+		logger.info("Server received Message: " + message);
 		SocketServer.getInstance().handleMessage(message, handler.getConnectorId(session));
 	}
 }

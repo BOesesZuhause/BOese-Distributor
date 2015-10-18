@@ -1,20 +1,20 @@
-
-
-
 package de.bo.aid.boese.socket;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.websocket.Session;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class SocketHandler.
  */
 public class SessionHandler {
+	
+	/** The Constant logger for log4j. */
+	final  Logger logger = LogManager.getLogger(SessionHandler.class);
 	
 	/** The sessions. */
 	private final HashMap<Integer, Session> sessions = new HashMap<>();
@@ -117,11 +117,11 @@ public class SessionHandler {
 	 */
 	public void sendToSession(Session session, String message) {
         try {
-        	System.out.println("Message sent: " + message);
+        	logger.info("Message sent: " + message);
             session.getBasicRemote().sendText(message);
         } catch (IOException ex) {
             sessions.remove(session);
-            Logger.getLogger(SessionHandler.class.getName()).log(Level.SEVERE, null, ex);
+            logger.warn("Could not send the message to session: " + session);
         }
     }
 	
