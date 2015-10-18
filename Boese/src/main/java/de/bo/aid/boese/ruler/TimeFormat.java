@@ -88,13 +88,13 @@ public class TimeFormat {
 	 */
 	public TimeFormat(String cron){
 		this.calculate = new boolean[6]; 
-		String[] cronElements = cron.split(",");
-		setMin(cronElements[1]);
-		setHour(cronElements[2]);
-		setDay(cronElements[3]);
-		setMonth(cronElements[4]);
-		setYear(cronElements[5]);
-		setDow(cronElements[6]);
+		String[] cronElements = cron.split(", ");
+		setMin(cronElements[0]);
+		setHour(cronElements[1]);
+		setMonth(cronElements[3]);
+		setYear(cronElements[4]);
+		setDay(cronElements[2]);
+		setDow(cronElements[5]);
 	}	
 	
 	/**
@@ -151,7 +151,7 @@ public class TimeFormat {
 				i[1] = (min / 60);
 			}
 			else{
-				i[0] = this.min;
+				i[0] = min;
 				i[1] = 0;
 			}
 		}
@@ -175,10 +175,16 @@ public class TimeFormat {
 	 * @param min the new min
 	 */
 	public void setMin(String min) {
-		this.min = Integer.parseInt(min);
-		this.calculate[0] = min.contains("+") || min.contains("-");
-		if (this.calculate[0] && this.min < 0 || this.min > 59)
-			throw new IllegalArgumentException("Fix Minutes are only between 0 & 59");
+		if(min.equals("*")){
+			this.calculate[0] = true;
+			this.min = 0;
+		}
+		else{
+			this.min = Integer.parseInt(min);
+			this.calculate[0] = min.contains("+") || min.contains("-");
+			if (!this.calculate[0] && this.min < 0 || this.min > 59)
+				throw new IllegalArgumentException("Fix Minutes are only between 0 & 59");
+		}
 	}
 
 	/**
@@ -225,14 +231,14 @@ public class TimeFormat {
 			hour += plus;
 		}
 		else{
-			hour += new Date().getMonth() + plus;
+			hour += new Date().getHours() + plus;
 		}
-		if(hour < 1){
+		if(hour < 0){
 			hour *= -1;
 			i[0] = hour % 12 + 1;
 			i[1] = ((hour - 1) / 12) * -1;
 		}
-		else if(hour > 12){
+		else if(hour > 23){
 			i[0] = hour % 12 + 1;
 			i[1] = ((hour - 1) / 12);
 		}
@@ -260,10 +266,16 @@ public class TimeFormat {
 	 * @param hour the new hour
 	 */
 	public void setHour(String hour) {
-		this.hour = Integer.parseInt(hour);
-		this.calculate[1] = hour.contains("+") || hour.contains("-");
-		if (this.calculate[1] && this.hour < 0 || this.hour > 59)
-			throw new IllegalArgumentException("Fix Hours are only between 0 & 23");
+		if(hour.equals("*")){
+			this.calculate[1] = true;
+			this.hour = 0;
+		}
+		else{
+			this.hour = Integer.parseInt(hour);
+			this.calculate[1] = hour.contains("+") || hour.contains("-");
+			if (!this.calculate[1] && this.hour < 0 || this.hour > 23)
+				throw new IllegalArgumentException("Fix Hours are only between 0 & 23");
+		}
 	}
 
 	/**
@@ -304,22 +316,24 @@ public class TimeFormat {
 	 * @return the real day
 	 */
 	public int[] getRealDay(int plus){
+		int md = DayCalculator.numberOfDays((calculate[3]) ? new Date().getMonth() + this.month : this.month, (calculate[4]) ? new Date().getYear() + this.year : this.year);
 		int[] i = new int[2];
 		int day = this.day;
 		if(!this.calculate[3]){
 			day += plus;
 		}
 		else{
-			day += new Date().getMonth() + plus;
+			day += new Date().getDate() + plus;
 		}
 		if(day < 1){
-			day *= -1;
-			i[0] = day % 12 + 1;
-			i[1] = ((day - 1) / 12) * -1;
+			i[0] = day;
+			i[1] = 0;
+			i = DayCalculator.getRealDayCalcNeg(new Date().getDate(), i, (calculate[3]) ? new Date().getMonth() + this.month : this.month, (calculate[4]) ? new Date().getYear() + this.year : this.year);
 		}
-		else if(day > 12){
-			i[0] = day % 12 + 1;
-			i[1] = ((day - 1) / 12);
+		else if(day > md){
+			i[0] = day;
+			i[1] = 0;
+			i = DayCalculator.getRealDayCalc(new Date().getDate(), i, (calculate[3]) ? new Date().getMonth() + this.month : this.month, (calculate[4]) ? new Date().getYear() + this.year : this.year);
 		}
 		else{
 			i[0] = day;
@@ -345,10 +359,17 @@ public class TimeFormat {
 	 * @param day the new day
 	 */
 	public void setDay(String day) {
-		this.day = Integer.parseInt(day);
-		this.calculate[2] = day.contains("+") || day.contains("-");
-//		if (this.calculate[3] && this.day < 0 || this.day > 59)
-//			throw new IllegalArgumentException("Fix Days are only between 0 & 59");
+		if(day.equals("*")){
+			this.day = 0;
+			this.calculate[2] = true;
+		}
+		else{
+			this.day = Integer.parseInt(day);
+			this.calculate[2] = day.contains("+") || day.contains("-");
+			int md = DayCalculator.numberOfDays(this.month, this.year);
+			if (!this.calculate[2] && this.day < 1 || this.day > md)
+				throw new IllegalArgumentException("Fix Days for the month number " + this.month + "are only between 0 & " + md);
+		}
 	}
 
 	/**
@@ -395,7 +416,7 @@ public class TimeFormat {
 			month += plus;
 		}
 		else{
-			month += new Date().getMonth() + plus;
+			month += new Date().getMonth() + 1 + plus;
 		}
 		if(month < 1){
 			month *= -1;
@@ -430,10 +451,16 @@ public class TimeFormat {
 	 * @param month the new month
 	 */
 	public void setMonth(String month) {
-		this.month = Integer.parseInt(month);
-		this.calculate[3] = month.contains("+") || month.contains("-");
-		if (this.calculate[3] && this.month < 1 || this.month > 12)
-			throw new IllegalArgumentException("Fix Seconds are only between 0 & 59");
+		if(month.equals("*")){
+			this.calculate[3] = true;
+			this.month = 0;
+		}
+		else {
+			this.month = Integer.parseInt(month);
+			this.calculate[3] = month.contains("+") || month.contains("-");
+			if (!this.calculate[3] && this.month < 1 || this.month > 12)
+				throw new IllegalArgumentException("Fix Seconds are only between 0 & 59");
+		}
 	}
 	
 	/**
@@ -478,7 +505,7 @@ public class TimeFormat {
 			return this.year + plus;
 		}
 		else{
-			return new Date().getYear() + this.year + plus;
+			return new Date().getYear() + 1900 + this.year + plus;
 		}
 	}
 
@@ -499,8 +526,14 @@ public class TimeFormat {
 	 * @param year the new year
 	 */
 	public void setYear(String year) {
-		this.year = Integer.parseInt(year);
-		this.calculate[4] = year.contains("+") || year.contains("-");
+		if(year.equals("*")){
+			this.year = 0;
+			this.calculate[4] = true;
+		}
+		else{
+			this.year = Integer.parseInt(year);
+			this.calculate[4] = year.contains("+") || year.contains("-");
+		}
 	}
 
 	/**
@@ -545,17 +578,25 @@ public class TimeFormat {
 	 * @param dow the new dow
 	 */
 	public void setDow(String dow) {
-		this.dow = new boolean[7];
-		int i = 0;
-		for(char c : dow.toCharArray()){
-			if(c == 't'){
+		if(dow.equals("*")){
+			this.dow = new boolean[7];
+			for(int i = 0; i < this.dow.length; i++){
 				this.dow[i] = true;
 			}
-			else if(c == 'f'){
-				this.dow[i] = false;
-			}
-			else{
-				throw new IllegalArgumentException("nur t und f werden als chars bei Day of Week erkannt");
+		}
+		else{
+			this.dow = new boolean[7];
+			int i = 0;
+			for(char c : dow.toCharArray()){
+				if(c == 't'){
+					this.dow[i] = true;
+				}
+				else if(c == 'f'){
+					this.dow[i] = false;
+				}
+				else{
+					throw new IllegalArgumentException("nur t und f werden als chars bei Day of Week erkannt");
+				}
 			}
 		}
 	}
@@ -594,6 +635,7 @@ public class TimeFormat {
 		int[] d = getRealDay(h[1]);
 		int[] mo = getRealMonth(d[1]);
 		int y = getRealYear(mo[1]);
-		return new GregorianCalendar(y, mo[0], d[0], h[0], mi[0]).getTime();
+		System.out.println("... " + mo[0] + "  " + d[0] + " " + h[0] + ":" + mi[0] + ":00 CET " + y);
+		return new GregorianCalendar(y, mo[0]-1, d[0], h[0], mi[0]).getTime();
 	}
 }
