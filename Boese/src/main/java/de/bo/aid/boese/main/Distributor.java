@@ -1,9 +1,5 @@
-
-
-
 package de.bo.aid.boese.main;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -23,9 +19,6 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import de.bo.aid.boese.cli.Parameters;
 import de.bo.aid.boese.db.Inserts;
-import de.bo.aid.boese.json.BoeseJson;
-import de.bo.aid.boese.json.ConfirmConnection;
-import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempDevice;
 import de.bo.aid.boese.ruler.Controll;
@@ -80,7 +73,6 @@ public class Distributor {
 	/** The Constant logger for log4j. */
 	final  Logger logger = LogManager.getLogger(Distributor.class);
 	
-	
 	/**
 	 * Start websocket server.
 	 *
@@ -91,18 +83,18 @@ public class Distributor {
 		protocolHandler = new ProtocolHandler(this);
 		socketServer.setMessageHandler(protocolHandler);
 		
-		if(port == 0){ //For the JUnit-test
-			socketServer.start(websocketPort);
-		}else{
-			socketServer.start(port);
+		if(port != 0){ //For the JUnit-test
+			websocketPort = port;
 		}
-
+		socketServer.start(websocketPort);
+		logger.info("Started websocket-server on prt: " + websocketPort);
 	}
 	
 	/**
 	 * Inits the database.
 	 */
 	private void initDatabase(){
+		//TODO add default data
 		
 	}
 	
@@ -236,33 +228,26 @@ public class Distributor {
 	 */
 	public void confirmConnector(int tempId, boolean isUserConnector) throws NotFoundException{
 	
-		String name= tempConnectors.get(tempId);
-		
+		//check if connector exists
+		String name= tempConnectors.get(tempId);		
 		if(name == null){
 			throw new NotFoundException("Connector with tempId " + tempId + " not Found");
 		}
 
+		//generate password
 		SecureRandom sr = new SecureRandom();
 		String pw = String.valueOf(sr.nextLong());
-
+		
+		//generate id and connect it with the session 
 		int conId = Inserts.connector(name, pw);
 		SessionHandler.getInstance().setConnectorId(tempId, conId);
-
-		// Send ConfirmConnection
-		BoeseJson cc = new ConfirmConnection(pw, conId, 0, new Date().getTime());
-		OutputStream os = new ByteArrayOutputStream();
-		BoeseJson.parseMessage(cc, os);
-		SessionHandler.getInstance().sendToConnector(conId, os.toString());
+		protocolHandler.sendConfirmConnection(pw, conId);
 
 		if (!isUserConnector) {			
-			// Send RequestAllDevices
-			BoeseJson rad = new RequestAllDevices(conId, 0, new Date().getTime());
-			os = new ByteArrayOutputStream();
-			BoeseJson.parseMessage(rad, os);
-			SessionHandler.getInstance().sendToConnector(conId, os.toString());
+			protocolHandler.sendRequestAllDevices(conId);
 		}
 		
-		System.out.println("User confirmed Connector with name: " + name + "\n");
+		logger.info("User confirmed Connector with name: " + name + "\n");
 		tempConnectors.remove(tempId);
 	}
 	
@@ -276,23 +261,23 @@ public class Distributor {
 	 */
 	public void confirmDevice(int tempId, int zoneId, String name) throws NotFoundException{
 
-		TempDevice temp = tempDevices.get(tempId);
-		
+		//check if device exists
+		TempDevice temp = tempDevices.get(tempId);		
 		if(temp == null){
 			throw new NotFoundException("Device with tempId " + tempId + " not found");
 		}
+		//use temp-name, if no name is submitted
 		if(name == null){
 			name = temp.getName();
 		}
 		
-		int connectorId = temp.getConnectorID();
-		
+		//insert device in db ans send confirmDevice-message
+		int connectorId = temp.getConnectorID();		
 		HashMap<String, Integer> devices = new HashMap<String, Integer>();
-		devices.put(name, Inserts.device(connectorId, zoneId, name, "serial"));
-		
+		devices.put(name, Inserts.device(connectorId, zoneId, name, "serial"));	
 		protocolHandler.sendConfirmDevices(devices, connectorId);
 		
-		System.out.println("User confirmed Device with name: " + name + "\n");	
+		logger.info("User confirmed Device with name: " + name + "\n");	
 		tempDevices.remove(temp);
 	}
 	
@@ -351,27 +336,30 @@ public class Distributor {
 	 * @throws NotFoundException the not found exception
 	 */
 	public void confirmDeviceComponent(int tempId, int unitId, String name) throws NotFoundException{
+		
+		//check if Component exists
 		TempComponent temp = tempDeviceComponents.get(tempId);
 		if(temp == null){
 			throw new NotFoundException("Component with tempId " + tempId + " not found");
 		}
+		//use temp-name if no name was submitted
 		if (name == null){
 			name = temp.getName();
 		}
-		int deviceId = temp.getDeviceId();
-		int connectorId = temp.getConnectorId();
 		
+		//insert deviceComponent in db and send confirm message and check for todos
+		int deviceId = temp.getDeviceId();
+		int connectorId = temp.getConnectorId();		
 		int componentId = Inserts.component(name, unitId, !temp.isActor()); 
 		int deCoId = Inserts.deviceComponent(deviceId, componentId, temp.getDescription());
 		HashMap<String, Integer> confirmComponents = new HashMap<String, Integer>();
 		confirmComponents.put(name, deCoId);
 		ArrayList<Inquiry> inquiryList = new ArrayList<>();
 		inquiryList.add(new Inquiry(deCoId, temp.getValueTimestamp(), temp.getValue()));
-		protocolHandler.sendToDos(inquiryList);
-		
+		protocolHandler.sendToDos(inquiryList);	
 		protocolHandler.sendConfirmComponent(deviceId, confirmComponents, connectorId);
 		
-		System.out.println("User confirmed Component with name: " + name + " and Device with id: " + deviceId + "\n");	
+		logger.info("User confirmed Component with name: " + name + " and Device with id: " + deviceId + "\n");	
 		tempDevices.remove(temp);
 	}
 	
@@ -420,7 +408,7 @@ public class Distributor {
 			try {
 				confirmConnector(tempId, false);
 			} catch (NotFoundException e) {
-				// TODO Auto-generated catch block
+				logger.error("Could not confirm connector with id: " + tempId + " (not found)");
 				e.printStackTrace();
 			}
 		}
@@ -437,7 +425,7 @@ public class Distributor {
 			try {
 				confirmDevice(tempDeviceId, 0, null);
 			} catch (NotFoundException e) {
-				// TODO Auto-generated catch block
+				logger.error("Could not confirm device with id: " + tempDeviceId + " (not found)");
 				e.printStackTrace();
 			}
 		}
@@ -455,7 +443,7 @@ public class Distributor {
 			try {
 				confirmDeviceComponent(tempCompId, 0, null);
 			} catch (NotFoundException e) {
-				// TODO Auto-generated catch block
+				logger.error("Could not confirm comonent with id: " + tempCompId + " (not found)");
 				e.printStackTrace();
 			}
 		}
