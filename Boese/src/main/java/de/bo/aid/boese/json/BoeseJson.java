@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.json;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -37,6 +39,8 @@ public class BoeseJson {
 	 * Enumeration with all available message types.
 	 */
 	public enum MessageType {
+		
+		/** The multi. */
 		MULTI,
 		/** The requestconnection. */
 		REQUESTCONNECTION, 
@@ -60,24 +64,62 @@ public class BoeseJson {
 		CONFIRMVALUE, 
 		/** The requestvalue. */
 		REQUESTVALUE,
+		
+		/** The sendnotification. */
 		SENDNOTIFICATION,
+		
+		/** The sendstatus. */
 		SENDSTATUS,
+		
+		/** The confirmstatus. */
 		CONFIRMSTATUS,
+		
+		/** The userrequestalldevices. */
 		USERREQUESTALLDEVICES,
+		
+		/** The usersenddevices. */
 		USERSENDDEVICES,
+		
+		/** The userrequestdevicecomponents. */
 		USERREQUESTDEVICECOMPONENTS,
+		
+		/** The usersenddevicecomponent. */
 		USERSENDDEVICECOMPONENT,
+		
+		/** The userrequestconnectors. */
 		USERREQUESTCONNECTORS,
+		
+		/** The userrequestallconnectors. */
 		USERREQUESTALLCONNECTORS,
+		
+		/** The usersendconnetors. */
 		USERSENDCONNETORS,
+		
+		/** The userrequestallzones. */
 		USERREQUESTALLZONES,
+		
+		/** The usersendzones. */
 		USERSENDZONES,
+		
+		/** The userrequestallrules. */
 		USERREQUESTALLRULES,
+		
+		/** The usersendrules. */
 		USERSENDRULES,
+		
+		/** The userrequesttemps. */
 		USERREQUESTTEMPS,
+		
+		/** The usersendtemps. */
 		USERSENDTEMPS,
+		
+		/** The userconfirmtemps. */
 		USERCONFIRMTEMPS,
+		
+		/** The usercreaterules. */
 		USERCREATERULES,
+		
+		/** The userconfirmrules. */
 		USERCONFIRMRULES
 	}
 
@@ -469,6 +511,12 @@ public class BoeseJson {
 		return header;
 	}
 	
+	/**
+	 * Generate builder.
+	 *
+	 * @param message the message
+	 * @return the json object builder
+	 */
 	private static JsonObjectBuilder generateBuilder(BoeseJson message) {
 		JsonObjectBuilder job = Json.createObjectBuilder();
 		switch (message.getType()) {

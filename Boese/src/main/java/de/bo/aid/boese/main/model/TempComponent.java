@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.main.model;
 
 // TODO: Auto-generated Javadoc

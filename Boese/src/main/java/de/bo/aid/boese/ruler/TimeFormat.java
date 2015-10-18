@@ -1,28 +1,55 @@
+
+
 package de.bo.aid.boese.ruler;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TimeFormat.
+ */
 public class TimeFormat {
 	
+	/** The min. */
 	private int min;
 
+	/** The hour. */
 	private int hour;
 	
+	/** The day. */
 	private int day;
 	
+	/** The month. */
 	private int month;
 	
+	/** The year. */
 	private int year;
 	
+	/** The dow. */
 	private boolean[] dow;
 	
+	/** The calculate. */
 	private boolean[] calculate;
 	
+	/**
+	 * Instantiates a new time format.
+	 */
 	public TimeFormat() {
 		
 	}
 
+	/**
+	 * Instantiates a new time format.
+	 *
+	 * @param min the min
+	 * @param hour the hour
+	 * @param day the day
+	 * @param month the month
+	 * @param year the year
+	 * @param dow the dow
+	 * @param calculate the calculate
+	 */
 	public TimeFormat(int min, int hour, int day, int month, int year, boolean[] dow, boolean[] calculate) {
 		setMin(min, calculate[0]);
 		setHour(hour, calculate[1]);
@@ -33,6 +60,17 @@ public class TimeFormat {
 		this.calculate = calculate;
 	}
 	
+	/**
+	 * Instantiates a new time format.
+	 *
+	 * @param min the min
+	 * @param hour the hour
+	 * @param day the day
+	 * @param month the month
+	 * @param year the year
+	 * @param dow the dow
+	 * @param calculate the calculate
+	 */
 	public TimeFormat(int min, int hour, int day, int month, int year, String dow, boolean[] calculate) {
 		setMin(min, calculate[0]);
 		setHour(hour, calculate[1]);
@@ -43,6 +81,11 @@ public class TimeFormat {
 		this.calculate = calculate;
 	}
 	
+	/**
+	 * Instantiates a new time format.
+	 *
+	 * @param cron the cron
+	 */
 	public TimeFormat(String cron){
 		this.calculate = new boolean[6]; 
 		String[] cronElements = cron.split(",");
@@ -54,10 +97,20 @@ public class TimeFormat {
 		setDow(cronElements[6]);
 	}	
 	
+	/**
+	 * Gets the min.
+	 *
+	 * @return the min
+	 */
 	public int getMin() {
 		return min;
 	}
 	
+	/**
+	 * Gets the min string.
+	 *
+	 * @return the min string
+	 */
 	public String getMinString(){
 		if(this.calculate[0]){
 			if(this.min < 0){
@@ -75,6 +128,11 @@ public class TimeFormat {
 		}
 	}
 	
+	/**
+	 * Gets the real min.
+	 *
+	 * @return the real min
+	 */
 	public int[] getRealMin(){
 		int[] i = new int[2];
 		if(!this.calculate[0]){
@@ -100,11 +158,22 @@ public class TimeFormat {
 		return i;
 	}
 
+	/**
+	 * Sets the min.
+	 *
+	 * @param min the min
+	 * @param calc the calc
+	 */
 	public void setMin(int min, boolean calc) {
 		this.min = min;
 		this.calculate[0] = calc;
 	}
 	
+	/**
+	 * Sets the min.
+	 *
+	 * @param min the new min
+	 */
 	public void setMin(String min) {
 		this.min = Integer.parseInt(min);
 		this.calculate[0] = min.contains("+") || min.contains("-");
@@ -112,10 +181,20 @@ public class TimeFormat {
 			throw new IllegalArgumentException("Fix Minutes are only between 0 & 59");
 	}
 
+	/**
+	 * Gets the hour.
+	 *
+	 * @return the hour
+	 */
 	public int getHour() {
 		return hour;
 	}
 	
+	/**
+	 * Gets the hour string.
+	 *
+	 * @return the hour string
+	 */
 	public String getHourString(){
 		if(this.calculate[1]){
 			if(this.hour < 0){
@@ -133,6 +212,12 @@ public class TimeFormat {
 		}
 	}
 	
+	/**
+	 * Gets the real hour.
+	 *
+	 * @param plus the plus
+	 * @return the real hour
+	 */
 	public int[] getRealHour(int plus){
 		int[] i = new int[2];
 		int hour = this.hour;
@@ -158,11 +243,22 @@ public class TimeFormat {
 		return i;
 	}
 
+	/**
+	 * Sets the hour.
+	 *
+	 * @param hour the hour
+	 * @param calc the calc
+	 */
 	public void setHour(int hour, boolean calc) {
 		this.hour = hour;
 		this.calculate[1] = calc;
 	}
 	
+	/**
+	 * Sets the hour.
+	 *
+	 * @param hour the new hour
+	 */
 	public void setHour(String hour) {
 		this.hour = Integer.parseInt(hour);
 		this.calculate[1] = hour.contains("+") || hour.contains("-");
@@ -170,10 +266,20 @@ public class TimeFormat {
 			throw new IllegalArgumentException("Fix Hours are only between 0 & 23");
 	}
 
+	/**
+	 * Gets the day.
+	 *
+	 * @return the day
+	 */
 	public int getDay() {
 		return day;
 	}
 	
+	/**
+	 * Gets the day string.
+	 *
+	 * @return the day string
+	 */
 	public String getDayString(){
 		if(this.calculate[2]){
 			if(this.day < 0){
@@ -191,6 +297,12 @@ public class TimeFormat {
 		}
 	}
 	
+	/**
+	 * Gets the real day.
+	 *
+	 * @param plus the plus
+	 * @return the real day
+	 */
 	public int[] getRealDay(int plus){
 		int[] i = new int[2];
 		int day = this.day;
@@ -216,11 +328,22 @@ public class TimeFormat {
 		return i;
 	}
 
+	/**
+	 * Sets the day.
+	 *
+	 * @param day the day
+	 * @param calc the calc
+	 */
 	public void setDay(int day, boolean calc) {
 		this.day = day;
 		this.calculate[2] = calc;
 	}
 	
+	/**
+	 * Sets the day.
+	 *
+	 * @param day the new day
+	 */
 	public void setDay(String day) {
 		this.day = Integer.parseInt(day);
 		this.calculate[2] = day.contains("+") || day.contains("-");
@@ -228,10 +351,20 @@ public class TimeFormat {
 //			throw new IllegalArgumentException("Fix Days are only between 0 & 59");
 	}
 
+	/**
+	 * Gets the month.
+	 *
+	 * @return the month
+	 */
 	public int getMonth() {
 		return month;
 	}
 	
+	/**
+	 * Gets the month string.
+	 *
+	 * @return the month string
+	 */
 	public String getMonthString(){
 		if(this.calculate[3]){
 			if(this.month < 0){
@@ -249,6 +382,12 @@ public class TimeFormat {
 		}
 	}
 	
+	/**
+	 * Gets the real month.
+	 *
+	 * @param plus the plus
+	 * @return the real month
+	 */
 	public int[] getRealMonth(int plus){
 		int[] i = new int[2];
 		int month = this.month;
@@ -274,11 +413,22 @@ public class TimeFormat {
 		return i;
 	}
 
+	/**
+	 * Sets the month.
+	 *
+	 * @param month the month
+	 * @param calc the calc
+	 */
 	public void setMonth(int month, boolean calc) {
 		this.month = month;
 		this.calculate[3] = calc;
 	}
 
+	/**
+	 * Sets the month.
+	 *
+	 * @param month the new month
+	 */
 	public void setMonth(String month) {
 		this.month = Integer.parseInt(month);
 		this.calculate[3] = month.contains("+") || month.contains("-");
@@ -286,10 +436,20 @@ public class TimeFormat {
 			throw new IllegalArgumentException("Fix Seconds are only between 0 & 59");
 	}
 	
+	/**
+	 * Gets the year.
+	 *
+	 * @return the year
+	 */
 	public int getYear() {
 		return year;
 	}
 	
+	/**
+	 * Gets the year string.
+	 *
+	 * @return the year string
+	 */
 	public String getYearString(){
 		if(this.calculate[4]){
 			if(this.year < 0){
@@ -307,6 +467,12 @@ public class TimeFormat {
 		}
 	}
 	
+	/**
+	 * Gets the real year.
+	 *
+	 * @param plus the plus
+	 * @return the real year
+	 */
 	public int getRealYear(int plus){
 		if(!this.calculate[4]){
 			return this.year + plus;
@@ -316,20 +482,41 @@ public class TimeFormat {
 		}
 	}
 
+	/**
+	 * Sets the year.
+	 *
+	 * @param year the year
+	 * @param calc the calc
+	 */
 	public void setYear(int year, boolean calc) {
 		this.year = year;
 		this.calculate[4] = calc;
 	}
 	
+	/**
+	 * Sets the year.
+	 *
+	 * @param year the new year
+	 */
 	public void setYear(String year) {
 		this.year = Integer.parseInt(year);
 		this.calculate[4] = year.contains("+") || year.contains("-");
 	}
 
+	/**
+	 * Gets the dow.
+	 *
+	 * @return the dow
+	 */
 	public boolean[] getDow() {
 		return dow;
 	}
 	
+	/**
+	 * Gets the dow string.
+	 *
+	 * @return the dow string
+	 */
 	public String getDowString() {
 		String s = "";
 		for(boolean b : this.dow){
@@ -343,10 +530,20 @@ public class TimeFormat {
 		return s;
 	}
 
+	/**
+	 * Sets the dow.
+	 *
+	 * @param dow the new dow
+	 */
 	public void setDow(boolean[] dow) {
 		this.dow = dow;
 	}
 
+	/**
+	 * Sets the dow.
+	 *
+	 * @param dow the new dow
+	 */
 	public void setDow(String dow) {
 		this.dow = new boolean[7];
 		int i = 0;
@@ -363,6 +560,11 @@ public class TimeFormat {
 		}
 	}
 
+	/**
+	 * Sets the time.
+	 *
+	 * @param cron the new time
+	 */
 	public void setTime(String cron){
 		this.calculate = new boolean[6]; 
 		String[] cronElements = cron.split(",");
@@ -373,11 +575,19 @@ public class TimeFormat {
 		setYear(cronElements[5]);
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString(){
 		return 	getMinString() + ", " + getHourString() + ", " + getDayString() 
 				+ ", " + getMonthString() + ", " + getYearString() + ", " + getDowString();
 	}
 	
+	/**
+	 * Gets the date.
+	 *
+	 * @return the date
+	 */
 	public Date getDate(){
 		int[] mi = getRealMin();
 		int[] h = getRealHour(mi[1]);

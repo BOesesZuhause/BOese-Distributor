@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.model;
 // Generated 30.07.2015 11:14:41 by Hibernate Tools 4.3.1
 
@@ -12,6 +14,7 @@ import java.util.Set;
  */
 public class Rule implements java.io.Serializable {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The ru id. */
@@ -71,6 +74,7 @@ public class Rule implements java.io.Serializable {
 	 * @param actions the actions
 	 * @param logRules the log rules
 	 * @param historyLogRules the history log rules
+	 * @param toDos the to dos
 	 */
 	public Rule(int ruId, Boolean active, Date insertDate, Date modifyDate, String permissions,
 			String conditions, String actions, Set<LogRule> logRules, Set<HistoryLogRule> historyLogRules, Set<ToDo> toDos) {
@@ -248,10 +252,20 @@ public class Rule implements java.io.Serializable {
 		this.historyLogRules = historyLogRules;
 	}
 
+	/**
+	 * Gets the to dos.
+	 *
+	 * @return the to dos
+	 */
 	public Set<ToDo> getToDos() {
 		return toDos;
 	}
 
+	/**
+	 * Sets the to dos.
+	 *
+	 * @param toDos the new to dos
+	 */
 	public void setToDos(Set<ToDo> toDos) {
 		this.toDos = toDos;
 	}

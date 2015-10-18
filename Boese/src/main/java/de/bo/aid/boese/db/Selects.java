@@ -1,3 +1,5 @@
+
+
 package de.bo.aid.boese.db;
 
 import java.util.ArrayList;
@@ -351,10 +353,10 @@ public class Selects {
 	}
 	
 	/**
-	 * Select status of a deviceComponent
+	 * Select status of a deviceComponent.
 	 *
 	 * @param decoId the DeviceComponentID
-	 * @return the status(short) 
+	 * @return the status(short)
 	 */
 	public static int deviceComponentStatus(int decoId){
 		Session session = connection.getSession();
@@ -377,10 +379,10 @@ public class Selects {
 	}
 	
 	/**
-	 * Select status of a Connector
+	 * Select status of a Connector.
 	 *
 	 * @param coId the ConnectorID
-	 * @return the status(short) 
+	 * @return the status(short)
 	 */
 	public static int ConnectorStatus(int coId){
 		Session session = connection.getSession();
@@ -402,6 +404,12 @@ public class Selects {
 		return con.getStatus();
 	}
 
+	/**
+	 * Repeat rule.
+	 *
+	 * @param rrId the rr id
+	 * @return the repeat rule
+	 */
 	public static RepeatRule RepeatRule(int rrId) {
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -421,6 +429,12 @@ public class Selects {
 		return rr;
 	}
 
+	/**
+	 * To do.
+	 *
+	 * @param toDoId the to do id
+	 * @return the to do
+	 */
 	public static ToDo toDo(int toDoId) {
 		Session session = connection.getSession();
 		session.beginTransaction();

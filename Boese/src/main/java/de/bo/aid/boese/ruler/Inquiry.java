@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.ruler;
 
 // TODO: Auto-generated Javadoc

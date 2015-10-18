@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.model;
 // Generated 30.07.2015 11:14:41 by Hibernate Tools 4.3.1
 
@@ -10,6 +12,7 @@ import java.util.Date;
  */
 public class HistoryLogRule implements java.io.Serializable {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The hi lo ru id. */

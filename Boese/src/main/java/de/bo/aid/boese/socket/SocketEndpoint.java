@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.socket;
 
 import java.util.logging.Level;
@@ -10,15 +12,8 @@ import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
-import javax.websocket.server.ServerContainer;
+
 import javax.websocket.server.ServerEndpoint;
-
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
-
-import de.bo.aid.boese.main.Distributor;
 
 
 // TODO: Auto-generated Javadoc
@@ -31,68 +26,18 @@ import de.bo.aid.boese.main.Distributor;
 public class SocketEndpoint
 {
 	
-	public MessageHandler getMessageHandler() {
-		return messageHandler;
-	}
-
-	public void setMessageHandler(MessageHandler messageHandler) {
-		this.messageHandler = messageHandler;
-	}
-
-	/** The server. */
-	private Server server;
+//	private static SocketEndpoint instance = new SocketEndpoint();
+//	
+//	private SocketEndpoint(){};
+//	
+//	public static SocketEndpoint getInstance(){
+//		return instance;
+//	}
 	
-	private MessageHandler messageHandler;
+
 	
 	/** The handler. */
 	private SessionHandler handler = SessionHandler.getInstance();
-
-	/**
-	 * Start.
-	 */
-	public void start(int port)
-    {
-        server = new Server();
-        ServerConnector connector = new ServerConnector(server);
-        connector.setPort(port);
-        server.addConnector(connector);
-
-        // Setup the basic application "context" for this application at "/"
-        // This is also known as the handler tree (in jetty speak)
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.setContextPath("/");
-        server.setHandler(context);
-
-        try
-        {
-            // Initialize javax.websocket layer
-            ServerContainer wscontainer = WebSocketServerContainerInitializer.configureContext(context);
-
-            // Add WebSocket endpoint to javax.websocket layer
-            wscontainer.addEndpoint(SocketEndpoint.class);
-
-            server.start();
-            //server.dump(System.err);
-            //server.join();
-        }
-        catch (Throwable t)
-        {
-            t.printStackTrace(System.err);
-        }
-    }
-	
-	/**
-	 * Stop.
-	 */
-	public void stop(){
-		try {
-			server.stop();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 
 	
 	/**
@@ -134,8 +79,7 @@ public class SocketEndpoint
 	 */
 	@OnMessage
 	public void handleMessage(String message, Session session) {
-		//TODO observer pattern
 		System.out.println("Server received Message: " + message);
-		Distributor.handleMessage(message, handler.getConnectorId(session));
+		SocketServer.getInstance().handleMessage(message, handler.getConnectorId(session));
 	}
 }

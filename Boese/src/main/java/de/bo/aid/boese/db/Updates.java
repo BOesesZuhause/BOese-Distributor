@@ -1,3 +1,5 @@
+
+
 package de.bo.aid.boese.db;
 
 import java.math.BigDecimal;
@@ -160,6 +162,7 @@ public class Updates {
 	 * @param conid the conid
 	 * @param name the name
 	 * @param pw the pw
+	 * @param status the status
 	 */
 	public static void connector(int conid, String name, String pw, int status){
 		Session session = connection.getSession();
@@ -349,7 +352,7 @@ public class Updates {
 	}
 	
 	/**
-	 * update status of a deviceComponent
+	 * update status of a deviceComponent.
 	 *
 	 * @param status the status
 	 * @param decoId the DeviceComponentID
@@ -367,7 +370,7 @@ public class Updates {
 	}
 	
 	/**
-	 * update status of a connector
+	 * update status of a connector.
 	 *
 	 * @param status the status
 	 * @param coId the ConnectorID
@@ -412,8 +415,8 @@ public class Updates {
 	 * ToDo.
 	 *
 	 * @param toDoId the toDoId
-	 * @param active the active
 	 * @param date the date
+	 * @param active the active
 	 */
 	public static void toDo(int toDoId, Date date, boolean active){
 		Session session = connection.getSession();

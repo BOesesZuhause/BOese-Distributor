@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.model;
 // Generated 30.07.2015 11:14:41 by Hibernate Tools 4.3.1
 
@@ -12,6 +14,7 @@ import java.util.Set;
  */
 public class DeviceComponent implements java.io.Serializable {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The de co id. */
@@ -93,6 +96,7 @@ public class DeviceComponent implements java.io.Serializable {
 	 * @param historyLogDeviceComponents the history log device components
 	 * @param deviceComponenteReplacesForDeCoIdreplaced the device componente replaces for de co idreplaced
 	 * @param logDeviceComponents the log device components
+	 * @param toDos the to dos
 	 */
 	public DeviceComponent(int deCoId, Component component, Device device, Integer status, String description,
 			BigDecimal logRule, BigDecimal currentValue, Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoId,
@@ -310,10 +314,20 @@ public class DeviceComponent implements java.io.Serializable {
 		this.logDeviceComponents = logDeviceComponents;
 	}
 
+	/**
+	 * Gets the to dos.
+	 *
+	 * @return the to dos
+	 */
 	public Set<ToDo> getToDos() {
 		return toDos;
 	}
 
+	/**
+	 * Sets the to dos.
+	 *
+	 * @param toDos the new to dos
+	 */
 	public void setToDos(Set<ToDo> toDos) {
 		this.toDos = toDos;
 	}

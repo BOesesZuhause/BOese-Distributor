@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.model;
 
 // TODO: Auto-generated Javadoc
@@ -7,6 +9,7 @@ package de.bo.aid.boese.model;
  */
 public class DeviceComponentRuleId implements java.io.Serializable {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The de co id. */

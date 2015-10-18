@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.xml.test;
 
 import static org.junit.Assert.*;
@@ -68,6 +70,9 @@ public class XMLParserTest {
 		}
 	}
 	
+	/**
+	 * Action test.
+	 */
 	@Test
 	public void actionTest() {
 		
@@ -125,6 +130,9 @@ public class XMLParserTest {
 		}
 	}
 	
+	/**
+	 * Condition test.
+	 */
 	@Test
 	public void conditionTest() {
 //		System.out.println("Start condition Test 1");
@@ -173,6 +181,9 @@ public class XMLParserTest {
 		}
 	}
 	
+	/**
+	 * Condition test and.
+	 */
 	@Test
 	public void conditionTestAnd() {
 //		System.out.println("Start condition Test 2");
@@ -227,6 +238,9 @@ public class XMLParserTest {
 		}
 	}
 	
+	/**
+	 * Condition test add.
+	 */
 	@Test
 	public void conditionTestAdd() {
 		String rule = "<CONDITION>"

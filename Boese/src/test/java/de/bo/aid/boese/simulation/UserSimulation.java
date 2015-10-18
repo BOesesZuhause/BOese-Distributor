@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.simulation;
 
 import java.util.HashMap;
@@ -15,15 +17,27 @@ import javassist.NotFoundException;
  */
 public class UserSimulation {
 	
+	/** The distr. */
+	Distributor distr;
+	
+
+	/**
+	 * Instantiates a new user simulation.
+	 *
+	 * @param distr the distr
+	 */
+	public UserSimulation(Distributor distr) {
+	this.distr = distr;
+	}
 
 	/**
 	 * Confirm connectors.
 	 */
 	public void confirmConnectors(){
-		HashMap<Integer, String> connectors = Distributor.getTempConnectors();
+		HashMap<Integer, String> connectors = distr.getTempConnectors();
 		for(Integer key : connectors.keySet()){
 			try {
-				Distributor.confirmConnector(key, false);
+				distr.confirmConnector(key, false);
 				//Hier ist der Connector schon entfernt (connectors zeigt auf die Map in der MainClass)
 			} catch (NotFoundException e) {
 				// TODO Auto-generated catch block
@@ -36,10 +50,10 @@ public class UserSimulation {
 	 * Confirm devices.
 	 */
 	public void confirmDevices(){
-		HashMap<Integer, TempDevice> devices = Distributor.getTempDevices();
+		HashMap<Integer, TempDevice> devices = distr.getTempDevices();
 		for(Integer key : devices.keySet()){
 			try {
-				Distributor.confirmDevice(key, 0, null);
+				distr.confirmDevice(key, 0, null);
 				} catch (NotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -52,10 +66,10 @@ public class UserSimulation {
 	 * Confirm device components.
 	 */
 	public void confirmDeviceComponents(){
-		HashMap<Integer, TempComponent> devices = Distributor.getTempComponents();
+		HashMap<Integer, TempComponent> devices = distr.getTempComponents();
 		for(Integer key : devices.keySet()){
 			try {
-				Distributor.confirmDeviceComponent(key, 0, null);
+				distr.confirmDeviceComponent(key, 0, null);
 				} catch (NotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.db;
 
 import java.math.BigDecimal;
@@ -493,6 +495,13 @@ public class Inserts {
 		session.close();
 	}
 	
+	/**
+	 * Repeat rule.
+	 *
+	 * @param repeat the repeat
+	 * @param repeatsAfterEnd the repeats after end
+	 * @return the int
+	 */
 	public static int repeatRule(String repeat, int repeatsAfterEnd){
 		Session session = connection.getSession();
 		session.beginTransaction();
@@ -516,6 +525,15 @@ public class Inserts {
 		return rr.getRrId();
 	}
 	
+	/**
+	 * To do.
+	 *
+	 * @param date the date
+	 * @param deCoId the de co id
+	 * @param ruleId the rule id
+	 * @param rrId the rr id
+	 * @return the int
+	 */
 	public static int toDo(Date date, int deCoId, int ruleId, int rrId){
 		Session session = connection.getSession();
 		session.beginTransaction();

@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.hibernate.util;
 
 import java.io.Serializable;

@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.xml;
 
 
@@ -14,6 +16,7 @@ public class Component {
 	/** The value. */
 	protected double value;
 	
+	/** The calculation. */
 	protected CalculationList calculation;
 	
 	/** The reset value. */
@@ -113,10 +116,20 @@ public class Component {
 	}
 	
 	
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public double getValue() {
 		return value;
 	}
 	
+	/**
+	 * Sets the value.
+	 *
+	 * @param value the new value
+	 */
 	public void setValue(double value) {
 		this.value = value;
 	}
@@ -131,6 +144,11 @@ public class Component {
 	}
 	
 	
+	/**
+	 * Gets the calculation.
+	 *
+	 * @return the calculation
+	 */
 	public CalculationList getCalculation() {
 		return calculation;
 	}

@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.socket.test;
 
 import static org.junit.Assert.*;
@@ -12,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.bo.aid.boese.socket.SocketEndpoint;
+import de.bo.aid.boese.socket.SocketServer;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -20,7 +23,7 @@ import de.bo.aid.boese.socket.SocketEndpoint;
 public class ConectionTest {
 	
 	/** The server. */
-	private SocketEndpoint server;
+	private SocketServer server;
 	
     /**
      * Start server.
@@ -29,7 +32,7 @@ public class ConectionTest {
      */
     @Before
     public void startServer() throws Exception {
-        server = new SocketEndpoint();
+        server = SocketServer.getInstance();
         server.start(8081);
     }
 	

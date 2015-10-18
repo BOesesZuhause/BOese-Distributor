@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.simulation;
 
 import org.junit.After;
@@ -6,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.bo.aid.boese.db.Connection;
-import de.bo.aid.boese.socket.SocketEndpoint;
+import de.bo.aid.boese.main.Distributor;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -14,8 +16,9 @@ import de.bo.aid.boese.socket.SocketEndpoint;
  */
 public class SimulationTest {
 	
-	/** The server. */
-	private SocketEndpoint server;
+	
+	/** The user sim. */
+	UserSimulation userSim;
 	
     /**
      * Start server.
@@ -24,9 +27,10 @@ public class SimulationTest {
      */
     @Before
     public void startServer() throws Exception {
-        server = new SocketEndpoint();
-        server.start(8081);
+    	Distributor distr = new Distributor();
+    	distr.startWebsocketServer(8081);
         Connection.getConnection();
+        userSim = new UserSimulation(distr);
     }
     
 
@@ -41,22 +45,20 @@ public class SimulationTest {
 	public void simulation() throws Exception {
 
 		ConnectorSimulation sim = new ConnectorSimulation();
-		UserSimulation userSim = new UserSimulation();
 		sim.start();
 		Thread.sleep(2000);		
-		//userSim.confirmConnectors();
+		userSim.confirmConnectors();
 		Thread.sleep(2000);
-		//userSim.confirmDevices();
+		userSim.confirmDevices();
 		Thread.sleep(2000);
-		//userSim.confirmDeviceComponents();
+		userSim.confirmDeviceComponents();
 		Thread.sleep(5000);
 		
 		sim.sendValue(99.8);
 		
 		Thread.sleep(2000);
 		
-		
-		sim.closeConnection();
+	sim.closeConnection();
 		
 	}
 	
@@ -67,7 +69,6 @@ public class SimulationTest {
    	 */
    	@After
 	    public void shutdown() throws Exception {
-	        server.stop();
 	    }
 
 }

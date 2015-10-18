@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.ruler;
 
 import java.io.ByteArrayInputStream;
@@ -39,7 +41,7 @@ public class Controll {
 	 *
 	 * @param inquirys the inquirys
 	 * @return the to dos
-	 * @throws Exception 
+	 * @throws Exception the exception
 	 */
 	public List<Component> getToDos(List<Inquiry> inquirys) throws Exception{
 		List<Component> toDo = new ArrayList<Component>();

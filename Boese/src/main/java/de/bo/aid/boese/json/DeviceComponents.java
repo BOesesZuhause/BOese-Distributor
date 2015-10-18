@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.json;
 
 // TODO: Auto-generated Javadoc
@@ -28,6 +30,7 @@ public class DeviceComponents {
 	/** The description. */
 	private String description;
 	
+	/** The status. */
 	private int status;
 	
 	/**
@@ -52,6 +55,17 @@ public class DeviceComponents {
 		this.status = -1;
 	}
 	
+	/**
+	 * Instantiates a new device components.
+	 *
+	 * @param deviceComponentId the device component id
+	 * @param componentName the component name
+	 * @param value the value
+	 * @param unit the unit
+	 * @param description the description
+	 * @param actor the actor
+	 * @param status the status
+	 */
 	public DeviceComponents(int deviceComponentId, String componentName, double value, String unit, String description, boolean actor, int status) {
 		this.deviceComponentId = deviceComponentId;
 		this.componentName = componentName;
@@ -63,6 +77,11 @@ public class DeviceComponents {
 		this.status = status;
 	}
 	
+	/**
+	 * Gets the status.
+	 *
+	 * @return the status
+	 */
 	public int getStatus(){
 		return status;
 	}

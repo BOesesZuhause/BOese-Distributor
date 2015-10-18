@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.xml;
 
 import java.io.InputStream;
@@ -98,6 +100,12 @@ public class BoeseXML {
 		return returnXML;
 	}
 	
+	/**
+	 * Parses the calculation.
+	 *
+	 * @param nList the n list
+	 * @return the calculation list
+	 */
 	protected static CalculationList parseCalculation(NodeList nList) {
 		CalculationList calcList = new CalculationList();
 		CalculationList calculation = null;

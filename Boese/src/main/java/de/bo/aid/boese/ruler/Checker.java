@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.ruler;
 
 import java.util.ArrayList;
@@ -130,7 +132,7 @@ public class Checker {
 	 *
 	 * @param action the action
 	 * @return the list
-	 * @throws Exception 
+	 * @throws Exception the exception
 	 */
 	public List<Component> action(Action action) throws Exception {
 		for(int i : action.getActivateRules()){
@@ -152,6 +154,13 @@ public class Checker {
 		return toDos;
 	}
 
+	/**
+	 * Calculate.
+	 *
+	 * @param cl the cl
+	 * @return the double
+	 * @throws Exception the exception
+	 */
 	public double calculate(CalculationList cl) throws Exception{
 		double erg = 0.0;
 		HashSet<Double> values = new HashSet<>();

@@ -1,3 +1,5 @@
+
+
 package de.bo.aid.boese.db;
 
 import java.util.ArrayList;
@@ -11,13 +13,17 @@ import org.hibernate.Session;
 
 import de.bo.aid.boese.model.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AllSelects.
+ */
 public class AllSelects {
 	
 	/** The connection. */
 	private static Connection connection = Connection.getConnection();
 
 	/**
-	 * All Units
+	 * All Units.
 	 *
 	 * @return the list
 	 */
@@ -38,7 +44,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All Components
+	 * All Components.
 	 *
 	 * @return the list
 	 */
@@ -59,7 +65,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All devices
+	 * All devices.
 	 *
 	 * @return the list
 	 */
@@ -80,7 +86,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All services
+	 * All services.
 	 *
 	 * @return the list
 	 */
@@ -101,7 +107,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All connectors
+	 * All connectors.
 	 *
 	 * @return the list
 	 */
@@ -122,7 +128,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All rules
+	 * All rules.
 	 *
 	 * @return the list
 	 */
@@ -143,7 +149,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All groups
+	 * All groups.
 	 *
 	 * @return the list
 	 */
@@ -164,7 +170,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All zones
+	 * All zones.
 	 *
 	 * @return the list
 	 */
@@ -185,7 +191,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All users
+	 * All users.
 	 *
 	 * @return the list
 	 */
@@ -206,7 +212,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All repeatRules
+	 * All repeatRules.
 	 *
 	 * @return the list
 	 */
@@ -227,7 +233,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All ToDos
+	 * All ToDos.
 	 *
 	 * @return the list
 	 */

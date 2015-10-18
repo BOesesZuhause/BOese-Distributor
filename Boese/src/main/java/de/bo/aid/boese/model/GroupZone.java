@@ -1,3 +1,5 @@
+
+
 package de.bo.aid.boese.model;
 // TODO: Auto-generated Javadoc
 // Generated 30.07.2015 11:14:41 by Hibernate Tools 4.3.1
@@ -7,6 +9,7 @@ package de.bo.aid.boese.model;
  */
 public class GroupZone implements java.io.Serializable {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The id. */

@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.json;
 
 
@@ -14,6 +16,7 @@ public class RequestConnection extends BoeseJson {
 	/** The password. */
 	private String password;
 	
+	/** The user connector. */
 	private boolean userConnector = false;
 	
 	/**
@@ -51,6 +54,11 @@ public class RequestConnection extends BoeseJson {
 		this.userConnector = false;
 	}
 	
+	/**
+	 * Checks if is user connector.
+	 *
+	 * @return true, if is user connector
+	 */
 	public boolean isUserConnector() {
 		return userConnector;
 	}

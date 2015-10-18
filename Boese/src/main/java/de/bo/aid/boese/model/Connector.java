@@ -1,3 +1,5 @@
+
+
 package de.bo.aid.boese.model;
 
 import java.util.HashSet;
@@ -9,6 +11,7 @@ import java.util.Set;
  */
 public class Connector implements java.io.Serializable {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The co id. */
@@ -69,6 +72,7 @@ public class Connector implements java.io.Serializable {
 	 * @param coId the co id
 	 * @param name the name
 	 * @param password the password
+	 * @param status the status
 	 * @param historyLogConnectors the history log connectors
 	 * @param devices the devices
 	 * @param logConnectors the log connectors
@@ -139,10 +143,20 @@ public class Connector implements java.io.Serializable {
 		this.password = password;
 	}
 
+	/**
+	 * Gets the status.
+	 *
+	 * @return the status
+	 */
 	public int getStatus() {
 		return status;
 	}
 
+	/**
+	 * Sets the status.
+	 *
+	 * @param status the new status
+	 */
 	public void setStatus(int status) {
 		this.status = status;
 	}

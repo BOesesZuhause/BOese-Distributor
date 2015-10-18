@@ -1,4 +1,6 @@
 
+
+
 package de.bo.aid.boese.parser.test;
 
 import static org.junit.Assert.*;
@@ -571,6 +573,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message); 
 	}
 	
+	/**
+	 * Parses the multi.
+	 */
 	@Test
 	public void parseMulti(){
 		
@@ -632,6 +637,9 @@ public class protokollTest {
 		
 	}
 	
+	/**
+	 * Read multi.
+	 */
 	@Test
 	public void readMulti(){
 		
