@@ -900,4 +900,10 @@ public class BoeseJson {
 		writer.close();
 		return output;
 	}
+	
+	public static OutputStream parseMessage(BoeseJson message) {
+		OutputStream os = new ByteArrayOutputStream();
+		parseMessage(message, os);
+		return os;
+	}
 }
