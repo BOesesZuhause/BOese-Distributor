@@ -87,9 +87,15 @@ public class TimeFormat {
 	 * @param cron the cron
 	 */
 	public TimeFormat(String cron){
-		this.calculate = new boolean[6]; 
-		String[] cronElements = cron.split(", ");
-		setMin(cronElements[0]);
+		this.calculate = new boolean[6];
+		cron = cron.replace(" ", "");
+		String[] cronElements = cron.split(";");
+		if(cron.equals("*;*;*;*;*;*")){
+			setMin("+1");
+		}
+		else{
+			setMin(cronElements[0]);
+		}
 		setHour(cronElements[1]);
 		setMonth(cronElements[3]);
 		setYear(cronElements[4]);
