@@ -10,6 +10,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import de.bo.aid.boese.ruler.TimeFormat;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class Action.
@@ -97,7 +99,7 @@ public class Action extends BoeseXML {
 				int actorID = -1;
 				CalculationList actorValue = null;
 				double actorResetValue = -1;
-				long actorStartTime = -1;
+				TimeFormat actorStartTime = null;
 				long actorDuration = -1;
 				int actorRepeatAfterEnd = 0;
 				
@@ -114,7 +116,7 @@ public class Action extends BoeseXML {
 						actorResetValue = new Double(nActor.getTextContent()).doubleValue();
 						break;
 					case "START_TIME":
-						actorStartTime = new Long(nActor.getTextContent()).longValue();
+						actorStartTime = new TimeFormat(nActor.getTextContent());
 						break;
 					case "DURATION":
 						actorDuration = new Long(nActor.getTextContent()).longValue();

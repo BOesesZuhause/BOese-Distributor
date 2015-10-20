@@ -3,6 +3,7 @@
 
 package de.bo.aid.boese.xml;
 
+import de.bo.aid.boese.ruler.TimeFormat;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -23,7 +24,7 @@ public class Component {
 	protected double resetValue;
 	
 	/** The start time. */
-	protected long startTime;
+	protected TimeFormat startTime;
 	
 	/** The duration. */
 	protected long duration;
@@ -63,7 +64,7 @@ public class Component {
 	 * @param duration the duration
 	 * @param comperator the comperator
 	 */
-	public Component(int id, CalculationList calculation, double resetValue,long startTime, long duration, Comperator comperator) {
+	public Component(int id, CalculationList calculation, double resetValue, TimeFormat startTime, long duration, Comperator comperator) {
 		this.id = id;
 		this.value = -1;
 		this.calculation = calculation;
@@ -85,7 +86,7 @@ public class Component {
 	 * @param duration the duration
 	 * @param repeatAfterEnd the repeat after end
 	 */
-	public Component(int id, CalculationList calculation, double resetValue,long startTime, long duration, int repeatAfterEnd) {
+	public Component(int id, CalculationList calculation, double resetValue, TimeFormat startTime, long duration, int repeatAfterEnd) {
 		this.id = id;
 		this.value = -1;
 		this.calculation = calculation;
@@ -167,7 +168,7 @@ public class Component {
 	 *
 	 * @return the start time
 	 */
-	public long getStartTime() {
+	public TimeFormat getStartTime() {
 		return startTime;
 	}
 	

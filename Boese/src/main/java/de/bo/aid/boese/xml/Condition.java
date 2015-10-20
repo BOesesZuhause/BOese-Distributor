@@ -9,6 +9,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import de.bo.aid.boese.ruler.TimeFormat;
 import de.bo.aid.boese.xml.Component.Comperator;
 import de.bo.aid.boese.xml.GateList.GateType;
 
@@ -49,7 +50,7 @@ public class Condition extends BoeseXML {
 				NodeList nComponentList = nList.item(j).getChildNodes();
 				int compID = -1;
 				CalculationList compValue = null;
-				long compStartTime = -1;
+				TimeFormat compStartTime = null;
 				long compDuration = -1;
 				Comperator compComperator = null;
 				for (int k = 0; k < nComponentList.getLength(); k++) {
@@ -88,7 +89,7 @@ public class Condition extends BoeseXML {
 						compValue = parseCalculation(nComponent.getChildNodes());
 						break;
 					case "START_TIME":
-						compStartTime = new Long(nComponent.getTextContent()).longValue();
+						compStartTime = new TimeFormat(nComponent.getTextContent());
 						break;
 					case "DURATION":
 						compDuration = new Long(nComponent.getTextContent()).longValue();
