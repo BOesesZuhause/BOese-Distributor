@@ -1,12 +1,10 @@
-
-
-
 package de.bo.aid.boese.xml.test;
 
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Date;
 
 import org.junit.After;
 import org.junit.Before;
@@ -100,7 +98,7 @@ public class XMLParserTest {
 				+ "<ID>10</ID>"
 				+ "<VALUE><CONSTANT>11.1</CONSTANT></VALUE>"
 				+ "<RESET_VALUE>10</RESET_VALUE>"
-		//		+ "<START_TIME>12341234</START_TIME>"
+				+ "<START_TIME>*;*;*;*;*;*</START_TIME>"
 				+ "<DURATION>15</DURATION>"
 				+ "</ACTOR>"
 				+ "</ACTION>";
@@ -124,7 +122,7 @@ public class XMLParserTest {
 				assertTrue(comp.getComperator() == null);
 				assertTrue(comp.getCalculation().getConstants().iterator().next() == 11.1);
 				assertTrue(comp.getResetValue() == 10);
-			//	assertTrue(comp.getStartTime() == 12341234);
+				assertTrue(comp.getStartTime().getDate().getTime() / 60000 == ((new Date().getTime() / 60000) +1));
 				assertTrue(comp.getDuration() == 15);
 			}
 		}
@@ -141,7 +139,7 @@ public class XMLParserTest {
 				+ "<ID>99</ID>"
 				+ "<VALUE><CONSTANT>11.1</CONSTANT></VALUE>"
 				+ "<RESET_VALUE>10</RESET_VALUE>"
-//				+ "<START_TIME>12341234</START_TIME>"
+				+ "<START_TIME>*;*;*;*;*;*</START_TIME>"
 				+ "<DURATION>15</DURATION>"
 				+ "<COMPERATOR>==</COMPERATOR>"
 				+ "</COMPONENT>"
@@ -149,7 +147,7 @@ public class XMLParserTest {
 				+ "<ID>100</ID>"
 				+ "<VALUE><CONSTANT>21.1</CONSTANT></VALUE>"
 				+ "<RESET_VALUE>20</RESET_VALUE>"
-//				+ "<START_TIME>22341234</START_TIME>"
+				+ "<START_TIME>*;*;*;*;*;*</START_TIME>"
 				+ "<DURATION>25</DURATION>"
 				+ "<COMPERATOR>!=</COMPERATOR>"
 				+ "</COMPONENT>"
@@ -167,13 +165,13 @@ public class XMLParserTest {
 				assertTrue(comp.getComperator() == Comperator.EQUAL);
 				assertTrue(comp.getCalculation().getConstants().iterator().next() == 11.1);
 				assertTrue(comp.getResetValue() == -1);
-//				assertTrue(comp.getStartTime() == 12341234);
+				assertTrue(comp.getStartTime().getDate().getTime() / 60000 == ((new Date().getTime() / 60000) +1));
 				assertTrue(comp.getDuration() == 15);
 			} else if (comp.getId() == 100) {
 				assertTrue(comp.getComperator() == Comperator.NOTEQUAL);
 				assertTrue(comp.getCalculation().getConstants().iterator().next() == 21.1);
 				assertTrue(comp.getResetValue() == -1);
-//				assertTrue(comp.getStartTime() == 22341234);
+				assertTrue(comp.getStartTime().getDate().getTime() / 60000 == ((new Date().getTime() / 60000) +1));
 				assertTrue(comp.getDuration() == 25);
 			} else {
 				assertTrue(false);
@@ -194,7 +192,7 @@ public class XMLParserTest {
 				+ 		"<ID>99</ID>"
 				+ 		"<VALUE><CONSTANT>11.1</CONSTANT></VALUE>"
 				+ 		"<RESET_VALUE>10</RESET_VALUE>"
-//				+ 		"<START_TIME>12341234</START_TIME>"
+				+ "<START_TIME>*;*;*;*;*;*</START_TIME>"
 				+ 		"<DURATION>15</DURATION>"
 				+ 		"<COMPERATOR>==</COMPERATOR>"
 				+ 	"</COMPONENT>"
@@ -202,7 +200,7 @@ public class XMLParserTest {
 				+ 		"<ID>100</ID>"
 				+ 		"<VALUE><CONSTANT>21.1</CONSTANT></VALUE>"
 				+ 		"<RESET_VALUE>20</RESET_VALUE>"
-//				+ 		"<START_TIME>22341234</START_TIME>"
+				+ "<START_TIME>*;*;*;*;*;*</START_TIME>"
 				+ 		"<DURATION>25</DURATION>"
 				+ 		"<COMPERATOR>!=</COMPERATOR>"
 				+ 	"</COMPONENT>"
@@ -224,13 +222,13 @@ public class XMLParserTest {
 				assertTrue(comp.getComperator() == Comperator.EQUAL);
 				assertTrue(comp.getCalculation().getConstants().iterator().next() == 11.1);
 				assertTrue(comp.getResetValue() == -1);
-//				assertTrue(comp.getStartTime() == 12341234);
+				assertTrue(comp.getStartTime().getDate().getTime() / 60000 == ((new Date().getTime() / 60000) +1));
 				assertTrue(comp.getDuration() == 15);
 			} else if (comp.getId() == 100) {
 				assertTrue(comp.getComperator() == Comperator.NOTEQUAL);
 				assertTrue(comp.getCalculation().getConstants().iterator().next() == 21.1);
 				assertTrue(comp.getResetValue() == -1);
-//				assertTrue(comp.getStartTime() == 22341234);
+				assertTrue(comp.getStartTime().getDate().getTime() / 60000 == ((new Date().getTime() / 60000) +1));
 				assertTrue(comp.getDuration() == 25);
 			} else {
 				assertTrue(false);
@@ -254,7 +252,7 @@ public class XMLParserTest {
 				+			"</ADD>"
 				+		"</VALUE>"
 				+ 		"<RESET_VALUE>10</RESET_VALUE>"
-//				+ 		"<START_TIME>12341234</START_TIME>"
+				+ "<START_TIME>*;*;*;*;*;*</START_TIME>"
 				+ 		"<DURATION>15</DURATION>"
 				+ 		"<COMPERATOR>==</COMPERATOR>"
 				+ 	"</COMPONENT>"
@@ -276,7 +274,7 @@ public class XMLParserTest {
 			assertTrue(comp.getCalculation().getCalculations().iterator().next().getConstants().iterator().next() == 11.1);
 			assertTrue(comp.getCalculation().getCalculations().iterator().next().getVariables().iterator().next() == 2.0);
 			assertTrue(comp.getResetValue() == -1);
-//			assertTrue(comp.getStartTime() == 12341234);
+			assertTrue(comp.getStartTime().getDate().getTime() / 60000 == ((new Date().getTime() / 60000) +1));
 			assertTrue(comp.getDuration() == 15);
 		}
 	}
