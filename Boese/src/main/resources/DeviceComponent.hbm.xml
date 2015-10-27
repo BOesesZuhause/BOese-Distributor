@@ -52,11 +52,11 @@
             </key>
             <one-to-many class="de.bo.aid.boese.model.LogDeviceComponent" />
         </set>
-        <set name="toDos" table="ToDo" inverse="true" lazy="true" fetch="select">
+        <set name="repeatRule" table="RepeatRule" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="DeCoID" not-null="true" />
             </key>
-            <one-to-many class="de.bo.aid.boese.model.ToDo" />
+            <one-to-many class="de.bo.aid.boese.model.RepeatRule" />
         </set>
     </class>
 </hibernate-mapping>

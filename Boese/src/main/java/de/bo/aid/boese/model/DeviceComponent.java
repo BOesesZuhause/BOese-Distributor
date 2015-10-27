@@ -79,7 +79,7 @@ public class DeviceComponent implements java.io.Serializable {
 	private Set<LogDeviceComponent> logDeviceComponents = new HashSet<LogDeviceComponent>(0);
 	
 	/** The ToDos. */
-	private Set<ToDo> toDos = new HashSet<ToDo>(0);
+	private Set<RepeatRule> repeatRule = new HashSet<RepeatRule>(0);
 
 	/**
 	 * Instantiates a new device component.
@@ -124,12 +124,12 @@ public class DeviceComponent implements java.io.Serializable {
 	 * @param historyLogDeviceComponents the history log device components
 	 * @param deviceComponenteReplacesForDeCoIdreplaced the device componente replaces for de co idreplaced
 	 * @param logDeviceComponents the log device components
-	 * @param toDos the to dos
+	 * @param repeatRule the repeatRule
 	 */
 	public DeviceComponent(int deCoId, Component component, Device device, Integer status, String description,
 			BigDecimal logRule, BigDecimal currentValue, Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoId,
 			Set<HistoryLogDeviceComponent> historyLogDeviceComponents, Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoIdreplaced,
-			Set<LogDeviceComponent> logDeviceComponents, Set<ToDo> toDos) {
+			Set<LogDeviceComponent> logDeviceComponents, Set<RepeatRule> repeatRule) {
 		this.deCoId = deCoId;
 		this.component = component;
 		this.device = device;
@@ -141,7 +141,7 @@ public class DeviceComponent implements java.io.Serializable {
 		this.historyLogDeviceComponents = historyLogDeviceComponents;
 		this.deviceComponenteReplacesForDeCoIdreplaced = deviceComponenteReplacesForDeCoIdreplaced;
 		this.logDeviceComponents = logDeviceComponents;
-		this.toDos = toDos;
+		this.repeatRule = repeatRule;
 	}
 
 	/**
@@ -342,22 +342,12 @@ public class DeviceComponent implements java.io.Serializable {
 		this.logDeviceComponents = logDeviceComponents;
 	}
 
-	/**
-	 * Gets the to dos.
-	 *
-	 * @return the to dos
-	 */
-	public Set<ToDo> getToDos() {
-		return toDos;
+	public Set<RepeatRule> getRepeatRule() {
+		return repeatRule;
 	}
 
-	/**
-	 * Sets the to dos.
-	 *
-	 * @param toDos the new to dos
-	 */
-	public void setToDos(Set<ToDo> toDos) {
-		this.toDos = toDos;
+	public void setRepeatRule(Set<RepeatRule> repeatRule) {
+		this.repeatRule = repeatRule;
 	}
 
 }

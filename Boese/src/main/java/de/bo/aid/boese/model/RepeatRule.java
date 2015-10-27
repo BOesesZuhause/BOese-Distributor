@@ -30,146 +30,101 @@
 
 package de.bo.aid.boese.model;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class RepeatRule.
- */
+import java.math.BigDecimal;
+
 public class RepeatRule {
 	
-	/** The rr id. */
 	private int rrId;
 	
-	/** The repeat. */
 	private String repeat;
 	
-	/** The repeats after end. */
+	/** The Value, which will be executed */
+	private BigDecimal value;
+	
 	private int repeatsAfterEnd;
 	
-	/** The to do. */
+	/** The Rule. */
+	private Rule rule;
+	
 	private ToDo toDo;
+	
+	/** The DeviceComponent. */
+	private DeviceComponent deviceComponent;
 
-	/**
-	 * Instantiates a new repeat rule.
-	 */
 	public RepeatRule() {
 	}
 
-	/**
-	 * Instantiates a new repeat rule.
-	 *
-	 * @param rrId the rr id
-	 * @param repeat the repeat
-	 * @param repeatsAfterEnd the repeats after end
-	 */
-	public RepeatRule(int rrId, String repeat, int repeatsAfterEnd) {
+	public RepeatRule(int rrId, String repeat, BigDecimal value, int repeatsAfterEnd) {
 		this.rrId = rrId;
 		this.repeat = repeat;
+		this.value = value;
 		this.repeatsAfterEnd = repeatsAfterEnd;
 	}
 
-	/**
-	 * Instantiates a new repeat rule.
-	 *
-	 * @param rrId the rr id
-	 * @param repeat the repeat
-	 * @param repeatsAfterEnd the repeats after end
-	 * @param todo the todo
-	 */
-	public RepeatRule(int rrId, String repeat, int repeatsAfterEnd, ToDo todo) {
+	public RepeatRule(int rrId, String repeat, BigDecimal value, int repeatsAfterEnd, Rule rule, ToDo todo, DeviceComponent deviceComponent) {
 		this.rrId = rrId;
 		this.repeat = repeat;
+		this.value = value;
 		this.repeatsAfterEnd = repeatsAfterEnd;
+		this.rule = rule;
 		this.toDo = todo;
+		this.deviceComponent = deviceComponent;
 	}
 
-	/**
-	 * Gets the rr id.
-	 *
-	 * @return the rr id
-	 */
 	public int getRrId() {
 		return rrId;
 	}
 
-	/**
-	 * Sets the rr id.
-	 *
-	 * @param rrId the new rr id
-	 */
 	public void setRrId(int rrId) {
 		this.rrId = rrId;
 	}
 
-	/**
-	 * Gets the repeat.
-	 *
-	 * @return the repeat
-	 */
 	public String getRepeat() {
 		return repeat;
 	}
 
-	/**
-	 * Sets the repeat.
-	 *
-	 * @param repeat the new repeat
-	 */
 	public void setRepeat(String repeat) {
 		this.repeat = repeat;
 	}
 
-	/**
-	 * Gets the repeats after end.
-	 *
-	 * @return the repeats after end
-	 */
+	public BigDecimal getValue() {
+		return value;
+	}
+
+	public void setValue(BigDecimal value) {
+		this.value = value;
+	}
+
 	public int getRepeatsAfterEnd() {
 		return repeatsAfterEnd;
 	}
 
-	/**
-	 * Sets the repeats after end.
-	 *
-	 * @param repeatsAfterEnd the new repeats after end
-	 */
 	public void setRepeatsAfterEnd(int repeatsAfterEnd) {
 		this.repeatsAfterEnd = repeatsAfterEnd;
 	}
 
-	/**
-	 * Gets the todo.
-	 *
-	 * @return the todo
-	 */
-	public ToDo getTodo() {
-		return toDo;
+	public Rule getRule() {
+		return rule;
 	}
 
-	/**
-	 * Sets the todo.
-	 *
-	 * @param todo the new todo
-	 */
-	public void setTodo(ToDo todo) {
-		this.toDo = todo;
+	public void setRule(Rule rule) {
+		this.rule = rule;
 	}
 
-	/**
-	 * Gets the to do.
-	 *
-	 * @return the to do
-	 */
 	public ToDo getToDo() {
 		return toDo;
 	}
 
-	/**
-	 * Sets the to do.
-	 *
-	 * @param toDo the new to do
-	 */
-	public void setToDo(ToDo toDo) {
-		this.toDo = toDo;
+	public void setToDo(ToDo todo) {
+		this.toDo = todo;
+	}
+
+	public DeviceComponent getDeviceComponent() {
+		return deviceComponent;
+	}
+
+	public void setDeviceComponent(DeviceComponent deviceComponent) {
+		this.deviceComponent = deviceComponent;
 	}
 
 }

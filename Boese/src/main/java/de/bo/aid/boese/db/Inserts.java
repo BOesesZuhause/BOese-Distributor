@@ -39,7 +39,11 @@ import org.hibernate.ObjectNotFoundException;
 import org.hibernate.PropertyValueException;
 import org.hibernate.Session;
 
+import de.bo.aid.boese.main.Distributor;
 import de.bo.aid.boese.model.*;
+import de.bo.aid.boese.ruler.Controll;
+import de.bo.aid.boese.ruler.Interpretor;
+import de.bo.aid.boese.ruler.ToDoChecker;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -159,10 +163,6 @@ public class Inserts {
 		try{
 			session.load(device, new Integer(deid));
 			dc.setDevice(device);
-			System.out.println("Loading Component with id: " + coid);
-			
-			//Workaround for HibernateException
-			//comp = (Component) session.get(Component.class, coid); 
 			
 			session.load(comp, new Integer(coid));
 			dc.setComponent(comp);
@@ -361,6 +361,8 @@ public class Inserts {
 		}
 
 		session.close();
+		Distributor.changeInRule(ruID);
+		new ToDoChecker().changeInToDo();
 		return ruID;
 	}
 	
@@ -528,15 +530,19 @@ public class Inserts {
 	 *
 	 * @param repeat the repeat
 	 * @param repeatsAfterEnd the repeats after end
+	 * @param ruleId the ID of the Rule
+	 * @param deCoId the id of the DeviceComponent
 	 * @return the int
 	 */
-	public static int repeatRule(String repeat, int repeatsAfterEnd){
+	public static int repeatRule(String repeat, int repeatsAfterEnd, int ruleId, int deCoId){
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
 		RepeatRule rr = new RepeatRule();
 		rr.setRepeat(repeat);
 		rr.setRepeatsAfterEnd(repeatsAfterEnd);
+		rr.setRule(Selects.rule(ruleId));
+		rr.setDeviceComponent(Selects.deviceComponent(deCoId));
 		
 		try{
 			session.save(rr);
@@ -549,7 +555,7 @@ public class Inserts {
 		}
 		
 		session.close();
-		
+		Interpretor.createTodos();
 		return rr.getRrId();
 	}
 	
@@ -557,20 +563,17 @@ public class Inserts {
 	 * To do.
 	 *
 	 * @param date the date
-	 * @param deCoId the de co id
-	 * @param ruleId the rule id
 	 * @param rrId the rr id
 	 * @return the int
 	 */
-	public static int toDo(Date date, int deCoId, int ruleId, int rrId){
+	public static int toDo(Date date, int rrId){
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
 		ToDo todo = new ToDo();
 		todo.setDate(date);
-		todo.setDeviceComponent(Selects.deviceComponent(deCoId));
-		todo.setRule(Selects.rule(ruleId));
 		todo.setRepeatRule(Selects.RepeatRule(rrId));
+		todo.setActive(true);
 		
 		try{
 			session.save(todo);
@@ -583,7 +586,30 @@ public class Inserts {
 		}
 		
 		session.close();
+		new ToDoChecker().changeInToDo();
+		return todo.getToDoId();
+	}
+	
+	public static int toDoWithoutChange(Date date, int rrId){
+		Session session = connection.getSession();
+		session.beginTransaction();
 		
+		ToDo todo = new ToDo();
+		todo.setDate(date);
+		todo.setRepeatRule(Selects.RepeatRule(rrId));
+		todo.setActive(true);
+		
+		try{
+			session.save(todo);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.getTransaction().rollback();
+			session.close();
+			throw pve; //not null Value is null
+		}
+		
+		session.close();
 		return todo.getToDoId();
 	}
 }

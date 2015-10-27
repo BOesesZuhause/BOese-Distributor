@@ -127,6 +127,17 @@ public class Component {
 	}
 	
 	/**
+	 * Instantiates a new component.
+	 *
+	 * @param id the id
+	 * @param value the value
+	 */
+	public Component(int id, double value) {
+		this.id = id;
+		this.value = value;
+	}
+	
+	/**
 	 * Gets the reat after end.
 	 *
 	 * @return the reat after end

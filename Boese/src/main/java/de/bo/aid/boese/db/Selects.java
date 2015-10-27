@@ -192,7 +192,7 @@ public class Selects {
 		}
 		List<Rule> rule = new ArrayList<Rule>();
 		for(DeviceComponentRule dcr: decorule){
-			Rule r = rule(dcr.getRule().getRuId());
+			Rule r = dcr.getRule();
 			if(r.getActive()){
 				rule.add(r);
 			}
@@ -202,6 +202,32 @@ public class Selects {
 		session.close();
 		
 		return rule;
+	}
+	
+	/**
+	 * Rules by device component.
+	 *
+	 * @param ruid the Rule ID
+	 * @return the list
+	 */
+	public static List<DeviceComponent> deviceComponentsByRule(int ruid){
+		Session session = connection.getSession();
+		session.beginTransaction();
+ 
+		List erg = session.createQuery( "from DeviceComponentRule where ruId = " + ruid).list();
+		List<DeviceComponentRule> decorule = new ArrayList<DeviceComponentRule>();
+		for(Object o: erg){
+			decorule.add((DeviceComponentRule) o);
+		}
+		List<DeviceComponent> deco = new ArrayList<DeviceComponent>();
+		for(DeviceComponentRule dcr: decorule){
+			deco.add(dcr.getDevicecomponent());
+		}
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		return deco;
 	}
 	
 	/**

@@ -34,11 +34,16 @@ package de.bo.aid.boese.ruler;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import de.bo.aid.boese.db.AllSelects;
 import de.bo.aid.boese.db.Selects;
+import de.bo.aid.boese.model.DeviceComponent;
 import de.bo.aid.boese.model.Rule;
+import de.bo.aid.boese.model.ToDo;
 import de.bo.aid.boese.xml.Action;
 import de.bo.aid.boese.xml.BoeseXML;
 import de.bo.aid.boese.xml.Component;
@@ -80,7 +85,6 @@ public class Controll {
 			for(Rule rule : rules){
 				if(check.deCoInCondition(id, rule.getConditions())){
 					InputStream is = new ByteArrayInputStream(rule.getConditions().getBytes());
-					System.out.println("Rule: " + rule.getRuId());
 					BoeseXML conBXML = BoeseXML.readXML(is);
 					is = new ByteArrayInputStream(rule.getActions().getBytes());
 					BoeseXML actBXML = BoeseXML.readXML(is);

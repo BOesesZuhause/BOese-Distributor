@@ -3,7 +3,7 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 30.07.2015 11:14:41 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="de.bo.aid.boese.model.RepeatRule" table="Repeat_Rule" schema="public" optimistic-lock="version">
+    <class name="de.bo.aid.boese.model.RepeatRule" table="repeat_rule" schema="public" optimistic-lock="version">
         <id name="rrId" type="int">
             <column name="RRID" />
             <generator class="sequence">
@@ -13,9 +13,18 @@
         <property name="repeat" type="string">
             <column name="Repeat" length="100" not-null="true"/>
         </property>
+        <property name="value" type="big_decimal">
+            <column name="Value" precision="1000" scale="0" />
+        </property>
         <property name="repeatsAfterEnd" type="int">
             <column name="Repeats_After_Ende" not-null="true" />
         </property>
+        <many-to-one name="rule" class="de.bo.aid.boese.model.Rule" fetch="select">
+            <column name="RuleID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="deviceComponent" class="de.bo.aid.boese.model.DeviceComponent" fetch="select">
+            <column name="DeCoID" not-null="true" />
+        </many-to-one>
         <one-to-one name="toDo" class="de.bo.aid.boese.model.ToDo" cascade="save-update"></one-to-one>
     </class>
 </hibernate-mapping>

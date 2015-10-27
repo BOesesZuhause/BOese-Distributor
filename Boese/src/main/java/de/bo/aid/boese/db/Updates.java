@@ -36,7 +36,12 @@ import java.util.Date;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 
+import de.bo.aid.boese.main.Distributor;
 import de.bo.aid.boese.model.*;
+import de.bo.aid.boese.ruler.Controll;
+import de.bo.aid.boese.ruler.Interpretor;
+import de.bo.aid.boese.ruler.TimeTodos;
+import de.bo.aid.boese.ruler.ToDoChecker;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -343,6 +348,9 @@ public class Updates {
 		session.save(rule);
 		session.getTransaction().commit();
 		session.close();
+		
+		Distributor.changeInRule(ruid);
+		new ToDoChecker().changeInToDo();
 	}
 	
 	/**
@@ -437,6 +445,7 @@ public class Updates {
 		session.save(rr);
 		session.getTransaction().commit();
 		session.close();
+		Interpretor.createTodos();
 	}
 	
 	/**
@@ -455,6 +464,41 @@ public class Updates {
 		if(date != null){
 			todo.setDate(date);
 		}
+		
+		session.save(todo);
+		session.getTransaction().commit();
+		session.close();
+		new ToDoChecker().changeInToDo();
+	}
+	
+	/**
+	 * Activate Todos.
+	 *
+	 * @param rrid the repeat rule id
+	 */
+	public static void activateTodo(int rrid){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		ToDo todo = Selects.RepeatRule(rrid).getToDo();
+		todo.setActive(true);
+		
+		session.save(todo);
+		session.getTransaction().commit();
+		session.close();
+	}
+	
+	/**
+	 * Deactivate Todos.
+	 *
+	 * @param rrid the repeat rule id
+	 */
+	public static void deactivateTodo(int rrid){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		ToDo todo = Selects.RepeatRule(rrid).getToDo();
+		todo.setActive(false);
 		
 		session.save(todo);
 		session.getTransaction().commit();

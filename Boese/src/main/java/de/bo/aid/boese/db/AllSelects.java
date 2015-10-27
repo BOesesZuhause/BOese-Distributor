@@ -41,17 +41,13 @@ import org.hibernate.Session;
 
 import de.bo.aid.boese.model.*;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class AllSelects.
- */
 public class AllSelects {
 	
 	/** The connection. */
 	private static Connection connection = Connection.getConnection();
 
 	/**
-	 * All Units.
+	 * All Units
 	 *
 	 * @return the list
 	 */
@@ -72,7 +68,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All Components.
+	 * All Components
 	 *
 	 * @return the list
 	 */
@@ -93,7 +89,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All devices.
+	 * All devices
 	 *
 	 * @return the list
 	 */
@@ -114,7 +110,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All services.
+	 * All services
 	 *
 	 * @return the list
 	 */
@@ -135,7 +131,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All connectors.
+	 * All connectors
 	 *
 	 * @return the list
 	 */
@@ -156,7 +152,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All rules.
+	 * All rules
 	 *
 	 * @return the list
 	 */
@@ -177,7 +173,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All groups.
+	 * All groups
 	 *
 	 * @return the list
 	 */
@@ -198,7 +194,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All zones.
+	 * All zones
 	 *
 	 * @return the list
 	 */
@@ -219,7 +215,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All users.
+	 * All users
 	 *
 	 * @return the list
 	 */
@@ -240,7 +236,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All repeatRules.
+	 * All repeatRules
 	 *
 	 * @return the list
 	 */
@@ -248,7 +244,7 @@ public class AllSelects {
 		Session session = connection.getSession();
 		session.beginTransaction();
  
-		List erg = session.createQuery("from Repeat_Rule").list();
+		List erg = session.createQuery("from RepeatRule").list();
 		List<RepeatRule> rr = new ArrayList<RepeatRule>();
 		for(Object o: erg){
 			rr.add((RepeatRule) o);
@@ -261,7 +257,7 @@ public class AllSelects {
 	}
 	
 	/**
-	 * All ToDos.
+	 * All ToDos
 	 *
 	 * @return the list
 	 */
@@ -272,7 +268,8 @@ public class AllSelects {
 		List erg = session.createQuery("from ToDo").list();
 		List<ToDo> todo = new ArrayList<ToDo>();
 		for(Object o: erg){
-			todo.add((ToDo) o);
+			if(((ToDo)o).isActive())
+				todo.add((ToDo) o);
 		}
 		
 		session.getTransaction().commit();

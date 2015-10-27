@@ -34,6 +34,10 @@ package de.bo.aid.boese.ruler;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.bo.aid.boese.db.AllSelects;
+import de.bo.aid.boese.db.Inserts;
+import de.bo.aid.boese.model.RepeatRule;
+import de.bo.aid.boese.model.ToDo;
 import de.bo.aid.boese.xml.BoeseXML;
 import de.bo.aid.boese.xml.Component;
 import de.bo.aid.boese.xml.Condition;
@@ -65,5 +69,17 @@ public class Interpretor {
 //		}
 //		return list;
 //	}
+	
+	public static void createTodos(){
+		List<ToDo> todos = AllSelects.toDos();
+		List<RepeatRule> rule = AllSelects.repeatRules();
+		for(ToDo todo : todos){
+			rule.remove(todo.getRepeatRule());
+		}
+		for(RepeatRule rr : rule){
+			Inserts.toDoWithoutChange(new TimeFormat(rr.getRepeat()).getDate(), rr.getRrId());
+		}
+		new ToDoChecker().changeInToDo();
+	}
 
 }

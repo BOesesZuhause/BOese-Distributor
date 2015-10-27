@@ -42,7 +42,6 @@ import java.util.Set;
  */
 public class Rule implements java.io.Serializable {
 
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The ru id. */
@@ -73,7 +72,7 @@ public class Rule implements java.io.Serializable {
 	private Set<HistoryLogRule> historyLogRules = new HashSet<HistoryLogRule>(0);
 	
 	/** The toDos. */
-	private Set<ToDo> toDos = new HashSet<ToDo>(0);
+	private Set<RepeatRule> repeatRule = new HashSet<RepeatRule>(0);
 
 	/**
 	 * Instantiates a new rule.
@@ -102,10 +101,10 @@ public class Rule implements java.io.Serializable {
 	 * @param actions the actions
 	 * @param logRules the log rules
 	 * @param historyLogRules the history log rules
-	 * @param toDos the to dos
+	 * @param repeatRule the Repeat Rule
 	 */
 	public Rule(int ruId, Boolean active, Date insertDate, Date modifyDate, String permissions,
-			String conditions, String actions, Set<LogRule> logRules, Set<HistoryLogRule> historyLogRules, Set<ToDo> toDos) {
+			String conditions, String actions, Set<LogRule> logRules, Set<HistoryLogRule> historyLogRules, Set<RepeatRule> repeatRule) {
 		this.ruId = ruId;
 		this.active = active;
 		this.insertDate = insertDate;
@@ -115,7 +114,7 @@ public class Rule implements java.io.Serializable {
 		this.actions = actions;
 		this.logRules = logRules;
 		this.historyLogRules = historyLogRules;
-		this.toDos = toDos;
+		this.repeatRule = repeatRule;
 	}
 
 	/**
@@ -280,22 +279,12 @@ public class Rule implements java.io.Serializable {
 		this.historyLogRules = historyLogRules;
 	}
 
-	/**
-	 * Gets the to dos.
-	 *
-	 * @return the to dos
-	 */
-	public Set<ToDo> getToDos() {
-		return toDos;
+	public Set<RepeatRule> getRepeatRule() {
+		return repeatRule;
 	}
 
-	/**
-	 * Sets the to dos.
-	 *
-	 * @param toDos the new to dos
-	 */
-	public void setToDos(Set<ToDo> toDos) {
-		this.toDos = toDos;
+	public void setRepeatRule(Set<RepeatRule> repeatRule) {
+		this.repeatRule = repeatRule;
 	}
 
 }

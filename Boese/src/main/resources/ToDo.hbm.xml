@@ -11,12 +11,6 @@
         	</generator>
         </id>
         <timestamp name="date" column="Date" />
-        <many-to-one name="deviceComponent" class="de.bo.aid.boese.model.DeviceComponent" fetch="select">
-            <column name="DeCoID" not-null="true" />
-        </many-to-one>
-        <many-to-one name="rule" class="de.bo.aid.boese.model.Rule" fetch="select">
-            <column name="RuleID" not-null="true" />
-        </many-to-one>
         <property name="active" type="boolean">
             <column name="Active" default="true"/>
         </property>

@@ -37,7 +37,7 @@ import java.util.GregorianCalendar;
 /**
  * The Class TimeFormat.
  */
-public class TimeFormat {
+public class TimeFormat implements Comparable<TimeFormat>{
 	
 	/** The min. */
 	private int min;
@@ -115,7 +115,7 @@ public class TimeFormat {
 	 * @param cron the cron
 	 */
 	public TimeFormat(String cron){
-		this.calculate = new boolean[6];
+		this.calculate = new boolean[5];
 		cron = cron.replace(" ", "");
 		String[] cronElements = cron.split(";");
 		if(cron.equals("*;*;*;*;*;*")){
@@ -129,6 +129,39 @@ public class TimeFormat {
 		setYear(cronElements[4]);
 		setDay(cronElements[2]);
 		setDow(cronElements[5]);
+		Date now = new Date();
+		if(this.getRealDay(0)[0] == now.getDate() && this.getRealMonth(0)[0] == (now.getMonth()+1) && this.getRealYear(0) == (now.getYear()+1900)){
+			if(this.getRealHour(0)[0] < now.getHours() || (this.getRealHour(0)[0] == now.getHours() && this.getRealMin()[0] < now.getMinutes())){
+				if(this.day == 31 && this.month == 12){
+					this.day = 1;
+					this.month = 1;
+					this.year++;
+				}
+				else if(this.day == DayCalculator.numberOfDays(this.getRealMonth(0)[0], this.getRealYear(0))){
+					this.day = 1;
+					this.month++;
+				}
+				else{
+					this.day++;
+				}
+			}
+		}
+	}
+	
+	public TimeFormat(Date d){
+		this.calculate = new boolean[5]; 
+		for(int i = 0; i < this.calculate.length; i++){
+			this.calculate[i] = false;
+		}
+		this.min = d.getMinutes();
+		this.hour = d.getHours();
+		this.day = d.getDate();
+		this.month = d.getMonth();
+		this.year = d.getYear();
+		this.dow = new boolean[7];
+		for(int i = 0; i < this.dow.length; i++){
+			this.dow[i] = true;
+		}
 	}	
 	
 	/**
@@ -261,7 +294,7 @@ public class TimeFormat {
 	public int[] getRealHour(int plus){
 		int[] i = new int[2];
 		int hour = this.hour;
-		if(!this.calculate[3]){
+		if(!this.calculate[1]){
 			hour += plus;
 		}
 		else{
@@ -269,12 +302,12 @@ public class TimeFormat {
 		}
 		if(hour < 0){
 			hour *= -1;
-			i[0] = hour % 12 + 1;
-			i[1] = ((hour - 1) / 12) * -1;
+			i[0] = hour % 24 + 1;
+			i[1] = ((hour - 1) / 24) * -1;
 		}
 		else if(hour > 23){
-			i[0] = hour % 12 + 1;
-			i[1] = ((hour - 1) / 12);
+			i[0] = hour % 24 + 1;
+			i[1] = ((hour - 1) / 24);
 		}
 		else{
 			i[0] = hour;
@@ -353,7 +386,7 @@ public class TimeFormat {
 		int md = DayCalculator.numberOfDays((calculate[3]) ? new Date().getMonth() + this.month : this.month, (calculate[4]) ? new Date().getYear() + this.year : this.year);
 		int[] i = new int[2];
 		int day = this.day;
-		if(!this.calculate[3]){
+		if(!this.calculate[2]){
 			day += plus;
 		}
 		else{
@@ -669,7 +702,11 @@ public class TimeFormat {
 		int[] d = getRealDay(h[1]);
 		int[] mo = getRealMonth(d[1]);
 		int y = getRealYear(mo[1]);
-		System.out.println("... " + mo[0] + "  " + d[0] + " " + h[0] + ":" + mi[0] + ":00 CET " + y);
 		return new GregorianCalendar(y, mo[0]-1, d[0], h[0], mi[0]).getTime();
+	}
+
+	@Override
+	public int compareTo(TimeFormat tf) {
+		return this.getDate().compareTo(tf.getDate());
 	}
 }
