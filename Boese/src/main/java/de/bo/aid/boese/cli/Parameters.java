@@ -43,7 +43,7 @@ public class Parameters {
 	private String config;
 
 
-	/**  If set a defalt config is genrated. */
+	/**  If set a default config is generated. */
 	@Parameter(names = "-genconfig", description = "Generates a default config file at the location configured with -config")
 	private boolean genConfig = false;
 
