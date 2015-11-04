@@ -43,6 +43,7 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.LazyInitializationException;
+import org.hibernate.ObjectNotFoundException;
 
 import de.bo.aid.boese.db.AllSelects;
 import de.bo.aid.boese.db.Inserts;
@@ -200,25 +201,30 @@ public class ProtocolHandler implements MessageHandler {
 	 */
 	private void handleRequestConnection(RequestConnection rc, int tempId) {
 
-		if (rc.getPassword() == null && rc.getConnectorId() == -1) {
+		if (rc.getPassword() == null && rc.getConnectorId() == -1) { //connector without id
 
 			// Add requesting Connector to tempConnectors with tempId from
 			// SocketHandler
 			distributor.addTempConnector(rc.getConnectorName(), tempId);
 
-		} else {
+		} else { //connector with id
 			String pw = rc.getPassword();
 			int conId = rc.getConnectorId();
 			String conName = rc.getConnectorName();
 
-			Connector con = Selects.connector(conId);
-
-			if (con.getName().compareTo(conName) == 0 && con.getPassword().compareTo(pw) == 0) {
-				SessionHandler.getInstance().setConnectorId(tempId, conId);
-				sendConfirmConnection(pw, conId);
-				sendRequestAllDevices(conId);
-			} else {
-				SessionHandler.getInstance().rejectConnection(conId);
+			Connector con = null;
+			try{
+				con = Selects.connector(conId);
+				if (con.getName().compareTo(conName) == 0 && con.getPassword().compareTo(pw) == 0) {
+					SessionHandler.getInstance().setConnectorId(tempId, conId);
+					sendConfirmConnection(pw, conId);
+					sendRequestAllDevices(conId);
+				} else {
+					SessionHandler.getInstance().rejectConnection(conId);
+				}
+			}
+			catch (ObjectNotFoundException onfe){ //connector not found
+				SessionHandler.getInstance().rejectConnection(conId);	
 			}
 		}
 	}
@@ -242,15 +248,19 @@ public class ProtocolHandler implements MessageHandler {
 
 		for (String deviceName : devices.keySet()) {
 			if (devices.get(deviceName) == -1) { // device not in db
-
 				TempDevice temp = new TempDevice(connectorId, deviceName);
 				distributor.addTempDevie(temp);
 			} else { // device already in db
-				Device dev = Selects.device(devices.get(deviceName));
-				if (dev.getAlias() == deviceName) { // device is correct in DB
+				Device dev = null;
+				try{
+					dev = Selects.device(devices.get(deviceName)); //get Device from Hashset
+					//TODO check name?
 					confirmDevices.put(deviceName, dev.getDeId());
-				} else { // device id does not fit to device name
-					// TODO error handling
+				}
+				catch(ObjectNotFoundException onfe){
+					logger.warn("Received device with unknown id. DeviceName: " + deviceName);
+					TempDevice temp = new TempDevice(connectorId, deviceName);
+					distributor.addTempDevie(temp);
 				}
 			}
 		}
@@ -268,41 +278,41 @@ public class ProtocolHandler implements MessageHandler {
 	 *            the connector id
 	 */
 	private void handleSendDeviceComponents(SendDeviceComponents sdc, int connectorId) {
-		// TODO Regelparsing mit component values
 		if (connectorId != sdc.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		int deviceId = sdc.getDeviceId();
-
 		HashSet<DeviceComponents> components = sdc.getComponents();
 		HashMap<String, Integer> confirmComponents = new HashMap<>();
 		ArrayList<Inquiry> inquiryList = new ArrayList<>();
-		for (DeviceComponents component : components) {
-			if (component.getDeviceComponentId() == -1) { // Component has no
-															// DeCoId
+		
+		Device device = null;
+		try{
+			device = Selects.device(deviceId);
+		}catch(ObjectNotFoundException onfe){ //Device for the component was not found
+			logger.warn("Device with id: " + deviceId + " not found.");
+			logger.error("No components are received from connector with id: " + connectorId + ". Maybe the database crashed and is out of sync with the connector");
+			return;
+		}
+		for (DeviceComponents component : components) { //iterate over sendComponents from connector
+			if (component.getDeviceComponentId() == -1) { //component has no id
 				TempComponent temp = new TempComponent(deviceId, component.getComponentName(), component.getValue(),
 						component.getTimestamp(), connectorId, component.getDescription(), component.getUnit(),
 						component.isActor());
 				distributor.addTempComponent(temp);
-			} else { // Component has DeCoId
-				Device device = Selects.device(deviceId);
-				if (device == null) { // Device does not exist
-					// TODO was tun wir, wenn der Konnector eine Device ID
-					// nennt, die nicht in der DB ist?
-				} else {
+			} else { // Component has id
 					Iterator<DeviceComponent> itDc = null;
 					try {
 						itDc = device.getDeviceComponents().iterator();
 					} catch (LazyInitializationException lix) {
-							//TODO
+						lix.printStackTrace();	
+						//TODO
 					}
 					if (itDc != null) {
-						while (itDc.hasNext()) { // search for devicecomponent
-													// in db
+						while (itDc.hasNext()) { //iterate over deviceComponents from device(db)
 							DeviceComponent dc = itDc.next();
-							if (dc.getDeCoId() == component.getDeviceComponentId()) { // found
-																						// deviceComponent
+							if (dc.getDeCoId() == component.getDeviceComponentId()) { // found deviceComponent in db
 								confirmComponents.put(component.getComponentName(), dc.getDeCoId());
 								inquiryList.add(
 										new Inquiry(dc.getDeCoId(), component.getTimestamp(), component.getValue()));
@@ -310,13 +320,15 @@ public class ProtocolHandler implements MessageHandler {
 								// Date(component.getTimestamp()),
 								// component.getValue());
 								break;
-							} else {
-								// TODO was passiert wenn DeCo nicht beim device
-								// dabei ist?
+							} else { //deviceComponent not found in db
+								logger.warn("Received component with unknown id. ComponentName: " + component.getComponentName());
+								TempComponent temp = new TempComponent(deviceId, component.getComponentName(), component.getValue(),
+										component.getTimestamp(), connectorId, component.getDescription(), component.getUnit(),
+										component.isActor());
+								distributor.addTempComponent(temp);
 							}
 						}
 					}
-				}
 			}
 		}
 		if (!confirmComponents.isEmpty()) {
