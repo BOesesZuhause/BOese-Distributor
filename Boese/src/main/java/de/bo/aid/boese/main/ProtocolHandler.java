@@ -536,10 +536,16 @@ public class ProtocolHandler implements MessageHandler {
 		Interpretor interpretor = new Interpretor();
 		int ruleId;
 		for (Rule rule : ucr.getRules()) {
-			ruleDeCoIds = interpretor.getAllDeCoIdsCondition(
-					BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())));
-			ruleId = Inserts.rule(ruleDeCoIds, rule.getPermissions(), rule.getPermissions(), rule.getActions());
-			tempRules.put(rule.getTempRuleId(), ruleId);
+			if (BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())) == null ||
+					BoeseXML.readXML(new ByteArrayInputStream(rule.getPermissions().getBytes())) == null ||
+					BoeseXML.readXML(new ByteArrayInputStream(rule.getActions().getBytes())) == null) {
+				// TODO Error handlin
+			} else {
+				ruleDeCoIds = interpretor.getAllDeCoIdsCondition(
+						BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())));
+				ruleId = Inserts.rule(ruleDeCoIds, rule.getPermissions(), rule.getPermissions(), rule.getActions());
+				tempRules.put(rule.getTempRuleId(), ruleId);
+			}
 		}
 		sendConfirmRules(tempRules, connectorId);
 	}
