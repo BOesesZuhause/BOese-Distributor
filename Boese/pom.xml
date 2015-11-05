@@ -22,7 +22,7 @@
         <configuration>
                 <archive>
             <manifest>
-              <mainClass>de.bo.aid.boese.main.MainClass</mainClass>
+              <mainClass>de.bo.aid.boese.main.Distributor</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>

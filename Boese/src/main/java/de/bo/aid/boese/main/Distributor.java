@@ -43,7 +43,6 @@ import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -56,7 +55,6 @@ import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempDevice;
 import de.bo.aid.boese.model.DeviceComponent;
-import de.bo.aid.boese.model.ToDo;
 import de.bo.aid.boese.ruler.Controll;
 import de.bo.aid.boese.ruler.Inquiry;
 import de.bo.aid.boese.ruler.ToDoChecker;
@@ -70,9 +68,6 @@ import javassist.NotFoundException;
  * The Class MainClass.
  */
 public class Distributor {
-	
-
-	//TODO handle Acknowledge abgleich
 	
 	/** The socket server. */
 	private SocketServer socketServer;
