@@ -10,10 +10,10 @@
                 <param name="sequence">deviceComponent_id_generator</param>
         	</generator>
         </id>
-        <many-to-one name="component" class="de.bo.aid.boese.model.Component" fetch="select">
+        <many-to-one name="component" class="de.bo.aid.boese.model.Component" fetch="select" lazy="false">
             <column name="CoID" not-null="true" />
         </many-to-one>
-        <many-to-one name="device" class="de.bo.aid.boese.model.Device" fetch="select">
+        <many-to-one name="device" class="de.bo.aid.boese.model.Device" fetch="select" lazy="false">
             <column name="DeID" not-null="true" />
         </many-to-one>
         <property name="status" type="java.lang.Integer">

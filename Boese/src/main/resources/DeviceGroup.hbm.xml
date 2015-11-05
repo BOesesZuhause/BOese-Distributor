@@ -12,10 +12,10 @@
                 <column name="GrID" />
             </key-property>
         </composite-id>
-        <many-to-one name="device" class="de.bo.aid.boese.model.Device" update="false" insert="false" fetch="select">
+        <many-to-one name="device" class="de.bo.aid.boese.model.Device" update="false" insert="false" fetch="select" lazy="false">
             <column name="DeID" not-null="true" />
         </many-to-one>
-        <many-to-one name="group" class="de.bo.aid.boese.model.Group" update="false" insert="false" fetch="select">
+        <many-to-one name="group" class="de.bo.aid.boese.model.Group" update="false" insert="false" fetch="select" lazy="false">
             <column name="GrID" not-null="true" />
         </many-to-one>
         <property name="rights" type="short">

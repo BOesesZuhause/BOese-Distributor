@@ -31,6 +31,7 @@
 package de.bo.aid.boese.model;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 public class RepeatRule {
 	
@@ -46,7 +47,7 @@ public class RepeatRule {
 	/** The Rule. */
 	private Rule rule;
 	
-	private ToDo toDo;
+	private Set<ToDo> toDo;
 	
 	/** The DeviceComponent. */
 	private DeviceComponent deviceComponent;
@@ -61,13 +62,15 @@ public class RepeatRule {
 		this.repeatsAfterEnd = repeatsAfterEnd;
 	}
 
-	public RepeatRule(int rrId, String repeat, BigDecimal value, int repeatsAfterEnd, Rule rule, ToDo todo, DeviceComponent deviceComponent) {
+	public RepeatRule(int rrId, String repeat, BigDecimal value, int repeatsAfterEnd, Rule rule, Set<ToDo> toDo,
+			DeviceComponent deviceComponent) {
+		super();
 		this.rrId = rrId;
 		this.repeat = repeat;
 		this.value = value;
 		this.repeatsAfterEnd = repeatsAfterEnd;
 		this.rule = rule;
-		this.toDo = todo;
+		this.toDo = toDo;
 		this.deviceComponent = deviceComponent;
 	}
 
@@ -111,12 +114,12 @@ public class RepeatRule {
 		this.rule = rule;
 	}
 
-	public ToDo getToDo() {
+	public Set<ToDo> getToDo() {
 		return toDo;
 	}
 
-	public void setToDo(ToDo todo) {
-		this.toDo = todo;
+	public void setToDo(Set<ToDo> toDo) {
+		this.toDo = toDo;
 	}
 
 	public DeviceComponent getDeviceComponent() {

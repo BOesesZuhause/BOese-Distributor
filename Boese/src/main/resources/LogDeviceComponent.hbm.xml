@@ -11,7 +11,7 @@
         	</generator>
         </id>
         <timestamp name="timestamp" column="Timestamp" />
-        <many-to-one name="deviceComponent" class="de.bo.aid.boese.model.DeviceComponent" fetch="select">
+        <many-to-one name="deviceComponent" class="de.bo.aid.boese.model.DeviceComponent" fetch="select" lazy="false">
             <column name="DeCoID" not-null="true" />
         </many-to-one>
         <property name="value" type="big_decimal">

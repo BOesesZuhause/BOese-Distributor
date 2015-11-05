@@ -52,71 +52,82 @@ public class ToDoChecker extends Thread{
 	boolean b;
 	
 	public ToDoChecker(){
+		b = true;
 		List<ToDo> todos = AllSelects.toDos();
 		ttl = new ArrayList<TimeTodos>();
 		for(ToDo t : todos){
 			ttl.add(new TimeTodos(t.getToDoId(), t.getDate(), t.getRepeatRule().getValue().doubleValue(), t.getRepeatRule().getDeviceComponent()));
 		}
 		Collections.sort(ttl);
-		b = true;
 	}
 	
 	public void run(){
 		while(true){
-			try {
-				System.out.println("hier");
-				TimeTodos tt = new TimeTodos();
-				try{
-					tt = ttl.iterator().next();
-				}
-				catch(Exception e){
+			if(ttl.size() == 0){
+				try {
+					b = false;
+					sleep(1000*5);
+					b = true;
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
-					System.exit(0);
 				}
-				List<Component> todos = new ArrayList<Component>();
-				while(isPast(tt.getDate())){
-					ToDo todo = Selects.toDo(tt.getId());
-					RepeatRule rr = todo.getRepeatRule();
-					Deletes.ToDo(todo);
-					if(rr.getRrId() == 0){
-						todo = null;
+			}
+			else{
+				try {
+					TimeTodos tt = new TimeTodos();
+					try{
+						tt = ttl.iterator().next();
 					}
-					else{
-						todo = Selects.toDo(Inserts.toDoWithoutChange(new TimeFormat(rr.getRepeat()).getDate(), rr.getRrId()));
-						ttl.add(new TimeTodos(todo.getToDoId(), todo.getDate(), todo.getRepeatRule().getValue().doubleValue(), todo.getRepeatRule().getDeviceComponent()));
+					catch(Exception e){
+						e.printStackTrace();
+						System.exit(0);
 					}
-					ttl.remove(tt);
-					tt = ttl.iterator().next();
-				}
-				while(sameTime(tt.getDate())){
-					todos.add(new Component(tt.getDeco().getDeCoId(), tt.getValue()));
-					ToDo todo = Selects.toDo(tt.getId());
-					RepeatRule rr = todo.getRepeatRule();
-					Deletes.ToDo(todo);
-					if(rr.getRrId() == 0){
-						todo = null;
+					List<Component> todos = new ArrayList<Component>();
+					while(isPast(tt.getDate())){
+						
+						ToDo todo = Selects.toDo(tt.getId());
+						RepeatRule rr = todo.getRepeatRule();
+						Deletes.ToDo(todo);
+						if(rr.getRrId() == 0){
+							todo = null;
+						}
+						else{
+							todo = Selects.toDo(Inserts.toDoWithoutChange(new TimeFormat(rr.getRepeat()).getDate(), rr.getRrId()));
+							ttl.add(new TimeTodos(todo.getToDoId(), todo.getDate(), todo.getRepeatRule().getValue().doubleValue(), todo.getRepeatRule().getDeviceComponent()));
+						}
+						ttl.remove(tt);
+						tt = ttl.iterator().next();
 					}
-					else{
-						todo = Selects.toDo(Inserts.toDoWithoutChange(new TimeFormat(rr.getRepeat()).getDate(), rr.getRrId()));
-						ttl.add(new TimeTodos(todo.getToDoId(), todo.getDate(), todo.getRepeatRule().getValue().doubleValue(), todo.getRepeatRule().getDeviceComponent()));
+					while(sameTime(tt.getDate())){
+						todos.add(new Component(tt.getDeco().getDeCoId(), tt.getValue()));
+						ToDo todo = Selects.toDo(tt.getId());
+						RepeatRule rr = todo.getRepeatRule();
+						Deletes.ToDo(todo);
+						if(rr.getRrId() == 0){
+							todo = null;
+						}
+						else{
+							todo = Selects.toDo(Inserts.toDoWithoutChange(new TimeFormat(rr.getRepeat()).getDate(), rr.getRrId()));
+							ttl.add(new TimeTodos(todo.getToDoId(), todo.getDate(), todo.getRepeatRule().getValue().doubleValue(), todo.getRepeatRule().getDeviceComponent()));
+						}
+						ttl.remove(tt);
+						tt = ttl.iterator().next();
 					}
-					ttl.remove(tt);
-					tt = ttl.iterator().next();
-				}
-				Collections.sort(this.ttl);
-				// TODO MainClass.sendToDos(todos);
-				b = false;
-				sleep(1000*60);
-				b = true;
-			} catch (Exception e) {
-				e.printStackTrace();
+					Collections.sort(this.ttl);
+					// TODO MainClass.sendToDos(todos);
+					b = false;
+					sleep(1000*60);
+					b = true;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}	
 			}
 		}
 	}
 	
 	public void changeInToDo(){
 		while(b){
-			
 		}
 		List<ToDo> todos = AllSelects.toDos();
 		this.ttl = new ArrayList<TimeTodos>();

@@ -507,4 +507,26 @@ public class Selects {
 		session.close();
 		return todo;
 	}
+	
+	/**
+	 * Rules by device component.
+	 *
+	 * @param rrid the Rule ID
+	 * @return the list
+	 */
+	public static List<ToDo> toDoByRepeatRule(int rrid){
+		Session session = connection.getSession();
+		session.beginTransaction();
+ 
+		List erg = session.createQuery( "from ToDo where rrid = " + rrid).list();
+		List<ToDo> todo = new ArrayList<ToDo>();
+		for(Object o: erg){
+			todo.add((ToDo) o);
+		}
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		return todo;
+	}
 }

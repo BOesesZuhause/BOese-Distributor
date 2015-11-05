@@ -19,12 +19,17 @@
         <property name="repeatsAfterEnd" type="int">
             <column name="Repeats_After_Ende" not-null="true" />
         </property>
-        <many-to-one name="rule" class="de.bo.aid.boese.model.Rule" fetch="select">
+        <many-to-one name="rule" class="de.bo.aid.boese.model.Rule" fetch="select" lazy="false">
             <column name="RuleID" not-null="true" />
         </many-to-one>
-        <many-to-one name="deviceComponent" class="de.bo.aid.boese.model.DeviceComponent" fetch="select">
+        <many-to-one name="deviceComponent" class="de.bo.aid.boese.model.DeviceComponent" fetch="select" lazy="false">
             <column name="DeCoID" not-null="true" />
         </many-to-one>
-        <one-to-one name="toDo" class="de.bo.aid.boese.model.ToDo" cascade="save-update"></one-to-one>
+        <set name="toDo" table="ToDo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="RRID" not-null="true" />
+            </key>
+            <one-to-many class="de.bo.aid.boese.model.ToDo" />
+        </set>
     </class>
 </hibernate-mapping>

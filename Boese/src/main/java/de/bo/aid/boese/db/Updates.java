@@ -32,6 +32,7 @@ package de.bo.aid.boese.db;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
@@ -428,15 +429,20 @@ public class Updates {
 	 *
 	 * @param rrId the rrId
 	 * @param repeat the repeat
+	 * @param value the value
 	 * @param repeatsAfterEnd the repeatsAfterEnd
+	 * @param tdc the ToDoChecker of the Distributor
 	 */
-	public static void repeatRule(int rrId, String repeat, int repeatsAfterEnd){
+	public static void repeatRule(int rrId, String repeat, Double value, int repeatsAfterEnd, ToDoChecker tdc){
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
 		RepeatRule rr = Selects.RepeatRule(rrId);
 		if(repeat != null){
 			rr.setRepeat(repeat);
+		}
+		if(value != null){
+			rr.setValue(new BigDecimal(value));
 		}
 		if(repeatsAfterEnd >= 0){
 			rr.setRepeatsAfterEnd(repeatsAfterEnd);
@@ -445,7 +451,7 @@ public class Updates {
 		session.save(rr);
 		session.getTransaction().commit();
 		session.close();
-		Interpretor.createTodos();
+		Interpretor.createTodos(tdc);
 	}
 	
 	/**
@@ -480,8 +486,10 @@ public class Updates {
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		ToDo todo = Selects.RepeatRule(rrid).getToDo();
-		todo.setActive(true);
+		List<ToDo> todo = Selects.toDoByRepeatRule(rrid);
+		for(ToDo t : todo){
+			t.setActive(true);
+		}
 		
 		session.save(todo);
 		session.getTransaction().commit();
@@ -497,8 +505,10 @@ public class Updates {
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		ToDo todo = Selects.RepeatRule(rrid).getToDo();
-		todo.setActive(false);
+		List<ToDo> todo = Selects.toDoByRepeatRule(rrid);
+		for(ToDo t : todo){
+			t.setActive(false);
+		}
 		
 		session.save(todo);
 		session.getTransaction().commit();

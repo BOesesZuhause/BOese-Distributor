@@ -11,7 +11,7 @@
         	</generator>
         </id>
         <timestamp name="timestamp" column="Timestamp" />
-        <many-to-one name="rule" class="de.bo.aid.boese.model.Rule" fetch="select">
+        <many-to-one name="rule" class="de.bo.aid.boese.model.Rule" fetch="select" lazy="false">
             <column name="RuID" not-null="true" />
         </many-to-one>
     </class>

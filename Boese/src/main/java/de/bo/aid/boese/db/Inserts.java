@@ -309,9 +309,10 @@ public class Inserts {
 	 * @param permissions the permissions
 	 * @param conditions the conditions
 	 * @param actions the actions
+	 * @param tdc the ToDoChecker of the Distributor
 	 * @return the int
 	 */
-	public static int rule(List<Integer> deCoID, String permissions, String conditions, String actions){
+	public static int rule(List<Integer> deCoID, String permissions, String conditions, String actions, ToDoChecker tdc){
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -344,6 +345,7 @@ public class Inserts {
 					DeviceComponentRule decorule = new DeviceComponentRule();
 					decorule.setDevicecomponent(deco);
 					decorule.setRule(rule);
+					decorule.setId(new DeviceComponentRuleId(deco.getDeCoId(), rule.getRuId()));
 					session.save(decorule);
 					session.getTransaction().commit();
 				}
@@ -361,8 +363,8 @@ public class Inserts {
 		}
 
 		session.close();
-		Distributor.changeInRule(ruID);
-		new ToDoChecker().changeInToDo();
+		//Distributor.changeInRule(ruID);
+		tdc.changeInToDo();
 		return ruID;
 	}
 	
@@ -529,17 +531,20 @@ public class Inserts {
 	 * Repeat rule.
 	 *
 	 * @param repeat the repeat
+	 * @param value the value
 	 * @param repeatsAfterEnd the repeats after end
 	 * @param ruleId the ID of the Rule
 	 * @param deCoId the id of the DeviceComponent
+	 * @param tdc the ToDoChecker of the Distributor
 	 * @return the int
 	 */
-	public static int repeatRule(String repeat, int repeatsAfterEnd, int ruleId, int deCoId){
+	public static int repeatRule(String repeat, double value, int repeatsAfterEnd, int ruleId, int deCoId, ToDoChecker tdc){
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
 		RepeatRule rr = new RepeatRule();
 		rr.setRepeat(repeat);
+		rr.setValue(new BigDecimal(value));
 		rr.setRepeatsAfterEnd(repeatsAfterEnd);
 		rr.setRule(Selects.rule(ruleId));
 		rr.setDeviceComponent(Selects.deviceComponent(deCoId));
@@ -555,7 +560,7 @@ public class Inserts {
 		}
 		
 		session.close();
-		Interpretor.createTodos();
+		Interpretor.createTodos(tdc);
 		return rr.getRrId();
 	}
 	
@@ -564,9 +569,10 @@ public class Inserts {
 	 *
 	 * @param date the date
 	 * @param rrId the rr id
+	 * @param tdc the ToDoChecker of the Distributor
 	 * @return the int
 	 */
-	public static int toDo(Date date, int rrId){
+	public static int toDo(Date date, int rrId, ToDoChecker tdc){
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -586,7 +592,7 @@ public class Inserts {
 		}
 		
 		session.close();
-		new ToDoChecker().changeInToDo();
+		tdc.changeInToDo();
 		return todo.getToDoId();
 	}
 	

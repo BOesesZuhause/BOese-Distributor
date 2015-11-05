@@ -56,8 +56,10 @@ import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempDevice;
 import de.bo.aid.boese.model.DeviceComponent;
+import de.bo.aid.boese.model.ToDo;
 import de.bo.aid.boese.ruler.Controll;
 import de.bo.aid.boese.ruler.Inquiry;
+import de.bo.aid.boese.ruler.ToDoChecker;
 import de.bo.aid.boese.socket.SocketServer;
 import de.bo.aid.boese.socket.SessionHandler;
 import de.bo.aid.boese.xml.Component;
@@ -68,6 +70,8 @@ import javassist.NotFoundException;
  * The Class MainClass.
  */
 public class Distributor {
+	
+
 	//TODO handle Acknowledge abgleich
 	
 	/** The socket server. */
@@ -108,6 +112,7 @@ public class Distributor {
 	/** The Constant logger for log4j. */
 	final  Logger logger = LogManager.getLogger(Distributor.class);
 	
+	private ToDoChecker tdc;
 	
 	/**
 	 * Start websocket server.
@@ -125,6 +130,14 @@ public class Distributor {
 			socketServer.start(port);
 		}
 
+	}
+	
+	/**
+	 * Start Todo Checker.
+	 */
+	public void startToDoChecker(){
+		tdc = new ToDoChecker();
+		tdc.start();
 	}
 	
 	/**
@@ -244,6 +257,7 @@ public class Distributor {
 		distr.loadProperties();
 		distr.initDatabase();
 		distr.startWebsocketServer(0);
+		
 	}
 	
 	/**
@@ -490,6 +504,10 @@ public class Distributor {
 		tempCompId++;
 	}
 	
+	public ToDoChecker getTdc() {
+		return tdc;
+	}
+
 	public static void changeInRule(int ruleId){
 		List<DeviceComponent> decos = Selects.deviceComponentsByRule(ruleId);
 		List<Inquiry> in = new ArrayList<Inquiry>();

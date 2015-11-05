@@ -103,13 +103,13 @@ public class ownMain {
 		l.add(new Integer(1));
 		l.add(new Integer(2));
 		
-		try{
-			Inserts.rule(l, per, con, act);
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			System.exit(0);
-		}
+//		try{
+//			Inserts.rule(l, per, con, act);
+//		}
+//		catch(Exception e){
+//			e.printStackTrace();
+//			System.exit(0);
+//		}
 		
 		System.out.println("erledigt");
 	}

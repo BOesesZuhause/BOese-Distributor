@@ -428,7 +428,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	public void setDay(String day) {
 		if(day.equals("*")){
 			this.day = 0;
-			this.calculate[2] = true;
+			this.calculate[4] = true;
 		}
 		else{
 			this.day = Integer.parseInt(day);

@@ -555,7 +555,7 @@ public class ProtocolHandler implements MessageHandler {
 			} else {
 				ruleDeCoIds = interpretor.getAllDeCoIdsCondition(
 						BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())));
-				ruleId = Inserts.rule(ruleDeCoIds, rule.getPermissions(), rule.getPermissions(), rule.getActions());
+				ruleId = Inserts.rule(ruleDeCoIds, rule.getPermissions(), rule.getPermissions(), rule.getActions(), distributor.getTdc());
 				tempRules.put(rule.getTempRuleId(), ruleId);
 			}
 		}

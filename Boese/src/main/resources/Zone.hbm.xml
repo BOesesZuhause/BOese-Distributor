@@ -10,7 +10,7 @@
                 <param name="sequence">zone_id_generator</param>
         	</generator>
         </id>
-        <many-to-one name="zone" class="de.bo.aid.boese.model.Zone" fetch="select">
+        <many-to-one name="zone" class="de.bo.aid.boese.model.Zone" fetch="select" lazy="false">
             <column name="SuZoID" not-null="true" />
         </many-to-one>
         <property name="name" type="string">

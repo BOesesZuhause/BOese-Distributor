@@ -103,6 +103,7 @@ public class Controll {
 					if(con != null && con){
 						try {
 							toDo.addAll(toDo.size(), (check.action((Action)actBXML)));
+							
 						} catch (Exception e) {
 							System.err.println("Bad XML: " + e.getMessage());
 							throw new Exception(e.getMessage());

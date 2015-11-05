@@ -51,7 +51,7 @@ public class ToDo {
 	public ToDo() {
 	}
 
-	public ToDo(int toDoId, Date date, boolean active) {
+	public ToDo(int toDoId, Date date, boolean active){
 		this.toDoId = toDoId;
 		this.date = date;
 		this.active = active;

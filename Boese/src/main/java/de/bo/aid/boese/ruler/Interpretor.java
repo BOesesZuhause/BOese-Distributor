@@ -70,7 +70,7 @@ public class Interpretor {
 //		return list;
 //	}
 	
-	public static void createTodos(){
+	public static void createTodos(ToDoChecker tdc){
 		List<ToDo> todos = AllSelects.toDos();
 		List<RepeatRule> rule = AllSelects.repeatRules();
 		for(ToDo todo : todos){
@@ -79,7 +79,7 @@ public class Interpretor {
 		for(RepeatRule rr : rule){
 			Inserts.toDoWithoutChange(new TimeFormat(rr.getRepeat()).getDate(), rr.getRrId());
 		}
-		new ToDoChecker().changeInToDo();
+		tdc.changeInToDo();
 	}
 
 }

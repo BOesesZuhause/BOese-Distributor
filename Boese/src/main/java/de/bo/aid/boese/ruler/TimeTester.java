@@ -44,6 +44,23 @@ public class TimeTester{
 	static List<ToDo> todo = new ArrayList<ToDo>();
 	
 	public static void main(String[] args){
+		
+		ToDoChecker tdc = new ToDoChecker();
+		tdc.start();
+		
+		int conid = Inserts.connector("leer", "123");
+		int deid = Inserts.device(conid, 0, "leer", "123");
+		int compid = Inserts.component("leer", 0, true);
+		int decoid = Inserts.deviceComponent(deid, compid, "leer");
+		List<Integer> decoList = new ArrayList<Integer>();
+		decoList.add(decoid);
+		int ruid = Inserts.rule(decoList, "", "", "", tdc);
+		int rrid = Inserts.repeatRule("30; 21; *; *; *; *", 100, 0, ruid, decoid, tdc);
+		int todoid = Inserts.toDo(new Date(), rrid, tdc);
+		
+//		System.out.println(todoid);
+		
+		
 //		Date now = new Date();
 ////		System.out.println("jetzt: " + now.toString());
 //		String cron = "30, 21, *, *, *, *";
@@ -59,9 +76,9 @@ public class TimeTester{
 //		System.out.println(i[0] + "   " + i[1]);
 		
 		
-//		Interpretor.createTodos();
-		ToDoChecker tdc = new ToDoChecker();
-		tdc.start();
+////		Interpretor.createTodos();
+//		ToDoChecker tdc = new ToDoChecker();
+//		tdc.start();
 //		tdc.changeInToDo();
 	}
 	

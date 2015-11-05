@@ -10,7 +10,7 @@
                	<param name="sequence">component_id_generator</param>
        		</generator>
         </id>
-        <many-to-one name="unit" class="de.bo.aid.boese.model.Unit"  fetch="select">
+        <many-to-one name="unit" class="de.bo.aid.boese.model.Unit"  fetch="select" lazy="false">
             <column name="UnID" not-null="true" />
         </many-to-one>
         <property name="name" type="string">
