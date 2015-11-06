@@ -552,10 +552,11 @@ public class ProtocolHandler implements MessageHandler {
 					BoeseXML.readXML(new ByteArrayInputStream(rule.getPermissions().getBytes())) == null ||
 					BoeseXML.readXML(new ByteArrayInputStream(rule.getActions().getBytes())) == null) {
 				// TODO Error handlin
+				logger.warn("Invalid XML in new Rule");
 			} else {
 				ruleDeCoIds = interpretor.getAllDeCoIdsCondition(
 						BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())));
-				ruleId = Inserts.rule(ruleDeCoIds, rule.getPermissions(), rule.getPermissions(), rule.getActions(), distributor.getTdc());
+				ruleId = Inserts.rule(ruleDeCoIds, rule.getPermissions(), rule.getConditions(), rule.getActions(), distributor.getTdc());
 				tempRules.put(rule.getTempRuleId(), ruleId);
 			}
 		}
