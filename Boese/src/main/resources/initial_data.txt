@@ -1,2 +1,2 @@
-insert into zone values (0, 0, 'undefined');
+insert into zone values (0, 0, 'global');
 insert into unit values (0, 'undefined', 'ud');

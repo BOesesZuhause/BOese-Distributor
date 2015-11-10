@@ -72,6 +72,34 @@ import javassist.NotFoundException;
  */
 public class Distributor {
 	
+private final String logo = 
+ "            (                           \n"
++"           ( )\\         (        (     \n"
++"           )((_)  (    ))\\ (    ))\\   \n"
++"          ((_)_   )\\  /((_))\\  /((_)  \n"
++"           | _ ) ((_)(_)) ((_)(_))      \n"
++"           | _ \\/ _ \\/ -_)(_-</ -_)   \n"
++"           |___/\\___/\\___|/__/\\___|  \n"
++"                                        \n"
++"                      ;                 \n"
++"            +        ;;;         +      \n"
++"            +       ;;;;;        +      \n"
++"            +      ;;;;;;;       +      \n"
++"            ++    ;;;;;;;;;     ++      \n"
++"            +++++;;;;;;;;;;;+++++       \n"
++"             ++++;;;;;;;;;;;+++++       \n"
++"              ++;;;;;;;;;;;;;++         \n"
++"               ;;;;;;;;;;;;;;;          \n"
++"              ;;;;;;;;;;;;;;;;;         \n"
++"              :::::::::::::::::         \n"
++"              :::::::::::::::::         \n"
++"              :::::::::::::::::         \n"
++"              ::::::@@@@@::::::         \n"
++"              :::::@:::::@:::::         \n"
++"              ::::@:::::::@::::         \n"
++"              :::::::::::::::::         \n"
++"              :::::::::::::::::         \n";
+	
 	/** The socket server. */
 	private SocketServer socketServer;
 	
@@ -242,7 +270,15 @@ public class Distributor {
 		}
 	}
 	
-
+	private void printLogo(){
+		System.out.println(logo);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	
 
@@ -253,6 +289,7 @@ public class Distributor {
 	 */
 	public static void main(String[] args) {
 		Distributor distr = new Distributor();
+		distr.printLogo();
 		distr.checkArguments(args);
 		distr.loadProperties();
 		distr.initDatabase();
