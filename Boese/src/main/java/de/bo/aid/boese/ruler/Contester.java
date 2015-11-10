@@ -35,6 +35,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -94,27 +95,27 @@ public class Contester {
 			System.out.println(i);
 		}
 		
-//		Checker c = new Checker();
-//		
-//		HashMap<Integer, Double> hm = new HashMap<Integer, Double>();
-//		hm.put(99, 11.1);
-//		hm.put(100, 11.1);
-//		
-//		System.out.println(rekTest(((Condition)bXML).getRule()));
-//		System.out.println();
-//		System.out.println(rekuTest(((Condition)bXML).getRule()));
-//		System.out.println();
-//		System.out.println(c.condition(((Condition)bXML).getRule(), hm));
-//		System.out.println();
-//		hm = new HashMap<Integer, Double>();
-//		hm.put(99, 21.1);
-//		hm.put(100, 21.1);
-//		System.out.println(c.condition(((Condition)bXML).getRule(), hm));
-//		System.out.println();
-//		hm = new HashMap<Integer, Double>();
-//		hm.put(99, 11.1);
-//		hm.put(100, 21.1);
-//		System.out.println(c.condition(((Condition)bXML).getRule(), hm));
+		Checker c = new Checker();
+		
+		HashMap<Integer, Double> hm = new HashMap<Integer, Double>();
+		hm.put(99, 11.1);
+		hm.put(100, 11.1);
+		
+		System.out.println(rekTest(((Condition)bXML).getRule()));
+		System.out.println();
+		System.out.println(rekuTest(((Condition)bXML).getRule()));
+		System.out.println();
+		System.out.println(c.condition(((Condition)bXML).getRule(), hm));
+		System.out.println();
+		hm = new HashMap<Integer, Double>();
+		hm.put(99, 21.1);
+		hm.put(100, 21.1);
+		System.out.println(c.condition(((Condition)bXML).getRule(), hm));
+		System.out.println();
+		hm = new HashMap<Integer, Double>();
+		hm.put(99, 11.1);
+		hm.put(100, 21.1);
+		System.out.println(c.condition(((Condition)bXML).getRule(), hm));
 		
 		testAll();
 		

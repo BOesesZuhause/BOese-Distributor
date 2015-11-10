@@ -176,6 +176,7 @@ public class Checker {
 				actor.setValue(calculate(actor.getCalculation()));
 			} catch (Exception e) {
 				System.err.println("Bad XML: " + e.getMessage());
+				e.printStackTrace();
 				throw new Exception(e.getMessage());
 			}
 			toDos.add(actor);
@@ -202,55 +203,65 @@ public class Checker {
 		for(CalculationList next : cl.getCalculations()){
 			values.add(calculate(next));
 		}
-		switch(cl.getCalculationType()){
-		case ADD:
-			erg = 0.0;
+		if(cl.getCalculationType() == null && values.size() == 1){
 			for(double d : values){
-				erg += d;
+				erg = d;
 			}
-			break;
-		case SUB:
-			if(cl.getFirst() != null){
-				erg = calculate(cl.getFirst());
+		}
+		else if(cl.getCalculationType() == null){
+			throw new Exception("PENIS");
+		}
+		else{
+			switch(cl.getCalculationType()){
+			case ADD:
+				erg = 0.0;
 				for(double d : values){
-					erg -= d;
+					erg += d;
 				}
-			}
-			else{
-				throw new Exception("No First for a SUB");
-			}
-			break;
-		case MUL:
-			erg = 1.0;
-			for(double d : values){
-				erg *= d;
-			}
-			break;
-		case DIV:
-			if(cl.getFirst() != null){
-				erg = calculate(cl.getFirst());
+				break;
+			case SUB:
+				if(cl.getFirst() != null){
+					erg = calculate(cl.getFirst());
+					for(double d : values){
+						erg -= d;
+					}
+				}
+				else{
+					throw new Exception("No First for a SUB");
+				}
+				break;
+			case MUL:
+				erg = 1.0;
 				for(double d : values){
-					erg /= d;
+					erg *= d;
 				}
+				break;
+			case DIV:
+				if(cl.getFirst() != null){
+					erg = calculate(cl.getFirst());
+					for(double d : values){
+						erg /= d;
+					}
+				}
+				else{
+					throw new Exception("No First for a DIV");
+				}
+				break;
+			case MOD:
+				if(cl.getFirst() != null){
+					erg = calculate(cl.getFirst()) % values.iterator().next();
+				}
+				else{
+					throw new Exception("No First for a MOD");
+				}
+				break;
+			case ABS:
+				erg = values.iterator().next();
+				if (erg < 0){
+					erg *= -1;
+				}
+				break;
 			}
-			else{
-				throw new Exception("No First for a DIV");
-			}
-			break;
-		case MOD:
-			if(cl.getFirst() != null){
-				erg = calculate(cl.getFirst()) % values.iterator().next();
-			}
-			else{
-				throw new Exception("No First for a MOD");
-			}
-			break;
-		case ABS:
-			erg = values.iterator().next();
-			if (erg < 0){
-				erg *= -1;
-			}
-			break;
 		}
 		return erg;
 	}

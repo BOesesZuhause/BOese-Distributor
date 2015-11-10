@@ -53,6 +53,12 @@ public class HibernateUtil {
 	        try {
 	            // Create the SessionFactory from hibernate.cfg.xml
 	        	Configuration configuration = new Configuration().configure();
+	        	configuration.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
+	        	configuration.setProperty("hibernate.connection.url", "jdbc:postgresql://localhost:5432/boese");        	
+	        	configuration.setProperty("hibernate.connection.username", "postgres");
+	        	configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+	        	configuration.setProperty("hibernate.connection.password", "Di0bPWfw");	        	
+	        	
 	        	StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().
 	        	applySettings(configuration.getProperties());
 	        	SessionFactory factory = configuration.buildSessionFactory(builder.build());

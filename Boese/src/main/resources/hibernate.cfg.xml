@@ -4,6 +4,7 @@
 "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
+    <!-- 
         <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.connection.password">Di0bPWfw</property>
@@ -13,12 +14,12 @@
         <property name="hibernate.search.autoregister_listeners">false</property>
         <property name="hibernate.show_sql">false</property>
         <property name="hibernate.validator.apply_to_ddl">false</property>
-       
+        -->
             <!-- Drop and re-create all database on startup -->
         <property name="hibernate.hbm2ddl.auto">create</property>
         <!-- SQL-Datei die beim Start ausgeführt wird um Default-Werte einzutragen -->
         <property name="hibernate.hbm2ddl.import_files">initial_data.txt</property>
- 
+
        
        
         <mapping resource="Group.hbm.xml" />

@@ -106,6 +106,7 @@ public class Controll {
 							
 						} catch (Exception e) {
 							System.err.println("Bad XML: " + e.getMessage());
+							e.printStackTrace();
 							throw new Exception(e.getMessage());
 						}
 					}

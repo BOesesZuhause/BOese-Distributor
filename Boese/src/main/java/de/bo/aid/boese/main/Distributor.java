@@ -43,15 +43,13 @@ import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import de.bo.aid.boese.cli.Parameters;
+import de.bo.aid.boese.db.Connection;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
-import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.ConfirmConnection;
 import de.bo.aid.boese.json.RequestAllDevices;
@@ -170,9 +168,7 @@ private final String logo =
 	 * Inits the database.
 	 */
 	private void initDatabase(){
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		session.close();
+		Connection.getConnection();
 	}
 	
 	/**
@@ -203,7 +199,7 @@ private final String logo =
 		
 	}
 	
-	
+	//TODO validate properties
 	/**
 	 * Load the properties-file.
 	 */
@@ -242,6 +238,9 @@ private final String logo =
 		// retrieve the properties
 		websocketPort = Integer.parseInt(props.getProperty("WebsocketPort"));
 		autoConfirm = Boolean.parseBoolean(props.getProperty("autoConfirm"));
+		
+		
+		
 	}
 
 	/**
@@ -253,6 +252,10 @@ private final String logo =
 
 		prop.setProperty("WebsocketPort", "8081");
 		prop.setProperty("autoConfirm", "false");
+		prop.setProperty("DB_User", "postgres");
+		prop.setProperty("DB_Password", "Di0bPWfw");
+		prop.setProperty("DB_Name", "boese");
+		prop.setProperty("DB_URL", "jdbc:postgresql://localhost:5432/boese");
 		try {
 			output = new FileOutputStream(configFilePath);
 		} catch (FileNotFoundException e) {
