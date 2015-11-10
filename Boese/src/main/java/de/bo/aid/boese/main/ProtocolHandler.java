@@ -224,7 +224,7 @@ public class ProtocolHandler implements MessageHandler {
 				}
 			}
 			catch (ObjectNotFoundException onfe){ //connector not found
-				SessionHandler.getInstance().rejectConnection(conId);	
+				SessionHandler.getInstance().rejectConnection(tempId);	
 			}
 		}
 	}
