@@ -43,12 +43,15 @@ import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import de.bo.aid.boese.cli.Parameters;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
+import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.ConfirmConnection;
 import de.bo.aid.boese.json.RequestAllDevices;
@@ -139,7 +142,9 @@ public class Distributor {
 	 * Inits the database.
 	 */
 	private void initDatabase(){
-		
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.close();
 	}
 	
 	/**
