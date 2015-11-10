@@ -440,6 +440,7 @@ public class Distributor {
 		} catch (Exception e) {
 			System.err.println("Bad XML: " + e.getMessage());
 			// TODO Exception Handling
+			e.printStackTrace();
 			todos = null;
 		}
 		return todos;
