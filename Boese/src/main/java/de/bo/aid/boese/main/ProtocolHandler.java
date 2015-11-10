@@ -309,25 +309,33 @@ public class ProtocolHandler implements MessageHandler {
 						lix.printStackTrace();	
 						//TODO
 					}
+					boolean found = false;
+					DeviceComponent dc = null;
 					if (itDc != null) {
+
 						while (itDc.hasNext()) { //iterate over deviceComponents from device(db)
-							DeviceComponent dc = itDc.next();
+							dc = itDc.next();
 							if (dc.getDeCoId() == component.getDeviceComponentId()) { // found deviceComponent in db
-								confirmComponents.put(component.getComponentName(), dc.getDeCoId());
-								inquiryList.add(
-										new Inquiry(dc.getDeCoId(), component.getTimestamp(), component.getValue()));
-								// Inserts.value(dc.getDeCoId(), new
-								// Date(component.getTimestamp()),
-								// component.getValue());
+								found = true;
 								break;
-							} else { //deviceComponent not found in db
-								logger.warn("Received component with unknown id. ComponentName: " + component.getComponentName());
-								TempComponent temp = new TempComponent(deviceId, component.getComponentName(), component.getValue(),
-										component.getTimestamp(), connectorId, component.getDescription(), component.getUnit(),
-										component.isActor());
-								distributor.addTempComponent(temp);
-							}
 						}
+						}
+							//component is already in db
+						if(found){
+							confirmComponents.put(component.getComponentName(), dc.getDeCoId());
+							inquiryList.add(
+									new Inquiry(dc.getDeCoId(), component.getTimestamp(), component.getValue()));
+							// Inserts.value(dc.getDeCoId(), new
+							// Date(component.getTimestamp()),
+							// component.getValue());
+						}else{ //component is not in db
+							logger.warn("Received component with unknown id. ComponentName: " + component.getComponentName());
+							TempComponent temp = new TempComponent(deviceId, component.getComponentName(), component.getValue(),
+									component.getTimestamp(), connectorId, component.getDescription(), component.getUnit(),
+									component.isActor());
+							distributor.addTempComponent(temp);
+						}
+						
 					}
 			}
 		}
