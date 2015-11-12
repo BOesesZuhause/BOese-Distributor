@@ -29,18 +29,12 @@
 package de.bo.aid.boese.main;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -204,73 +198,21 @@ private final String logo =
 	 * Load the properties-file.
 	 */
 	private void loadProperties() {
-
-		Properties props = new Properties();
-		FileInputStream file = null;
-
-		// load the file handle
-		try {
-			file = new FileInputStream(configFilePath);
-		} catch (FileNotFoundException e) {
-			logger.error("config File not found at: " + configFilePath);
-			e.printStackTrace();
-			System.exit(0);
-		}
-
-		// load all the properties from the file
-		try {
-			props.load(file);
-		} catch (IOException e) {
-			logger.error("IO-Exception while loading config-file");
-			e.printStackTrace();
-			System.exit(0);
-		}
-
-		// close the file handle
-		try {
-			file.close();
-		} catch (IOException e) {
-			logger.error("IO-Exception while closing config-file");
-			e.printStackTrace();
-			System.exit(0);
-		}
-
-		// retrieve the properties
-		websocketPort = Integer.parseInt(props.getProperty("WebsocketPort"));
-		autoConfirm = Boolean.parseBoolean(props.getProperty("autoConfirm"));
+		DistributorProperties props= new DistributorProperties();
+		props.load(configFilePath);
 		
-		
-		
+		websocketPort = props.getPort();
+		autoConfirm = props.isAutoConfirm();
 	}
 
 	/**
 	 * Creates the default properties-file.
 	 */
+	//TODO test
 	private void createDefaultProperties() {
-		Properties prop = new Properties();
-		OutputStream output = null;
-
-		prop.setProperty("WebsocketPort", "8081");
-		prop.setProperty("autoConfirm", "false");
-		prop.setProperty("DB_User", "postgres");
-		prop.setProperty("DB_Password", "Di0bPWfw");
-		prop.setProperty("DB_Name", "boese");
-		prop.setProperty("DB_URL", "jdbc:postgresql://localhost:5432/boese");
-		try {
-			output = new FileOutputStream(configFilePath);
-		} catch (FileNotFoundException e) {
-			logger.error("Could not open file: " + configFilePath);
-			e.printStackTrace();
-			System.exit(0);
-		}
-
-		try {
-			prop.store(output, null);
-		} catch (IOException e) {
-			logger.error("IO-Exception while saving default properties-file");
-			e.printStackTrace();
-			System.exit(0);
-		}
+		DistributorProperties props = new DistributorProperties();
+		props.setDefaults();
+		props.save(configFilePath);
 	}
 	
 	private void printLogo(){

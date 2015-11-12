@@ -245,21 +245,21 @@ public class ConnectorSimulation implements MessageHandler {
 		heizung.addComponent(c1);
 		heizung.addComponent(c2);
 		
-//		steckerleiste = new Device(-1, "steckerleiste");
-//		DeviceComponents c3 = new DeviceComponents(-1, "Fernseher", 50, new Date().getTime(), null, "Fernseher schalten", true);
-//		DeviceComponents c4 = new DeviceComponents(-1,"Lampe",  40, new Date().getTime(), null, "Lampe schalten", true);
-//		DeviceComponents c5 = new DeviceComponents(-1, "Kuehlschrank", 200, new Date().getTime(), "Kuehlschrank schalten", null, true);
-//		steckerleiste.addComponent(c3);
-//		steckerleiste.addComponent(c4);
-//		steckerleiste.addComponent(c5);
-//		
-//		tuersensor = new Device(-1, "Tuersensor");
-//		DeviceComponents c6 = new DeviceComponents(-1,"Tuersensor",  0, new Date().getTime(), null, null, false);
-//		tuersensor.addComponent(c6);
+		steckerleiste = new Device(-1, "steckerleiste");
+		DeviceComponents c3 = new DeviceComponents(-1, "Fernseher", 50, new Date().getTime(), null, "Fernseher schalten", true);
+		DeviceComponents c4 = new DeviceComponents(-1,"Lampe",  40, new Date().getTime(), null, "Lampe schalten", true);
+		DeviceComponents c5 = new DeviceComponents(-1, "Kuehlschrank", 200, new Date().getTime(), null, "Kuehlschrank schalten", true);
+		steckerleiste.addComponent(c3);
+		steckerleiste.addComponent(c4);
+		steckerleiste.addComponent(c5);
+		
+		tuersensor = new Device(-1, "Tuersensor");
+		DeviceComponents c6 = new DeviceComponents(-1,"Tuersensor",  0, new Date().getTime(), null, "Tuersensor Messung", false);
+		tuersensor.addComponent(c6);
 		
 		devices.add(heizung);
-//		devices.add(steckerleiste);
-//		devices.add(tuersensor);
+		devices.add(steckerleiste);
+		devices.add(tuersensor);
 	}
 
 	/**
