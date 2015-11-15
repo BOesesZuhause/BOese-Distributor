@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.bo.aid.boese.db.Connection;
+import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.main.Distributor;
 
 // TODO: Auto-generated Javadoc
@@ -29,6 +30,9 @@ public class SimulationTest {
     public void startServer() throws Exception {
     	Distributor distr = new Distributor();
     	distr.startWebsocketServer(8081);
+		HibernateUtil.setDBUser("postgres");
+		HibernateUtil.setDBPassword("Di0bPWfw");
+		HibernateUtil.setDBURL("boese", "localhost", "5432");
         Connection.getConnection();
         userSim = new UserSimulation(distr);
     }

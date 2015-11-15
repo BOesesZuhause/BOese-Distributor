@@ -13,17 +13,18 @@ import org.apache.logging.log4j.Logger;
 @SuppressWarnings("serial")
 public class DistributorProperties extends Properties{
 	
-	private final String DB_URL = "DB_URL";
+	private final String DB_HOST = "DB_HOST";
 	private final String USER = "DB_USER";
-	private final String PORT = "WebsocketPort";
+	private final String WS_PORT = "Websocket_Port";
 	private final String CONFIRM = "autoConfirm";
 	private final String PASSWORD = "DB_PASSWORD";
 	private final String DATABASE = "DB_NAME";
+	private final String DB_PORT = "DB_PORT";
 	
 	
 	final  Logger logger = LogManager.getLogger(DistributorProperties.class);
 
-	
+	//TODO validate properties
 	public void load(String path){
 		FileInputStream file = null;
 		try {
@@ -78,14 +79,15 @@ public class DistributorProperties extends Properties{
 		this.setDbUser("postgres");
 		this.setDbPassword("DI0bPWfw");
 		this.setDbName("boese");
-		this.setDbURL("jdbc:postgresql://localhost:5432/boese");
+		this.setDbHost("localhost");
+		this.setDbPort("5432");
 	}
 	
-	public String getDbURL() {
-		return this.getProperty(DB_URL);
+	public String getDbHost() {
+		return this.getProperty(DB_HOST);
 	}
-	public void setDbURL(String dbURL) {
-		this.setProperty(DB_URL, dbURL);
+	public void setDbHost(String dbURL) {
+		this.setProperty(DB_HOST, dbURL);
 	}
 	public String getDbName() {
 		return this.getProperty(DATABASE);
@@ -108,7 +110,7 @@ public class DistributorProperties extends Properties{
 	public int getPort() {
 		int port;
 		try{
-		port = Integer.parseInt(this.getProperty(PORT));
+		port = Integer.parseInt(this.getProperty(WS_PORT));
 		}catch (NumberFormatException e){
 			logger.error("Unable to load Port from properties");
 			logger.info("Trying to use default port 8081");
@@ -117,12 +119,20 @@ public class DistributorProperties extends Properties{
 		return port;
 	}
 	public void setPort(int port) {
-		this.setProperty(PORT, port + "");
+		this.setProperty(WS_PORT, port + "");
 	}
 	public boolean isAutoConfirm() {
 		return Boolean.parseBoolean(this.getProperty(CONFIRM));
 	}
 	public void setAutoConfirm(boolean autoConfirm) {
 		this.setProperty(CONFIRM, autoConfirm + "");
+	}
+	
+	public void setDbPort(String port){
+		this.setProperty(DB_PORT, port);
+	}
+
+	public String getDbPort() {
+		return this.getProperty(DB_PORT);
 	}
 }
