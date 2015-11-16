@@ -46,6 +46,7 @@ import de.bo.aid.boese.ruler.Interpretor;
 import de.bo.aid.boese.ruler.ToDoChecker;
 
 // TODO: Auto-generated Javadoc
+//TODO: Why session.get instead of Session.load
 /**
  * The Class Inserts.
  */
@@ -164,6 +165,7 @@ public class Inserts {
 			device = (Device) session.get(Device.class, deid);
 			dc.setDevice(device);
 			
+			//session.get, because of Lazy Loading(Same object)
 			comp = (Component) session.get(Component.class, coid);
 			dc.setComponent(comp);
 			dc.setDescription(description);
