@@ -59,7 +59,7 @@ public class Selects {
 		
 		Connector con = new Connector();
 		try{
-			session.load(con, new Integer(coid));
+			con = (Connector)session.get(Connector.class, new Integer(coid));
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
@@ -108,7 +108,7 @@ public class Selects {
 		DeviceComponent deco = new DeviceComponent();
 		double d = 0.0;
 		try{
-			session.load(deco, new Integer(decoid));
+			deco = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoid));
 			d = deco.getCurrentValue().doubleValue();
 			session.getTransaction().commit();
 		}
@@ -135,7 +135,7 @@ public class Selects {
 		
 		Device dev = new Device();
 		try{
-			session.load(dev, new Integer(deid));
+			dev = (Device)session.get(Device.class, new Integer(deid));
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
@@ -161,7 +161,7 @@ public class Selects {
 		
 		DeviceComponent deco = new DeviceComponent();
 		try{
-			session.load(deco, new Integer(decoid));
+			deco = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoid));
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
@@ -242,7 +242,7 @@ public class Selects {
 		
 		Rule rule = new Rule();
 		try{
-			session.load(rule, new Integer(ruid));
+			rule = (Rule)session.get(Rule.class, new Integer(ruid));
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
@@ -268,7 +268,7 @@ public class Selects {
 		
 		Unit unit = new Unit();
 		try{
-			session.load(unit, new Integer(uid));
+			unit = (Unit)session.get(Unit.class, new Integer(uid));
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
@@ -293,7 +293,7 @@ public class Selects {
 		
 		Component comp = new Component();
 		try{
-			session.load(comp, new Integer(coid));
+			comp = (Component)session.get(Component.class, new Integer(coid));
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
@@ -318,7 +318,7 @@ public class Selects {
 		
 		Service service = new Service();
 		try{
-			session.load(service, new Integer(seid));
+			service = (Service)session.get(Service.class, new Integer(seid));
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
@@ -343,7 +343,7 @@ public class Selects {
 		
 		Group grp = new Group();
 		try{
-			session.load(grp, new Short(grid));
+			grp = (Group)session.get(Group.class, new Short(grid));
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
@@ -368,7 +368,7 @@ public class Selects {
 		
 		User user = new User();
 		try{
-			session.load(user, new Integer(uid));
+			user = (User)session.get(User.class, new Integer(uid));
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
@@ -393,7 +393,7 @@ public class Selects {
 		
 		Zone zone = new Zone();
 		try{
-			session.load(zone, new Integer(zoid));
+			zone = (Zone)session.get(Zone.class, new Integer(zoid));
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
@@ -418,7 +418,7 @@ public class Selects {
 		
 		DeviceComponent deco = new DeviceComponent();
 		try{
-			session.load(deco, new Integer(decoId));
+			deco = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoId));
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
@@ -444,7 +444,7 @@ public class Selects {
 		
 		Connector con = new Connector();
 		try{
-			session.load(con, new Integer(coId));
+			con = (Connector)session.get(Connector.class, new Integer(coId));
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
@@ -464,13 +464,13 @@ public class Selects {
 	 * @param rrId the rr id
 	 * @return the repeat rule
 	 */
-	public static RepeatRule RepeatRule(int rrId) {
+	public static RepeatRule repeatRule(int rrId) {
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
 		RepeatRule rr = new RepeatRule();
 		try{
-			session.load(rr, new Integer(rrId));
+			rr = (RepeatRule)session.get(RepeatRule.class, new Integer(rrId));
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){
@@ -495,7 +495,7 @@ public class Selects {
 		
 		ToDo todo = new ToDo();
 		try{
-			session.load(todo, new Integer(toDoId));
+			todo = (ToDo)session.get(ToDo.class, new Integer(toDoId));
 			session.getTransaction().commit();
 		}
 		catch (ObjectNotFoundException onfe){

@@ -51,7 +51,7 @@ import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempDevice;
 import de.bo.aid.boese.model.DeviceComponent;
-import de.bo.aid.boese.ruler.Controll;
+import de.bo.aid.boese.ruler.Control;
 import de.bo.aid.boese.ruler.Inquiry;
 import de.bo.aid.boese.ruler.ToDoChecker;
 import de.bo.aid.boese.socket.SocketServer;
@@ -427,7 +427,7 @@ private final String logo =
 		for (Inquiry inq : inquirys) {
 			Inserts.value(inq.getDeviceComponentId(), new Date(inq.getTimestamp()), inq.getValue());
 		}
-		Controll controll = new Controll();
+		Control controll = new Control();
 		List<Component> todos;
 		try {
 			todos = controll.getToDos(inquirys);
@@ -504,7 +504,7 @@ private final String logo =
 		for(DeviceComponent deco : decos){
 			in.add(new Inquiry(deco.getDeCoId(), new Date().getTime(), deco.getCurrentValue().doubleValue()));
 		}
-		Controll controll = new Controll();
+		Control controll = new Control();
 		try {
 			// TODO sendToDos
 //			.sendToDos(controll.getToDos(in));

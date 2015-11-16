@@ -41,7 +41,7 @@ import org.hibernate.Session;
 
 import de.bo.aid.boese.main.Distributor;
 import de.bo.aid.boese.model.*;
-import de.bo.aid.boese.ruler.Controll;
+import de.bo.aid.boese.ruler.Control;
 import de.bo.aid.boese.ruler.Interpretor;
 import de.bo.aid.boese.ruler.ToDoChecker;
 
@@ -72,9 +72,9 @@ public class Inserts {
 		Connector con = new Connector();
 		Zone zone = new Zone();
 		try{
-			session.load(con, new Integer(coid));
+			con = (Connector)session.get(Connector.class, new Integer(coid));
 			device.setConnector(con);
-			session.load(zone, new Integer(zoid));
+			zone = (Zone)session.get(Zone.class, new Integer(zoid));
 			device.setZone(zone);
 		}
 		catch (ObjectNotFoundException onfe){
@@ -115,7 +115,7 @@ public class Inserts {
 		
 		Unit unit = new Unit();
 		try{
-			session.load(unit, new Integer(unitId));
+			unit = (Unit)session.get(Unit.class, new Integer(unitId));
 		}
 		catch (ObjectNotFoundException onfe){
 			session.getTransaction().rollback();
@@ -161,10 +161,10 @@ public class Inserts {
 		Device device = new Device();
 		Component comp = new Component();
 		try{
-			session.load(device, new Integer(deid));
+			device = (Device) session.get(Device.class, deid);
 			dc.setDevice(device);
 			
-			session.load(comp, new Integer(coid));
+			comp = (Component) session.get(Component.class, coid);
 			dc.setComponent(comp);
 			dc.setDescription(description);
 		}
@@ -235,7 +235,7 @@ public class Inserts {
  
 		DeviceComponent deco = new DeviceComponent();
 		try{
-			session.load(deco, new Integer(decoid));
+			deco = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoid));
 			deco.setCurrentValue(new BigDecimal(value));
 		}
 		catch (ObjectNotFoundException onfe){
@@ -578,7 +578,7 @@ public class Inserts {
 		
 		ToDo todo = new ToDo();
 		todo.setDate(date);
-		todo.setRepeatRule(Selects.RepeatRule(rrId));
+		todo.setRepeatRule(Selects.repeatRule(rrId));
 		todo.setActive(true);
 		
 		try{
@@ -602,7 +602,7 @@ public class Inserts {
 		
 		ToDo todo = new ToDo();
 		todo.setDate(date);
-		todo.setRepeatRule(Selects.RepeatRule(rrId));
+		todo.setRepeatRule(Selects.repeatRule(rrId));
 		todo.setActive(true);
 		
 		try{

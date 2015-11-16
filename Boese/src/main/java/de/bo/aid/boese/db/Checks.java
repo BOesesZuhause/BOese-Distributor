@@ -57,7 +57,7 @@ public class Checks {
 		
 		try{
 			DeviceComponent devcomp = new DeviceComponent();
-			session.load(devcomp, new Integer(decoid));
+			devcomp = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoid));
 			session.getTransaction().commit();
 			session.close();
 			return true;

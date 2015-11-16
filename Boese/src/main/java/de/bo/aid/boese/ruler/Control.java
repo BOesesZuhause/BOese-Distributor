@@ -53,7 +53,7 @@ import de.bo.aid.boese.xml.Condition;
 /**
  * The Class Controll.
  */
-public class Controll {
+public class Control {
 	
 	/** The check. */
 	Checker check;
@@ -64,7 +64,7 @@ public class Controll {
 	/**
 	 * Instantiates a new controll.
 	 */
-	public Controll(){
+	public Control(){
 		check = new Checker();
 		interpretor = new Interpretor();
 	}

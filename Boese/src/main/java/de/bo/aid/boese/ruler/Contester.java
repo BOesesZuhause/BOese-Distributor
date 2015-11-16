@@ -167,7 +167,7 @@ public class Contester {
 	}
 	
 	private static void testAll(){
-		Controll c = new Controll();
+		Control c = new Control();
 		List<Inquiry> inquirys = new ArrayList<Inquiry>();
 		inquirys.add(new Inquiry(1, new Date().getTime(), 11.1));
 		try {

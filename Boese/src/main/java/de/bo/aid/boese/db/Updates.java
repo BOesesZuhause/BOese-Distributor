@@ -39,7 +39,7 @@ import org.hibernate.Session;
 
 import de.bo.aid.boese.main.Distributor;
 import de.bo.aid.boese.model.*;
-import de.bo.aid.boese.ruler.Controll;
+import de.bo.aid.boese.ruler.Control;
 import de.bo.aid.boese.ruler.Interpretor;
 import de.bo.aid.boese.ruler.TimeTodos;
 import de.bo.aid.boese.ruler.ToDoChecker;
@@ -437,7 +437,7 @@ public class Updates {
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		RepeatRule rr = Selects.RepeatRule(rrId);
+		RepeatRule rr = Selects.repeatRule(rrId);
 		if(repeat != null){
 			rr.setRepeat(repeat);
 		}

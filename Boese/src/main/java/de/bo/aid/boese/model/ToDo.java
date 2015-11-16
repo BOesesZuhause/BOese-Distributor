@@ -55,7 +55,7 @@ public class ToDo {
 		this.toDoId = toDoId;
 		this.date = date;
 		this.active = active;
-		this.repeatRule = Selects.RepeatRule(0);
+		this.repeatRule = Selects.repeatRule(0);
 	}
 
 	public ToDo(int toDoId, Date date, boolean active, RepeatRule repeatRule) {
