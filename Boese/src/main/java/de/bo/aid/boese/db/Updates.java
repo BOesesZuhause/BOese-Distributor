@@ -37,6 +37,7 @@ import java.util.List;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 
+import de.bo.aid.boese.exceptions.DBForeignKeyNotFoundException;
 import de.bo.aid.boese.main.Distributor;
 import de.bo.aid.boese.model.*;
 import de.bo.aid.boese.ruler.Control;
@@ -58,12 +59,23 @@ public class Updates {
 	 *
 	 * @param value the value
 	 * @param decoid the decoid
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void value(double value, int decoid){
+	public static void value(double value, int decoid) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		DeviceComponent deco = Selects.deviceComponent(decoid);
+		DeviceComponent deco = null;
+		try{
+			deco = Selects.deviceComponent(decoid);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("DeviceComponent-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		deco.setCurrentValue(new BigDecimal(value));
 		LogDeviceComponent logdeco = new LogDeviceComponent();
 		logdeco.setDeviceComponent(deco);
@@ -82,12 +94,23 @@ public class Updates {
 	 * @param uid the uid
 	 * @param name the name
 	 * @param symbol the symbol
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void unit (int uid, String name, String symbol){
+	public static void unit (int uid, String name, String symbol) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Unit unit = Selects.unit(uid);
+		Unit unit = null;
+		try{
+			unit = Selects.unit(uid);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Unit-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}	
 		if (name != null){
 			unit.setName(name);
 		}
@@ -107,12 +130,23 @@ public class Updates {
 	 * @param unit the unit
 	 * @param name the name
 	 * @param sensor the sensor
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void component (int coid, Unit unit, String name, boolean sensor){
+	public static void component (int coid, Unit unit, String name, boolean sensor) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Component comp = Selects.component(coid);
+		Component comp = null;
+		try{
+			comp = Selects.component(coid);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Component-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		if (unit != null){
 			comp.setUnit(unit);
 		}
@@ -133,12 +167,23 @@ public class Updates {
 	 * @param status the status
 	 * @param description the description
 	 * @param logrule the logrule
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void DeviceComponent (int decoid, int status, String description, double logrule){
+	public static void DeviceComponent (int decoid, int status, String description, double logrule) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
-		DeviceComponent deco = Selects.deviceComponent(decoid);
+		DeviceComponent deco = null;
+		try{
+			deco = Selects.deviceComponent(decoid);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("DeviceComponent-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		if (status != -1){
 			deco.setStatus(status);
 		}
@@ -163,12 +208,23 @@ public class Updates {
 	 * @param purchase the purchase
 	 * @param zone the zone
 	 * @param con the con
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void device (int deid, String alias, String serial, Date purchase, Zone zone, Connector con){
+	public static void device (int deid, String alias, String serial, Date purchase, Zone zone, Connector con) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
-		Device dev = Selects.device(deid);
+		Device dev = null;
+		try{
+			dev = Selects.device(deid);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Device-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		if (alias != null){
 			dev.setAlias(alias);
 		}
@@ -197,12 +253,23 @@ public class Updates {
 	 * @param name the name
 	 * @param pw the pw
 	 * @param status the status
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void connector(int conid, String name, String pw, int status){
+	public static void connector(int conid, String name, String pw, int status) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
-		Connector con = Selects.connector(conid);
+		Connector con = null;
+		try{
+			con = Selects.connector(conid);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Connector-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		if (name != null){
 			con.setName(name);
 		}
@@ -223,12 +290,23 @@ public class Updates {
 	 *
 	 * @param seid the seid
 	 * @param description the description
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void service(int seid, String description){
+	public static void service(int seid, String description) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
-		Service service = Selects.service(seid);
+		Service service = null;
+		try{
+			service = Selects.service(seid);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Service-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		if (description != null){
 			service.setDescription(description);
 		}
@@ -243,12 +321,23 @@ public class Updates {
 	 *
 	 * @param grid the grid
 	 * @param name the name
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void group(short grid, String name){
+	public static void group(short grid, String name) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
-		Group grp = Selects.group(grid);
+		Group grp = null;
+		try{
+			grp = Selects.group(grid);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Group-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		if(name != null){
 			grp.setName(name);
 		}
@@ -268,12 +357,23 @@ public class Updates {
 	 * @param gender the gender
 	 * @param username the username
 	 * @param mail the mail
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void user(int uid, String surname, String firstname, String pw, boolean gender, String username, String mail){
+	public static void user(int uid, String surname, String firstname, String pw, boolean gender, String username, String mail) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
-		User user = Selects.user(uid);
+		User user = null;
+		try{
+			user = Selects.user(uid);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("User-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		if(surname != null){
 			user.setSurname(surname);
 		}
@@ -302,12 +402,23 @@ public class Updates {
 	 * @param zoid the zoid
 	 * @param name the name
 	 * @param suzone the suzone
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void zone(int zoid, String name, Zone suzone){
+	public static void zone(int zoid, String name, Zone suzone) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Zone zone = Selects.zone(zoid);
+		Zone zone = null;
+		try{
+			zone = Selects.zone(zoid);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Zone-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		if(name != null){
 			zone.setName(name);
 		}
@@ -328,12 +439,23 @@ public class Updates {
 	 * @param permissions the permissions
 	 * @param conditions the conditions
 	 * @param actions the actions
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void rule(int ruid, boolean active, String permissions, String conditions, String actions){
+	public static void rule(int ruid, boolean active, String permissions, String conditions, String actions) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Rule rule = Selects.rule(ruid);
+		Rule rule = null;
+		try{
+			rule = Selects.rule(ruid);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Rule-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		rule.setActive(active);
 		if(permissions != null){
 			rule.setPermissions(permissions);
@@ -358,12 +480,23 @@ public class Updates {
 	 * Activate rule.
 	 *
 	 * @param ruid the ruid
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void activateRule(int ruid){
+	public static void activateRule(int ruid) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Rule rule = Selects.rule(ruid);
+		Rule rule = null;
+		try{
+			Selects.rule(ruid);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Rule-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		rule.setActive(true);
 		
 		session.save(rule);
@@ -375,12 +508,23 @@ public class Updates {
 	 * Deactivate rule.
 	 *
 	 * @param ruid the ruid
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void deactivateRule(int ruid){
+	public static void deactivateRule(int ruid) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Rule rule = Selects.rule(ruid);
+		Rule rule = null;
+		try{
+			Selects.rule(ruid);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Rule-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		rule.setActive(false);
 		
 		session.save(rule);
@@ -393,12 +537,23 @@ public class Updates {
 	 *
 	 * @param status the status
 	 * @param decoId the DeviceComponentID
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void deviceComponentStatus(int status, int decoId){
+	public static void deviceComponentStatus(int status, int decoId) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		DeviceComponent deco = Selects.deviceComponent(decoId);
+		DeviceComponent deco = null;
+		try{
+			deco = Selects.deviceComponent(decoId);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("DeviceComponent-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		deco.setStatus(status);
 		
 		session.save(deco);
@@ -411,12 +566,23 @@ public class Updates {
 	 *
 	 * @param status the status
 	 * @param coId the ConnectorID
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void connectorStatus(int status, int coId){
+	public static void connectorStatus(int status, int coId) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Connector co = Selects.connector(coId);
+		Connector co = null;
+		try{
+			co = Selects.connector(coId);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Connector-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		co.setStatus(status);
 		
 		session.save(co);
@@ -432,12 +598,23 @@ public class Updates {
 	 * @param value the value
 	 * @param repeatsAfterEnd the repeatsAfterEnd
 	 * @param tdc the ToDoChecker of the Distributor
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void repeatRule(int rrId, String repeat, Double value, int repeatsAfterEnd, ToDoChecker tdc){
+	public static void repeatRule(int rrId, String repeat, Double value, int repeatsAfterEnd, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		RepeatRule rr = Selects.repeatRule(rrId);
+		RepeatRule rr = null;
+		try{
+			rr = Selects.repeatRule(rrId);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("RepeatRule-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		if(repeat != null){
 			rr.setRepeat(repeat);
 		}
@@ -460,12 +637,23 @@ public class Updates {
 	 * @param toDoId the toDoId
 	 * @param date the date
 	 * @param active the active
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static void toDo(int toDoId, Date date, boolean active){
+	public static void toDo(int toDoId, Date date, boolean active) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		ToDo todo = Selects.toDo(toDoId);
+		ToDo todo = null;
+		try{
+			todo = Selects.toDo(toDoId);
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("ToDo-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		todo.setActive(active);
 		if(date != null){
 			todo.setDate(date);

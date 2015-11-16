@@ -36,6 +36,7 @@ import java.util.List;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 
+import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.model.*;
 
 // TODO: Auto-generated Javadoc
@@ -52,20 +53,20 @@ public class Selects {
 	 *
 	 * @param coid the coid
 	 * @return the connector
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static Connector connector(int coid){
+	public static Connector connector(int coid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Connector con = new Connector();
-		try{
-			con = (Connector)session.get(Connector.class, new Integer(coid));
+		Connector con = (Connector)session.get(Connector.class, new Integer(coid));
+		if(con != null){
 			session.getTransaction().commit();
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("Connector not found");
 		}
 		
 		session.close();
@@ -100,22 +101,22 @@ public class Selects {
 	 *
 	 * @param decoid the decoid
 	 * @return the double
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static double currentValue(int decoid){
+	public static double currentValue(int decoid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
- 
-		DeviceComponent deco = new DeviceComponent();
+
 		double d = 0.0;
-		try{
-			deco = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoid));
+		DeviceComponent deco = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoid));
+		if(deco != null){
 			d = deco.getCurrentValue().doubleValue();
 			session.getTransaction().commit();
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("DeviceComponent not found");
 		}
 		
 		session.close();
@@ -128,20 +129,20 @@ public class Selects {
 	 *
 	 * @param deid the deid
 	 * @return the device
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static Device device (int deid){
+	public static Device device (int deid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Device dev = new Device();
-		try{
-			dev = (Device)session.get(Device.class, new Integer(deid));
+		Device dev = (Device)session.get(Device.class, new Integer(deid));
+		if(dev != null){
 			session.getTransaction().commit();
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("Device not found");
 		}
 		
 		session.close();
@@ -154,20 +155,20 @@ public class Selects {
 	 *
 	 * @param decoid the decoid
 	 * @return the device component
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static DeviceComponent deviceComponent(int decoid){
+	public static DeviceComponent deviceComponent(int decoid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		DeviceComponent deco = new DeviceComponent();
-		try{
-			deco = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoid));
+		DeviceComponent deco = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoid));
+		if(deco != null){
 			session.getTransaction().commit();
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("DeviceComponent not found");
 		}
 		
 		session.close();
@@ -235,20 +236,20 @@ public class Selects {
 	 *
 	 * @param ruid the ruid
 	 * @return the rule
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static Rule rule(int ruid){
+	public static Rule rule(int ruid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Rule rule = new Rule();
-		try{
-			rule = (Rule)session.get(Rule.class, new Integer(ruid));
+		Rule rule = (Rule)session.get(Rule.class, new Integer(ruid));
+		if(rule != null){
 			session.getTransaction().commit();
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("Rule not found");
 		}
 		
 		session.close();		
@@ -261,20 +262,20 @@ public class Selects {
 	 *
 	 * @param uid the uid
 	 * @return the unit
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static Unit unit(int uid){
+	public static Unit unit(int uid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Unit unit = new Unit();
-		try{
-			unit = (Unit)session.get(Unit.class, new Integer(uid));
+		Unit unit = (Unit)session.get(Unit.class, new Integer(uid));
+		if(unit != null){
 			session.getTransaction().commit();
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("Unit not found");
 		}
 		
 		session.close();
@@ -286,20 +287,20 @@ public class Selects {
 	 *
 	 * @param coid the coid
 	 * @return the component
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static Component component(int coid) {
+	public static Component component(int coid) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Component comp = new Component();
-		try{
-			comp = (Component)session.get(Component.class, new Integer(coid));
+		Component comp =(Component)session.get(Component.class, new Integer(coid));
+		if(comp != null){
 			session.getTransaction().commit();
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("Component not found");
 		}
 		
 		session.close();
@@ -311,20 +312,20 @@ public class Selects {
 	 *
 	 * @param seid the seid
 	 * @return the service
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static Service service (int seid) {
+	public static Service service (int seid) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Service service = new Service();
-		try{
-			service = (Service)session.get(Service.class, new Integer(seid));
+		Service service = (Service)session.get(Service.class, new Integer(seid));
+		if(service != null){
 			session.getTransaction().commit();
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("Service not found");
 		}
 		
 		session.close();
@@ -336,20 +337,20 @@ public class Selects {
 	 *
 	 * @param grid the grid
 	 * @return the group
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static Group group(short grid) {
+	public static Group group(short grid) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Group grp = new Group();
-		try{
-			grp = (Group)session.get(Group.class, new Short(grid));
+		Group grp = (Group)session.get(Group.class, new Short(grid));
+		if(grp != null){
 			session.getTransaction().commit();
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("Group not found");
 		}
 		
 		session.close();
@@ -361,20 +362,20 @@ public class Selects {
 	 *
 	 * @param uid the uid
 	 * @return the user
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static User user(int uid) {
+	public static User user(int uid) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		User user = new User();
-		try{
-			user = (User)session.get(User.class, new Integer(uid));
+		User user = (User)session.get(User.class, new Integer(uid));
+		if(user != null){
 			session.getTransaction().commit();
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("User not found");
 		}
 		
 		session.close();
@@ -386,20 +387,20 @@ public class Selects {
 	 *
 	 * @param zoid the zoid
 	 * @return the zone
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static Zone zone(int zoid) {
+	public static Zone zone(int zoid) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Zone zone = new Zone();
-		try{
-			zone = (Zone)session.get(Zone.class, new Integer(zoid));
+		Zone zone = (Zone)session.get(Zone.class, new Integer(zoid));
+		if(zone != null){
 			session.getTransaction().commit();
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("Zone not found");
 		}
 		
 		session.close();
@@ -411,20 +412,20 @@ public class Selects {
 	 *
 	 * @param decoId the DeviceComponentID
 	 * @return the status(short)
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static int deviceComponentStatus(int decoId){
+	public static int deviceComponentStatus(int decoId) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		DeviceComponent deco = new DeviceComponent();
-		try{
-			deco = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoId));
+		DeviceComponent deco = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoId));
+		if(deco != null){
 			session.getTransaction().commit();
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("DeviceComponent not found");
 		}
 		
 		session.close();
@@ -437,20 +438,20 @@ public class Selects {
 	 *
 	 * @param coId the ConnectorID
 	 * @return the status(short)
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static int ConnectorStatus(int coId){
+	public static int ConnectorStatus(int coId) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Connector con = new Connector();
-		try{
-			con = (Connector)session.get(Connector.class, new Integer(coId));
+		Connector con = (Connector)session.get(Connector.class, new Integer(coId));
+		if(con != null){
 			session.getTransaction().commit();
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("Connector not found");
 		}
 		
 		session.close();
@@ -463,20 +464,20 @@ public class Selects {
 	 *
 	 * @param rrId the rr id
 	 * @return the repeat rule
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static RepeatRule repeatRule(int rrId) {
+	public static RepeatRule repeatRule(int rrId) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		RepeatRule rr = new RepeatRule();
-		try{
-			rr = (RepeatRule)session.get(RepeatRule.class, new Integer(rrId));
+		RepeatRule rr = (RepeatRule)session.get(RepeatRule.class, new Integer(rrId));
+		if(rr != null){
 			session.getTransaction().commit();
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("RepeatRule not found");
 		}
 		
 		session.close();
@@ -488,20 +489,20 @@ public class Selects {
 	 *
 	 * @param toDoId the to do id
 	 * @return the to do
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static ToDo toDo(int toDoId) {
+	public static ToDo toDo(int toDoId) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		ToDo todo = new ToDo();
-		try{
-			todo = (ToDo)session.get(ToDo.class, new Integer(toDoId));
+		ToDo todo = (ToDo)session.get(ToDo.class, new Integer(toDoId));
+		if(todo != null){
 			session.getTransaction().commit();
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("ToDo not found");
 		}
 		
 		session.close();

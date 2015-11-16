@@ -33,6 +33,7 @@ package de.bo.aid.boese.model;
 import java.util.Date;
 
 import de.bo.aid.boese.db.Selects;
+import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 
 public class ToDo {
 	
@@ -55,7 +56,12 @@ public class ToDo {
 		this.toDoId = toDoId;
 		this.date = date;
 		this.active = active;
-		this.repeatRule = Selects.repeatRule(0);
+		try {
+			this.repeatRule = Selects.repeatRule(0);
+		} catch (DBObjectNotFoundException e) {
+			// TODO default RepeatRule 0
+			e.printStackTrace();
+		}
 	}
 
 	public ToDo(int toDoId, Date date, boolean active, RepeatRule repeatRule) {

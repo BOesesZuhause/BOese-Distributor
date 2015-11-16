@@ -53,11 +53,16 @@ public class ownMain {
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");
 		HibernateUtil.setDBURL("boese", "localhost", "5432");
-		int compid = Inserts.component("bla", 0, true);
-		int conid = Inserts.connector("bla", "bla");
-		int deid = Inserts.device(conid, 0, "bla", "123456789");
-		int deco1 = Inserts.deviceComponent(deid, compid, "1");
-		int deco2 = Inserts.deviceComponent(deid, compid, "2");
+		try{
+			int compid = Inserts.component("bla", 0, true);
+			int conid = Inserts.connector("bla", "bla");
+			int deid = Inserts.device(conid, 0, "bla", "123456789");
+			int deco1 = Inserts.deviceComponent(deid, compid, "1");
+			int deco2 = Inserts.deviceComponent(deid, compid, "2");
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 		
 		System.out.println("erledigt");
 	}

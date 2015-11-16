@@ -36,6 +36,7 @@ import java.util.List;
 
 import de.bo.aid.boese.db.AllSelects;
 import de.bo.aid.boese.db.Inserts;
+import de.bo.aid.boese.exceptions.DBForeignKeyNotFoundException;
 import de.bo.aid.boese.model.RepeatRule;
 import de.bo.aid.boese.model.ToDo;
 import de.bo.aid.boese.xml.BoeseXML;
@@ -77,7 +78,12 @@ public class Interpretor {
 			rule.remove(todo.getRepeatRule());
 		}
 		for(RepeatRule rr : rule){
-			Inserts.toDoWithoutChange(new TimeFormat(rr.getRepeat()).getDate(), rr.getRrId());
+			try {
+				Inserts.toDoWithoutChange(new TimeFormat(rr.getRepeat()).getDate(), rr.getRrId());
+			} catch (DBForeignKeyNotFoundException e) {
+				// TODO Logger
+				e.printStackTrace();
+			}
 		}
 		tdc.changeInToDo();
 	}

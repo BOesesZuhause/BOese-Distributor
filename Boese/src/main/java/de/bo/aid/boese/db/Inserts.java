@@ -39,6 +39,8 @@ import org.hibernate.ObjectNotFoundException;
 import org.hibernate.PropertyValueException;
 import org.hibernate.Session;
 
+import de.bo.aid.boese.exceptions.DBForeignKeyNotFoundException;
+import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.main.Distributor;
 import de.bo.aid.boese.model.*;
 import de.bo.aid.boese.ruler.Control;
@@ -63,25 +65,24 @@ public class Inserts {
 	 * @param name the name
 	 * @param serial the serial
 	 * @return the int
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static int device(int coid, int zoid, String name, String serial){
+	public static int device(int coid, int zoid, String name, String serial) throws Exception{
 		Session session = connection.getSession();
 		session.beginTransaction();
  
 		Device device = new Device();
 		
-		Connector con = new Connector();
-		Zone zone = new Zone();
-		try{
-			con = (Connector)session.get(Connector.class, new Integer(coid));
+		Connector con = (Connector)session.get(Connector.class, new Integer(coid));
+		Zone zone = (Zone)session.get(Zone.class, new Integer(zoid));
+		if(con != null && zone != null){
 			device.setConnector(con);
-			zone = (Zone)session.get(Zone.class, new Integer(zoid));
 			device.setZone(zone);
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException(((con == null) ? "Connector not found, " : "") + ((zone==null) ? "Zone not found, " : ""));
 		}
 		
 		device.setAlias(name);
@@ -109,25 +110,25 @@ public class Inserts {
 	 * @param unitId the unit id
 	 * @param sensor the sensor
 	 * @return the int
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static int component(String name, int unitId, boolean sensor){
+	public static int component(String name, int unitId, boolean sensor) throws Exception{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Unit unit = new Unit();
-		try{
-			unit = (Unit)session.get(Unit.class, new Integer(unitId));
+		Component comp = new Component();
+		Unit unit = (Unit)session.get(Unit.class, new Integer(unitId));
+		if (unit != null){
+			comp.setUnit(unit);			
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("Unit not found");
 		}
-		
-		Component comp = new Component();
+			
 		comp.setName(name);
 		comp.setSensor(sensor);
-		comp.setUnit(unit);
 		
 		try{
 			session.save(comp);
@@ -152,31 +153,28 @@ public class Inserts {
 	 * @param coid the coid
 	 * @param description the description
 	 * @return the int
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static int deviceComponent(int deid, int coid, String description){
+	public static int deviceComponent(int deid, int coid, String description) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
  
 		DeviceComponent dc = new DeviceComponent();
 		
-		Device device = new Device();
-		Component comp = new Component();
-		try{
-			device = (Device) session.get(Device.class, deid);
+		Device device = (Device) session.get(Device.class, deid);
+		//session.get, because of Lazy Loading(Same object)
+		Component comp = (Component) session.get(Component.class, coid);
+		if(device != null && comp != null){
 			dc.setDevice(device);
-			
-			//session.get, because of Lazy Loading(Same object)
-			comp = (Component) session.get(Component.class, coid);
 			dc.setComponent(comp);
 			dc.setDescription(description);
+			dc.setStatus(1);
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException(((device == null) ? "Device not found, " : "") + ((comp == null) ? "Component not found, " : ""));
 		}
-		
-		dc.setStatus(1);
  
 		try{
 			session.save(dc);
@@ -230,20 +228,20 @@ public class Inserts {
 	 * @param timestamp the timestamp
 	 * @param value the value
 	 * @return the int
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static int value(int decoid, Date timestamp, double value){
+	public static int value(int decoid, Date timestamp, double value) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
  
-		DeviceComponent deco = new DeviceComponent();
-		try{
-			deco = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoid));
+		DeviceComponent deco = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoid));
+		if(deco != null){
 			deco.setCurrentValue(new BigDecimal(value));
 		}
-		catch (ObjectNotFoundException onfe){
+		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw onfe;
+			throw new DBObjectNotFoundException("DeviceComponent not found");
 		}
 		try{
 			session.save(deco);
@@ -313,8 +311,9 @@ public class Inserts {
 	 * @param actions the actions
 	 * @param tdc the ToDoChecker of the Distributor
 	 * @return the int
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static int rule(List<Integer> deCoID, String permissions, String conditions, String actions, ToDoChecker tdc){
+	public static int rule(List<Integer> deCoID, String permissions, String conditions, String actions, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -342,7 +341,17 @@ public class Inserts {
 		try{
 			for(int decoid : deCoID){
 				session.beginTransaction();
-				DeviceComponent deco = Selects.deviceComponent(decoid);
+				DeviceComponent deco = null;
+				try{
+					deco = Selects.deviceComponent(decoid);
+				}
+				catch(Exception e){
+					session.getTransaction().rollback();
+					session.close();
+					DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("DeviceComponent-FK not found");
+					dfknfe.initCause(e.getCause());
+					throw dfknfe;
+				}
 				if (deco.getDeCoId() > -1){
 					DeviceComponentRule decorule = new DeviceComponentRule();
 					decorule.setDevicecomponent(deco);
@@ -539,8 +548,9 @@ public class Inserts {
 	 * @param deCoId the id of the DeviceComponent
 	 * @param tdc the ToDoChecker of the Distributor
 	 * @return the int
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static int repeatRule(String repeat, double value, int repeatsAfterEnd, int ruleId, int deCoId, ToDoChecker tdc){
+	public static int repeatRule(String repeat, double value, int repeatsAfterEnd, int ruleId, int deCoId, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -548,8 +558,17 @@ public class Inserts {
 		rr.setRepeat(repeat);
 		rr.setValue(new BigDecimal(value));
 		rr.setRepeatsAfterEnd(repeatsAfterEnd);
-		rr.setRule(Selects.rule(ruleId));
-		rr.setDeviceComponent(Selects.deviceComponent(deCoId));
+		try{
+			rr.setRule(Selects.rule(ruleId));
+			rr.setDeviceComponent(Selects.deviceComponent(deCoId));
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("DeviceComponent-FK or Rule-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}		
 		
 		try{
 			session.save(rr);
@@ -573,14 +592,24 @@ public class Inserts {
 	 * @param rrId the rr id
 	 * @param tdc the ToDoChecker of the Distributor
 	 * @return the int
+	 * @throws DBForeignKeyNotFoundException 
 	 */
-	public static int toDo(Date date, int rrId, ToDoChecker tdc){
+	public static int toDo(Date date, int rrId, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
 		ToDo todo = new ToDo();
 		todo.setDate(date);
-		todo.setRepeatRule(Selects.repeatRule(rrId));
+		try{
+			todo.setRepeatRule(Selects.repeatRule(rrId));
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("RepeatRule-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		todo.setActive(true);
 		
 		try{
@@ -598,13 +627,22 @@ public class Inserts {
 		return todo.getToDoId();
 	}
 	
-	public static int toDoWithoutChange(Date date, int rrId){
+	public static int toDoWithoutChange(Date date, int rrId) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
 		ToDo todo = new ToDo();
 		todo.setDate(date);
-		todo.setRepeatRule(Selects.repeatRule(rrId));
+		try{
+			todo.setRepeatRule(Selects.repeatRule(rrId));
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("RepeatRule-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		todo.setActive(true);
 		
 		try{

@@ -48,15 +48,21 @@ public class TimeTester{
 		ToDoChecker tdc = new ToDoChecker();
 		tdc.start();
 		
-		int conid = Inserts.connector("leer", "123");
-		int deid = Inserts.device(conid, 0, "leer", "123");
-		int compid = Inserts.component("leer", 0, true);
-		int decoid = Inserts.deviceComponent(deid, compid, "leer");
-		List<Integer> decoList = new ArrayList<Integer>();
-		decoList.add(decoid);
-		int ruid = Inserts.rule(decoList, "", "", "", tdc);
-		int rrid = Inserts.repeatRule("30; 21; *; *; *; *", 100, 0, ruid, decoid, tdc);
-		int todoid = Inserts.toDo(new Date(), rrid, tdc);
+		try{
+			int conid = Inserts.connector("leer", "123");
+			int deid = Inserts.device(conid, 0, "leer", "123");
+			int compid = Inserts.component("leer", 0, true);
+			int decoid = Inserts.deviceComponent(deid, compid, "leer");
+		
+			List<Integer> decoList = new ArrayList<Integer>();
+			decoList.add(decoid);
+			int ruid = Inserts.rule(decoList, "", "", "", tdc);
+			int rrid = Inserts.repeatRule("30; 21; *; *; *; *", 100, 0, ruid, decoid, tdc);
+			int todoid = Inserts.toDo(new Date(), rrid, tdc);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 		
 //		System.out.println(todoid);
 		

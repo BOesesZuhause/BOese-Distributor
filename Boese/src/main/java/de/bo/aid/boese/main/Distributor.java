@@ -319,7 +319,12 @@ private final String logo =
 		int connectorId = temp.getConnectorID();
 		
 		HashMap<String, Integer> devices = new HashMap<String, Integer>();
-		devices.put(name, Inserts.device(connectorId, zoneId, name, "serial"));
+		try {
+			devices.put(name, Inserts.device(connectorId, zoneId, name, "serial"));
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+		}
 		
 		protocolHandler.sendConfirmDevices(devices, connectorId);
 		
@@ -392,8 +397,20 @@ private final String logo =
 		int deviceId = temp.getDeviceId();
 		int connectorId = temp.getConnectorId();
 		
-		int componentId = Inserts.component(name, unitId, !temp.isActor()); 
-		int deCoId = Inserts.deviceComponent(deviceId, componentId, temp.getDescription());
+		int componentId = 0; 
+		int deCoId = 0;
+		// TODO Was ist wenn Inserts.component() funktioniert aber Inserts.deviceComponent nicht
+		// TODO jedesmal wird eine Komponente erstellt
+		try{
+			componentId = Inserts.component(name, unitId, !temp.isActor()); 
+			deCoId = Inserts.deviceComponent(deviceId, componentId, temp.getDescription());
+		}
+		catch(Exception e){
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			//User hat DeviceComponent bestätigt, aber es gab ein Fehler
+			return;
+		}
 		HashMap<String, Integer> confirmComponents = new HashMap<String, Integer>();
 		confirmComponents.put(name, deCoId);
 		ArrayList<Inquiry> inquiryList = new ArrayList<>();
@@ -425,7 +442,13 @@ private final String logo =
 	 */
 	public List<Component> insertValues(List<Inquiry> inquirys) {
 		for (Inquiry inq : inquirys) {
-			Inserts.value(inq.getDeviceComponentId(), new Date(inq.getTimestamp()), inq.getValue());
+			try{
+				Inserts.value(inq.getDeviceComponentId(), new Date(inq.getTimestamp()), inq.getValue());
+			}
+			catch(Exception e){
+				logger.error(e.getMessage());
+				e.printStackTrace();
+			}
 		}
 		Control controll = new Control();
 		List<Component> todos;

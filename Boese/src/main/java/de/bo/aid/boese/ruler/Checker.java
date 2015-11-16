@@ -41,6 +41,7 @@ import java.util.Set;
 import de.bo.aid.boese.constants.Status;
 import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.db.Updates;
+import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.xml.Action;
 import de.bo.aid.boese.xml.CalculationList;
 import de.bo.aid.boese.xml.Component;
@@ -124,12 +125,24 @@ public class Checker {
 		if(comp == null){
 			return false;
 		}
-		int status = Selects.deviceComponent(comp.getId()).getStatus();
+		int status = Status.NO_STATUS;
+		try {
+			status = Selects.deviceComponent(comp.getId()).getStatus();
+		} catch (DBObjectNotFoundException e1) {
+			// TODO Logger
+			e1.printStackTrace();
+		}
 		if(status == Status.NO_STATUS || status == Status.INACTIVE || status == Status.DEFECT || status == Status.UNAVAILABLE || status == Status.COMMUNICATION_FAILURE || status == Status.UNKNOWN || status == Status.DELETED ){
 			return false;
 		}
 		else{
-			double isValue = Selects.currentValue(comp.getId());
+			double isValue = 0.0;
+			try {
+				isValue = Selects.currentValue(comp.getId());
+			} catch (DBObjectNotFoundException e1) {
+				// TODO logger
+				e1.printStackTrace();
+			}
 			double comparativeValue = 0.0;
 			try {
 				comparativeValue = calculate(comp.getCalculation());

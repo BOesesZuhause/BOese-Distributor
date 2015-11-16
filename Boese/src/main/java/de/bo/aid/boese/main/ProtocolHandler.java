@@ -49,6 +49,8 @@ import de.bo.aid.boese.db.AllSelects;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.db.Updates;
+import de.bo.aid.boese.exceptions.DBForeignKeyNotFoundException;
+import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.ConfirmConnection;
 import de.bo.aid.boese.json.ConfirmDeviceComponents;
@@ -223,8 +225,10 @@ public class ProtocolHandler implements MessageHandler {
 					SessionHandler.getInstance().rejectConnection(conId);
 				}
 			}
-			catch (ObjectNotFoundException onfe){ //connector not found
-				SessionHandler.getInstance().rejectConnection(tempId);	
+			catch (DBObjectNotFoundException onfe){ //connector not found
+				SessionHandler.getInstance().rejectConnection(tempId);
+				logger.error(onfe.getMessage());
+				onfe.printStackTrace();
 			}
 		}
 	}
@@ -256,8 +260,9 @@ public class ProtocolHandler implements MessageHandler {
 					dev = Selects.device(devices.get(deviceName)); //get Device from Hashset
 					//TODO check name?
 					confirmDevices.put(deviceName, dev.getDeId());
-				}
-				catch(ObjectNotFoundException onfe){
+				}catch (DBObjectNotFoundException onfe){ 
+					logger.error(onfe.getMessage());
+					onfe.printStackTrace();
 					logger.warn("Received device with unknown id. DeviceName: " + deviceName);
 					TempDevice temp = new TempDevice(connectorId, deviceName);
 					distributor.addTempDevie(temp);
@@ -290,9 +295,11 @@ public class ProtocolHandler implements MessageHandler {
 		Device device = null;
 		try{
 			device = Selects.device(deviceId);
-		}catch(ObjectNotFoundException onfe){ //Device for the component was not found
+		}
+		catch (DBObjectNotFoundException onfe){ 
+			logger.error(onfe.getMessage());
+			onfe.printStackTrace();
 			logger.warn("Device with id: " + deviceId + " not found.");
-			logger.error("No components are received from connector with id: " + connectorId + ". Maybe the database crashed and is out of sync with the connector");
 			return;
 		}
 		for (DeviceComponents component : components) { //iterate over sendComponents from connector
@@ -403,7 +410,14 @@ public class ProtocolHandler implements MessageHandler {
 		}
 		HashSet<Integer> deIDList = urdc.getDeviceIds();
 		for (Integer devId : deIDList) {
-			Set<DeviceComponent> decoSet = Selects.device(devId.intValue()).getDeviceComponents();
+			Set<DeviceComponent> decoSet = null;
+			try {
+				decoSet = Selects.device(devId.intValue()).getDeviceComponents();
+			} 
+			catch (DBObjectNotFoundException onfe){ 
+				logger.error(onfe.getMessage());
+				onfe.printStackTrace();
+			}
 			HashSet<DeviceComponents> decos = new HashSet<>();
 			for (DeviceComponent deco : decoSet) {
 				decos.add(new DeviceComponents(deco.getDeCoId(), deco.getComponent().getName(),
@@ -431,7 +445,14 @@ public class ProtocolHandler implements MessageHandler {
 		if (urc.getType() == MessageType.USERREQUESTCONNECTORS) {
 			HashSet<Integer> conIdList = ((UserRequestConnectors) urc).getConnectorIds();
 			for (Integer conId : conIdList) {
-				Connector con = Selects.connector(conId.intValue());
+				Connector con = null;
+				try {
+					con = Selects.connector(conId.intValue());
+				} 
+				catch (DBObjectNotFoundException onfe){ 
+					logger.error(onfe.getMessage());
+					onfe.printStackTrace();
+				}
 				connectors.put(conId, con.getName());
 			}
 		} else if (urc.getType() == MessageType.USERREQUESTALLCONNECTORS) {
@@ -554,7 +575,7 @@ public class ProtocolHandler implements MessageHandler {
 		HashMap<Integer, Integer> tempRules = new HashMap<>();
 		List<Integer> ruleDeCoIds = new ArrayList<>();
 		Interpretor interpretor = new Interpretor();
-		int ruleId;
+		int ruleId = 0;
 		for (Rule rule : ucr.getRules()) {
 			if (BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())) == null ||
 					BoeseXML.readXML(new ByteArrayInputStream(rule.getPermissions().getBytes())) == null ||
@@ -564,13 +585,18 @@ public class ProtocolHandler implements MessageHandler {
 			} else {
 				ruleDeCoIds = interpretor.getAllDeCoIdsCondition(
 						BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())));
-				ruleId = Inserts.rule(ruleDeCoIds, rule.getPermissions(), rule.getConditions(), rule.getActions(), distributor.getTdc());
+				try {
+					ruleId = Inserts.rule(ruleDeCoIds, rule.getPermissions(), rule.getConditions(), rule.getActions(), distributor.getTdc());
+				} catch (DBForeignKeyNotFoundException e) {
+					logger.error(e.getMessage());
+					e.printStackTrace();
+				}
 				tempRules.put(rule.getTempRuleId(), ruleId);
 			}
 		}
 		sendConfirmRules(tempRules, connectorId);
 	}
-
+	
 	/**
 	 * Handle multi messages.
 	 *
@@ -605,7 +631,12 @@ public class ProtocolHandler implements MessageHandler {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
-		Updates.deviceComponentStatus(ss.getStatusCode(), ss.getDeviceComponentId());
+		try {
+			Updates.deviceComponentStatus(ss.getStatusCode(), ss.getDeviceComponentId());
+		} catch (DBForeignKeyNotFoundException e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+		}
 
 		// TODO Shouldn't this be ConfirmStatus?
 		BoeseJson cs = new SendStatus(ss.getDeviceComponentId(), ss.getStatusCode(), ss.getStatusTimestamp(), false,
@@ -699,8 +730,15 @@ public class ProtocolHandler implements MessageHandler {
 		List<Component> todos = distributor.insertValues(inquirys);
 		for (Component component : todos) {
 			int deCoId = component.getId();
-			int deviceId = Selects.deviceComponent(deCoId).getDevice().getDeId();
-			int idConnector = Selects.device(deviceId).getConnector().getCoId();
+			int deviceId = -1;
+			int idConnector = -1;
+			try {
+				deviceId = Selects.deviceComponent(deCoId).getDevice().getDeId();
+				idConnector = Selects.device(deviceId).getConnector().getCoId();
+			} catch (DBObjectNotFoundException e) {
+				logger.error(e.getMessage());
+				e.printStackTrace();
+			}
 			sendValue(deviceId, deCoId, component.getValue(), new Date().getTime(), idConnector);
 		}
 	}
