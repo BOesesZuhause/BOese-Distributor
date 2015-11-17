@@ -55,6 +55,7 @@ import de.bo.aid.boese.ruler.Control;
 import de.bo.aid.boese.ruler.Inquiry;
 import de.bo.aid.boese.ruler.ToDoChecker;
 import de.bo.aid.boese.socket.SocketServer;
+import de.bo.aid.boese.socket.HeartbeatWorker;
 import de.bo.aid.boese.socket.SessionHandler;
 import de.bo.aid.boese.xml.Component;
 import javassist.NotFoundException;
@@ -238,8 +239,6 @@ private final String logo =
 		}
 	}
 	
-	
-
 	/**
 	 * The main method.
 	 *
@@ -252,9 +251,14 @@ private final String logo =
 		distr.loadProperties();
 		distr.initDatabase();
 		distr.startWebsocketServer(0);
-		
+		//distr.startHeartbeat();
 	}
 	
+	public void startHeartbeat() {
+		HeartbeatWorker worker = new HeartbeatWorker();
+		worker.start();
+	}
+
 	/**
 	 * Gets the temp connectors.
 	 *
