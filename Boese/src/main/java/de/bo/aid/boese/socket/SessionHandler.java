@@ -44,6 +44,8 @@ import org.apache.logging.log4j.Logger;
  */
 public class SessionHandler {
 	
+	private int missedAnswerThreshold = 5;
+	
 	/** The Constant logger for log4j. */
 	final  Logger logger = LogManager.getLogger(SessionHandler.class);
 	
@@ -131,7 +133,8 @@ public class SessionHandler {
 	 * @param session the session
 	 */
 	public void removeSession(Session session){
-		sessions.remove(session);
+		SessionData data = getDataBySession(session);
+		sessions.remove(data);
 	}
 	
 	/**
@@ -184,5 +187,49 @@ public class SessionHandler {
 	public static SessionHandler getInstance() {
 		return instance;
 	}
+
+	public void handleHeartbeat(Session session) {
+		SessionData data = getDataBySession(session);
+		data.setLastHeartbeat(System.currentTimeMillis());
+		data.setMissedAnswers(0);
+	}
+	
+	private synchronized SessionData getDataBySession(Session session){
+		for(SessionData data : sessions){
+			if(data.getSession().equals(session)){
+				return data;
+			}
+		}
+		return null;
+	}
+	
+	public synchronized void checkHeartbeat(){
+		for(SessionData data : sessions){ //TODO add synchronized-wrappers
+			long now = System.currentTimeMillis();
+			if((now - data.getLastHeartbeat()) > 90){
+				if(data.getMissedAnswers() >= missedAnswerThreshold){
+					try {
+						data.getSession().close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					sessions.remove(data);
+				}
+				logger.warn("Connector with id: " + data.getId() + " doesnt respond");
+				data.setMissedAnswers(data.getMissedAnswers()+1);
+			}
+		}
+	}
+
+	public int getMissedAnswerThreshold() {
+		return missedAnswerThreshold;
+	}
+
+	public void setMissedAnswerThreshold(int missedAnswerThreshold) {
+		this.missedAnswerThreshold = missedAnswerThreshold;
+	}
+	
+	
 
 }

@@ -102,7 +102,7 @@ public class SocketEndpoint
 	public void handleMessage(String message, Session session) {
 		logger.info("Server received Message: " + message);
 		if(message.equals("HEARTBEAT")){
-			
+			handler.handleHeartbeat(session);
 		}else{
 			SocketServer.getInstance().handleMessage(message, handler.getConnectorId(session));
 		}

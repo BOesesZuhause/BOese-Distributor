@@ -5,7 +5,8 @@ import javax.websocket.Session;
 public class SessionData {
 	
 	private int id;
-	private int lastHeartbeat;
+	private int missedAnswers;
+	private long lastHeartbeat;
 	private Session session;
 	
 	public Session getSession() {
@@ -20,11 +21,17 @@ public class SessionData {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getLastHeartbeat() {
+	public long getLastHeartbeat() {
 		return lastHeartbeat;
 	}
-	public void setLastHeartbeat(int lastHeartbeat) {
+	public void setLastHeartbeat(long lastHeartbeat) {
 		this.lastHeartbeat = lastHeartbeat;
+	}
+	public int getMissedAnswers() {
+		return missedAnswers;
+	}
+	public void setMissedAnswers(int missedAnswers){
+		this.missedAnswers = missedAnswers;
 	}
 	
 	
