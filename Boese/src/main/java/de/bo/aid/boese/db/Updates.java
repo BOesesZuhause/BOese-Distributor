@@ -155,7 +155,7 @@ public class Updates {
 		}
 		comp.setActor(actor);
 		
-		session.saveOrUpdate(unit);
+		session.saveOrUpdate(comp);
 		session.getTransaction().commit();
 		session.close();
 	}

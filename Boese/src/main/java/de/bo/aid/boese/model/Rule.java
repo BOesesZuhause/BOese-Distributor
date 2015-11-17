@@ -298,4 +298,63 @@ public class Rule implements java.io.Serializable {
 		this.repeatRule = repeatRule;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Rule other = (Rule) obj;
+		if (actions == null) {
+			if (other.actions != null)
+				return false;
+		} else if (!actions.equals(other.actions))
+			return false;
+		if (active == null) {
+			if (other.active != null)
+				return false;
+		} else if (!active.equals(other.active))
+			return false;
+		if (conditions == null) {
+			if (other.conditions != null)
+				return false;
+		} else if (!conditions.equals(other.conditions))
+			return false;
+		if (historyLogRules == null) {
+			if (other.historyLogRules != null)
+				return false;
+		} else if (!historyLogRules.equals(other.historyLogRules))
+			return false;
+		if (insertDate == null) {
+			if (other.insertDate != null)
+				return false;
+		} else if (!insertDate.equals(other.insertDate))
+			return false;
+		if (logRules == null) {
+			if (other.logRules != null)
+				return false;
+		} else if (!logRules.equals(other.logRules))
+			return false;
+		if (modifyDate == null) {
+			if (other.modifyDate != null)
+				return false;
+		} else if (!modifyDate.equals(other.modifyDate))
+			return false;
+		if (permissions == null) {
+			if (other.permissions != null)
+				return false;
+		} else if (!permissions.equals(other.permissions))
+			return false;
+		if (repeatRule == null) {
+			if (other.repeatRule != null)
+				return false;
+		} else if (!repeatRule.equals(other.repeatRule))
+			return false;
+		if (ruId != other.ruId)
+			return false;
+		return true;
+	}
+
 }

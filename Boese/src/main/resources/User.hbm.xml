@@ -31,7 +31,7 @@
         <property name="email" type="string">
             <column name="Email" length="125" />
         </property>
-        <set name="groupUsers" table="group_user" inverse="true" lazy="true" fetch="select">
+        <set name="groupUsers" table="group_user" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="UsID" not-null="true" />
             </key>

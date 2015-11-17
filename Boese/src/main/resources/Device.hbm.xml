@@ -24,13 +24,13 @@
         <property name="purchaseDate" type="date">
             <column name="PurchaseDate" length="13" />
         </property>
-        <set name="deviceGroups" table="device_group" inverse="true" lazy="true" fetch="select">
+        <set name="deviceGroups" table="device_group" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="DeID" not-null="true" />
             </key>
             <one-to-many class="de.bo.aid.boese.model.DeviceGroup" />
         </set>
-        <set name="services" table="service_device" inverse="true" lazy="true" fetch="select">
+        <set name="services" table="service_device" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="DeID" not-null="true" />
             </key>

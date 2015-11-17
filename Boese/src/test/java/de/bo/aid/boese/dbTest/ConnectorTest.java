@@ -108,8 +108,8 @@ public class ConnectorTest {
 		try {
 			con = Selects.connector(id);
 		} catch (DBObjectNotFoundException e) {
-			fail(e.getMessage() + "with ID: " + id);
 			e.printStackTrace();
+			fail(e.getMessage() + "with ID: " + id);
 		}
 		return con;
 	}
@@ -123,7 +123,7 @@ public class ConnectorTest {
 	private void equal(Connector con, String name){
 		Connector conTest = select(con.getCoId());
 		assertTrue("Connector " + name + " Name not equal", con.getName().equals(conTest.getName()));
-		assertTrue("Connector " + name + " Passwor not equal", con.getPassword().equals(conTest.getPassword()));
+		assertTrue("Connector " + name + " Password not equal", con.getPassword().equals(conTest.getPassword()));
 		assertTrue("Connector " + name + " Status not equal", con.getStatus() == conTest.getStatus());
 		assertTrue("Connector " + name + " ID not equal", con.getCoId() == conTest.getCoId());
 	}
@@ -138,8 +138,8 @@ public class ConnectorTest {
 		try {
 			Updates.connector(id, conUpdate.getName(), conUpdate.getPassword(), conUpdate.getStatus());
 		} catch (DBObjectNotFoundException e) {
-			fail(e.getMessage() + "with ID: " + id);
 			e.printStackTrace();
+			fail(e.getMessage() + "with ID: " + id);
 		}
 	}
 

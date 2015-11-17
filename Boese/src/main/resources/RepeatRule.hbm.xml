@@ -25,7 +25,7 @@
         <many-to-one name="deviceComponent" class="de.bo.aid.boese.model.DeviceComponent" fetch="select" lazy="false">
             <column name="DeCoID" not-null="true" />
         </many-to-one>
-        <set name="toDo" table="ToDo" inverse="true" lazy="true" fetch="select">
+        <set name="toDo" table="ToDo" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="RRID" not-null="true" />
             </key>

@@ -165,4 +165,30 @@ public class ToDo {
 		this.repeatRule = repeatRule;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ToDo other = (ToDo) obj;
+		if (active != other.active)
+			return false;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
+			return false;
+		if (repeatRule == null) {
+			if (other.repeatRule != null)
+				return false;
+		} else if (!repeatRule.equals(other.repeatRule))
+			return false;
+		if (toDoId != other.toDoId)
+			return false;
+		return true;
+	}
+
 }

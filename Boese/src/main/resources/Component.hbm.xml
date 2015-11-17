@@ -19,7 +19,7 @@
         <property name="actor" type="boolean">
             <column name="Actor" not-null="true" />
         </property>
-        <set name="deviceComponents" table="device_component" inverse="true" lazy="true" fetch="select">
+        <set name="deviceComponents" table="device_component" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="CoID" not-null="true" />
             </key>

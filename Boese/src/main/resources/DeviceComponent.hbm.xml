@@ -28,31 +28,31 @@
         <property name="currentValue" type="big_decimal">
             <column name="CurrentValue" precision="1000" scale="0" />
         </property>
-        <set name="deviceComponenteReplacesForDeCoId" table="device_componente_replace" inverse="true" lazy="true" fetch="select">
+        <set name="deviceComponenteReplacesForDeCoId" table="device_componente_replace" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="DeCoID" not-null="true" />
             </key>
             <one-to-many class="de.bo.aid.boese.model.DeviceComponenteReplace" />
         </set>
-        <set name="historyLogDeviceComponents" table="history_log_devicecomponent" inverse="true" lazy="true" fetch="select">
+        <set name="historyLogDeviceComponents" table="history_log_devicecomponent" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="DeCoID" not-null="true" />
             </key>
             <one-to-many class="de.bo.aid.boese.model.HistoryLogDeviceComponent" />
         </set>
-        <set name="deviceComponenteReplacesForDeCoIdreplaced" table="device_componente_replace" inverse="true" lazy="true" fetch="select">
+        <set name="deviceComponenteReplacesForDeCoIdreplaced" table="device_componente_replace" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="DeCoIDReplaced" not-null="true" />
             </key>
             <one-to-many class="de.bo.aid.boese.model.DeviceComponenteReplace" />
         </set>
-        <set name="logDeviceComponents" table="log_devicecomponent" inverse="true" lazy="true" fetch="select">
+        <set name="logDeviceComponents" table="log_devicecomponent" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="DeCoID" not-null="true" />
             </key>
             <one-to-many class="de.bo.aid.boese.model.LogDeviceComponent" />
         </set>
-        <set name="repeatRule" table="RepeatRule" inverse="true" lazy="true" fetch="select">
+        <set name="repeatRule" table="RepeatRule" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="DeCoID" not-null="true" />
             </key>

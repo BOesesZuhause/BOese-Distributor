@@ -28,19 +28,19 @@
         <property name="actions" type="de.bo.aid.boese.hibernate.util.SQLXMLUserType">
             <column name="Actions" />
         </property>
-        <set name="logRules" table="log_rule" inverse="true" lazy="true" fetch="select">
+        <set name="logRules" table="log_rule" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="RuID" not-null="true" />
             </key>
             <one-to-many class="de.bo.aid.boese.model.LogRule" />
         </set>
-        <set name="historyLogRules" table="history_log_rule" inverse="true" lazy="true" fetch="select">
+        <set name="historyLogRules" table="history_log_rule" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="RuID" not-null="true" />
             </key>
             <one-to-many class="de.bo.aid.boese.model.HistoryLogRule" />
         </set>
-        <set name="repeatRule" table="RepeatRule" inverse="true" lazy="true" fetch="select">
+        <set name="repeatRule" table="RepeatRule" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="RuleID" not-null="true" />
             </key>

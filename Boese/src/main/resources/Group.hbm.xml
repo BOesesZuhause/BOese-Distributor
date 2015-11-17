@@ -13,19 +13,19 @@
         <property name="name" type="string">
             <column name="Name" length="25" not-null="true" />
         </property>
-        <set name="groupZones" table="group_zone" inverse="true" lazy="true" fetch="select">
+        <set name="groupZones" table="group_zone" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="GrID" not-null="true" />
             </key>
             <one-to-many class="de.bo.aid.boese.model.GroupZone" />
         </set>
-        <set name="deviceGroups" table="device_group" inverse="true" lazy="true" fetch="select">
+        <set name="deviceGroups" table="device_group" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="GrID" not-null="true" />
             </key>
             <one-to-many class="de.bo.aid.boese.model.DeviceGroup" />
         </set>
-        <set name="groupUsers" table="group_user" inverse="true" lazy="true" fetch="select">
+        <set name="groupUsers" table="group_user" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="GrID" not-null="true" />
             </key>

@@ -293,4 +293,58 @@ public class Device implements java.io.Serializable {
 		this.deviceComponents = deviceComponents;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Device other = (Device) obj;
+		if (alias == null) {
+			if (other.alias != null)
+				return false;
+		} else if (!alias.equals(other.alias))
+			return false;
+		if (connector == null) {
+			if (other.connector != null)
+				return false;
+		} else if (!connector.equals(other.connector))
+			return false;
+		if (deId != other.deId)
+			return false;
+		if (deviceComponents == null) {
+			if (other.deviceComponents != null)
+				return false;
+		} else if (!deviceComponents.equals(other.deviceComponents))
+			return false;
+		if (deviceGroups == null) {
+			if (other.deviceGroups != null)
+				return false;
+		} else if (!deviceGroups.equals(other.deviceGroups))
+			return false;
+		if (purchaseDate == null) {
+			if (other.purchaseDate != null)
+				return false;
+		} else if (!purchaseDate.equals(other.purchaseDate))
+			return false;
+		if (serialNumber == null) {
+			if (other.serialNumber != null)
+				return false;
+		} else if (!serialNumber.equals(other.serialNumber))
+			return false;
+		if (services == null) {
+			if (other.services != null)
+				return false;
+		} else if (!services.equals(other.services))
+			return false;
+		if (zone == null) {
+			if (other.zone != null)
+				return false;
+		} else if (!zone.equals(other.zone))
+			return false;
+		return true;
+	}
+
 }

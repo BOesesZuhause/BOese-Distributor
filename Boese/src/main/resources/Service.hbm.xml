@@ -13,7 +13,7 @@
         <property name="description" type="string">
             <column name="Description" length="125" not-null="true" />
         </property>
-        <set name="devices" table="service_device" inverse="false" lazy="true" fetch="select">
+        <set name="devices" table="service_device" inverse="false" lazy="false" fetch="select">
             <key>
                 <column name="SeID" not-null="true" />
             </key>

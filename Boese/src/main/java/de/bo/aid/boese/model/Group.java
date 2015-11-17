@@ -183,4 +183,38 @@ public class Group implements java.io.Serializable {
 		this.groupUsers = groupUsers;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Group other = (Group) obj;
+		if (deviceGroups == null) {
+			if (other.deviceGroups != null)
+				return false;
+		} else if (!deviceGroups.equals(other.deviceGroups))
+			return false;
+		if (grId != other.grId)
+			return false;
+		if (groupUsers == null) {
+			if (other.groupUsers != null)
+				return false;
+		} else if (!groupUsers.equals(other.groupUsers))
+			return false;
+		if (groupZones == null) {
+			if (other.groupZones != null)
+				return false;
+		} else if (!groupZones.equals(other.groupZones))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
 }

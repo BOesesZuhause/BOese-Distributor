@@ -242,5 +242,46 @@ public class Connector implements java.io.Serializable {
 	public void setLogConnectors(Set<LogConnector> logConnectors) {
 		this.logConnectors = logConnectors;
 	}
+  
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Connector other = (Connector) obj;
+		if (coId != other.coId)
+			return false;
+		if (devices == null) {
+			if (other.devices != null)
+				return false;
+		} else if (!devices.equals(other.devices))
+			return false;
+		if (historyLogConnectors == null) {
+			if (other.historyLogConnectors != null)
+				return false;
+		} else if (!historyLogConnectors.equals(other.historyLogConnectors))
+			return false;
+		if (logConnectors == null) {
+			if (other.logConnectors != null)
+				return false;
+		} else if (!logConnectors.equals(other.logConnectors))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (status != other.status)
+			return false;
+		return true;
+	}
 
 }

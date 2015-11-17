@@ -16,19 +16,19 @@
         <property name="name" type="string">
             <column name="Name" length="25" not-null="true" />
         </property>
-        <set name="groupZones" table="group_zone" inverse="true" lazy="true" fetch="select">
+        <set name="groupZones" table="group_zone" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="ZoID" not-null="true" />
             </key>
             <one-to-many class="de.bo.aid.boese.model.GroupZone" />
         </set>
-        <set name="zones" table="zone" inverse="true" lazy="true" fetch="select">
+        <set name="zones" table="zone" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="SuZoID" not-null="true" />
             </key>
             <one-to-many class="de.bo.aid.boese.model.Zone" />
         </set>
-        <set name="devices" table="device" inverse="true" lazy="true" fetch="select">
+        <set name="devices" table="device" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="ZoID" not-null="true" />
             </key>
