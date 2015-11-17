@@ -28,8 +28,11 @@
  */
 package de.bo.aid.boese.socket;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+
 import javax.websocket.Session;
 
 import org.apache.logging.log4j.LogManager;
@@ -44,10 +47,9 @@ public class SessionHandler {
 	/** The Constant logger for log4j. */
 	final  Logger logger = LogManager.getLogger(SessionHandler.class);
 	
-	/** The sessions. */
-	private final HashMap<Integer, Session> sessions = new HashMap<>();
+	private final List<SessionData> sessions = new ArrayList<SessionData>();
 	
-	/** The instance. */
+	/** The instance. */ //TODO eventuell HashSet mit ID als key für mehr Performance
 	private static SessionHandler instance = new SessionHandler();
 	
 	/** The current id. */
@@ -68,14 +70,11 @@ public class SessionHandler {
 	 */
 	public int getConnectorId(Session session) {
 		int conId = -1;
-		Iterator<Integer> it = sessions.keySet().iterator();
-		while (it.hasNext()) {
-			Integer cId = it.next();
-			if (sessions.get(cId).equals(session)) {
-				conId = cId.intValue();
-				break;
+		for(SessionData data : sessions){
+			if(data.getSession().equals(session)){
+				conId = data.getId();
 			}
-		}
+		}	
 		return conId;
 	}
 	
@@ -85,14 +84,17 @@ public class SessionHandler {
 	 * @param connectorId the connector id
 	 */
 	public void rejectConnection(int connectorId) {
-		Session session = sessions.get(new  Integer(connectorId));
-		try {
-			session.close();
-		} catch (IOException e) {
-			// TODO!!!!
-			e.printStackTrace();
+		for(SessionData data : sessions){
+			if(data.getId() == connectorId){
+				try {
+					data.getSession().close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				sessions.remove(data);
+			}
 		}
-		sessions.remove(new  Integer(connectorId));
 	}
 	
 	/**
@@ -102,7 +104,10 @@ public class SessionHandler {
 	 * @return the int
 	 */
 	public int addSession(Session session) {
-		sessions.put(new Integer(--currentId), session);
+		SessionData data = new SessionData();
+		data.setSession(session);
+		data.setId(--currentId);
+		sessions.add(data);
 		return currentId;
 	}
 	
@@ -113,8 +118,11 @@ public class SessionHandler {
 	 * @param newId the new id
 	 */
 	public void setConnectorId(int tmpId, int newId) {
-		sessions.put(new Integer(newId), sessions.get(new Integer(tmpId)));
-		sessions.remove(new Integer(tmpId));
+		for(SessionData data : sessions){
+			if(data.getId()==tmpId){
+				data.setId(newId);
+			}
+		}
 	}
 	
 	/**
@@ -134,7 +142,11 @@ public class SessionHandler {
 	 */
 	//TODO error handling
 	public void sendToConnector(int connectorId, String message) {
-        sendToSession(sessions.get(new Integer(connectorId)), message);
+		for(SessionData data : sessions){
+			if(data.getId()==connectorId){
+				sendToSession(data.getSession(), message);
+			}
+		}
     }
 	
 	/**
@@ -159,9 +171,9 @@ public class SessionHandler {
  	 * @param message the message
  	 */
  	public void sendToAllConnectedSessions(String message) {
-	    for (Session session : sessions.values()) {
-	        sendToSession(session, message);
-	    }
+ 		for(SessionData data : sessions){
+ 			sendToSession(data.getSession(), message);
+ 		}
 	 }
 
 	/**

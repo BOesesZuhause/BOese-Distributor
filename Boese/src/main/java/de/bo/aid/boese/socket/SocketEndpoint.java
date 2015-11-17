@@ -47,7 +47,8 @@ import org.apache.logging.log4j.Logger;
  * The Class BoeseServer.
  */
 
-@ClientEndpoint //every connection creates a new SocketEndpoint Object. Therefore there is the SocketServer-Wrapper
+//every connection creates a new SocketEndpoint Object. Therefore there is the SocketServer-Wrapper
+@ClientEndpoint 
 @ServerEndpoint("/events/")
 public class SocketEndpoint
 {
@@ -76,6 +77,7 @@ public class SocketEndpoint
 	 */
 	@OnClose
 	public void close(Session session) {
+		logger.info("Socket disconnected " + session);
 		handler.removeSession(session);
 	}
 
@@ -99,6 +101,10 @@ public class SocketEndpoint
 	@OnMessage
 	public void handleMessage(String message, Session session) {
 		logger.info("Server received Message: " + message);
-		SocketServer.getInstance().handleMessage(message, handler.getConnectorId(session));
+		if(message.equals("HEARTBEAT")){
+			
+		}else{
+			SocketServer.getInstance().handleMessage(message, handler.getConnectorId(session));
+		}
 	}
 }
