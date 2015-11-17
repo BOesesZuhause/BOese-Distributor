@@ -633,7 +633,7 @@ public class ProtocolHandler implements MessageHandler {
 		}
 		try {
 			Updates.deviceComponentStatus(ss.getStatusCode(), ss.getDeviceComponentId());
-		} catch (DBForeignKeyNotFoundException e) {
+		} catch (DBObjectNotFoundException e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();
 		}

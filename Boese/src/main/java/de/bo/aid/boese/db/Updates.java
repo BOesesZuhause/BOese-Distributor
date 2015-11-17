@@ -37,7 +37,7 @@ import java.util.List;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 
-import de.bo.aid.boese.exceptions.DBForeignKeyNotFoundException;
+import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.main.Distributor;
 import de.bo.aid.boese.model.*;
 import de.bo.aid.boese.ruler.Control;
@@ -59,9 +59,9 @@ public class Updates {
 	 *
 	 * @param value the value
 	 * @param decoid the decoid
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void value(double value, int decoid) throws DBForeignKeyNotFoundException{
+	public static void value(double value, int decoid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -72,9 +72,9 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("DeviceComponent-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("DeviceComponent not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}
 		deco.setCurrentValue(new BigDecimal(value));
 		LogDeviceComponent logdeco = new LogDeviceComponent();
@@ -82,7 +82,7 @@ public class Updates {
 		logdeco.setTimestamp(new Date());
 		logdeco.setValue(new BigDecimal(value));
 		
-		session.save(deco);
+		session.saveOrUpdate(deco);
 		session.save(logdeco);
 		session.getTransaction().commit();
 		session.close();
@@ -94,9 +94,9 @@ public class Updates {
 	 * @param uid the uid
 	 * @param name the name
 	 * @param symbol the symbol
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void unit (int uid, String name, String symbol) throws DBForeignKeyNotFoundException{
+	public static void unit (int uid, String name, String symbol) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -107,9 +107,9 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Unit-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Unit not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}	
 		if (name != null){
 			unit.setName(name);
@@ -118,7 +118,7 @@ public class Updates {
 			unit.setSymbol(symbol);
 		}
 		
-		session.save(unit);
+		session.saveOrUpdate(unit);
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -130,9 +130,9 @@ public class Updates {
 	 * @param unit the unit
 	 * @param name the name
 	 * @param sensor the sensor
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void component (int coid, Unit unit, String name, boolean sensor) throws DBForeignKeyNotFoundException{
+	public static void component (int coid, Unit unit, String name, boolean sensor) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -143,9 +143,9 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Component-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Component not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}
 		if (unit != null){
 			comp.setUnit(unit);
@@ -155,7 +155,7 @@ public class Updates {
 		}
 		comp.setSensor(sensor);
 		
-		session.save(unit);
+		session.saveOrUpdate(unit);
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -167,9 +167,9 @@ public class Updates {
 	 * @param status the status
 	 * @param description the description
 	 * @param logrule the logrule
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void DeviceComponent (int decoid, int status, String description, double logrule) throws DBForeignKeyNotFoundException{
+	public static void DeviceComponent (int decoid, int status, String description, double logrule) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
@@ -180,9 +180,9 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("DeviceComponent-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("DeviceComponent not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}
 		if (status != -1){
 			deco.setStatus(status);
@@ -208,9 +208,9 @@ public class Updates {
 	 * @param purchase the purchase
 	 * @param zone the zone
 	 * @param con the con
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void device (int deid, String alias, String serial, Date purchase, Zone zone, Connector con) throws DBForeignKeyNotFoundException{
+	public static void device (int deid, String alias, String serial, Date purchase, Zone zone, Connector con) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
@@ -221,9 +221,9 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Device-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Device not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}
 		if (alias != null){
 			dev.setAlias(alias);
@@ -241,7 +241,7 @@ public class Updates {
 			dev.setConnector(con);
 		}
 		
-		session.save(dev);
+		session.saveOrUpdate(dev);
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -253,9 +253,9 @@ public class Updates {
 	 * @param name the name
 	 * @param pw the pw
 	 * @param status the status
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void connector(int conid, String name, String pw, int status) throws DBForeignKeyNotFoundException{
+	public static void connector(int conid, String name, String pw, int status) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
@@ -266,9 +266,9 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Connector-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Connector not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}
 		if (name != null){
 			con.setName(name);
@@ -280,7 +280,7 @@ public class Updates {
 			con.setStatus(status);;
 		}
 		
-		session.save(con);
+		session.saveOrUpdate(con);
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -290,9 +290,9 @@ public class Updates {
 	 *
 	 * @param seid the seid
 	 * @param description the description
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void service(int seid, String description) throws DBForeignKeyNotFoundException{
+	public static void service(int seid, String description) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
@@ -303,15 +303,15 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Service-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Service not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}
 		if (description != null){
 			service.setDescription(description);
 		}
 		
-		session.save(service);
+		session.saveOrUpdate(service);
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -321,9 +321,9 @@ public class Updates {
 	 *
 	 * @param grid the grid
 	 * @param name the name
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void group(short grid, String name) throws DBForeignKeyNotFoundException{
+	public static void group(short grid, String name) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
@@ -334,15 +334,15 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Group-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Group not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}
 		if(name != null){
 			grp.setName(name);
 		}
 		
-		session.save(grp);
+		session.saveOrUpdate(grp);
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -357,9 +357,9 @@ public class Updates {
 	 * @param gender the gender
 	 * @param username the username
 	 * @param mail the mail
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void user(int uid, String surname, String firstname, String pw, boolean gender, String username, String mail) throws DBForeignKeyNotFoundException{
+	public static void user(int uid, String surname, String firstname, String pw, boolean gender, String username, String mail) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
@@ -370,9 +370,9 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("User-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("User not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}
 		if(surname != null){
 			user.setSurname(surname);
@@ -391,7 +391,7 @@ public class Updates {
 			user.setEmail(mail);
 		}
 		
-		session.save(user);
+		session.saveOrUpdate(user);
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -402,9 +402,9 @@ public class Updates {
 	 * @param zoid the zoid
 	 * @param name the name
 	 * @param suzone the suzone
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void zone(int zoid, String name, Zone suzone) throws DBForeignKeyNotFoundException{
+	public static void zone(int zoid, String name, Zone suzone) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -415,9 +415,9 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Zone-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Zone not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}
 		if(name != null){
 			zone.setName(name);
@@ -426,7 +426,7 @@ public class Updates {
 			zone.setZone(suzone);
 		}
 		
-		session.save(zone);
+		session.saveOrUpdate(zone);
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -439,9 +439,9 @@ public class Updates {
 	 * @param permissions the permissions
 	 * @param conditions the conditions
 	 * @param actions the actions
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void rule(int ruid, boolean active, String permissions, String conditions, String actions) throws DBForeignKeyNotFoundException{
+	public static void rule(int ruid, boolean active, String permissions, String conditions, String actions) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -452,9 +452,9 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Rule-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Rule not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}
 		rule.setActive(active);
 		if(permissions != null){
@@ -468,7 +468,7 @@ public class Updates {
 		}
 		rule.setModifyDate(new Date());
 		
-		session.save(rule);
+		session.saveOrUpdate(rule);
 		session.getTransaction().commit();
 		session.close();
 		
@@ -480,9 +480,9 @@ public class Updates {
 	 * Activate rule.
 	 *
 	 * @param ruid the ruid
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void activateRule(int ruid) throws DBForeignKeyNotFoundException{
+	public static void activateRule(int ruid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -493,13 +493,13 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Rule-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Rule not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}
 		rule.setActive(true);
 		
-		session.save(rule);
+		session.saveOrUpdate(rule);
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -508,9 +508,9 @@ public class Updates {
 	 * Deactivate rule.
 	 *
 	 * @param ruid the ruid
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void deactivateRule(int ruid) throws DBForeignKeyNotFoundException{
+	public static void deactivateRule(int ruid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -521,13 +521,13 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Rule-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Rule not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}
 		rule.setActive(false);
 		
-		session.save(rule);
+		session.saveOrUpdate(rule);
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -537,9 +537,9 @@ public class Updates {
 	 *
 	 * @param status the status
 	 * @param decoId the DeviceComponentID
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void deviceComponentStatus(int status, int decoId) throws DBForeignKeyNotFoundException{
+	public static void deviceComponentStatus(int status, int decoId) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -550,13 +550,13 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("DeviceComponent-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("DeviceComponent not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}
 		deco.setStatus(status);
 		
-		session.save(deco);
+		session.saveOrUpdate(deco);
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -566,9 +566,9 @@ public class Updates {
 	 *
 	 * @param status the status
 	 * @param coId the ConnectorID
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void connectorStatus(int status, int coId) throws DBForeignKeyNotFoundException{
+	public static void connectorStatus(int status, int coId) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -579,13 +579,13 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("Connector-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Connector not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}
 		co.setStatus(status);
 		
-		session.save(co);
+		session.saveOrUpdate(co);
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -598,9 +598,9 @@ public class Updates {
 	 * @param value the value
 	 * @param repeatsAfterEnd the repeatsAfterEnd
 	 * @param tdc the ToDoChecker of the Distributor
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void repeatRule(int rrId, String repeat, Double value, int repeatsAfterEnd, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
+	public static void repeatRule(int rrId, String repeat, Double value, int repeatsAfterEnd, ToDoChecker tdc) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -611,9 +611,9 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("RepeatRule-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("RepeatRule not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}
 		if(repeat != null){
 			rr.setRepeat(repeat);
@@ -625,7 +625,7 @@ public class Updates {
 			rr.setRepeatsAfterEnd(repeatsAfterEnd);
 		}
 		
-		session.save(rr);
+		session.saveOrUpdate(rr);
 		session.getTransaction().commit();
 		session.close();
 		Interpretor.createTodos(tdc);
@@ -637,9 +637,9 @@ public class Updates {
 	 * @param toDoId the toDoId
 	 * @param date the date
 	 * @param active the active
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBObjectNotFoundException 
 	 */
-	public static void toDo(int toDoId, Date date, boolean active) throws DBForeignKeyNotFoundException{
+	public static void toDo(int toDoId, Date date, boolean active) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -650,16 +650,16 @@ public class Updates {
 		catch(Exception e){
 			session.getTransaction().rollback();
 			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("ToDo-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("ToDo not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
 		}
 		todo.setActive(active);
 		if(date != null){
 			todo.setDate(date);
 		}
 		
-		session.save(todo);
+		session.saveOrUpdate(todo);
 		session.getTransaction().commit();
 		session.close();
 		new ToDoChecker().changeInToDo();
@@ -679,7 +679,7 @@ public class Updates {
 			t.setActive(true);
 		}
 		
-		session.save(todo);
+		session.saveOrUpdate(todo);
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -698,7 +698,7 @@ public class Updates {
 			t.setActive(false);
 		}
 		
-		session.save(todo);
+		session.saveOrUpdate(todo);
 		session.getTransaction().commit();
 		session.close();
 	}
