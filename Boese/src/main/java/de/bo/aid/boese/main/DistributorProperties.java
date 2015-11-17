@@ -1,11 +1,18 @@
 package de.bo.aid.boese.main;
 
+import java.util.Set;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Properties;
+
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.validation.constraints.NotNull;
+import javax.validation.ConstraintViolation;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,8 +52,14 @@ public class DistributorProperties extends Properties{
 	/**
 	 * Validate.
 	 */
-	private void validate(){
-		
+	private boolean validate(){
+	      ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+	      Validator validator = factory.getValidator();	
+	      Set<ConstraintViolation<DistributorProperties>> constraintViolations =validator.validate(this);
+	      for(ConstraintViolation<DistributorProperties> violation : constraintViolations ){
+	    	  logger.error(violation.getPropertyPath() + " " + violation.getMessage());
+	      }
+	      return constraintViolations.isEmpty();
 	}
 	
 	/**
@@ -80,6 +93,9 @@ public class DistributorProperties extends Properties{
 		} catch (IOException e) {
 			logger.error("IO-Exception while closing config-file");
 			e.printStackTrace();
+			System.exit(0);
+		}
+		if(!validate()){
 			System.exit(0);
 		}
 	}
@@ -126,6 +142,7 @@ public class DistributorProperties extends Properties{
 	 *
 	 * @return the db host
 	 */
+	@NotNull
 	public String getDbHost() {
 		return this.getProperty(DB_HOST);
 	}
@@ -144,6 +161,7 @@ public class DistributorProperties extends Properties{
 	 *
 	 * @return the db name
 	 */
+	@NotNull
 	public String getDbName() {
 		return this.getProperty(DATABASE);
 	}
@@ -162,6 +180,7 @@ public class DistributorProperties extends Properties{
 	 *
 	 * @return the db user
 	 */
+	@NotNull
 	public String getDbUser() {
 		return this.getProperty(USER);
 	}
@@ -180,6 +199,7 @@ public class DistributorProperties extends Properties{
 	 *
 	 * @return the db password
 	 */
+	@NotNull
 	public String getDbPassword() {
 		return this.getProperty(PASSWORD);
 	}
@@ -198,6 +218,7 @@ public class DistributorProperties extends Properties{
 	 *
 	 * @return the port
 	 */
+	@NotNull
 	public int getPort() {
 		int port;
 		try{
@@ -224,6 +245,7 @@ public class DistributorProperties extends Properties{
 	 *
 	 * @return true, if is auto confirm
 	 */
+	@NotNull
 	public boolean isAutoConfirm() {
 		return Boolean.parseBoolean(this.getProperty(CONFIRM));
 	}
@@ -251,6 +273,7 @@ public class DistributorProperties extends Properties{
 	 *
 	 * @return the db port
 	 */
+	@NotNull
 	public String getDbPort() {
 		return this.getProperty(DB_PORT);
 	}
