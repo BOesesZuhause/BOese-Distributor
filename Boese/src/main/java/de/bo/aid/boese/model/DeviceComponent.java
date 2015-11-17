@@ -342,10 +342,20 @@ public class DeviceComponent implements java.io.Serializable {
 		this.logDeviceComponents = logDeviceComponents;
 	}
 
+	/**
+	 * Gets the repeat rule.
+	 *
+	 * @return the repeat rule
+	 */
 	public Set<RepeatRule> getRepeatRule() {
 		return repeatRule;
 	}
 
+	/**
+	 * Sets the repeat rule.
+	 *
+	 * @param repeatRule the new repeat rule
+	 */
 	public void setRepeatRule(Set<RepeatRule> repeatRule) {
 		this.repeatRule = repeatRule;
 	}

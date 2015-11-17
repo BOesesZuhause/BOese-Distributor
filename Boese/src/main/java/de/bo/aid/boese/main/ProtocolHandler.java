@@ -422,7 +422,7 @@ public class ProtocolHandler implements MessageHandler {
 			for (DeviceComponent deco : decoSet) {
 				decos.add(new DeviceComponents(deco.getDeCoId(), deco.getComponent().getName(),
 						deco.getCurrentValue().doubleValue(), deco.getComponent().getUnit().getName(),
-						deco.getDescription(), deco.getComponent().isSensor(), deco.getStatus()));
+						deco.getDescription(), deco.getComponent().isActor(), deco.getStatus()));
 			}
 			sendUserSendDeviceComponent(devId, decos, connectorId);
 		}

@@ -65,6 +65,7 @@ import javassist.NotFoundException;
  */
 public class Distributor {
 	
+/** The logo. */
 private final String logo = 
  "            (                           \n"
 +"           ( )\\         (        (     \n"
@@ -131,8 +132,10 @@ private final String logo =
 	/** The Constant logger for log4j. */
 	final  Logger logger = LogManager.getLogger(Distributor.class);
 	
+	/** The tdc. */
 	private ToDoChecker tdc;
 	
+	/** The props. */
 	DistributorProperties props;
 	
 	/**
@@ -222,6 +225,9 @@ private final String logo =
 		props.save(configFilePath);
 	}
 	
+	/**
+	 * Prints the logo.
+	 */
 	private void printLogo(){
 		System.out.println(logo);
 		try {
@@ -402,7 +408,7 @@ private final String logo =
 		// TODO Was ist wenn Inserts.component() funktioniert aber Inserts.deviceComponent nicht
 		// TODO jedesmal wird eine Komponente erstellt
 		try{
-			componentId = Inserts.component(name, unitId, !temp.isActor()); 
+			componentId = Inserts.component(name, unitId, temp.isActor()); 
 			deCoId = Inserts.deviceComponent(deviceId, componentId, temp.getDescription());
 		}
 		catch(Exception e){
@@ -517,10 +523,20 @@ private final String logo =
 		tempCompId++;
 	}
 	
+	/**
+	 * Gets the tdc.
+	 *
+	 * @return the tdc
+	 */
 	public ToDoChecker getTdc() {
 		return tdc;
 	}
 
+	/**
+	 * Change in rule.
+	 *
+	 * @param ruleId the rule id
+	 */
 	public static void changeInRule(int ruleId){
 		List<DeviceComponent> decos = Selects.deviceComponentsByRule(ruleId);
 		List<Inquiry> in = new ArrayList<Inquiry>();

@@ -53,7 +53,7 @@ public class Selects {
 	 *
 	 * @param coid the coid
 	 * @return the connector
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static Connector connector(int coid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -101,7 +101,7 @@ public class Selects {
 	 *
 	 * @param decoid the decoid
 	 * @return the double
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static double currentValue(int decoid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -129,7 +129,7 @@ public class Selects {
 	 *
 	 * @param deid the deid
 	 * @return the device
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static Device device (int deid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -155,7 +155,7 @@ public class Selects {
 	 *
 	 * @param decoid the decoid
 	 * @return the device component
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static DeviceComponent deviceComponent(int decoid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -236,7 +236,7 @@ public class Selects {
 	 *
 	 * @param ruid the ruid
 	 * @return the rule
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static Rule rule(int ruid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -262,7 +262,7 @@ public class Selects {
 	 *
 	 * @param uid the uid
 	 * @return the unit
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static Unit unit(int uid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -287,7 +287,7 @@ public class Selects {
 	 *
 	 * @param coid the coid
 	 * @return the component
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static Component component(int coid) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
@@ -312,7 +312,7 @@ public class Selects {
 	 *
 	 * @param seid the seid
 	 * @return the service
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static Service service (int seid) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
@@ -337,7 +337,7 @@ public class Selects {
 	 *
 	 * @param grid the grid
 	 * @return the group
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static Group group(short grid) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
@@ -362,7 +362,7 @@ public class Selects {
 	 *
 	 * @param uid the uid
 	 * @return the user
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static User user(int uid) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
@@ -387,7 +387,7 @@ public class Selects {
 	 *
 	 * @param zoid the zoid
 	 * @return the zone
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static Zone zone(int zoid) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
@@ -412,7 +412,7 @@ public class Selects {
 	 *
 	 * @param decoId the DeviceComponentID
 	 * @return the status(short)
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static int deviceComponentStatus(int decoId) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -438,7 +438,7 @@ public class Selects {
 	 *
 	 * @param coId the ConnectorID
 	 * @return the status(short)
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static int ConnectorStatus(int coId) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -464,7 +464,7 @@ public class Selects {
 	 *
 	 * @param rrId the rr id
 	 * @return the repeat rule
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static RepeatRule repeatRule(int rrId) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
@@ -489,7 +489,7 @@ public class Selects {
 	 *
 	 * @param toDoId the to do id
 	 * @return the to do
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static ToDo toDo(int toDoId) throws DBObjectNotFoundException {
 		Session session = connection.getSession();

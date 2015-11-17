@@ -65,7 +65,7 @@ public class Inserts {
 	 * @param name the name
 	 * @param serial the serial
 	 * @return the int
-	 * @throws DBObjectNotFoundException 
+	 * @throws Exception the exception
 	 */
 	public static int device(int coid, int zoid, String name, String serial) throws Exception{
 		Session session = connection.getSession();
@@ -108,11 +108,11 @@ public class Inserts {
 	 *
 	 * @param name the name
 	 * @param unitId the unit id
-	 * @param sensor the sensor
+	 * @param actor the actor
 	 * @return the int
-	 * @throws DBObjectNotFoundException 
+	 * @throws Exception the exception
 	 */
-	public static int component(String name, int unitId, boolean sensor) throws Exception{
+	public static int component(String name, int unitId, boolean actor) throws Exception{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -128,7 +128,7 @@ public class Inserts {
 		}
 			
 		comp.setName(name);
-		comp.setSensor(sensor);
+		comp.setActor(actor);
 		
 		try{
 			session.save(comp);
@@ -153,7 +153,7 @@ public class Inserts {
 	 * @param coid the coid
 	 * @param description the description
 	 * @return the int
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static int deviceComponent(int deid, int coid, String description) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -228,7 +228,7 @@ public class Inserts {
 	 * @param timestamp the timestamp
 	 * @param value the value
 	 * @return the int
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static int value(int decoid, Date timestamp, double value) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -311,7 +311,7 @@ public class Inserts {
 	 * @param actions the actions
 	 * @param tdc the ToDoChecker of the Distributor
 	 * @return the int
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBForeignKeyNotFoundException the DB foreign key not found exception
 	 */
 	public static int rule(List<Integer> deCoID, String permissions, String conditions, String actions, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
@@ -548,7 +548,7 @@ public class Inserts {
 	 * @param deCoId the id of the DeviceComponent
 	 * @param tdc the ToDoChecker of the Distributor
 	 * @return the int
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBForeignKeyNotFoundException the DB foreign key not found exception
 	 */
 	public static int repeatRule(String repeat, double value, int repeatsAfterEnd, int ruleId, int deCoId, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
@@ -592,7 +592,7 @@ public class Inserts {
 	 * @param rrId the rr id
 	 * @param tdc the ToDoChecker of the Distributor
 	 * @return the int
-	 * @throws DBForeignKeyNotFoundException 
+	 * @throws DBForeignKeyNotFoundException the DB foreign key not found exception
 	 */
 	public static int toDo(Date date, int rrId, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
@@ -627,6 +627,14 @@ public class Inserts {
 		return todo.getToDoId();
 	}
 	
+	/**
+	 * To do without change.
+	 *
+	 * @param date the date
+	 * @param rrId the rr id
+	 * @return the int
+	 * @throws DBForeignKeyNotFoundException the DB foreign key not found exception
+	 */
 	public static int toDoWithoutChange(Date date, int rrId) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();

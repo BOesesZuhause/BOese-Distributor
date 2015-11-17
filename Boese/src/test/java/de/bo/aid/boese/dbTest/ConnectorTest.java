@@ -13,13 +13,29 @@ import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.model.Connector;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ConnectorTest.
+ */
 public class ConnectorTest {
 
+	/** The con1. */
 	private Connector con1;
+	
+	/** The con2. */
 	private Connector con2;
+	
+	/** The con1 update. */
 	private Connector con1Update;
+	
+	/** The con2 update. */
 	private Connector con2Update;
 
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
@@ -41,6 +57,9 @@ public class ConnectorTest {
 		con2Update.setStatus(Status.INACTIVE);
 	}
 
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 		
@@ -68,10 +87,22 @@ public class ConnectorTest {
 		
 	}
 	
+	/**
+	 * Insert.
+	 *
+	 * @param con the con
+	 * @return the int
+	 */
 	private int insert(Connector con){
 		return Inserts.connector(con.getName(), con.getPassword());
 	}
 	
+	/**
+	 * Select.
+	 *
+	 * @param id the id
+	 * @return the connector
+	 */
 	private Connector select(int id){
 		Connector con = null;
 		try {
@@ -83,6 +114,12 @@ public class ConnectorTest {
 		return con;
 	}
 	
+	/**
+	 * Equal.
+	 *
+	 * @param con the con
+	 * @param name the name
+	 */
 	private void equal(Connector con, String name){
 		Connector conTest = select(con.getCoId());
 		assertTrue("Connector " + name + " Name not equal", con.getName().equals(conTest.getName()));
@@ -91,6 +128,12 @@ public class ConnectorTest {
 		assertTrue("Connector " + name + " ID not equal", con.getCoId() == conTest.getCoId());
 	}
 	
+	/**
+	 * Update.
+	 *
+	 * @param id the id
+	 * @param conUpdate the con update
+	 */
 	private void update(int id, Connector conUpdate){
 		try {
 			Updates.connector(id, conUpdate.getName(), conUpdate.getPassword(), conUpdate.getStatus());

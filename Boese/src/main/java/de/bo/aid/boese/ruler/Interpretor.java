@@ -71,7 +71,12 @@ public class Interpretor {
 //		return list;
 //	}
 	
-	public static void createTodos(ToDoChecker tdc){
+	/**
+ * Creates the todos.
+ *
+ * @param tdc the tdc
+ */
+public static void createTodos(ToDoChecker tdc){
 		List<ToDo> todos = AllSelects.toDos();
 		List<RepeatRule> rule = AllSelects.repeatRules();
 		for(ToDo todo : todos){

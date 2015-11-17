@@ -48,11 +48,13 @@ public class HibernateUtil {
 	 /** The Constant sessionFactory. */
  	private static SessionFactory sessionFactory;
  	
- 	final static  Logger logger = LogManager.getLogger(HibernateUtil.class);
+ 	/** The Constant logger. */
+	 final static  Logger logger = LogManager.getLogger(HibernateUtil.class);
 	
 
  	
- 	static Configuration configuration = new Configuration().configure();
+ 	/** The configuration. */
+	 static Configuration configuration = new Configuration().configure();
 	    /**
     	 * Builds the session factory.
     	 *
@@ -90,15 +92,32 @@ public class HibernateUtil {
 	        return sessionFactory;
 	    }
     	
-    	public static void setDBUser(String user){
+    	/**
+	     * Sets the DB user.
+	     *
+	     * @param user the new DB user
+	     */
+	    public static void setDBUser(String user){
     		configuration.setProperty("hibernate.connection.username", user);
     	}
     	
-    	public static void setDBPassword(String password){
+    	/**
+	     * Sets the DB password.
+	     *
+	     * @param password the new DB password
+	     */
+	    public static void setDBPassword(String password){
         	configuration.setProperty("hibernate.connection.password", password);	
     	}
     	
-    	public static void setDBURL(String name, String host, String port){
+    	/**
+	     * Sets the dburl.
+	     *
+	     * @param name the name
+	     * @param host the host
+	     * @param port the port
+	     */
+	    public static void setDBURL(String name, String host, String port){
     		String url = "jdbc:postgresql://" + host+ ":" +port+"/"+name;
     		configuration.setProperty("hibernate.connection.url", url); 
       	}

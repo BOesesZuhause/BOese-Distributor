@@ -39,10 +39,20 @@ import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.model.ToDo;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TimeTester.
+ */
 public class TimeTester{
 	
+	/** The todo. */
 	static List<ToDo> todo = new ArrayList<ToDo>();
 	
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args){
 		
 		ToDoChecker tdc = new ToDoChecker();
@@ -88,6 +98,9 @@ public class TimeTester{
 //		tdc.changeInToDo();
 	}
 	
+	/**
+	 * Fill list.
+	 */
 	public static void fillList(){
 		
 		

@@ -148,6 +148,11 @@ public class TimeFormat implements Comparable<TimeFormat>{
 		}
 	}
 	
+	/**
+	 * Instantiates a new time format.
+	 *
+	 * @param d the d
+	 */
 	public TimeFormat(Date d){
 		this.calculate = new boolean[5]; 
 		for(int i = 0; i < this.calculate.length; i++){
@@ -705,6 +710,9 @@ public class TimeFormat implements Comparable<TimeFormat>{
 		return new GregorianCalendar(y, mo[0]-1, d[0], h[0], mi[0]).getTime();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
 	@Override
 	public int compareTo(TimeFormat tf) {
 		return this.getDate().compareTo(tf.getDate());

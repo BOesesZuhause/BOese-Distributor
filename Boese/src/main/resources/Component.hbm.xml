@@ -16,8 +16,8 @@
         <property name="name" type="string">
             <column name="Name" length="125" not-null="true" />
         </property>
-        <property name="sensor" type="boolean">
-            <column name="Sensor" not-null="true" />
+        <property name="actor" type="boolean">
+            <column name="Actor" not-null="true" />
         </property>
         <set name="deviceComponents" table="device_component" inverse="true" lazy="true" fetch="select">
             <key>

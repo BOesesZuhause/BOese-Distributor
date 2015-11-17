@@ -42,6 +42,7 @@ import java.util.Set;
  */
 public class Rule implements java.io.Serializable {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The ru id. */
@@ -279,10 +280,20 @@ public class Rule implements java.io.Serializable {
 		this.historyLogRules = historyLogRules;
 	}
 
+	/**
+	 * Gets the repeat rule.
+	 *
+	 * @return the repeat rule
+	 */
 	public Set<RepeatRule> getRepeatRule() {
 		return repeatRule;
 	}
 
+	/**
+	 * Sets the repeat rule.
+	 *
+	 * @param repeatRule the new repeat rule
+	 */
 	public void setRepeatRule(Set<RepeatRule> repeatRule) {
 		this.repeatRule = repeatRule;
 	}

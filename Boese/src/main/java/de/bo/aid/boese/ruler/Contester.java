@@ -44,8 +44,17 @@ import de.bo.aid.boese.xml.Component;
 import de.bo.aid.boese.xml.Condition;
 import de.bo.aid.boese.xml.GateList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Contester.
+ */
 public class Contester {
 	
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args){
 		String rule = "<CONDITION>"
 					+ "<OR>"
@@ -121,6 +130,12 @@ public class Contester {
 		
 	}
 	
+	/**
+	 * Rek test.
+	 *
+	 * @param test the test
+	 * @return the string
+	 */
 	private static String rekTest(GateList test){
 		String s = "";
 		Set<GateList> sg = test.getGate();
@@ -142,6 +157,12 @@ public class Contester {
 		return s;
 	}
 	
+	/**
+	 * Reku test.
+	 *
+	 * @param test the test
+	 * @return the string
+	 */
 	private static String rekuTest(GateList test){
 		String s = "";
 		Set<GateList> sg = test.getGate();
@@ -157,6 +178,12 @@ public class Contester {
 
 	}
 	
+	/**
+	 * Reku test.
+	 *
+	 * @param comp the comp
+	 * @return the string
+	 */
 	private static String rekuTest(Component comp){
 		if(comp == null){
 			return "";
@@ -166,6 +193,9 @@ public class Contester {
 		}
 	}
 	
+	/**
+	 * Test all.
+	 */
 	private static void testAll(){
 		Control c = new Control();
 		List<Inquiry> inquirys = new ArrayList<Inquiry>();

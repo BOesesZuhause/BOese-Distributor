@@ -46,11 +46,21 @@ import de.bo.aid.boese.model.RepeatRule;
 import de.bo.aid.boese.model.ToDo;
 import de.bo.aid.boese.xml.Component;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ToDoChecker.
+ */
 public class ToDoChecker extends Thread{
 	
+	/** The ttl. */
 	List<TimeTodos> ttl;
+	
+	/** The b. */
 	boolean b;
 	
+	/**
+	 * Instantiates a new to do checker.
+	 */
 	public ToDoChecker(){
 		b = true;
 		List<ToDo> todos = AllSelects.toDos();
@@ -61,6 +71,9 @@ public class ToDoChecker extends Thread{
 		Collections.sort(ttl);
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Thread#run()
+	 */
 	public void run(){
 		while(true){
 			if(ttl.size() == 0){
@@ -126,6 +139,9 @@ public class ToDoChecker extends Thread{
 		}
 	}
 	
+	/**
+	 * Change in to do.
+	 */
 	public void changeInToDo(){
 		while(b){
 		}
@@ -137,10 +153,22 @@ public class ToDoChecker extends Thread{
 		Collections.sort(this.ttl);
 	}
 	
+	/**
+	 * Same time.
+	 *
+	 * @param tf the tf
+	 * @return true, if successful
+	 */
 	private boolean sameTime(TimeFormat tf){
 		return (tf.getDate().getTime() / 60000) == (new Date().getTime() / 60000);
 	}
 	
+	/**
+	 * Checks if is past.
+	 *
+	 * @param tf the tf
+	 * @return true, if is past
+	 */
 	private boolean isPast(TimeFormat tf){
 		return (tf.getDate().getTime() / 60000) < (new Date().getTime() / 60000);
 	}

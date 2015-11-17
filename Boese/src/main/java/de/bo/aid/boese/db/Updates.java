@@ -59,7 +59,7 @@ public class Updates {
 	 *
 	 * @param value the value
 	 * @param decoid the decoid
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void value(double value, int decoid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -94,7 +94,7 @@ public class Updates {
 	 * @param uid the uid
 	 * @param name the name
 	 * @param symbol the symbol
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void unit (int uid, String name, String symbol) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -129,10 +129,10 @@ public class Updates {
 	 * @param coid the coid
 	 * @param unit the unit
 	 * @param name the name
-	 * @param sensor the sensor
-	 * @throws DBObjectNotFoundException 
+	 * @param actor the actor
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void component (int coid, Unit unit, String name, boolean sensor) throws DBObjectNotFoundException{
+	public static void component (int coid, Unit unit, String name, boolean actor) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -153,7 +153,7 @@ public class Updates {
 		if (name != null){
 			comp.setName(name);
 		}
-		comp.setSensor(sensor);
+		comp.setActor(actor);
 		
 		session.saveOrUpdate(unit);
 		session.getTransaction().commit();
@@ -167,7 +167,7 @@ public class Updates {
 	 * @param status the status
 	 * @param description the description
 	 * @param logrule the logrule
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void DeviceComponent (int decoid, int status, String description, double logrule) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -208,7 +208,7 @@ public class Updates {
 	 * @param purchase the purchase
 	 * @param zone the zone
 	 * @param con the con
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void device (int deid, String alias, String serial, Date purchase, Zone zone, Connector con) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -253,7 +253,7 @@ public class Updates {
 	 * @param name the name
 	 * @param pw the pw
 	 * @param status the status
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void connector(int conid, String name, String pw, int status) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -290,7 +290,7 @@ public class Updates {
 	 *
 	 * @param seid the seid
 	 * @param description the description
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void service(int seid, String description) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -321,7 +321,7 @@ public class Updates {
 	 *
 	 * @param grid the grid
 	 * @param name the name
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void group(short grid, String name) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -357,7 +357,7 @@ public class Updates {
 	 * @param gender the gender
 	 * @param username the username
 	 * @param mail the mail
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void user(int uid, String surname, String firstname, String pw, boolean gender, String username, String mail) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -402,7 +402,7 @@ public class Updates {
 	 * @param zoid the zoid
 	 * @param name the name
 	 * @param suzone the suzone
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void zone(int zoid, String name, Zone suzone) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -439,7 +439,7 @@ public class Updates {
 	 * @param permissions the permissions
 	 * @param conditions the conditions
 	 * @param actions the actions
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void rule(int ruid, boolean active, String permissions, String conditions, String actions) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -480,7 +480,7 @@ public class Updates {
 	 * Activate rule.
 	 *
 	 * @param ruid the ruid
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void activateRule(int ruid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -508,7 +508,7 @@ public class Updates {
 	 * Deactivate rule.
 	 *
 	 * @param ruid the ruid
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void deactivateRule(int ruid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -537,7 +537,7 @@ public class Updates {
 	 *
 	 * @param status the status
 	 * @param decoId the DeviceComponentID
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void deviceComponentStatus(int status, int decoId) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -566,7 +566,7 @@ public class Updates {
 	 *
 	 * @param status the status
 	 * @param coId the ConnectorID
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void connectorStatus(int status, int coId) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -598,7 +598,7 @@ public class Updates {
 	 * @param value the value
 	 * @param repeatsAfterEnd the repeatsAfterEnd
 	 * @param tdc the ToDoChecker of the Distributor
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void repeatRule(int rrId, String repeat, Double value, int repeatsAfterEnd, ToDoChecker tdc) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -637,7 +637,7 @@ public class Updates {
 	 * @param toDoId the toDoId
 	 * @param date the date
 	 * @param active the active
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void toDo(int toDoId, Date date, boolean active) throws DBObjectNotFoundException{
 		Session session = connection.getSession();

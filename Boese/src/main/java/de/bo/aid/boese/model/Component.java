@@ -54,7 +54,7 @@ public class Component implements java.io.Serializable {
 	private String name;
 	
 	/** The sensor. */
-	private boolean sensor;
+	private boolean actor;
 	
 	/** The device components. */
 	private Set<DeviceComponent> deviceComponents = new HashSet<DeviceComponent>(0);
@@ -77,7 +77,7 @@ public class Component implements java.io.Serializable {
 		this.coId = coId;
 		this.unit = unit;
 		this.name = name;
-		this.sensor = sensor;
+		this.actor = sensor;
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class Component implements java.io.Serializable {
 		this.coId = coId;
 		this.unit = unit;
 		this.name = name;
-		this.sensor = sensor;
+		this.actor = sensor;
 		this.deviceComponents = deviceComponents;
 	}
 
@@ -156,17 +156,17 @@ public class Component implements java.io.Serializable {
 	 *
 	 * @return true, if is sensor
 	 */
-	public boolean isSensor() {
-		return this.sensor;
+	public boolean isActor() {
+		return this.actor;
 	}
 
 	/**
 	 * Sets the sensor.
 	 *
-	 * @param sensor the new sensor
+	 * @param actor the new actor
 	 */
-	public void setSensor(boolean sensor) {
-		this.sensor = sensor;
+	public void setActor(boolean actor) {
+		this.actor = actor;
 	}
 
 	/**

@@ -733,7 +733,7 @@ public class BoeseJson {
 				decoUSDC.add("Value", deco.getValue());
 				decoUSDC.add("Timestamp", deco.getTimestamp());
 				decoUSDC.add("Status", deco.getStatus());
-				decoUSDC.add("Aktor", deco.isActor());
+				decoUSDC.add("Actor", deco.isActor());
 				decoUSDC.add("Unit", unit);
 				decosUSDC.add(decoUSDC);
 			}
@@ -840,7 +840,7 @@ public class BoeseJson {
 				tempDeviceComponentUST.add("ConnectorId", entry.getValue().getConnectorId());
 				tempDeviceComponentUST.add("Name", entry.getValue().getName());
 				tempDeviceComponentUST.add("Description", entry.getValue().getDescription());
-				tempDeviceComponentUST.add("Aktor", entry.getValue().isActor());
+				tempDeviceComponentUST.add("Actor", entry.getValue().isActor());
 				tempDeviceComponentUST.add("Unit", entry.getValue().getValue());
 				tempDeviceComponentsUST.add(tempDeviceComponentUST);
 			}
@@ -929,6 +929,12 @@ public class BoeseJson {
 		return output;
 	}
 	
+	/**
+	 * Parses the message.
+	 *
+	 * @param message the message
+	 * @return the output stream
+	 */
 	public static OutputStream parseMessage(BoeseJson message) {
 		OutputStream os = new ByteArrayOutputStream();
 		parseMessage(message, os);

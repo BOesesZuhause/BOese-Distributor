@@ -45,6 +45,11 @@ public class Deletes {
 	/** The connection. */
 	private static Connection connection = Connection.getConnection();
 	
+	/**
+	 * To do.
+	 *
+	 * @param toDo the to do
+	 */
 	public static void ToDo(ToDo toDo){
 		Session session = connection.getSession();
 		session.beginTransaction();
