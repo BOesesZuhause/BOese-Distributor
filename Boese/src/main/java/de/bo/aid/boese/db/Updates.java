@@ -96,21 +96,10 @@ public class Updates {
 	 * @param symbol the symbol
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void unit (int uid, String name, String symbol) throws DBObjectNotFoundException{
+	public static void unit (Unit unit, String name, String symbol) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
-		
-		Unit unit = null;
-		try{
-			unit = Selects.unit(uid);
-		}
-		catch(Exception e){
-			session.getTransaction().rollback();
-			session.close();
-			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Unit not found");
-			onfe.initCause(e.getCause());
-			throw onfe;
-		}	
+			
 		if (name != null){
 			unit.setName(name);
 		}
@@ -118,35 +107,34 @@ public class Updates {
 			unit.setSymbol(symbol);
 		}
 		
-		session.saveOrUpdate(unit);
-		session.getTransaction().commit();
+		try{
+			session.update(unit);
+			session.getTransaction().commit();
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Unit not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
+		}
+		
 		session.close();
 	}
 	
 	/**
 	 * Component.
 	 *
-	 * @param coid the coid
+	 * @param comp the Component to Update
 	 * @param unit the unit
 	 * @param name the name
 	 * @param actor the actor
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void component (int coid, Unit unit, String name, boolean actor) throws DBObjectNotFoundException{
+	public static void component (Component comp, Unit unit, String name, boolean actor) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Component comp = null;
-		try{
-			comp = Selects.component(coid);
-		}
-		catch(Exception e){
-			session.getTransaction().rollback();
-			session.close();
-			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Component not found");
-			onfe.initCause(e.getCause());
-			throw onfe;
-		}
 		if (unit != null){
 			comp.setUnit(unit);
 		}
@@ -155,35 +143,34 @@ public class Updates {
 		}
 		comp.setActor(actor);
 		
-		session.saveOrUpdate(comp);
-		session.getTransaction().commit();
+		try{
+			session.update(comp);
+			session.getTransaction().commit();
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Component not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
+		}
+		
 		session.close();
 	}
 
 	/**
 	 * Device component.
 	 *
-	 * @param decoid the decoid
+	 * @param deco the DeviceComponent to Update
 	 * @param status the status
 	 * @param description the description
 	 * @param logrule the logrule
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void DeviceComponent (int decoid, int status, String description, double logrule) throws DBObjectNotFoundException{
+	public static void DeviceComponent (DeviceComponent deco, int status, String description, double logrule) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
-		DeviceComponent deco = null;
-		try{
-			deco = Selects.deviceComponent(decoid);
-		}
-		catch(Exception e){
-			session.getTransaction().rollback();
-			session.close();
-			DBObjectNotFoundException onfe = new DBObjectNotFoundException("DeviceComponent not found");
-			onfe.initCause(e.getCause());
-			throw onfe;
-		}
 		if (status != -1){
 			deco.setStatus(status);
 		}
@@ -194,15 +181,25 @@ public class Updates {
 			deco.setLogRule(new BigDecimal(logrule));
 		}
 		
-		session.save(deco);
-		session.getTransaction().commit();
+		try{
+			session.update(deco);
+			session.getTransaction().commit();
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("DeviceComponent not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
+		}
+		
 		session.close();
 	}
 	
 	/**
 	 * Device.
 	 *
-	 * @param deid the deid
+	 * @param dev the Device to update
 	 * @param alias the alias
 	 * @param serial the serial
 	 * @param purchase the purchase
@@ -210,21 +207,10 @@ public class Updates {
 	 * @param con the con
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void device (int deid, String alias, String serial, Date purchase, Zone zone, Connector con) throws DBObjectNotFoundException{
+	public static void device (Device dev, String alias, String serial, Date purchase, Zone zone, Connector con) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
-		Device dev = null;
-		try{
-			dev = Selects.device(deid);
-		}
-		catch(Exception e){
-			session.getTransaction().rollback();
-			session.close();
-			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Device not found");
-			onfe.initCause(e.getCause());
-			throw onfe;
-		}
 		if (alias != null){
 			dev.setAlias(alias);
 		}
@@ -241,35 +227,34 @@ public class Updates {
 			dev.setConnector(con);
 		}
 		
-		session.saveOrUpdate(dev);
-		session.getTransaction().commit();
+		try{
+			session.update(dev);
+			session.getTransaction().commit();
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Device not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
+		}
+		
 		session.close();
 	}
 	
 	/**
 	 * Connector.
 	 *
-	 * @param conid the conid
+	 * @param con the Connector to Update
 	 * @param name the name
 	 * @param pw the pw
 	 * @param status the status
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void connector(int conid, String name, String pw, int status) throws DBObjectNotFoundException{
+	public static void connector(Connector con, String name, String pw, int status) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
-
-		Connector con = null;
-		try{
-			con = Selects.connector(conid);
-		}
-		catch(Exception e){
-			session.getTransaction().rollback();
-			session.close();
-			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Connector not found");
-			onfe.initCause(e.getCause());
-			throw onfe;
-		}
+		
 		if (name != null){
 			con.setName(name);
 		}
@@ -280,25 +265,34 @@ public class Updates {
 			con.setStatus(status);;
 		}
 		
-		session.saveOrUpdate(con);
-		session.getTransaction().commit();
+		try{
+			session.update(con);
+			session.getTransaction().commit();
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Connector not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
+		}
+		
 		session.close();
 	}
 	
 	/**
 	 * Service.
 	 *
-	 * @param seid the seid
-	 * @param description the description
+	 * @param service the Service Object
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void service(int seid, String description) throws DBObjectNotFoundException{
+	public static void service(Service service) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
-
-		Service service = null;
+		
 		try{
-			service = Selects.service(seid);
+			session.update(service);
+			session.getTransaction().commit();
 		}
 		catch(Exception e){
 			session.getTransaction().rollback();
@@ -307,29 +301,28 @@ public class Updates {
 			onfe.initCause(e.getCause());
 			throw onfe;
 		}
-		if (description != null){
-			service.setDescription(description);
-		}
 		
-		session.saveOrUpdate(service);
-		session.getTransaction().commit();
 		session.close();
 	}
 	
 	/**
 	 * Group.
 	 *
-	 * @param grid the grid
+	 * @param grp the Group to Update
 	 * @param name the name
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void group(short grid, String name) throws DBObjectNotFoundException{
+	public static void group(Group grp, String name) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
-		Group grp = null;
+		if(name != null){
+			grp.setName(name);
+		}
+		
 		try{
-			grp = Selects.group(grid);
+			session.update(grp);
+			session.getTransaction().commit();
 		}
 		catch(Exception e){
 			session.getTransaction().rollback();
@@ -338,19 +331,14 @@ public class Updates {
 			onfe.initCause(e.getCause());
 			throw onfe;
 		}
-		if(name != null){
-			grp.setName(name);
-		}
 		
-		session.saveOrUpdate(grp);
-		session.getTransaction().commit();
 		session.close();
 	}
 	
 	/**
 	 * User.
 	 *
-	 * @param uid the uid
+	 * @param user the User to Update
 	 * @param surname the surname
 	 * @param firstname the firstname
 	 * @param pw the pw
@@ -359,21 +347,10 @@ public class Updates {
 	 * @param mail the mail
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void user(int uid, String surname, String firstname, String pw, boolean gender, String username, String mail) throws DBObjectNotFoundException{
+	public static void user(User user, String surname, String firstname, String pw, boolean gender, String username, String mail) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
-		User user = null;
-		try{
-			user = Selects.user(uid);
-		}
-		catch(Exception e){
-			session.getTransaction().rollback();
-			session.close();
-			DBObjectNotFoundException onfe = new DBObjectNotFoundException("User not found");
-			onfe.initCause(e.getCause());
-			throw onfe;
-		}
 		if(surname != null){
 			user.setSurname(surname);
 		}
@@ -391,26 +368,43 @@ public class Updates {
 			user.setEmail(mail);
 		}
 		
-		session.saveOrUpdate(user);
-		session.getTransaction().commit();
+		try{
+			session.update(user);
+			session.getTransaction().commit();
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("User not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
+		}
+		
 		session.close();
 	}
 	
 	/**
 	 * Zone.
 	 *
-	 * @param zoid the zoid
+	 * @param zone the Zone to Update
 	 * @param name the name
 	 * @param suzone the suzone
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void zone(int zoid, String name, Zone suzone) throws DBObjectNotFoundException{
+	public static void zone(Zone zone, String name, Zone suzone) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
+
+		if(name != null){
+			zone.setName(name);
+		}
+		if(suzone != null){
+			zone.setZone(suzone);
+		}
 		
-		Zone zone = null;
 		try{
-			zone = Selects.zone(zoid);
+			session.update(zone);
+			session.getTransaction().commit();
 		}
 		catch(Exception e){
 			session.getTransaction().rollback();
@@ -419,43 +413,24 @@ public class Updates {
 			onfe.initCause(e.getCause());
 			throw onfe;
 		}
-		if(name != null){
-			zone.setName(name);
-		}
-		if(suzone != null){
-			zone.setZone(suzone);
-		}
 		
-		session.saveOrUpdate(zone);
-		session.getTransaction().commit();
 		session.close();
 	}
 	
 	/**
 	 * Rule.
 	 *
-	 * @param ruid the ruid
+	 * @param rule the Rule to Update
 	 * @param active the active
 	 * @param permissions the permissions
 	 * @param conditions the conditions
 	 * @param actions the actions
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void rule(int ruid, boolean active, String permissions, String conditions, String actions) throws DBObjectNotFoundException{
+	public static void rule(Rule rule, boolean active, String permissions, String conditions, String actions) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Rule rule = null;
-		try{
-			rule = Selects.rule(ruid);
-		}
-		catch(Exception e){
-			session.getTransaction().rollback();
-			session.close();
-			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Rule not found");
-			onfe.initCause(e.getCause());
-			throw onfe;
-		}
 		rule.setActive(active);
 		if(permissions != null){
 			rule.setPermissions(permissions);
@@ -468,11 +443,21 @@ public class Updates {
 		}
 		rule.setModifyDate(new Date());
 		
-		session.saveOrUpdate(rule);
-		session.getTransaction().commit();
+		try{
+			session.update(rule);
+			session.getTransaction().commit();
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Rule not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
+		}
+		
 		session.close();
 		
-		Distributor.changeInRule(ruid);
+		Distributor.changeInRule(rule.getRuId());
 		new ToDoChecker().changeInToDo();
 	}
 	
@@ -593,28 +578,17 @@ public class Updates {
 	/**
 	 * RepeatRule.
 	 *
-	 * @param rrId the rrId
+	 * @param rr the RepeatRule to Update
 	 * @param repeat the repeat
 	 * @param value the value
 	 * @param repeatsAfterEnd the repeatsAfterEnd
 	 * @param tdc the ToDoChecker of the Distributor
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void repeatRule(int rrId, String repeat, Double value, int repeatsAfterEnd, ToDoChecker tdc) throws DBObjectNotFoundException{
+	public static void repeatRule(RepeatRule rr, String repeat, Double value, int repeatsAfterEnd, ToDoChecker tdc) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
-		
-		RepeatRule rr = null;
-		try{
-			rr = Selects.repeatRule(rrId);
-		}
-		catch(Exception e){
-			session.getTransaction().rollback();
-			session.close();
-			DBObjectNotFoundException onfe = new DBObjectNotFoundException("RepeatRule not found");
-			onfe.initCause(e.getCause());
-			throw onfe;
-		}
+
 		if(repeat != null){
 			rr.setRepeat(repeat);
 		}
@@ -625,8 +599,18 @@ public class Updates {
 			rr.setRepeatsAfterEnd(repeatsAfterEnd);
 		}
 		
-		session.saveOrUpdate(rr);
-		session.getTransaction().commit();
+		try{
+			session.update(rr);
+			session.getTransaction().commit();
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("RepeatRule not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
+		}
+		
 		session.close();
 		Interpretor.createTodos(tdc);
 	}
@@ -634,18 +618,23 @@ public class Updates {
 	/**
 	 * ToDo.
 	 *
-	 * @param toDoId the toDoId
+	 * @param todo the ToDo to Update
 	 * @param date the date
 	 * @param active the active
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void toDo(int toDoId, Date date, boolean active) throws DBObjectNotFoundException{
+	public static void toDo(ToDo todo, Date date, boolean active) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		ToDo todo = null;
+		todo.setActive(active);
+		if(date != null){
+			todo.setDate(date);
+		}
+		
 		try{
-			todo = Selects.toDo(toDoId);
+			session.update(todo);
+			session.getTransaction().commit();
 		}
 		catch(Exception e){
 			session.getTransaction().rollback();
@@ -654,13 +643,7 @@ public class Updates {
 			onfe.initCause(e.getCause());
 			throw onfe;
 		}
-		todo.setActive(active);
-		if(date != null){
-			todo.setDate(date);
-		}
 		
-		session.saveOrUpdate(todo);
-		session.getTransaction().commit();
 		session.close();
 		new ToDoChecker().changeInToDo();
 	}

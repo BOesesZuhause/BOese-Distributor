@@ -57,6 +57,16 @@ public class Service implements java.io.Serializable {
 	 * Instantiates a new service.
 	 */
 	public Service() {
+		
+	}
+
+	/**
+	 * Instantiates a new service.
+	 *
+	 * @param description the description
+	 */
+	public Service(String description) {
+		this.description = description;
 	}
 
 	/**

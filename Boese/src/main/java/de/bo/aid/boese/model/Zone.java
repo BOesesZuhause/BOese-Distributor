@@ -66,6 +66,16 @@ public class Zone implements java.io.Serializable {
 	 * Instantiates a new zone.
 	 */
 	public Zone() {
+	
+	}
+
+	/**
+	 * Instantiates a new zone for DB Insert.
+	 *
+	 * @param name the name
+	 */
+	public Zone(String name) {
+		this.name = name;
 	}
 
 	/**

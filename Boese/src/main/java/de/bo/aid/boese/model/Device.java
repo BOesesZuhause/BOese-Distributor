@@ -89,6 +89,17 @@ public class Device implements java.io.Serializable {
 	}
 
 	/**
+	 * Instantiates a new device for DB Insert.
+	 *
+	 * @param alias the alias
+	 * @param serialNumber the serial number
+	 */
+	public Device(String alias, String serialNumber) {
+		this.alias = alias;
+		this.serialNumber = serialNumber;
+	}
+
+	/**
 	 * Instantiates a new device.
 	 *
 	 * @param deId the de id

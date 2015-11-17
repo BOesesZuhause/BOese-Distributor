@@ -62,16 +62,12 @@ public class Inserts {
 	 *
 	 * @param coid the coid
 	 * @param zoid the zoid
-	 * @param name the name
-	 * @param serial the serial
-	 * @return the int
+	 * @param device the Device Object with alias and Serialnumber
 	 * @throws Exception the exception
 	 */
-	public static int device(int coid, int zoid, String name, String serial) throws Exception{
+	public static void device(int coid, int zoid, Device device) throws Exception{
 		Session session = connection.getSession();
 		session.beginTransaction();
- 
-		Device device = new Device();
 		
 		Connector con = (Connector)session.get(Connector.class, new Integer(coid));
 		Zone zone = (Zone)session.get(Zone.class, new Integer(zoid));
@@ -84,39 +80,31 @@ public class Inserts {
 			session.close();
 			throw new DBObjectNotFoundException(((con == null) ? "Connector not found, " : "") + ((zone==null) ? "Zone not found, " : ""));
 		}
-		
-		device.setAlias(name);
-		device.setSerialNumber(serial);
  
 		try{
 			session.save(device);
 			session.getTransaction().commit();
 		}
-		catch(PropertyValueException pve){
+		catch(PropertyValueException pve){ //TODO Ordentliche Exception
 			session.getTransaction().rollback();
 			session.close();
 			throw pve; //not null Value is null
 		}
 		
 		session.close();
-		
-		return device.getDeId();
 	}
 	
 	/**
 	 * Component.
 	 *
-	 * @param name the name
 	 * @param unitId the unit id
-	 * @param actor the actor
-	 * @return the int
+	 * @param comp the Component to insert
 	 * @throws Exception the exception
 	 */
-	public static int component(String name, int unitId, boolean actor) throws Exception{
+	public static void component(int unitId, Component comp) throws Exception{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Component comp = new Component();
 		Unit unit = (Unit)session.get(Unit.class, new Integer(unitId));
 		if (unit != null){
 			comp.setUnit(unit);			
@@ -126,9 +114,6 @@ public class Inserts {
 			session.close();
 			throw new DBObjectNotFoundException("Unit not found");
 		}
-			
-		comp.setName(name);
-		comp.setActor(actor);
 		
 		try{
 			session.save(comp);
@@ -142,8 +127,6 @@ public class Inserts {
 		
 
 		session.close();
-		
-		return comp.getCoId();	
 	}
 	
 	/**
@@ -151,15 +134,12 @@ public class Inserts {
 	 *
 	 * @param deid the deid
 	 * @param coid the coid
-	 * @param description the description
-	 * @return the int
+	 * @param dc the DeviceComponent to Insert
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static int deviceComponent(int deid, int coid, String description) throws DBObjectNotFoundException{
+	public static void deviceComponent(int deid, int coid, DeviceComponent dc) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
- 
-		DeviceComponent dc = new DeviceComponent();
 		
 		Device device = (Device) session.get(Device.class, deid);
 		//session.get, because of Lazy Loading(Same object)
@@ -167,8 +147,6 @@ public class Inserts {
 		if(device != null && comp != null){
 			dc.setDevice(device);
 			dc.setComponent(comp);
-			dc.setDescription(description);
-			dc.setStatus(1);
 		}
 		else{
 			session.getTransaction().rollback();
@@ -187,24 +165,16 @@ public class Inserts {
 		}		
 		
 		session.close();
-
-		return dc.getDeCoId();
 	}
 	
 	/**
 	 * Connector.
 	 *
-	 * @param name the name
-	 * @param pw the pw
-	 * @return the int
+	 * @param con the Connector to Insert
 	 */
-	public static int connector(String name, String pw){
+	public static void connector(Connector con){
 		Session session = connection.getSession();
 		session.beginTransaction();
- 
-		Connector con = new Connector();
-		con.setName(name);
-		con.setPassword(pw);
  
 		try{
 			session.save(con);
@@ -217,8 +187,6 @@ public class Inserts {
 		}
 		
 		session.close();
-		
-		return con.getCoId();
 	}
 	
 	/**
@@ -275,17 +243,11 @@ public class Inserts {
 	/**
 	 * Unit.
 	 *
-	 * @param name the name
-	 * @param symbol the symbol
-	 * @return the int
+	 * @param unit the Unit to Insert
 	 */
-	public static int unit(String name, String symbol){
+	public static void unit(Unit unit){
 		Session session = connection.getSession();
 		session.beginTransaction();
-		
-		Unit unit = new Unit();
-		unit.setName(name);
-		unit.setSymbol(symbol);
 		
 		try{
 			session.save(unit);
@@ -298,32 +260,22 @@ public class Inserts {
 		}
 		
 		session.close();
-		
-		return unit.getUnId();
 	}
 	
 	/**
 	 * Rule.
 	 *
-	 * @param deCoID the de co id
-	 * @param permissions the permissions
-	 * @param conditions the conditions
-	 * @param actions the actions
+	 * @param deCo the DeviceComponents in the Rule
+	 * @param rule the Rule To Insert
 	 * @param tdc the ToDoChecker of the Distributor
-	 * @return the int
 	 * @throws DBForeignKeyNotFoundException the DB foreign key not found exception
 	 */
-	public static int rule(List<Integer> deCoID, String permissions, String conditions, String actions, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
+	public static void rule(List<DeviceComponent> deCo, Rule rule, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Rule rule = new Rule();
-		rule.setActive(true);
 		rule.setInsertDate(new Date());
 		rule.setModifyDate(new Date());
-		rule.setPermissions(permissions);
-		rule.setConditions(conditions);
-		rule.setActions(actions);
 		
 		try{
 			session.save(rule);
@@ -339,32 +291,14 @@ public class Inserts {
 		int ruID = rule.getRuId();
 		
 		try{
-			for(int decoid : deCoID){
+			for(DeviceComponent deco : deCo){
 				session.beginTransaction();
-				DeviceComponent deco = null;
-				try{
-					deco = Selects.deviceComponent(decoid);
-				}
-				catch(Exception e){
-					session.getTransaction().rollback();
-					session.close();
-					DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("DeviceComponent-FK not found");
-					dfknfe.initCause(e.getCause());
-					throw dfknfe;
-				}
-				if (deco.getDeCoId() > -1){
-					DeviceComponentRule decorule = new DeviceComponentRule();
-					decorule.setDevicecomponent(deco);
-					decorule.setRule(rule);
-					decorule.setId(new DeviceComponentRuleId(deco.getDeCoId(), rule.getRuId()));
-					session.save(decorule);
-					session.getTransaction().commit();
-				}
-				else{
-					session.getTransaction().rollback();
-					session.close();
-					return deco.getDeCoId();
-				}
+				DeviceComponentRule decorule = new DeviceComponentRule();
+				decorule.setDevicecomponent(deco);
+				decorule.setRule(rule);
+				decorule.setId(new DeviceComponentRuleId(deco.getDeCoId(), rule.getRuId()));
+				session.save(decorule);
+				session.getTransaction().commit();
 			}
 		}
 		catch(PropertyValueException pve){
@@ -374,23 +308,17 @@ public class Inserts {
 		}
 
 		session.close();
-		//Distributor.changeInRule(ruID);
 		tdc.changeInToDo();
-		return ruID;
 	}
 	
 	/**
 	 * Service.
 	 *
-	 * @param description the description
-	 * @return the int
+	 * @param service the Service Object
 	 */
-	public static int service(String description){
+	public static void service(Service service){
 		Session session = connection.getSession();
 		session.beginTransaction();
-		
-		Service service = new Service();
-		service.setDescription(description);
 		
 		try{
 			session.save(service);
@@ -403,22 +331,16 @@ public class Inserts {
 		}
 		
 		session.close();
-		
-		return service.getSeId();
 	}
 	
 	/**
 	 * Group.
 	 *
-	 * @param name the name
-	 * @return the int
+	 * @param grp the Group to Insert
 	 */
-	public static int group(String name){
+	public static void group(Group grp){
 		Session session = connection.getSession();
 		session.beginTransaction();
-
-		Group grp = new Group();
-		grp.setName(name);
 		
 		try{
 			session.save(grp);
@@ -431,34 +353,16 @@ public class Inserts {
 		}
 		
 		session.close();
-		
-		return grp.getGrId();
 	}
 	
 	/**
 	 * User.
 	 *
-	 * @param surname the surname
-	 * @param firstname the firstname
-	 * @param password the password
-	 * @param gender the gender
-	 * @param birth the birth
-	 * @param username the username
-	 * @param mail the mail
-	 * @return the int
+	 * @param user the User to Insert
 	 */
-	public static int User(String surname, String firstname, String password, boolean gender, Date birth, String username, String mail){
+	public static void User(User user){
 		Session session = connection.getSession();
 		session.beginTransaction();
-
-		User user = new User();
-		user.setSurname(surname);
-		user.setFirstName(firstname);
-		user.setPassword(password);
-		user.setGender(gender);
-		user.setBirthdate(birth);
-		user.setUserName(username);
-		user.setEmail(mail);
 		
 		try{
 			session.save(user);
@@ -471,23 +375,18 @@ public class Inserts {
 		}
 		
 		session.close();
-		
-		return user.getUsId();
 	}
 	
 	/**
 	 * Zone.
 	 *
-	 * @param name the name
+	 * @param zone the Zone to Insert
 	 * @param suzone the suzone
-	 * @return the int
 	 */
-	public static int zone(String name, Zone suzone){
+	public static void zone(Zone zone, Zone suzone){
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		Zone zone = new Zone();
-		zone.setName(name);
 		zone.setZone(suzone);
 		
 		try{
@@ -501,8 +400,6 @@ public class Inserts {
 		}
 		
 		session.close();
-		
-		return zone.getZoId();
 	}
 	
 	/**
@@ -510,19 +407,17 @@ public class Inserts {
 	 *
 	 * @param deid the deid
 	 * @param grid the grid
-	 * @param rights the rights
+	 * @param devgrp the DeviceGroup to Insert
 	 * @throws Exception the exception
 	 */
-	public static void deviceGroup(int deid, short grid, short rights) throws Exception{
+	public static void deviceGroup(int deid, short grid, DeviceGroup devgrp) throws Exception{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
 		Device dev = Selects.device(deid);
 		Group grp = Selects.group(grid);
-		DeviceGroup devgrp = new DeviceGroup();
 		devgrp.setDevice(dev);
 		devgrp.setGroup(grp);
-		devgrp.setRights(rights);
 		devgrp.setId(new DeviceGroupId(deid, grid));
 		
 		try{
@@ -541,23 +436,16 @@ public class Inserts {
 	/**
 	 * Repeat rule.
 	 *
-	 * @param repeat the repeat
-	 * @param value the value
-	 * @param repeatsAfterEnd the repeats after end
+	 * @param rr the RepeatRule to Insert
 	 * @param ruleId the ID of the Rule
 	 * @param deCoId the id of the DeviceComponent
 	 * @param tdc the ToDoChecker of the Distributor
-	 * @return the int
 	 * @throws DBForeignKeyNotFoundException the DB foreign key not found exception
 	 */
-	public static int repeatRule(String repeat, double value, int repeatsAfterEnd, int ruleId, int deCoId, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
+	public static void repeatRule(RepeatRule rr, int ruleId, int deCoId, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
-		RepeatRule rr = new RepeatRule();
-		rr.setRepeat(repeat);
-		rr.setValue(new BigDecimal(value));
-		rr.setRepeatsAfterEnd(repeatsAfterEnd);
 		try{
 			rr.setRule(Selects.rule(ruleId));
 			rr.setDeviceComponent(Selects.deviceComponent(deCoId));
@@ -582,35 +470,19 @@ public class Inserts {
 		
 		session.close();
 		Interpretor.createTodos(tdc);
-		return rr.getRrId();
 	}
 	
 	/**
 	 * To do.
 	 *
-	 * @param date the date
+	 * @param todo the ToDo to Insert
 	 * @param rrId the rr id
 	 * @param tdc the ToDoChecker of the Distributor
-	 * @return the int
 	 * @throws DBForeignKeyNotFoundException the DB foreign key not found exception
 	 */
-	public static int toDo(Date date, int rrId, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
+	public static void toDo(ToDo todo, int rrId, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
-		
-		ToDo todo = new ToDo();
-		todo.setDate(date);
-		try{
-			todo.setRepeatRule(Selects.repeatRule(rrId));
-		}
-		catch(Exception e){
-			session.getTransaction().rollback();
-			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("RepeatRule-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
-		}
-		todo.setActive(true);
 		
 		try{
 			session.save(todo);
@@ -624,34 +496,18 @@ public class Inserts {
 		
 		session.close();
 		tdc.changeInToDo();
-		return todo.getToDoId();
 	}
 	
 	/**
 	 * To do without change.
 	 *
-	 * @param date the date
+	 * @param todo the ToDo to Insert
 	 * @param rrId the rr id
-	 * @return the int
 	 * @throws DBForeignKeyNotFoundException the DB foreign key not found exception
 	 */
-	public static int toDoWithoutChange(Date date, int rrId) throws DBForeignKeyNotFoundException{
+	public static void toDoWithoutChange(ToDo todo, int rrId) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
-		
-		ToDo todo = new ToDo();
-		todo.setDate(date);
-		try{
-			todo.setRepeatRule(Selects.repeatRule(rrId));
-		}
-		catch(Exception e){
-			session.getTransaction().rollback();
-			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("RepeatRule-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
-		}
-		todo.setActive(true);
 		
 		try{
 			session.save(todo);
@@ -664,6 +520,5 @@ public class Inserts {
 		}
 		
 		session.close();
-		return todo.getToDoId();
 	}
 }

@@ -50,6 +50,8 @@ import de.bo.aid.boese.json.ConfirmConnection;
 import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempDevice;
+import de.bo.aid.boese.model.Connector;
+import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceComponent;
 import de.bo.aid.boese.ruler.Control;
 import de.bo.aid.boese.ruler.Inquiry;
@@ -282,21 +284,22 @@ private final String logo =
 		SecureRandom sr = new SecureRandom();
 		String pw = String.valueOf(sr.nextLong());
 
-		int conId = Inserts.connector(name, pw);
-		SessionHandler.getInstance().setConnectorId(tempId, conId);
+		Connector con = new Connector(name, pw);
+		Inserts.connector(con);
+		SessionHandler.getInstance().setConnectorId(tempId, con.getCoId());
 
 		// Send ConfirmConnection
-		BoeseJson cc = new ConfirmConnection(pw, conId, 0, new Date().getTime());
+		BoeseJson cc = new ConfirmConnection(pw, con.getCoId(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(cc, os);
-		SessionHandler.getInstance().sendToConnector(conId, os.toString());
+		SessionHandler.getInstance().sendToConnector(con.getCoId(), os.toString());
 
 		if (!isUserConnector) {			
 			// Send RequestAllDevices
-			BoeseJson rad = new RequestAllDevices(conId, 0, new Date().getTime());
+			BoeseJson rad = new RequestAllDevices(con.getCoId(), 0, new Date().getTime());
 			os = new ByteArrayOutputStream();
 			BoeseJson.parseMessage(rad, os);
-			SessionHandler.getInstance().sendToConnector(conId, os.toString());
+			SessionHandler.getInstance().sendToConnector(con.getCoId(), os.toString());
 		}
 		
 		System.out.println("User confirmed Connector with name: " + name + "\n");
@@ -326,7 +329,9 @@ private final String logo =
 		
 		HashMap<String, Integer> devices = new HashMap<String, Integer>();
 		try {
-			devices.put(name, Inserts.device(connectorId, zoneId, name, "serial"));
+			Device dev = new Device(name, "serial");
+			Inserts.device(connectorId, zoneId, dev);
+			devices.put(name, dev.getDeId());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();
@@ -402,14 +407,15 @@ private final String logo =
 		}
 		int deviceId = temp.getDeviceId();
 		int connectorId = temp.getConnectorId();
-		
-		int componentId = 0; 
+ 
 		int deCoId = 0;
 		// TODO Was ist wenn Inserts.component() funktioniert aber Inserts.deviceComponent nicht
 		// TODO jedesmal wird eine Komponente erstellt
 		try{
-			componentId = Inserts.component(name, unitId, temp.isActor()); 
-			deCoId = Inserts.deviceComponent(deviceId, componentId, temp.getDescription());
+			de.bo.aid.boese.model.Component comp = new de.bo.aid.boese.model.Component(name, temp.isActor());
+			Inserts.component(unitId, comp); 
+			DeviceComponent deco = new DeviceComponent(temp.getDescription());
+			Inserts.deviceComponent(deviceId, comp.getCoId(), deco);
 		}
 		catch(Exception e){
 			logger.error(e.getMessage());

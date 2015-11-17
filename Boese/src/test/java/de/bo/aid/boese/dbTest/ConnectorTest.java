@@ -64,10 +64,10 @@ public class ConnectorTest {
 	public void test() {
 		
 		//Insert Connector 1
-		con1.setCoId(insert(con1));
+		insert(con1);
 		con1Update.setCoId(con1.getCoId());
 		//Insert Connector 2
-		con2.setCoId(insert(con2));
+		insert(con2);
 		con2Update.setCoId(con2.getCoId());
 
 		//Connector 1 equal Connector in DB?
@@ -76,9 +76,9 @@ public class ConnectorTest {
 		equal(con2, "2");
 		
 		//Update Connector 1
-		update(con1.getCoId(), con1Update);
+		update(con1, con1Update);
 		//Update Connector 2
-		update(con2.getCoId(), con2Update);
+		update(con2, con2Update);
 		
 		//Connector 1 after update equal Connector in DB?
 		equal(con1Update, "1Update");
@@ -91,10 +91,9 @@ public class ConnectorTest {
 	 * Insert.
 	 *
 	 * @param con the con
-	 * @return the int
 	 */
-	private int insert(Connector con){
-		return Inserts.connector(con.getName(), con.getPassword());
+	private void insert(Connector con){
+		Inserts.connector(con);
 	}
 	
 	/**
@@ -134,12 +133,12 @@ public class ConnectorTest {
 	 * @param id the id
 	 * @param conUpdate the con update
 	 */
-	private void update(int id, Connector conUpdate){
+	private void update(Connector con, Connector conUpdate){
 		try {
-			Updates.connector(id, conUpdate.getName(), conUpdate.getPassword(), conUpdate.getStatus());
+			Updates.connector(con, conUpdate.getName(), conUpdate.getPassword(), conUpdate.getStatus());
 		} catch (DBObjectNotFoundException e) {
 			e.printStackTrace();
-			fail(e.getMessage() + "with ID: " + id);
+			fail(e.getMessage() + "with ID: " + con.getCoId());
 		}
 	}
 

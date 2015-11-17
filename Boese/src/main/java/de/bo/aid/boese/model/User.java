@@ -122,6 +122,28 @@ public class User implements java.io.Serializable {
 	}
 
 	/**
+	 * Instantiates a new user for DB Insert.
+	 *
+	 * @param surname the surname
+	 * @param firstName the first name
+	 * @param password the password
+	 * @param gender the gender
+	 * @param birthdate the birthdate
+	 * @param userName the user name
+	 * @param email the email
+	 */
+	public User(String surname, String firstName, String password, Boolean gender, Date birthdate,
+			String userName, String email) {
+		this.surname = surname;
+		this.firstName = firstName;
+		this.password = password;
+		this.gender = gender;
+		this.birthdate = birthdate;
+		this.userName = userName;
+		this.email = email;
+	}
+
+	/**
 	 * Gets the us id.
 	 *
 	 * @return the us id

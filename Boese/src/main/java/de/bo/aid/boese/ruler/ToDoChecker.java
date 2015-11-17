@@ -106,7 +106,9 @@ public class ToDoChecker extends Thread{
 							todo = null;
 						}
 						else{
-							todo = Selects.toDo(Inserts.toDoWithoutChange(new TimeFormat(rr.getRepeat()).getDate(), rr.getRrId()));
+//							todo = Selects.toDo(Inserts.toDoWithoutChange(new TimeFormat(rr.getRepeat()).getDate(), rr.getRrId()));
+							todo.setDate(new TimeFormat(rr.getRepeat()).getDate());
+							Inserts.toDoWithoutChange(todo, rr.getRrId());
 							ttl.add(new TimeTodos(todo.getToDoId(), todo.getDate(), todo.getRepeatRule().getValue().doubleValue(), todo.getRepeatRule().getDeviceComponent()));
 						}
 						ttl.remove(tt);
@@ -121,7 +123,9 @@ public class ToDoChecker extends Thread{
 							todo = null;
 						}
 						else{
-							todo = Selects.toDo(Inserts.toDoWithoutChange(new TimeFormat(rr.getRepeat()).getDate(), rr.getRrId()));
+//							todo = Selects.toDo(Inserts.toDoWithoutChange(new TimeFormat(rr.getRepeat()).getDate(), rr.getRrId()));
+							todo.setDate(new TimeFormat(rr.getRepeat()).getDate());
+							Inserts.toDoWithoutChange(todo, rr.getRrId());
 							ttl.add(new TimeTodos(todo.getToDoId(), todo.getDate(), todo.getRepeatRule().getValue().doubleValue(), todo.getRepeatRule().getDeviceComponent()));
 						}
 						ttl.remove(tt);

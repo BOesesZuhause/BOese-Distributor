@@ -36,7 +36,10 @@ import java.util.List;
 
 import de.bo.aid.boese.db.AllSelects;
 import de.bo.aid.boese.db.Inserts;
+import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.exceptions.DBForeignKeyNotFoundException;
+import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
+import de.bo.aid.boese.model.DeviceComponent;
 import de.bo.aid.boese.model.RepeatRule;
 import de.bo.aid.boese.model.ToDo;
 import de.bo.aid.boese.xml.BoeseXML;
@@ -55,10 +58,15 @@ public class Interpretor {
 	 * @param conditions the conditions
 	 * @return the all de co ids condition
 	 */
-	public List<Integer> getAllDeCoIdsCondition(BoeseXML conditions){
-		List<Integer> list = new ArrayList<Integer>();
+	public List<DeviceComponent> getAllDeCosCondition(BoeseXML conditions){
+		List<DeviceComponent> list = new ArrayList<DeviceComponent>();
 		for (Component comp : ((Condition)conditions).getRule().getComponents()) {
-			list.add(new Integer(comp.getId()));
+			try {
+				list.add(Selects.deviceComponent(comp.getId()));
+			} catch (DBObjectNotFoundException e) {
+				// TODO write Log
+				e.printStackTrace();
+			}
 		}
 		return list;
 	}
@@ -84,7 +92,8 @@ public static void createTodos(ToDoChecker tdc){
 		}
 		for(RepeatRule rr : rule){
 			try {
-				Inserts.toDoWithoutChange(new TimeFormat(rr.getRepeat()).getDate(), rr.getRrId());
+				ToDo todo = new ToDo(new TimeFormat(rr.getRepeat()).getDate());
+				Inserts.toDoWithoutChange(todo, rr.getRrId());
 			} catch (DBForeignKeyNotFoundException e) {
 				// TODO Logger
 				e.printStackTrace();

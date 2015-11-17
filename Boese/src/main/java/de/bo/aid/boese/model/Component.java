@@ -63,6 +63,18 @@ public class Component implements java.io.Serializable {
 	 * Instantiates a new component.
 	 */
 	public Component() {
+	
+	}
+
+	/**
+	 * Instantiates a new component for DB Insert.
+	 *
+	 * @param name the name
+	 * @param sensor the sensor
+	 */
+	public Component(String name, boolean sensor) {
+		this.name = name;
+		this.actor = sensor;
 	}
 
 	/**

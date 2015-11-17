@@ -66,6 +66,15 @@ public class Group implements java.io.Serializable {
 	}
 
 	/**
+	 * Instantiates a new group to Insert in DB.
+	 *
+	 * @param name the name
+	 */
+	public Group(String name) {
+		this.name = name;
+	}
+
+	/**
 	 * Instantiates a new group.
 	 *
 	 * @param grId the gr id

@@ -573,25 +573,26 @@ public class ProtocolHandler implements MessageHandler {
 			return;
 		}
 		HashMap<Integer, Integer> tempRules = new HashMap<>();
-		List<Integer> ruleDeCoIds = new ArrayList<>();
+		List<DeviceComponent> ruleDeCos = new ArrayList<>();
 		Interpretor interpretor = new Interpretor();
-		int ruleId = 0;
 		for (Rule rule : ucr.getRules()) {
+			de.bo.aid.boese.model.Rule r = null;
 			if (BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())) == null ||
 					BoeseXML.readXML(new ByteArrayInputStream(rule.getPermissions().getBytes())) == null ||
 					BoeseXML.readXML(new ByteArrayInputStream(rule.getActions().getBytes())) == null) {
 				// TODO Error handlin
 				logger.warn("Invalid XML in new Rule");
 			} else {
-				ruleDeCoIds = interpretor.getAllDeCoIdsCondition(
+				ruleDeCos = interpretor.getAllDeCosCondition(
 						BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())));
 				try {
-					ruleId = Inserts.rule(ruleDeCoIds, rule.getPermissions(), rule.getConditions(), rule.getActions(), distributor.getTdc());
+					r = new de.bo.aid.boese.model.Rule(rule.getPermissions(), rule.getConditions(), rule.getActions());
+					Inserts.rule(ruleDeCos, r, distributor.getTdc());
 				} catch (DBForeignKeyNotFoundException e) {
 					logger.error(e.getMessage());
 					e.printStackTrace();
 				}
-				tempRules.put(rule.getTempRuleId(), ruleId);
+				tempRules.put(rule.getTempRuleId(), r.getRuId());
 			}
 		}
 		sendConfirmRules(tempRules, connectorId);

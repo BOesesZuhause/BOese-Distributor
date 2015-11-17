@@ -57,6 +57,19 @@ public class ToDo {
 	 * Instantiates a new to do.
 	 */
 	public ToDo() {
+		
+	}
+
+	/**
+	 * Instantiates a new todo for DB Insert.
+	 *
+	 * @param toDoId the to do id
+	 * @param date the date
+	 * @param active the active
+	 */
+	public ToDo(Date date){
+		this.date = date;
+		this.active = true;
 	}
 
 	/**

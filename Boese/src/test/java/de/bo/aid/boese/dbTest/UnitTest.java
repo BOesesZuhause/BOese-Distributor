@@ -42,10 +42,10 @@ public class UnitTest {
 	public void test() {
 		
 		//Insert Unit 1
-		unit1.setUnId(insert(unit1));
+		insert(unit1);
 		unit1Update.setUnId(unit1.getUnId());
 		//Insert Unit 2
-		unit2.setUnId(insert(unit2));
+		insert(unit2);
 		unit2Update.setUnId(unit2.getUnId());
 
 		//Unit 1 equal Unit in DB?
@@ -54,9 +54,9 @@ public class UnitTest {
 		equal(unit2, "2");
 		
 		//Update Unit 1
-		update(unit1.getUnId(), unit1Update);
+		update(unit1, unit1Update);
 		//Update Unit 2
-		update(unit2.getUnId(), unit2Update);
+		update(unit2, unit2Update);
 		
 		//Unit 1 after update equal Unit in DB?
 		equal(unit1Update, "1Update");
@@ -65,8 +65,8 @@ public class UnitTest {
 		
 	}
 	
-	private int insert(Unit unit){
-		return Inserts.unit(unit.getName(), unit.getSymbol());
+	private void insert(Unit unit){
+		Inserts.unit(unit);
 	}
 	
 	private Unit select(int id){
@@ -87,12 +87,12 @@ public class UnitTest {
 		assertTrue("Unit " + name + " ID not equal", unit.getUnId() == unitTest.getUnId());
 	}
 	
-	private void update(int id, Unit unitUpdate){
+	private void update(Unit unit, Unit unitUpdate){
 		try {
-			Updates.unit(id, unitUpdate.getName(), unitUpdate.getSymbol());
+			Updates.unit(unit, unitUpdate.getName(), unitUpdate.getSymbol());
 		} catch (DBObjectNotFoundException e) {
 			e.printStackTrace();
-			fail(e.getMessage() + "with ID: " + id);
+			fail(e.getMessage() + "with ID: " + unit.getUnId());
 		}
 	}
 }

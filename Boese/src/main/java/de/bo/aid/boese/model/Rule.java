@@ -93,6 +93,19 @@ public class Rule implements java.io.Serializable {
 	/**
 	 * Instantiates a new rule.
 	 *
+	 * @param permissions the permissions
+	 * @param conditions the conditions
+	 * @param actions the actions
+	 */
+	public Rule(String permissions, String conditions, String actions) {
+		this.permissions = permissions;
+		this.conditions = conditions;
+		this.actions = actions;
+	}
+
+	/**
+	 * Instantiates a new rule.
+	 *
 	 * @param ruId the ru id
 	 * @param active the active
 	 * @param insertDate the insert date

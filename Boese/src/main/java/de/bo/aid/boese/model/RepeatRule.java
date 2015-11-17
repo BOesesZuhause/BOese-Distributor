@@ -64,6 +64,21 @@ public class RepeatRule {
 	 * Instantiates a new repeat rule.
 	 */
 	public RepeatRule() {
+		
+	}
+
+	/**
+	 * Instantiates a new repeat rule for DB Insert.
+	 *
+	 * @param rrId the rr id
+	 * @param repeat the repeat
+	 * @param value the value
+	 * @param repeatsAfterEnd the repeats after end
+	 */
+	public RepeatRule(String repeat, BigDecimal value, int repeatsAfterEnd) {
+		this.repeat = repeat;
+		this.value = value;
+		this.repeatsAfterEnd = repeatsAfterEnd;
 	}
 
 	/**

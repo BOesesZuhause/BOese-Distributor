@@ -57,6 +57,16 @@ public class DeviceGroup implements java.io.Serializable {
 	 * Instantiates a new device group.
 	 */
 	public DeviceGroup() {
+		
+	}
+
+	/**
+	 * Instantiates a new device group for DB Insert.
+	 *
+	 * @param rights the rights
+	 */
+	public DeviceGroup(short rights) {
+		this.rights = rights;
 	}
 
 	/**

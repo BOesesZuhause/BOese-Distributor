@@ -16,11 +16,11 @@
         <property name="symbol" type="string">
             <column name="Symbol" length="25" />
         </property>
-        <!-- <set name="components" table="component" inverse="true" lazy="false" fetch="select">
+        <set name="components" table="component" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="UnID" not-null="true" />
             </key>
             <one-to-many class="de.bo.aid.boese.model.Component" />
-        </set> -->
+        </set>
     </class>
 </hibernate-mapping>

@@ -53,8 +53,8 @@ public class Unit implements java.io.Serializable {
 	/** The symbol. */
 	private String symbol;
 	
-//	/** The components. */
-//	private Set<Component> components = new HashSet<Component>(0);
+	/** The components. */
+	private Set<Component> components = new HashSet<Component>(0);
 
 	/**
 	 * Instantiates a new unit.
@@ -72,18 +72,29 @@ public class Unit implements java.io.Serializable {
 	}
 
 	/**
+	 * Instantiates a new unit for DB Insert.
+	 *
+	 * @param name the name
+	 * @param symbol the symbol
+	 */
+	public Unit(String name, String symbol) {
+		this.name = name;
+		this.symbol = symbol;
+	}
+
+	/**
 	 * Instantiates a new unit.
 	 *
 	 * @param unId the un id
 	 * @param name the name
 	 * @param symbol the symbol
-//	 * @param components the components
+	 * @param components the components
 	 */
-	public Unit(int unId, String name, String symbol){  //, Set<Component> components) {
+	public Unit(int unId, String name, String symbol, Set<Component> components) {
 		this.unId = unId;
 		this.name = name;
 		this.symbol = symbol;
-//		this.components = components;
+		this.components = components;
 	}
 
 	/**
@@ -140,23 +151,23 @@ public class Unit implements java.io.Serializable {
 		this.symbol = symbol;
 	}
 
-//	/**
-//	 * Gets the components.
-//	 *
-//	 * @return the components
-//	 */
-//	public Set<Component> getComponents() {
-//		return this.components;
-//	}
-//
-//	/**
-//	 * Sets the components.
-//	 *
-//	 * @param components the new components
-//	 */
-//	public void setComponents(Set<Component> components) {
-//		this.components = components;
-//	}
+	/**
+	 * Gets the components.
+	 *
+	 * @return the components
+	 */
+	public Set<Component> getComponents() {
+		return this.components;
+	}
+
+	/**
+	 * Sets the components.
+	 *
+	 * @param components the new components
+	 */
+	public void setComponents(Set<Component> components) {
+		this.components = components;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -167,11 +178,12 @@ public class Unit implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Unit other = (Unit) obj;
-//		if (components == null) {
-//			if (other.components != null)
-//				return false;
-//		} else if (!components.equals(other.components))
-//			return false;
+		if (components == null) {
+			System.out.println("hier");
+			if (other.components != null)
+				return false;
+		} else if (!components.equals(other.components))
+			return false;//System.out.println(components.size() + "\t" + other.components.size());
 		if (name == null) {
 			if (other.name != null)
 				return false;

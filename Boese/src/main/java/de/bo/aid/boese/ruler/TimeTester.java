@@ -31,12 +31,19 @@
 
 package de.bo.aid.boese.ruler;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
+import de.bo.aid.boese.model.Component;
+import de.bo.aid.boese.model.Connector;
+import de.bo.aid.boese.model.Device;
+import de.bo.aid.boese.model.DeviceComponent;
+import de.bo.aid.boese.model.RepeatRule;
+import de.bo.aid.boese.model.Rule;
 import de.bo.aid.boese.model.ToDo;
 
 // TODO: Auto-generated Javadoc
@@ -59,16 +66,23 @@ public class TimeTester{
 		tdc.start();
 		
 		try{
-			int conid = Inserts.connector("leer", "123");
-			int deid = Inserts.device(conid, 0, "leer", "123");
-			int compid = Inserts.component("leer", 0, true);
-			int decoid = Inserts.deviceComponent(deid, compid, "leer");
+			Connector con = new Connector("leer", "123");
+			Inserts.connector(con);
+			Device dev = new Device("leer", "123");
+			Inserts.device(con.getCoId(), 0, dev);
+			Component comp = new Component("leer", true);
+			Inserts.component(0, comp);
+			DeviceComponent deco = new DeviceComponent("leer");
+			Inserts.deviceComponent(dev.getDeId(), comp.getCoId(), deco);
 		
-			List<Integer> decoList = new ArrayList<Integer>();
-			decoList.add(decoid);
-			int ruid = Inserts.rule(decoList, "", "", "", tdc);
-			int rrid = Inserts.repeatRule("30; 21; *; *; *; *", 100, 0, ruid, decoid, tdc);
-			int todoid = Inserts.toDo(new Date(), rrid, tdc);
+			List<DeviceComponent> decoList = new ArrayList<DeviceComponent>();
+			decoList.add(deco);
+			Rule rule = new Rule("", "", "");
+			Inserts.rule(decoList, rule, tdc);
+			RepeatRule rr = new RepeatRule("30; 21; *; *; *; *", new BigDecimal(100), 0);
+			Inserts.repeatRule(rr , rule.getRuId(), deco.getDeCoId(), tdc);
+			ToDo todo = new ToDo(new Date());
+			Inserts.toDo(todo, rr.getRrId(), tdc);
 		}
 		catch(Exception e){
 			e.printStackTrace();

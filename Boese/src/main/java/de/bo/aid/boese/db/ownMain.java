@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import de.bo.aid.boese.constants.Status;
+import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.model.*;
 
@@ -53,16 +55,19 @@ public class ownMain {
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");
 		HibernateUtil.setDBURL("boese", "localhost", "5432");
-		try{
-			int compid = Inserts.component("bla", 0, true);
-			int conid = Inserts.connector("bla", "bla");
-			int deid = Inserts.device(conid, 0, "bla", "123456789");
-			int deco1 = Inserts.deviceComponent(deid, compid, "1");
-			int deco2 = Inserts.deviceComponent(deid, compid, "2");
-		}
-		catch(Exception e){
+		
+		Connector con = new Connector("test", "123");
+		Inserts.connector(con);
+		Device dev = new Device("test", "test");
+		try {
+			Inserts.device(con.getCoId(), 0, dev);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println(dev.getDeId() + "\t" + dev.getAlias());
+		
+		
 		
 		System.out.println("erledigt");
 	}
