@@ -230,4 +230,45 @@ public class RepeatRule {
 		this.deviceComponent = deviceComponent;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RepeatRule other = (RepeatRule) obj;
+		if (deviceComponent == null) {
+			if (other.deviceComponent != null)
+				return false;
+		} else if (!deviceComponent.equals(other.deviceComponent))
+			return false;
+		if (repeat == null) {
+			if (other.repeat != null)
+				return false;
+		} else if (!repeat.equals(other.repeat))
+			return false;
+		if (repeatsAfterEnd != other.repeatsAfterEnd)
+			return false;
+		if (rrId != other.rrId)
+			return false;
+		if (rule == null) {
+			if (other.rule != null)
+				return false;
+		} else if (!rule.equals(other.rule))
+			return false;
+		if (toDo == null) {
+			if (other.toDo != null)
+				return false;
+		} else if (!toDo.equals(other.toDo))
+			return false;
+		if (value == null) {
+			if (other.value != null)
+				return false;
+		} else if (!value.equals(other.value))
+			return false;
+		return true;
+	}
+
 }

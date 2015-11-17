@@ -146,4 +146,33 @@ public class DeviceGroup implements java.io.Serializable {
 		this.rights = rights;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DeviceGroup other = (DeviceGroup) obj;
+		if (device == null) {
+			if (other.device != null)
+				return false;
+		} else if (!device.equals(other.device))
+			return false;
+		if (group == null) {
+			if (other.group != null)
+				return false;
+		} else if (!group.equals(other.group))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (rights != other.rights)
+			return false;
+		return true;
+	}
+
 }

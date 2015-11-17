@@ -158,4 +158,36 @@ public class GroupZone implements java.io.Serializable {
 		this.rights = rights;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GroupZone other = (GroupZone) obj;
+		if (group == null) {
+			if (other.group != null)
+				return false;
+		} else if (!group.equals(other.group))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (rights == null) {
+			if (other.rights != null)
+				return false;
+		} else if (!rights.equals(other.rights))
+			return false;
+		if (zone == null) {
+			if (other.zone != null)
+				return false;
+		} else if (!zone.equals(other.zone))
+			return false;
+		return true;
+	}
+
 }

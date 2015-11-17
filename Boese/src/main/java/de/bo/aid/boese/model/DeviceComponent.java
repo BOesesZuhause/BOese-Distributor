@@ -360,4 +360,73 @@ public class DeviceComponent implements java.io.Serializable {
 		this.repeatRule = repeatRule;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DeviceComponent other = (DeviceComponent) obj;
+		if (component == null) {
+			if (other.component != null)
+				return false;
+		} else if (!component.equals(other.component))
+			return false;
+		if (currentValue == null) {
+			if (other.currentValue != null)
+				return false;
+		} else if (!currentValue.equals(other.currentValue))
+			return false;
+		if (deCoId != other.deCoId)
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (device == null) {
+			if (other.device != null)
+				return false;
+		} else if (!device.equals(other.device))
+			return false;
+		if (deviceComponenteReplacesForDeCoId == null) {
+			if (other.deviceComponenteReplacesForDeCoId != null)
+				return false;
+		} else if (!deviceComponenteReplacesForDeCoId.equals(other.deviceComponenteReplacesForDeCoId))
+			return false;
+		if (deviceComponenteReplacesForDeCoIdreplaced == null) {
+			if (other.deviceComponenteReplacesForDeCoIdreplaced != null)
+				return false;
+		} else if (!deviceComponenteReplacesForDeCoIdreplaced.equals(other.deviceComponenteReplacesForDeCoIdreplaced))
+			return false;
+		if (historyLogDeviceComponents == null) {
+			if (other.historyLogDeviceComponents != null)
+				return false;
+		} else if (!historyLogDeviceComponents.equals(other.historyLogDeviceComponents))
+			return false;
+		if (logDeviceComponents == null) {
+			if (other.logDeviceComponents != null)
+				return false;
+		} else if (!logDeviceComponents.equals(other.logDeviceComponents))
+			return false;
+		if (logRule == null) {
+			if (other.logRule != null)
+				return false;
+		} else if (!logRule.equals(other.logRule))
+			return false;
+		if (repeatRule == null) {
+			if (other.repeatRule != null)
+				return false;
+		} else if (!repeatRule.equals(other.repeatRule))
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
+			return false;
+		return true;
+	}
+
 }

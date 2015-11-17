@@ -208,4 +208,43 @@ public class Zone implements java.io.Serializable {
 		this.devices = devices;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Zone other = (Zone) obj;
+		if (devices == null) {
+			if (other.devices != null)
+				return false;
+		} else if (!devices.equals(other.devices))
+			return false;
+		if (groupZones == null) {
+			if (other.groupZones != null)
+				return false;
+		} else if (!groupZones.equals(other.groupZones))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (zoId != other.zoId)
+			return false;
+		if (zone == null) {
+			if (other.zone != null)
+				return false;
+		} else if (!zone.equals(other.zone))
+			return false;
+		if (zones == null) {
+			if (other.zones != null)
+				return false;
+		} else if (!zones.equals(other.zones))
+			return false;
+		return true;
+	}
+
 }

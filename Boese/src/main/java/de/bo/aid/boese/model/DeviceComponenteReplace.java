@@ -149,4 +149,36 @@ public class DeviceComponenteReplace implements java.io.Serializable {
 		this.timestap = timestap;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DeviceComponenteReplace other = (DeviceComponenteReplace) obj;
+		if (deviceComponentByDeCoId == null) {
+			if (other.deviceComponentByDeCoId != null)
+				return false;
+		} else if (!deviceComponentByDeCoId.equals(other.deviceComponentByDeCoId))
+			return false;
+		if (deviceComponentByDeCoIdreplaced == null) {
+			if (other.deviceComponentByDeCoIdreplaced != null)
+				return false;
+		} else if (!deviceComponentByDeCoIdreplaced.equals(other.deviceComponentByDeCoIdreplaced))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (timestap == null) {
+			if (other.timestap != null)
+				return false;
+		} else if (!timestap.equals(other.timestap))
+			return false;
+		return true;
+	}
+
 }

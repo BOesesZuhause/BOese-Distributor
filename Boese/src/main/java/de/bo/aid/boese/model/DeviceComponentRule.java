@@ -119,4 +119,31 @@ public class DeviceComponentRule {
 		this.rule = rule;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DeviceComponentRule other = (DeviceComponentRule) obj;
+		if (devicecomponent == null) {
+			if (other.devicecomponent != null)
+				return false;
+		} else if (!devicecomponent.equals(other.devicecomponent))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (rule == null) {
+			if (other.rule != null)
+				return false;
+		} else if (!rule.equals(other.rule))
+			return false;
+		return true;
+	}
+
 }

@@ -149,4 +149,33 @@ public class LogConnector implements java.io.Serializable {
 		this.data = data;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LogConnector other = (LogConnector) obj;
+		if (connector == null) {
+			if (other.connector != null)
+				return false;
+		} else if (!connector.equals(other.connector))
+			return false;
+		if (data == null) {
+			if (other.data != null)
+				return false;
+		} else if (!data.equals(other.data))
+			return false;
+		if (loCoId != other.loCoId)
+			return false;
+		if (timestap == null) {
+			if (other.timestap != null)
+				return false;
+		} else if (!timestap.equals(other.timestap))
+			return false;
+		return true;
+	}
+
 }

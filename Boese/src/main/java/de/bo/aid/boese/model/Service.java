@@ -137,4 +137,28 @@ public class Service implements java.io.Serializable {
 		this.devices = devices;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Service other = (Service) obj;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (devices == null) {
+			if (other.devices != null)
+				return false;
+		} else if (!devices.equals(other.devices))
+			return false;
+		if (seId != other.seId)
+			return false;
+		return true;
+	}
+
 }

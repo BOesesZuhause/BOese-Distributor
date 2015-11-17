@@ -187,4 +187,35 @@ public class Component implements java.io.Serializable {
 		this.deviceComponents = deviceComponents;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Component other = (Component) obj;
+		if (actor != other.actor)
+			return false;
+		if (coId != other.coId)
+			return false;
+		if (deviceComponents == null) {
+			if (other.deviceComponents != null)
+				return false;
+		} else if (!deviceComponents.equals(other.deviceComponents))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (unit == null) {
+			if (other.unit != null)
+				return false;
+		} else if (!unit.equals(other.unit))
+			return false;
+		return true;
+	}
+
 }
