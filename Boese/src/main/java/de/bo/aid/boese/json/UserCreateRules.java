@@ -39,7 +39,7 @@ import java.util.HashSet;
 public class UserCreateRules extends BoeseJson {
 	
 	/** The rules. */
-	HashSet<Rule> rules;
+	HashSet<RuleJSON> rules;
 
 	/**
 	 * Instantiates a new user create rules.
@@ -49,7 +49,7 @@ public class UserCreateRules extends BoeseJson {
 	 * @param status the status
 	 * @param timestamp the timestamp
 	 */
-	public UserCreateRules(HashSet<Rule> rules, int connectorId, int status, long timestamp) {
+	public UserCreateRules(HashSet<RuleJSON> rules, int connectorId, int status, long timestamp) {
 		super(MessageType.USERCREATERULES, connectorId, status, timestamp);
 		this.rules = rules;
 	}
@@ -59,7 +59,7 @@ public class UserCreateRules extends BoeseJson {
 	 *
 	 * @return the rules
 	 */
-	public HashSet<Rule> getRules() {
+	public HashSet<RuleJSON> getRules() {
 		return rules;
 	}
 

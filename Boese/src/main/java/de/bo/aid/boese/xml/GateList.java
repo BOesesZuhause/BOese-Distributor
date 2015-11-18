@@ -44,7 +44,7 @@ public class GateList {
 	private HashSet<GateList> gates;
 	
 	/** The sensors. */
-	private HashSet<Component> sensors;
+	private HashSet<ComponentXML> sensors;
 	
 	/** The gate type. */
 	private GateType gateType;
@@ -74,7 +74,7 @@ public class GateList {
 	 *
 	 * @param component the component
 	 */
-	public void addComponent(Component component) {
+	public void addComponent(ComponentXML component) {
 		sensors.add(component);
 	}
 	
@@ -83,7 +83,7 @@ public class GateList {
 	 *
 	 * @return the components
 	 */
-	public Set<Component> getComponents() {
+	public Set<ComponentXML> getComponents() {
 		return sensors;
 	}
 	

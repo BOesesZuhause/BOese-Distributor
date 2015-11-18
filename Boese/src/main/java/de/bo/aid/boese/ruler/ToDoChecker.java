@@ -44,7 +44,7 @@ import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.model.RepeatRule;
 import de.bo.aid.boese.model.ToDo;
-import de.bo.aid.boese.xml.Component;
+import de.bo.aid.boese.xml.ComponentXML;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -96,7 +96,7 @@ public class ToDoChecker extends Thread{
 						e.printStackTrace();
 						System.exit(0);
 					}
-					List<Component> todos = new ArrayList<Component>();
+					List<ComponentXML> todos = new ArrayList<ComponentXML>();
 					while(isPast(tt.getDate())){
 						
 						ToDo todo = Selects.toDo(tt.getId());
@@ -115,7 +115,7 @@ public class ToDoChecker extends Thread{
 						tt = ttl.iterator().next();
 					}
 					while(sameTime(tt.getDate())){
-						todos.add(new Component(tt.getDeco().getDeCoId(), tt.getValue()));
+						todos.add(new ComponentXML(tt.getDeco().getDeCoId(), tt.getValue()));
 						ToDo todo = Selects.toDo(tt.getId());
 						RepeatRule rr = todo.getRepeatRule();
 						Deletes.ToDo(todo);

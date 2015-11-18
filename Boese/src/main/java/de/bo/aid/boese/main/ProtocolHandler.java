@@ -61,7 +61,7 @@ import de.bo.aid.boese.json.MultiMessage;
 import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.json.RequestConnection;
 import de.bo.aid.boese.json.RequestDeviceComponents;
-import de.bo.aid.boese.json.Rule;
+import de.bo.aid.boese.json.RuleJSON;
 import de.bo.aid.boese.json.SendDeviceComponents;
 import de.bo.aid.boese.json.SendDevices;
 import de.bo.aid.boese.json.SendStatus;
@@ -80,19 +80,21 @@ import de.bo.aid.boese.json.UserSendRules;
 import de.bo.aid.boese.json.UserSendTemps;
 import de.bo.aid.boese.json.UserSendZones;
 import de.bo.aid.boese.json.UserTempComponent;
-import de.bo.aid.boese.json.Zone;
+import de.bo.aid.boese.json.ZoneJSON;
 import de.bo.aid.boese.json.BoeseJson.MessageType;
 import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempDevice;
 import de.bo.aid.boese.model.Connector;
 import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceComponent;
+import de.bo.aid.boese.model.Rule;
+import de.bo.aid.boese.model.Zone;
 import de.bo.aid.boese.ruler.Inquiry;
 import de.bo.aid.boese.ruler.Interpretor;
 import de.bo.aid.boese.socket.MessageHandler;
 import de.bo.aid.boese.socket.SessionHandler;
 import de.bo.aid.boese.xml.BoeseXML;
-import de.bo.aid.boese.xml.Component;
+import de.bo.aid.boese.xml.ComponentXML;
 import javassist.NotFoundException;
 
 // TODO: Auto-generated Javadoc
@@ -457,7 +459,7 @@ public class ProtocolHandler implements MessageHandler {
 			}
 		} else if (urc.getType() == MessageType.USERREQUESTALLCONNECTORS) {
 			List<Connector> connectorList = AllSelects.Connector();
-			for (de.bo.aid.boese.model.Connector connector : connectorList) {
+			for (Connector connector : connectorList) {
 				connectors.put(connector.getCoId(), connector.getName());
 			}
 		}
@@ -477,10 +479,10 @@ public class ProtocolHandler implements MessageHandler {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
-		HashSet<Zone> zones = new HashSet<>();
-		List<de.bo.aid.boese.model.Zone> zoneList = AllSelects.Zones();
-		for (de.bo.aid.boese.model.Zone zone : zoneList) {
-			zones.add(new Zone(zone.getZoId(), zone.getZone().getZoId(), zone.getName()));
+		HashSet<ZoneJSON> zones = new HashSet<>();
+		List<Zone> zoneList = AllSelects.Zones();
+		for (Zone zone : zoneList) {
+			zones.add(new ZoneJSON(zone.getZoId(), zone.getZone().getZoId(), zone.getName()));
 		}
 		sendUserSendZone(zones, connectorId);
 	}
@@ -498,10 +500,10 @@ public class ProtocolHandler implements MessageHandler {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
-		HashSet<Rule> rules = new HashSet<>();
-		List<de.bo.aid.boese.model.Rule> ruleList = AllSelects.Rules();
-		for (de.bo.aid.boese.model.Rule rule : ruleList) {
-			rules.add(new Rule(rule.getRuId(), rule.getActive().booleanValue(), rule.getInsertDate().getTime(),
+		HashSet<RuleJSON> rules = new HashSet<>();
+		List<Rule> ruleList = AllSelects.Rules();
+		for (Rule rule : ruleList) {
+			rules.add(new RuleJSON(rule.getRuId(), rule.getActive().booleanValue(), rule.getInsertDate().getTime(),
 					rule.getModifyDate().getTime(), rule.getPermissions(), rule.getConditions(), rule.getActions()));
 		}
 		sendUserSendRules(rules, connectorId);
@@ -575,8 +577,8 @@ public class ProtocolHandler implements MessageHandler {
 		HashMap<Integer, Integer> tempRules = new HashMap<>();
 		List<DeviceComponent> ruleDeCos = new ArrayList<>();
 		Interpretor interpretor = new Interpretor();
-		for (Rule rule : ucr.getRules()) {
-			de.bo.aid.boese.model.Rule r = null;
+		for (RuleJSON rule : ucr.getRules()) {
+			Rule r = null;
 			if (BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())) == null ||
 					BoeseXML.readXML(new ByteArrayInputStream(rule.getPermissions().getBytes())) == null ||
 					BoeseXML.readXML(new ByteArrayInputStream(rule.getActions().getBytes())) == null) {
@@ -586,7 +588,7 @@ public class ProtocolHandler implements MessageHandler {
 				ruleDeCos = interpretor.getAllDeCosCondition(
 						BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())));
 				try {
-					r = new de.bo.aid.boese.model.Rule(rule.getPermissions(), rule.getConditions(), rule.getActions());
+					r = new Rule(rule.getPermissions(), rule.getConditions(), rule.getActions());
 					Inserts.rule(ruleDeCos, r, distributor.getTdc());
 				} catch (DBForeignKeyNotFoundException e) {
 					logger.error(e.getMessage());
@@ -728,8 +730,8 @@ public class ProtocolHandler implements MessageHandler {
 	 *            the inquirys
 	 */
 	public void sendToDos(List<Inquiry> inquirys) {
-		List<Component> todos = distributor.insertValues(inquirys);
-		for (Component component : todos) {
+		List<ComponentXML> todos = distributor.insertValues(inquirys);
+		for (ComponentXML component : todos) {
 			int deCoId = component.getId();
 			int deviceId = -1;
 			int idConnector = -1;
@@ -815,7 +817,7 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param rules the rules
 	 * @param connectorId the connector id
 	 */
-	public void sendUserSendRules(HashSet<Rule> rules, int connectorId) {
+	public void sendUserSendRules(HashSet<RuleJSON> rules, int connectorId) {
 
 		BoeseJson usc = new UserSendRules(rules, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
@@ -829,7 +831,7 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param zones the zones
 	 * @param connectorId the connector id
 	 */
-	public void sendUserSendZone(HashSet<Zone> zones, int connectorId) {
+	public void sendUserSendZone(HashSet<ZoneJSON> zones, int connectorId) {
 		BoeseJson usc = new UserSendZones(zones, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(usc, os);

@@ -14,8 +14,8 @@ import de.bo.aid.boese.xml.Action;
 import de.bo.aid.boese.xml.BoeseXML;
 import de.bo.aid.boese.xml.BoeseXML.XMLType;
 import de.bo.aid.boese.xml.CalculationList.CalculationTypes;
-import de.bo.aid.boese.xml.Component;
-import de.bo.aid.boese.xml.Component.Comperator;
+import de.bo.aid.boese.xml.ComponentXML;
+import de.bo.aid.boese.xml.ComponentXML.Comperator;
 import de.bo.aid.boese.xml.Condition;
 import de.bo.aid.boese.xml.GateList.GateType;
 import de.bo.aid.boese.xml.Permission;
@@ -117,7 +117,7 @@ public class XMLParserTest {
 			assertTrue((i.intValue() == 3) || (i.intValue() == 4) || (i.intValue() == 5));
 		}
 		assertTrue(((Action)bXML).getActors().size() == 1);
-		for (Component comp : ((Action)bXML).getActors()) {
+		for (ComponentXML comp : ((Action)bXML).getActors()) {
 			if (comp.getId() == 10) {
 				assertTrue(comp.getComperator() == null);
 				assertTrue(comp.getCalculation().getConstants().iterator().next() == 11.1);
@@ -160,7 +160,7 @@ public class XMLParserTest {
 		assertTrue(bXML.getType() == XMLType.CONDITION);
 		assertTrue(((Condition)bXML).containsComponent(99));
 		assertTrue(((Condition)bXML).getRule().getComponents().size() == 2);
-		for (Component comp : ((Condition)bXML).getRule().getComponents()) {
+		for (ComponentXML comp : ((Condition)bXML).getRule().getComponents()) {
 			if (comp.getId() == 99) {
 				assertTrue(comp.getComperator() == Comperator.EQUAL);
 				assertTrue(comp.getCalculation().getConstants().iterator().next() == 11.1);
@@ -217,7 +217,7 @@ public class XMLParserTest {
 		assertTrue(((Condition)bXML).getRule().getGate().iterator().next().getComponents().size() == 2);
 		assertTrue(((Condition)bXML).getRule().getGate().iterator().next().getGateType() == GateType.AND_GATE);
 		
-		for (Component comp : ((Condition)bXML).getRule().getGate().iterator().next().getComponents()) {
+		for (ComponentXML comp : ((Condition)bXML).getRule().getGate().iterator().next().getComponents()) {
 			if (comp.getId() == 99) {
 				assertTrue(comp.getComperator() == Comperator.EQUAL);
 				assertTrue(comp.getCalculation().getConstants().iterator().next() == 11.1);
@@ -268,7 +268,7 @@ public class XMLParserTest {
 		assertTrue(((Condition)bXML).getRule().getGate().iterator().next().getComponents().size() == 1);
 		assertTrue(((Condition)bXML).getRule().getGate().iterator().next().getGateType() == GateType.AND_GATE);
 		
-		for (Component comp : ((Condition)bXML).getRule().getGate().iterator().next().getComponents()) {
+		for (ComponentXML comp : ((Condition)bXML).getRule().getGate().iterator().next().getComponents()) {
 			assertTrue(comp.getComperator() == Comperator.EQUAL);
 			assertTrue(comp.getCalculation().getCalculations().iterator().next().getCalculationType() == CalculationTypes.ADD);
 			assertTrue(comp.getCalculation().getCalculations().iterator().next().getConstants().iterator().next() == 11.1);

@@ -62,7 +62,7 @@ public class Action extends BoeseXML {
 	private HashSet<Integer> deleteTodoList;
 	
 	/** The actor list. */
-	private HashSet<Component> actorList;
+	private HashSet<ComponentXML> actorList;
 	
 	/**
 	 * Instantiates a new action.
@@ -156,7 +156,7 @@ public class Action extends BoeseXML {
 						break;
 					}
 				}
-				actorList.add(new Component(actorID, actorValue, actorResetValue, actorStartTime, actorDuration, actorRepeatAfterEnd));
+				actorList.add(new ComponentXML(actorID, actorValue, actorResetValue, actorStartTime, actorDuration, actorRepeatAfterEnd));
 			}
 		}
 	}
@@ -184,7 +184,7 @@ public class Action extends BoeseXML {
 	 *
 	 * @return the actors
 	 */
-	public HashSet<Component> getActors() {
+	public HashSet<ComponentXML> getActors() {
 		return actorList;
 	}
 	

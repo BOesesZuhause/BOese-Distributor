@@ -39,7 +39,7 @@ import java.util.HashSet;
 public class UserSendZones extends BoeseJson {
 	
 	/** The zones. */
-	private HashSet<Zone> zones;
+	private HashSet<ZoneJSON> zones;
 	
 	/**
 	 * Instantiates a new user send zones.
@@ -49,7 +49,7 @@ public class UserSendZones extends BoeseJson {
 	 * @param status the status
 	 * @param timestamp the timestamp
 	 */
-	public UserSendZones(HashSet<Zone> zones, int connectorId, int status,
+	public UserSendZones(HashSet<ZoneJSON> zones, int connectorId, int status,
 			long timestamp) {
 		super(MessageType.USERSENDZONES, connectorId, status, timestamp);
 		this.zones = zones;
@@ -60,7 +60,7 @@ public class UserSendZones extends BoeseJson {
 	 *
 	 * @return the zones
 	 */
-	public HashSet<Zone> getZones() {
+	public HashSet<ZoneJSON> getZones() {
 		return zones;
 	}
 

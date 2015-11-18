@@ -410,11 +410,11 @@ public class BoeseJson {
 			bj = new UserRequestGeneral(MessageType.USERREQUESTALLZONES, headerConnectorID, headerStatus, headerTimestamp);
 			break;
 		case 58: // UserSendZones
-			HashSet<Zone> zoneSetUSZ = new HashSet<Zone>();
+			HashSet<ZoneJSON> zoneSetUSZ = new HashSet<ZoneJSON>();
 			JsonArray zonesUSZ = jo.getJsonArray("Zones");
 			for (int i = 0; i < zonesUSZ.size(); i++) {
 				JsonObject zoneUSZ = zonesUSZ.getJsonObject(i);
-				zoneSetUSZ.add(new Zone(
+				zoneSetUSZ.add(new ZoneJSON(
 							zoneUSZ.getInt("ZoneId"),
 							zoneUSZ.getInt("SuperZoneId"),
 							zoneUSZ.getString("ZoneName", "")));
@@ -425,11 +425,11 @@ public class BoeseJson {
 			bj = new UserRequestGeneral(MessageType.USERREQUESTALLRULES, headerConnectorID, headerStatus, headerTimestamp);
 			break;
 		case 60: // UserSendRules
-			HashSet<Rule> ruleSetURAR = new HashSet<>();
+			HashSet<RuleJSON> ruleSetURAR = new HashSet<>();
 			JsonArray rulesURAR = jo.getJsonArray("Rules");
 			for (int i = 0; i < rulesURAR.size(); i++) {
 				JsonObject ruleURAR = rulesURAR.getJsonObject(i);
-				ruleSetURAR.add(new Rule(ruleURAR.getInt("RuleId"), 
+				ruleSetURAR.add(new RuleJSON(ruleURAR.getInt("RuleId"), 
 								ruleURAR.getBoolean("Active"), 
 								ruleURAR.getJsonNumber("InsertDate").longValue(), 
 								ruleURAR.getJsonNumber("ModifyDate").longValue(), 
@@ -495,12 +495,12 @@ public class BoeseJson {
 					headerConnectorID, headerStatus, headerTimestamp);
 			break;
 		case 90: // UserCreateRules
-			HashSet<Rule> rulesSetUCR = new HashSet<>();
+			HashSet<RuleJSON> rulesSetUCR = new HashSet<>();
 			JsonArray rulesUCR = jo.getJsonArray("Rules");
 			for (int i = 0; i < rulesUCR.size(); i++) {
 				JsonObject rule = rulesUCR.getJsonObject(i);
 				long currentDateUCR = new Date().getTime();
-				rulesSetUCR.add(new Rule(-1, rule.getInt("TempRuleId", -1), rule.getBoolean("Active", false), 
+				rulesSetUCR.add(new RuleJSON(-1, rule.getInt("TempRuleId", -1), rule.getBoolean("Active", false), 
 						currentDateUCR, currentDateUCR, rule.getString("Permissions"), rule.getString("Conditions"), 
 						rule.getString("Actions")));
 			}
@@ -774,7 +774,7 @@ public class BoeseJson {
 			job.add("Header", addHeader(58, usz.getConnectorId(), usz.getStatus(), usz.getTimestamp()));
 			JsonArrayBuilder zonesUSZ = Json.createArrayBuilder();
 			JsonObjectBuilder zoneUSZ;
-			for (Zone zone : usz.getZones()) {
+			for (ZoneJSON zone : usz.getZones()) {
 				zoneUSZ = Json.createObjectBuilder();
 				zoneUSZ.add("ZoneId", zone.getZoneId());
 				zoneUSZ.add("SuperZoneId", zone.getSuperZoneId());
@@ -792,7 +792,7 @@ public class BoeseJson {
 			job.add("Header", addHeader(60, usr.getConnectorId(), usr.getStatus(), usr.getTimestamp()));
 			JsonArrayBuilder rulesUSR = Json.createArrayBuilder();
 			JsonObjectBuilder ruleUSR;
-			for (Rule rule : usr.getRules()) {
+			for (RuleJSON rule : usr.getRules()) {
 				ruleUSR = Json.createObjectBuilder();
 				ruleUSR.add("RuleId", rule.getRuleId());
 				ruleUSR.add("Active", rule.isActive());
@@ -879,7 +879,7 @@ public class BoeseJson {
 			job.add("Header", addHeader(90, ucr.getConnectorId(), ucr.getStatus(), ucr.getTimestamp()));
 			JsonArrayBuilder rulesUCR = Json.createArrayBuilder();
 			JsonObjectBuilder ruleUCR;
-			for (Rule rule : ucr.getRules()) {
+			for (RuleJSON rule : ucr.getRules()) {
 				ruleUCR = Json.createObjectBuilder();
 				ruleUCR.add("RuleId", -1);
 				ruleUCR.add("TempRuleId", rule.getTempRuleId());

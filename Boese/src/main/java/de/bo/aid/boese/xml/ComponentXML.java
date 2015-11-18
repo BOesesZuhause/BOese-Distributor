@@ -37,7 +37,7 @@ import de.bo.aid.boese.ruler.TimeFormat;
 /**
  * The Class Component.
  */
-public class Component {
+public class ComponentXML {
 	
 	/** The id. */
 	protected int id;
@@ -92,7 +92,7 @@ public class Component {
 	 * @param duration the duration
 	 * @param comperator the comperator
 	 */
-	public Component(int id, CalculationList calculation, double resetValue, TimeFormat startTime, long duration, Comperator comperator) {
+	public ComponentXML(int id, CalculationList calculation, double resetValue, TimeFormat startTime, long duration, Comperator comperator) {
 		this.id = id;
 		this.value = -1;
 		this.calculation = calculation;
@@ -114,7 +114,7 @@ public class Component {
 	 * @param duration the duration
 	 * @param repeatAfterEnd the repeat after end
 	 */
-	public Component(int id, CalculationList calculation, double resetValue, TimeFormat startTime, long duration, int repeatAfterEnd) {
+	public ComponentXML(int id, CalculationList calculation, double resetValue, TimeFormat startTime, long duration, int repeatAfterEnd) {
 		this.id = id;
 		this.value = -1;
 		this.calculation = calculation;
@@ -132,7 +132,7 @@ public class Component {
 	 * @param id the id
 	 * @param value the value
 	 */
-	public Component(int id, double value) {
+	public ComponentXML(int id, double value) {
 		this.id = id;
 		this.value = value;
 	}

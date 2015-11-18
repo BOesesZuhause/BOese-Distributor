@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Set;
 
 import de.bo.aid.boese.xml.BoeseXML;
-import de.bo.aid.boese.xml.Component;
+import de.bo.aid.boese.xml.ComponentXML;
 import de.bo.aid.boese.xml.Condition;
 import de.bo.aid.boese.xml.GateList;
 
@@ -145,8 +145,8 @@ public class Contester {
 			Set<GateList> sg2 = gl.getGate();
 			for(GateList gl2 : sg2){
 				s += " (";
-				Set<Component> sc = gl2.getComponents();
-				for(Component c : sc){
+				Set<ComponentXML> sc = gl2.getComponents();
+				for(ComponentXML c : sc){
 					s += rekuTest(c) + " + ";
 				}
 				s += ") " + gl.getGateType();
@@ -169,7 +169,7 @@ public class Contester {
 		for(GateList gl : sg){
 			s += " (";
 			s += rekuTest(gl);	
-			for(Component c : gl.getComponents()){
+			for(ComponentXML c : gl.getComponents()){
 				s += rekuTest(c) + " + ";
 			}
 			s += ") " + gl.getGateType();				
@@ -184,7 +184,7 @@ public class Contester {
 	 * @param comp the comp
 	 * @return the string
 	 */
-	private static String rekuTest(Component comp){
+	private static String rekuTest(ComponentXML comp){
 		if(comp == null){
 			return "";
 		}
@@ -201,7 +201,7 @@ public class Contester {
 		List<Inquiry> inquirys = new ArrayList<Inquiry>();
 		inquirys.add(new Inquiry(1, new Date().getTime(), 11.1));
 		try {
-			for (Component comp : c.getToDos(inquirys)){
+			for (ComponentXML comp : c.getToDos(inquirys)){
 				System.out.println(comp.getId() + "\t" + comp.getValue() + "\t" + comp.getResetValue() + "\t" + comp.getStartTime() + "\t" + comp.getDuration() + "\t");
 			}
 		} catch (Exception e) {

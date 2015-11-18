@@ -46,7 +46,7 @@ import de.bo.aid.boese.model.Rule;
 import de.bo.aid.boese.model.ToDo;
 import de.bo.aid.boese.xml.Action;
 import de.bo.aid.boese.xml.BoeseXML;
-import de.bo.aid.boese.xml.Component;
+import de.bo.aid.boese.xml.ComponentXML;
 import de.bo.aid.boese.xml.Condition;
 
 // TODO: Auto-generated Javadoc
@@ -76,8 +76,8 @@ public class Control {
 	 * @return the to dos
 	 * @throws Exception the exception
 	 */
-	public List<Component> getToDos(List<Inquiry> inquirys) throws Exception{
-		List<Component> toDo = new ArrayList<Component>();
+	public List<ComponentXML> getToDos(List<Inquiry> inquirys) throws Exception{
+		List<ComponentXML> toDo = new ArrayList<ComponentXML>();
 		
 		for(Inquiry inquiry : inquirys){
 			int id = inquiry.getDeviceComponentId();

@@ -50,6 +50,7 @@ import de.bo.aid.boese.json.ConfirmConnection;
 import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempDevice;
+import de.bo.aid.boese.model.Component;
 import de.bo.aid.boese.model.Connector;
 import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceComponent;
@@ -59,7 +60,7 @@ import de.bo.aid.boese.ruler.ToDoChecker;
 import de.bo.aid.boese.socket.SocketServer;
 import de.bo.aid.boese.socket.HeartbeatWorker;
 import de.bo.aid.boese.socket.SessionHandler;
-import de.bo.aid.boese.xml.Component;
+import de.bo.aid.boese.xml.ComponentXML;
 import javassist.NotFoundException;
 
 // TODO: Auto-generated Javadoc
@@ -416,7 +417,7 @@ private final String logo =
 		// TODO Was ist wenn Inserts.component() funktioniert aber Inserts.deviceComponent nicht
 		// TODO jedesmal wird eine Komponente erstellt
 		try{
-			de.bo.aid.boese.model.Component comp = new de.bo.aid.boese.model.Component(name, temp.isActor());
+			Component comp = new Component(name, temp.isActor());
 			Inserts.component(unitId, comp); 
 			DeviceComponent deco = new DeviceComponent(temp.getDescription());
 			Inserts.deviceComponent(deviceId, comp.getCoId(), deco);
@@ -456,7 +457,7 @@ private final String logo =
 	 * @param inquirys the inquirys
 	 * @return the list
 	 */
-	public List<Component> insertValues(List<Inquiry> inquirys) {
+	public List<ComponentXML> insertValues(List<Inquiry> inquirys) {
 		for (Inquiry inq : inquirys) {
 			try{
 				Inserts.value(inq.getDeviceComponentId(), new Date(inq.getTimestamp()), inq.getValue());
@@ -467,7 +468,7 @@ private final String logo =
 			}
 		}
 		Control controll = new Control();
-		List<Component> todos;
+		List<ComponentXML> todos;
 		try {
 			todos = controll.getToDos(inquirys);
 		} catch (Exception e) {

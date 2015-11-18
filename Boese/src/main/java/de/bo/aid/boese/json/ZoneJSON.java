@@ -34,7 +34,7 @@ package de.bo.aid.boese.json;
 /**
  * The Class Zone.
  */
-public class Zone {
+public class ZoneJSON {
 	
 	/** The zone id. */
 	private int zoneId;
@@ -52,7 +52,7 @@ public class Zone {
 	 * @param superZoneId the super zone id
 	 * @param name the name
 	 */
-	public Zone(int zoneId, int superZoneId, String name) {
+	public ZoneJSON(int zoneId, int superZoneId, String name) {
 		this.zoneId = zoneId;
 		this.superZoneId = superZoneId;
 		this.zoneName = name;

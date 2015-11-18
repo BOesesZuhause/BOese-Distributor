@@ -43,7 +43,7 @@ import de.bo.aid.boese.model.DeviceComponent;
 import de.bo.aid.boese.model.RepeatRule;
 import de.bo.aid.boese.model.ToDo;
 import de.bo.aid.boese.xml.BoeseXML;
-import de.bo.aid.boese.xml.Component;
+import de.bo.aid.boese.xml.ComponentXML;
 import de.bo.aid.boese.xml.Condition;
 
 // TODO: Auto-generated Javadoc
@@ -60,7 +60,7 @@ public class Interpretor {
 	 */
 	public List<DeviceComponent> getAllDeCosCondition(BoeseXML conditions){
 		List<DeviceComponent> list = new ArrayList<DeviceComponent>();
-		for (Component comp : ((Condition)conditions).getRule().getComponents()) {
+		for (ComponentXML comp : ((Condition)conditions).getRule().getComponents()) {
 			try {
 				list.add(Selects.deviceComponent(comp.getId()));
 			} catch (DBObjectNotFoundException e) {

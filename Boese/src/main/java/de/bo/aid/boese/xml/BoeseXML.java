@@ -42,7 +42,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.bo.aid.boese.xml.CalculationList.CalculationTypes;
-import de.bo.aid.boese.xml.Component.Comperator;
+import de.bo.aid.boese.xml.ComponentXML.Comperator;
 import de.bo.aid.boese.xml.GateList.GateType;
 
 // TODO: Auto-generated Javadoc

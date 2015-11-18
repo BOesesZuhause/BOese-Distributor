@@ -38,7 +38,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.bo.aid.boese.ruler.TimeFormat;
-import de.bo.aid.boese.xml.Component.Comperator;
+import de.bo.aid.boese.xml.ComponentXML.Comperator;
 import de.bo.aid.boese.xml.GateList.GateType;
 
 // TODO: Auto-generated Javadoc
@@ -127,7 +127,7 @@ public class Condition extends BoeseXML {
 						break;
 					}
 				}
-				gateList.addComponent(new Component(compID, compValue, -1, compStartTime, compDuration, compComperator));
+				gateList.addComponent(new ComponentXML(compID, compValue, -1, compStartTime, compDuration, compComperator));
 				break;
 			case "AND":
 				gate = parseNodeList(nChild.getChildNodes());

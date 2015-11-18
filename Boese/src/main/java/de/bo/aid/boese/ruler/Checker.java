@@ -44,7 +44,7 @@ import de.bo.aid.boese.db.Updates;
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.xml.Action;
 import de.bo.aid.boese.xml.CalculationList;
-import de.bo.aid.boese.xml.Component;
+import de.bo.aid.boese.xml.ComponentXML;
 import de.bo.aid.boese.xml.GateList;
 import de.bo.aid.boese.xml.GateList.GateType;
 
@@ -83,7 +83,7 @@ public class Checker {
 		Set<GateList> sg = gate.getGate();
 		for(GateList gl : sg){			
 			Boolean zwi = condition(gl, deCoValue);
-			for(Component c : gl.getComponents()){
+			for(ComponentXML c : gl.getComponents()){
 				if(zwi == null){
 					zwi = condition(c, deCoValue);
 				}
@@ -121,7 +121,7 @@ public class Checker {
 	 * @param deCoValue the de co value
 	 * @return the boolean
 	 */
-	public Boolean condition(Component comp, HashMap<Integer, Double> deCoValue){
+	public Boolean condition(ComponentXML comp, HashMap<Integer, Double> deCoValue){
 		if(comp == null){
 			return false;
 		}
@@ -176,15 +176,15 @@ public class Checker {
 	 * @return the list
 	 * @throws Exception the exception
 	 */
-	public List<Component> action(Action action) throws Exception {
+	public List<ComponentXML> action(Action action) throws Exception {
 		for(int i : action.getActivateRules()){
 			Updates.activateRule(i);
 		}
 		for(int i : action.getDeactivateRules()){
 			Updates.deactivateRule(i);
 		}
-		List<Component> toDos = new ArrayList<Component>();
-		for(Component actor : action.getActors()){
+		List<ComponentXML> toDos = new ArrayList<ComponentXML>();
+		for(ComponentXML actor : action.getActors()){
 			try {
 				actor.setValue(calculate(actor.getCalculation()));
 			} catch (Exception e) {

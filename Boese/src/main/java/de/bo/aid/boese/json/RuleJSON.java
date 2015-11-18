@@ -34,7 +34,7 @@ package de.bo.aid.boese.json;
 /**
  * The Class Rule.
  */
-public class Rule {
+public class RuleJSON {
 	
 	/** The rule id. */
 	private int ruleId;
@@ -71,7 +71,7 @@ public class Rule {
 	 * @param conditions the conditions
 	 * @param actions the actions
 	 */
-	public Rule(int ruleId, boolean active, long insertDate, long modifyDate, String permissions, String conditions,
+	public RuleJSON(int ruleId, boolean active, long insertDate, long modifyDate, String permissions, String conditions,
 			String actions) {
 		this.ruleId = ruleId;
 		this.active = active;
@@ -95,7 +95,7 @@ public class Rule {
 	 * @param conditions the conditions
 	 * @param actions the actions
 	 */
-	public Rule(int ruleId, int tempRuleId, boolean active, long insertDate, long modifyDate, String permissions, 
+	public RuleJSON(int ruleId, int tempRuleId, boolean active, long insertDate, long modifyDate, String permissions, 
 			String conditions, String actions) {
 		this.ruleId = ruleId;
 		this.active = active;
