@@ -24,6 +24,7 @@ public class ConectionTest {
 	
 	/** The server. */
 	private SocketServer server;
+	private Session s1;
 	
     /**
      * Start server.
@@ -45,7 +46,7 @@ public class ConectionTest {
 	@Test
 	public void testConnection() throws Exception {
 		URI uri = URI.create("ws://localhost:8081/events/");
-		Session s1 = SocketClient.connect(uri);
+		s1 = SocketClient.connect(uri);
 		assertNotNull(s1);
 	}
 	
@@ -56,7 +57,8 @@ public class ConectionTest {
    	 */
    	@After
 	    public void shutdown() throws Exception {
-	        server.stop();
+   			s1.close();
+   			server.stop();
 	    }
 
 }

@@ -3,6 +3,8 @@
 
 package de.bo.aid.boese.simulation;
 
+import static org.junit.Assert.*;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,8 +48,8 @@ public class SimulationTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void simulation() throws Exception {
-
+	public void simulation() {
+		try{
 		ConnectorSimulation sim = new ConnectorSimulation();
 		sim.start();
 		Thread.sleep(2000);		
@@ -62,7 +64,10 @@ public class SimulationTest {
 		
 		Thread.sleep(2000);
 		
-	sim.closeConnection();
+		sim.closeConnection();
+		}catch(Exception e){
+			fail(e.getMessage());
+		}
 		
 	}
 	

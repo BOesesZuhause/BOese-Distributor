@@ -44,6 +44,7 @@ import de.bo.aid.boese.cli.Parameters;
 import de.bo.aid.boese.db.Connection;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
+import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.ConfirmConnection;
@@ -174,6 +175,13 @@ private final String logo =
 		HibernateUtil.setDBURL(props.getDbName(), props.getDbHost(), props.getDbPort());
 		Connection.getConnection(); //init hibernate
 		//TODO add default values for specific tables
+//		try {
+//			if(!Selects.zone(0).getName().equals("global")){
+//				
+//			}
+//		} catch (DBObjectNotFoundException e) {
+//			Inserts.zone("global", null);
+//		}
 	}
 	
 	/**
