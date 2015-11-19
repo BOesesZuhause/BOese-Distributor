@@ -20,6 +20,7 @@ public class HeartbeatWorker extends Thread{
 	public void run() {
 		running = true;
 		while(running){
+			handler.sendToAllConnectedSessions("HEARTBEAT");
 			try {
 				Thread.sleep(intervall);
 			} catch (InterruptedException e) {
@@ -27,7 +28,7 @@ public class HeartbeatWorker extends Thread{
 				e.printStackTrace();
 			}
 			handler.checkHeartbeat();
-			handler.sendToAllConnectedSessions("HEARTBEAT");
+
 		}				
 	}
 	
