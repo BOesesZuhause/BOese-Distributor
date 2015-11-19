@@ -195,10 +195,9 @@ public class Inserts {
 	 * @param decoid the decoid
 	 * @param timestamp the timestamp
 	 * @param value the value
-	 * @return the int
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static int value(int decoid, Date timestamp, double value) throws DBObjectNotFoundException{
+	public static void value(int decoid, Date timestamp, double value) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
  
@@ -236,8 +235,6 @@ public class Inserts {
 		}
 		
 		session.close();
-		
-		return 0;
 	}
 	
 	/**
@@ -308,7 +305,8 @@ public class Inserts {
 		}
 
 		session.close();
-		tdc.changeInToDo();
+		if(tdc != null)
+			tdc.changeInToDo();
 	}
 	
 	/**
@@ -360,7 +358,7 @@ public class Inserts {
 	 *
 	 * @param user the User to Insert
 	 */
-	public static void User(User user){
+	public static void user(User user){
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -469,7 +467,8 @@ public class Inserts {
 		}
 		
 		session.close();
-		Interpretor.createTodos(tdc);
+		if(tdc != null)
+			Interpretor.createTodos(tdc);
 	}
 	
 	/**
@@ -483,6 +482,17 @@ public class Inserts {
 	public static void toDo(ToDo todo, int rrId, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
+		
+		try{
+			todo.setRepeatRule(Selects.repeatRule(rrId));
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("DeviceComponent-FK or Rule-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}	
 		
 		try{
 			session.save(todo);
@@ -508,6 +518,17 @@ public class Inserts {
 	public static void toDoWithoutChange(ToDo todo, int rrId) throws DBForeignKeyNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
+		
+		try{
+			todo.setRepeatRule(Selects.repeatRule(rrId));
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("DeviceComponent-FK or Rule-FK not found");
+			dfknfe.initCause(e.getCause());
+			throw dfknfe;
+		}
 		
 		try{
 			session.save(todo);

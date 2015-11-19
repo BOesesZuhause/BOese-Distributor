@@ -56,18 +56,19 @@ public class ownMain {
 		HibernateUtil.setDBPassword("Di0bPWfw");
 		HibernateUtil.setDBURL("boese", "localhost", "5432");
 		
-		Connector con = new Connector("test", "123");
-		Inserts.connector(con);
-		Device dev = new Device("test", "test");
-		try {
-			Inserts.device(con.getCoId(), 0, dev);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(dev.getDeId() + "\t" + dev.getAlias());
+//		Connector con = new Connector("test", "123");
+//		Inserts.connector(con);
+//		Device dev = new Device("test", "test");
+//		try {
+//			Inserts.device(con.getCoId(), 0, dev);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		System.out.println(dev.getDeId() + "\t" + dev.getAlias());
 		
-		
+		Zone z = new Zone("Without Sub");
+		Inserts.zone(z, z);
 		
 		System.out.println("erledigt");
 	}

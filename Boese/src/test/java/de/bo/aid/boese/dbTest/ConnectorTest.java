@@ -41,19 +41,12 @@ public class ConnectorTest {
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");
 		HibernateUtil.setDBURL("boese", "localhost", "5432");
-		con1 = new Connector();
-		con1.setName("first");
-		con1.setPassword("123");
-		con2 = new Connector();
-		con2.setName("second");
-		con2.setPassword("456");
-		con1Update = new Connector();
-		con1Update.setName("firstup");
-		con1Update.setPassword("123up");
+		
+		con1 = new Connector("first", "123");
+		con2 = new Connector("second", "456");
+		con1Update = new Connector("firstup", "123up");
 		con1Update.setStatus(Status.INACTIVE);
-		con2Update = new Connector();
-		con2Update.setName("secondup");
-		con2Update.setPassword("456up");
+		con2Update = new Connector("secondup", "456up");
 		con2Update.setStatus(Status.INACTIVE);
 	}
 

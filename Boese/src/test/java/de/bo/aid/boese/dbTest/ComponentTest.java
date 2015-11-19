@@ -29,34 +29,22 @@ public class ComponentTest {
 		HibernateUtil.setDBPassword("Di0bPWfw");
 		HibernateUtil.setDBURL("boese", "localhost", "5432");
 		
-		testUnit = new Unit();
-		testUnit.setName("test");
-		testUnit.setSymbol("test");
+		testUnit = new Unit("test", "test");
 		Inserts.unit(testUnit);
 		
-		testUnitUpdate = new Unit();
-		testUnitUpdate.setName("update");
-		testUnitUpdate.setSymbol("update");
+		testUnitUpdate = new Unit("update", "update");
 		Inserts.unit(testUnitUpdate);
 		
-		comp1 = new Component();
-		comp1.setName("Schalter");
-		comp1.setActor(true);
+		comp1 = new Component("Schalter", true);
 		comp1.setUnit(testUnit);
 		
-		comp2 = new Component();
-		comp2.setName("LichtSensor");
-		comp2.setActor(false);
+		comp2 = new Component("LichtSensor", false);
 		comp2.setUnit(testUnit);
 		
-		comp1Update = new Component();
-		comp1Update.setName("TempSensor");
-		comp1Update.setActor(false);
+		comp1Update = new Component("TempSensor", false);
 		comp1Update.setUnit(testUnitUpdate);
 		
-		comp2Update = new Component();
-		comp2Update.setName("Taster");
-		comp2Update.setActor(true);
+		comp2Update = new Component("Taster", true);
 		comp2Update.setUnit(testUnitUpdate);
 	}
 
@@ -109,7 +97,7 @@ public class ComponentTest {
 	private void equal(Component comp, String name){
 		Component compTest = select(comp.getCoId());
 		assertTrue("Component " + name + " Name not equal", comp.getName().equals(compTest.getName()));
-//		assertTrue("Component " + name + " Unit not equal", comp.getUnit().equals(compTest.getUnit()));
+		assertTrue("Component " + name + " Unit not equal", comp.getUnit().getUnId() == compTest.getUnit().getUnId());
 		assertTrue("Component " + name + " ID not equal", comp.getCoId() == compTest.getCoId());
 	}
 	

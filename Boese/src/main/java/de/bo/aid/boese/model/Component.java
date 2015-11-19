@@ -72,9 +72,9 @@ public class Component implements java.io.Serializable {
 	 * @param name the name
 	 * @param sensor the sensor
 	 */
-	public Component(String name, boolean sensor) {
+	public Component(String name, boolean actor) {
 		this.name = name;
-		this.actor = sensor;
+		this.actor = actor;
 	}
 
 	/**
@@ -85,11 +85,11 @@ public class Component implements java.io.Serializable {
 	 * @param name the name
 	 * @param sensor the sensor
 	 */
-	public Component(int coId, Unit unit, String name, boolean sensor) {
+	public Component(int coId, Unit unit, String name, boolean actor) {
 		this.coId = coId;
 		this.unit = unit;
 		this.name = name;
-		this.actor = sensor;
+		this.actor = actor;
 	}
 
 	/**
@@ -101,11 +101,11 @@ public class Component implements java.io.Serializable {
 	 * @param sensor the sensor
 	 * @param deviceComponents the device components
 	 */
-	public Component(int coId, Unit unit, String name, boolean sensor, Set<DeviceComponent> deviceComponents) {
+	public Component(int coId, Unit unit, String name, boolean actor, Set<DeviceComponent> deviceComponents) {
 		this.coId = coId;
 		this.unit = unit;
 		this.name = name;
-		this.actor = sensor;
+		this.actor = actor;
 		this.deviceComponents = deviceComponents;
 	}
 

@@ -24,18 +24,10 @@ public class UnitTest {
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");
 		HibernateUtil.setDBURL("boese", "localhost", "5432");
-		unit1 = new Unit();
-		unit1.setName("meter");
-		unit1.setSymbol("m");;
-		unit2 = new Unit();
-		unit2.setName("gramm");
-		unit2.setSymbol("g");
-		unit1Update = new Unit();
-		unit1Update.setName("Kilometer");
-		unit1Update.setSymbol("km");
-		unit2Update = new Unit();
-		unit2Update.setName("kilogramm");
-		unit2Update.setSymbol("kg");
+		unit1 = new Unit("meter", "m");;
+		unit2 = new Unit("gramm", "g");
+		unit1Update = new Unit("Kilometer", "km");
+		unit2Update = new Unit("kilogramm", "kg");
 	}
 
 	@Test

@@ -530,4 +530,30 @@ public class Selects {
 		
 		return todo;
 	}
+	
+	/**
+	 * deviceGroup
+	 *
+	 * @param deid the Device ID
+	 * @param grpid the Group ID
+	 * @return the Device Group
+	 * @throws DBObjectNotFoundException 
+	 */	
+	public static DeviceGroup deviceGroup(int deid, short grpid) throws DBObjectNotFoundException{
+		Session session = connection.getSession();
+		session.beginTransaction();
+ 
+		DeviceGroup devgrp = (DeviceGroup)session.get(DeviceGroup.class, new DeviceGroupId(deid, grpid));
+		if(devgrp != null){
+			session.getTransaction().commit();
+		}
+		else{
+			session.getTransaction().rollback();
+			session.close();
+			throw new DBObjectNotFoundException("DeviceGroup not found");
+		}
+		
+		session.close();
+		return devgrp;
+	}
 }

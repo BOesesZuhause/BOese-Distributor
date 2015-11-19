@@ -167,11 +167,16 @@ public class Updates {
 	 * @param logrule the logrule
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void DeviceComponent (DeviceComponent deco, int status, String description, double logrule) throws DBObjectNotFoundException{
+	public static void DeviceComponent (DeviceComponent deco, Device dev, Component comp, int status, String description, double logrule) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
-		if (status != -1){
+		if (dev != null){
+			deco.setDevice(dev);
+		}
+		if (comp != null){
+			deco.setComponent(comp);
+		}if (status != -1){
 			deco.setStatus(status);
 		}
 		if (description != null){
@@ -284,11 +289,16 @@ public class Updates {
 	 * Service.
 	 *
 	 * @param service the Service Object
+	 * @param description the description
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void service(Service service) throws DBObjectNotFoundException{
+	public static void service(Service service, String description) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
+		
+		if (description != null){
+			service.setDescription(description);
+		}
 		
 		try{
 			session.update(service);
@@ -427,7 +437,7 @@ public class Updates {
 	 * @param actions the actions
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void rule(Rule rule, boolean active, String permissions, String conditions, String actions) throws DBObjectNotFoundException{
+	public static void rule(Rule rule, boolean active, String permissions, String conditions, String actions, ToDoChecker tdc) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -458,7 +468,49 @@ public class Updates {
 		session.close();
 		
 		Distributor.changeInRule(rule.getRuId());
-		new ToDoChecker().changeInToDo();
+		if(tdc != null)
+			tdc.changeInToDo();
+	}
+	
+	/**
+	 * Rule for Test.
+	 *
+	 * @param rule the Rule to Update
+	 * @param active the active
+	 * @param permissions the permissions
+	 * @param conditions the conditions
+	 * @param actions the actions
+	 * @throws DBObjectNotFoundException the DB object not found exception
+	 */
+	public static void ruleForTest(Rule rule, boolean active, String permissions, String conditions, String actions) throws DBObjectNotFoundException{
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		rule.setActive(active);
+		if(permissions != null){
+			rule.setPermissions(permissions);
+		}
+		if(conditions != null){
+			rule.setConditions(conditions);
+		}
+		if(actions != null){
+			rule.setActions(actions);
+		}
+		rule.setModifyDate(new Date());
+		
+		try{
+			session.update(rule);
+			session.getTransaction().commit();
+		}
+		catch(Exception e){
+			session.getTransaction().rollback();
+			session.close();
+			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Rule not found");
+			onfe.initCause(e.getCause());
+			throw onfe;
+		}
+		
+		session.close();
 	}
 	
 	/**
@@ -612,7 +664,8 @@ public class Updates {
 		}
 		
 		session.close();
-		Interpretor.createTodos(tdc);
+		if(tdc != null)
+			Interpretor.createTodos(tdc);
 	}
 	
 	/**
@@ -623,7 +676,7 @@ public class Updates {
 	 * @param active the active
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void toDo(ToDo todo, Date date, boolean active) throws DBObjectNotFoundException{
+	public static void toDo(ToDo todo, Date date, boolean active, ToDoChecker tdc) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -645,7 +698,8 @@ public class Updates {
 		}
 		
 		session.close();
-		new ToDoChecker().changeInToDo();
+		if(tdc != null)
+			tdc.changeInToDo();
 	}
 	
 	/**
