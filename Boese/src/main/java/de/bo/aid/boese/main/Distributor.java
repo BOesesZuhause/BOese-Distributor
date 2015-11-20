@@ -176,16 +176,8 @@ private final String logo =
 		HibernateUtil.setDBUser(props.getDbUser());
 		HibernateUtil.setDBPassword(props.getDbPassword());
 		HibernateUtil.setDBURL(props.getDbName(), props.getDbHost(), props.getDbPort());
-		Connection.getConnection(); //init hibernate
-		//TODO add default values for specific tables
-//		try {
-//			if(!Selects.zone(0).getName().equals("global")){
-//				
-//			}
-//		} catch (DBObjectNotFoundException e) {
-//			Inserts.zone("global", null);
-//		}
 		
+		Inserts.defaults();		
 	}
 	
 	/**

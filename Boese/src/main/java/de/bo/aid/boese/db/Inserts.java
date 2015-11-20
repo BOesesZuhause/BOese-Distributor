@@ -32,11 +32,13 @@
 package de.bo.aid.boese.db;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.PropertyValueException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import de.bo.aid.boese.exceptions.DBForeignKeyNotFoundException;
@@ -540,6 +542,57 @@ public class Inserts {
 			throw pve; //not null Value is null
 		}
 		
+		session.close();
+	}
+	
+	public static void defaults(){
+		Session session = connection.getSession();
+		session.beginTransaction();
+
+		//Default Unit
+		try {
+			Selects.unit(0);
+		} catch (DBObjectNotFoundException e) {
+			Query query = session.createSQLQuery("INSERT INTO Unit (UnId, name, symbol) VALUES (0, 'Undefined', 'ud')");
+			query.executeUpdate();
+		}
+		//Default Zone
+		try{
+			Selects.zone(0);
+		} catch (DBObjectNotFoundException e) {
+			Query query = session.createSQLQuery("INSERT INTO Zone (ZoId, SuZoId, name) VALUES (0, 0, 'Global')");
+			query.executeUpdate();
+		}
+		//Default Service
+		try{
+			Selects.service(0);
+		} catch(DBObjectNotFoundException e){
+			Query query = session.createSQLQuery("INSERT INTO Service (SeId, description) VALUES (0, 'Default')");
+			query.executeUpdate();
+		}
+		//Default User
+		try{
+			Selects.user(0);
+		} catch(DBObjectNotFoundException e){
+			Query query = session.createSQLQuery("INSERT INTO \"user\" (usid, firstname, surname, \"password\", username) VALUES (0, 'Super', 'User', 'MasterPassword', 'root')");
+			query.executeUpdate();
+		}
+		//Default Group
+		try{
+			Selects.group((short)0);
+		} catch(DBObjectNotFoundException e){
+			Query query = session.createSQLQuery("INSERT INTO \"group\" (grid, name) VAlUES (0, 'Users')");
+			query.executeUpdate();
+		}
+		//Default Rule
+		try{
+			Selects.rule(0);
+		} catch(DBObjectNotFoundException e){
+			Query query = session.createSQLQuery("INSERT INTO rule (ruid, permissions, conditions, actions) VAlUES (0, '<PERMISSION></PERMISSION>', '<CONDITION></CONDITION>', '<ACTION></ACTION>')");
+			query.executeUpdate();
+		}
+		
+		session.getTransaction().commit();
 		session.close();
 	}
 }
