@@ -358,10 +358,21 @@ public class BoeseJson {
 			bj = new ConfirmStatus(deviceComponentIdCS, statusCodeCS, timestampCS, false, headerConnectorID, headerStatus, headerTimestamp);
 			break;
 		case 50: // UserRequestAllDevices
-			bj = new RequestAllDevices(headerConnectorID, headerStatus, headerTimestamp, true);
+			boolean isUserRequest = jo.getBoolean("IsUserRequest");
+			bj = new RequestAllDevices(headerConnectorID, headerStatus, headerTimestamp, isUserRequest);
 			break;
 		case 51: // UserSendDevices
-			bj = new UserSendDevices(headerConnectorID, headerStatus, headerTimestamp);
+			HashSet<UserDevice> devicesUSD = new HashSet<>(); // name / id
+			JsonArray devArUSD = jo.getJsonArray("Devices");
+			for (int i = 0; i < devArUSD.size(); i++) {
+				JsonObject device = devArUSD.getJsonObject(i);
+				UserDevice dev = new UserDevice(device.getString("DeviceName"),
+						device.getInt("DeviceId", -1),
+						device.getInt("ZoneId", -1),
+						device.getInt("ConnectorId", -1));
+				devicesUSD.add(dev);
+			}
+			bj = new UserSendDevices(devicesUSD, headerConnectorID, headerStatus, headerTimestamp);
 			break;
 		case 52: // UserRequestDeviceComponents
 			HashSet<Integer> devIdSetURDC = new HashSet<>();
