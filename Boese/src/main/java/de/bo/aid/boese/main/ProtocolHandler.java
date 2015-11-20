@@ -170,10 +170,10 @@ public class ProtocolHandler implements MessageHandler {
 			handleUserRequestDeviceComponents((UserRequestDeviceComponents) bjMessage, connectorId);
 			break;
 		case USERREQUESTCONNECTORS:
-			handleUserRequestConnectors(bjMessage, connectorId);
+			handleUserRequestConnectors((UserRequestConnectors)bjMessage, connectorId);
 			break;
 		case USERREQUESTALLCONNECTORS:
-			handleUserRequestConnectors(bjMessage, connectorId);
+			handleUserRequestConnectors((UserRequestConnectors)bjMessage, connectorId);
 			break;
 		case USERREQUESTALLZONES:
 			handleUserRequestAllZones((UserRequestGeneral) bjMessage, connectorId);
@@ -422,9 +422,14 @@ public class ProtocolHandler implements MessageHandler {
 			}
 			HashSet<DeviceComponents> decos = new HashSet<>();
 			for (DeviceComponent deco : decoSet) {
-				decos.add(new DeviceComponents(deco.getDeCoId(), deco.getComponent().getName(),
-						deco.getCurrentValue().doubleValue(), deco.getComponent().getUnit().getName(),
-						deco.getDescription(), deco.getComponent().isActor(), deco.getStatus()));
+				decos.add(new DeviceComponents(deco.getDeCoId(),
+						deco.getComponent().getName(),
+						deco.getCurrentValue().doubleValue(),
+						System.currentTimeMillis(),
+						deco.getComponent().getUnit().getName(),
+						deco.getDescription(),
+						deco.getComponent().isActor(),
+						deco.getStatus()));
 			}
 			sendUserSendDeviceComponent(devId, decos, connectorId);
 		}
@@ -438,14 +443,14 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param connectorId
 	 *            the connector id
 	 */
-	private void handleUserRequestConnectors(BoeseJson urc, int connectorId) {
+	private void handleUserRequestConnectors(UserRequestConnectors urc, int connectorId) {
 		if (connectorId != urc.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		HashMap<Integer, String> connectors = new HashMap<>();
 		if (urc.getType() == MessageType.USERREQUESTCONNECTORS) {
-			HashSet<Integer> conIdList = ((UserRequestConnectors) urc).getConnectorIds();
+			HashSet<Integer> conIdList = urc.getConnectorIds();
 			for (Integer conId : conIdList) {
 				Connector con = null;
 				try {

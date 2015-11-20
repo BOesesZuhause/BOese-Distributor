@@ -214,6 +214,7 @@ public class BoeseJson {
 		try {
 			jo = jr.readObject();
 		} catch(Exception e) {
+			e.printStackTrace();
 			jr.close();
 			return null;
 		}
@@ -393,7 +394,8 @@ public class BoeseJson {
 													decoUSDC.getJsonNumber("Timestamp").longValue(), 
 													decoUSDC.getString("Unit"), 
 													decoUSDC.getString("Description"), 
-													decoUSDC.getBoolean("Actor", false)));
+													decoUSDC.getBoolean("Actor", false),
+													decoUSDC.getInt("Status")));
 			}
 			bj = new UserSendDeviceComponent(jo.getInt("DeviceId"), decoSetUSDC, headerConnectorID, headerStatus, headerTimestamp);
 			break;
@@ -406,7 +408,7 @@ public class BoeseJson {
 			bj = new UserRequestConnectors(conIdSetURCO, headerConnectorID, headerStatus, headerTimestamp);
 			break;
 		case 55: // UserRequestAllConnectors
-			bj = new UserRequestGeneral(MessageType.USERREQUESTALLCONNECTORS, headerConnectorID, headerStatus, headerTimestamp);
+			bj = new UserRequestConnectors(headerConnectorID, headerStatus, headerTimestamp);
 			break;
 		case 56: // UserSendConnectors
 			HashMap<Integer, String> connectorMapUSC = new HashMap<Integer, String>();
@@ -775,7 +777,7 @@ public class BoeseJson {
 			job.add("Connectors", consUSC);
 			break;
 		case USERREQUESTALLCONNECTORS:
-			UserRequestGeneral urac = (UserRequestGeneral)message;
+			UserRequestConnectors urac = (UserRequestConnectors)message;
 			job.add("Header", addHeader(55, urac.getConnectorId(), urac.getStatus(), urac.getTimestamp()));
 			break;
 		case USERREQUESTALLZONES:
