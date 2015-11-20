@@ -197,6 +197,7 @@ public class Inserts {
 	 * @param value the value
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
+	//TODO Es kommt ein double und kein Date
 	public static void value(int decoid, Date timestamp, double value) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
