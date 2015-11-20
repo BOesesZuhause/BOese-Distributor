@@ -370,7 +370,7 @@ public class ProtocolHandler implements MessageHandler {
 		int deviceId = sv.getDeviceId();
 		int deviceComponentId = sv.getDeviceComponentId();
 		ArrayList<Inquiry> inquiryList = new ArrayList<>();
-		inquiryList.add(new Inquiry(deviceComponentId, sv.getTimestamp(), sv.getValue()));
+		inquiryList.add(new Inquiry(deviceComponentId, sv.getValueTimestamp(), sv.getValue()));
 		sendToDos(inquiryList);
 		sendConfirmValue(deviceId, deviceComponentId, connectorId);
 	}
