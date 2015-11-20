@@ -1133,7 +1133,96 @@ public class protokollTest {
 //		assertEquals(os.toString(), message);
 //	}
 //	
-//
+//	@Test
+//	public void parseUserRequestTemps(){
+//		OutputStream os = new ByteArrayOutputStream();
+//		//ConfirmStatus confStat = new ConfirmStatus(5, 1, 1234, true, 1, 0, 111222334);
+//		BoeseJson.parseMessage(confStat, os);
+//		assertEquals(os.toString(), message);
+//	}
 //	
+//	@Test
+//	public void readUserRequestTemps(){
+//		InputStream is = new ByteArrayInputStream(message.getBytes());
+//		BoeseJson bs = BoeseJson.readMessage(is);
+//		assertNotNull(bs);
+//		
+//		OutputStream os = new ByteArrayOutputStream();
+//		BoeseJson.parseMessage(bs, os);
+//		assertEquals(os.toString(), message);
+//	}
+//	
+//	@Test
+//	public void parseUserSendTemps(){
+//		OutputStream os = new ByteArrayOutputStream();
+//		//ConfirmStatus confStat = new ConfirmStatus(5, 1, 1234, true, 1, 0, 111222334);
+//		BoeseJson.parseMessage(confStat, os);
+//		assertEquals(os.toString(), message);
+//	}
+//	
+//	@Test
+//	public void readUserSendTemps(){
+//		InputStream is = new ByteArrayInputStream(message.getBytes());
+//		BoeseJson bs = BoeseJson.readMessage(is);
+//		assertNotNull(bs);
+//		
+//		OutputStream os = new ByteArrayOutputStream();
+//		BoeseJson.parseMessage(bs, os);
+//		assertEquals(os.toString(), message);
+//	}
+//	@Test
+//	public void parseUserConfirmTemps(){
+//		OutputStream os = new ByteArrayOutputStream();
+//		//ConfirmStatus confStat = new ConfirmStatus(5, 1, 1234, true, 1, 0, 111222334);
+//		BoeseJson.parseMessage(confStat, os);
+//		assertEquals(os.toString(), message);
+//	}
+//	
+//	@Test
+//	public void readUserConfirmTemps(){
+//		InputStream is = new ByteArrayInputStream(message.getBytes());
+//		BoeseJson bs = BoeseJson.readMessage(is);
+//		assertNotNull(bs);
+//		
+//		OutputStream os = new ByteArrayOutputStream();
+//		BoeseJson.parseMessage(bs, os);
+//		assertEquals(os.toString(), message);
+//	}
+//	@Test
+//	public void parseUserCreateRules(){
+//		OutputStream os = new ByteArrayOutputStream();
+//		//ConfirmStatus confStat = new ConfirmStatus(5, 1, 1234, true, 1, 0, 111222334);
+//		BoeseJson.parseMessage(confStat, os);
+//		assertEquals(os.toString(), message);
+//	}
+//	
+//	@Test
+//	public void readUserCreateRules(){
+//		InputStream is = new ByteArrayInputStream(message.getBytes());
+//		BoeseJson bs = BoeseJson.readMessage(is);
+//		assertNotNull(bs);
+//		
+//		OutputStream os = new ByteArrayOutputStream();
+//		BoeseJson.parseMessage(bs, os);
+//		assertEquals(os.toString(), message);
+//	}
+//	@Test
+//	public void parseUserConfirmRules(){
+//		OutputStream os = new ByteArrayOutputStream();
+//		//ConfirmStatus confStat = new ConfirmStatus(5, 1, 1234, true, 1, 0, 111222334);
+//		BoeseJson.parseMessage(confStat, os);
+//		assertEquals(os.toString(), message);
+//	}
+//	
+//	@Test
+//	public void readUserConfirmRules(){
+//		InputStream is = new ByteArrayInputStream(message.getBytes());
+//		BoeseJson bs = BoeseJson.readMessage(is);
+//		assertNotNull(bs);
+//		
+//		OutputStream os = new ByteArrayOutputStream();
+//		BoeseJson.parseMessage(bs, os);
+//		assertEquals(os.toString(), message);
+//	}
 	
 }
