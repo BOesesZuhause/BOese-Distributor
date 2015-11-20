@@ -423,13 +423,14 @@ private final String logo =
 		int connectorId = temp.getConnectorId();
  
 		int deCoId = 0;
-		// TODO Was ist wenn Inserts.component() funktioniert aber Inserts.deviceComponent nicht
+		// TODO Was ist wenn Inserts.component() funktioniert aber Inserts.deviceComponent nicht (=>Transactions)
 		// TODO jedesmal wird eine Komponente erstellt
 		try{
 			Component comp = new Component(name, temp.isActor());
 			Inserts.component(unitId, comp); 
 			DeviceComponent deco = new DeviceComponent(temp.getDescription());
 			Inserts.deviceComponent(deviceId, comp.getCoId(), deco);
+			deCoId = deco.getDeCoId();
 		}
 		catch(Exception e){
 			logger.error(e.getMessage());

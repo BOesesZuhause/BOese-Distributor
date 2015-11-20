@@ -459,23 +459,23 @@ public class BoeseJson {
 			HashMap<Integer, String> tempConnectorsUST = new HashMap<>();
 			HashMap<Integer, TempDevice> tempDevicesUST = new HashMap<>();
 			HashMap<Integer, TempComponent> tempDeviceComponentsUST = new HashMap<>();
-			JsonArray tempConsUST = jo.getJsonArray("TempConnectors");
+			JsonArray tempConsUST = jo.getJsonArray("TmpConnectors");
 			for (int i = 0; i < tempConsUST.size(); i++) {
 				JsonObject con = tempConsUST.getJsonObject(i);
 				tempConnectorsUST.put(con.getInt("ConnectorTmpId"), con.getString("ConnectorName"));
 			}
-			JsonArray tempDevsUST = jo.getJsonArray("TempDevices");
+			JsonArray tempDevsUST = jo.getJsonArray("TmpDevices");
 			for (int i = 0; i < tempDevsUST.size(); i++) {
 				JsonObject dev = tempDevsUST.getJsonObject(i);
-				tempDevicesUST.put(dev.getInt("ConnectorTmpId"), new TempDevice(dev.getInt("ConnectorId"), dev.getString("DeviceName")));
+				tempDevicesUST.put(dev.getInt("DeviceTmpId"), new TempDevice(dev.getInt("ConnectorId"), dev.getString("DeviceName")));
 			}
-			JsonArray tempDeCosUST = jo.getJsonArray("TempDevicesComponents");
+			JsonArray tempDeCosUST = jo.getJsonArray("TmpDeviceComponents");
 			for (int i = 0; i < tempDeCosUST.size(); i++) {
 				JsonObject deCo = tempDeCosUST.getJsonObject(i);
 				tempDeviceComponentsUST.put(deCo.getInt("ComponentTmpId"), new TempComponent(
-								deCo.getInt("ComponentTmpId"), 
+								deCo.getInt("DeviceId"), 
 								deCo.getString("Name"), 
-								-1, 
+								-1,  //TODO eigene Klasse nutzen ohne diese Atribute
 								-1, 
 								deCo.getInt("ConnectorId"), 
 								deCo.getString("Description"), 
@@ -856,7 +856,7 @@ public class BoeseJson {
 				tempDeviceComponentUST.add("Name", entry.getValue().getName());
 				tempDeviceComponentUST.add("Description", entry.getValue().getDescription());
 				tempDeviceComponentUST.add("Actor", entry.getValue().isActor());
-				tempDeviceComponentUST.add("Unit", entry.getValue().getValue());
+				tempDeviceComponentUST.add("Unit", entry.getValue().getUnit());
 				tempDeviceComponentsUST.add(tempDeviceComponentUST);
 			}
 			job.add("TmpDeviceComponents", tempDeviceComponentsUST);

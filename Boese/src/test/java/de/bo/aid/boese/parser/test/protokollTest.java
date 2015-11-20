@@ -35,6 +35,7 @@ import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.json.RequestConnection;
 import de.bo.aid.boese.json.RequestDeviceComponents;
 import de.bo.aid.boese.json.RequestValue;
+import de.bo.aid.boese.json.RuleJSON;
 import de.bo.aid.boese.json.SendDeviceComponents;
 import de.bo.aid.boese.json.SendDevices;
 import de.bo.aid.boese.json.SendNotification;
@@ -44,8 +45,15 @@ import de.bo.aid.boese.json.UserDevice;
 import de.bo.aid.boese.json.UserRequestConnectors;
 import de.bo.aid.boese.json.UserRequestDeviceComponents;
 import de.bo.aid.boese.json.UserRequestGeneral;
+import de.bo.aid.boese.json.UserSendConnectors;
 import de.bo.aid.boese.json.UserSendDeviceComponent;
 import de.bo.aid.boese.json.UserSendDevices;
+import de.bo.aid.boese.json.UserSendRules;
+import de.bo.aid.boese.json.UserSendTemps;
+import de.bo.aid.boese.json.UserSendZones;
+import de.bo.aid.boese.json.ZoneJSON;
+import de.bo.aid.boese.main.model.TempComponent;
+import de.bo.aid.boese.main.model.TempDevice;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -1151,138 +1159,362 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
-//	@Test
-//	public void parseUserSendConnectors(){
-//		OutputStream os = new ByteArrayOutputStream();
-//		//ConfirmStatus confStat = new ConfirmStatus(5, 1, 1234, true, 1, 0, 111222334);
-//		BoeseJson.parseMessage(confStat, os);
-//		assertEquals(os.toString(), message);
-//	}
-//	@Test
-//	public void readUserSendConnectors(){
-//		InputStream is = new ByteArrayInputStream(message.getBytes());
-//		BoeseJson bs = BoeseJson.readMessage(is);
-//		assertNotNull(bs);
-//		
-//		OutputStream os = new ByteArrayOutputStream();
-//		BoeseJson.parseMessage(bs, os);
-//		assertEquals(os.toString(), message);
-//	}
-//	
-//	@Test
-//	public void parseUserRequestAllZones(){
-//		OutputStream os = new ByteArrayOutputStream();
-//		//ConfirmStatus confStat = new ConfirmStatus(5, 1, 1234, true, 1, 0, 111222334);
-//		BoeseJson.parseMessage(confStat, os);
-//		assertEquals(os.toString(), message);
-//	}
-//	@Test
-//	public void readUserRequestAllZones(){
-//		InputStream is = new ByteArrayInputStream(message.getBytes());
-//		BoeseJson bs = BoeseJson.readMessage(is);
-//		assertNotNull(bs);
-//		
-//		OutputStream os = new ByteArrayOutputStream();
-//		BoeseJson.parseMessage(bs, os);
-//		assertEquals(os.toString(), message);
-//	}
-//	
-//	@Test
-//	public void parseUserSendZones(){
-//		OutputStream os = new ByteArrayOutputStream();
-//		//ConfirmStatus confStat = new ConfirmStatus(5, 1, 1234, true, 1, 0, 111222334);
-//		BoeseJson.parseMessage(confStat, os);
-//		assertEquals(os.toString(), message);
-//	}
-//
-//	@Test
-//	public void readUserSendZones(){
-//		InputStream is = new ByteArrayInputStream(message.getBytes());
-//		BoeseJson bs = BoeseJson.readMessage(is);
-//		assertNotNull(bs);
-//		
-//		OutputStream os = new ByteArrayOutputStream();
-//		BoeseJson.parseMessage(bs, os);
-//		assertEquals(os.toString(), message);
-//	}
-//	
-//	@Test
-//	public void parseUserRequestAllRules(){
-//		OutputStream os = new ByteArrayOutputStream();
-//		//ConfirmStatus confStat = new ConfirmStatus(5, 1, 1234, true, 1, 0, 111222334);
-//		BoeseJson.parseMessage(confStat, os);
-//		assertEquals(os.toString(), message);
-//	}
-//	
-//	@Test
-//	public void readUserRequestAllRules(){
-//		InputStream is = new ByteArrayInputStream(message.getBytes());
-//		BoeseJson bs = BoeseJson.readMessage(is);
-//		assertNotNull(bs);
-//		
-//		OutputStream os = new ByteArrayOutputStream();
-//		BoeseJson.parseMessage(bs, os);
-//		assertEquals(os.toString(), message);
-//	}
-//	
-//	@Test
-//	public void parseUsersendRules(){
-//		OutputStream os = new ByteArrayOutputStream();
-//		//ConfirmStatus confStat = new ConfirmStatus(5, 1, 1234, true, 1, 0, 111222334);
-//		BoeseJson.parseMessage(confStat, os);
-//		assertEquals(os.toString(), message);
-//	}
-//	
-//	@Test
-//	public void readUserSendRules(){
-//		InputStream is = new ByteArrayInputStream(message.getBytes());
-//		BoeseJson bs = BoeseJson.readMessage(is);
-//		assertNotNull(bs);
-//		
-//		OutputStream os = new ByteArrayOutputStream();
-//		BoeseJson.parseMessage(bs, os);
-//		assertEquals(os.toString(), message);
-//	}
-//	
-//	@Test
-//	public void parseUserRequestTemps(){
-//		OutputStream os = new ByteArrayOutputStream();
-//		//ConfirmStatus confStat = new ConfirmStatus(5, 1, 1234, true, 1, 0, 111222334);
-//		BoeseJson.parseMessage(confStat, os);
-//		assertEquals(os.toString(), message);
-//	}
-//	
-//	@Test
-//	public void readUserRequestTemps(){
-//		InputStream is = new ByteArrayInputStream(message.getBytes());
-//		BoeseJson bs = BoeseJson.readMessage(is);
-//		assertNotNull(bs);
-//		
-//		OutputStream os = new ByteArrayOutputStream();
-//		BoeseJson.parseMessage(bs, os);
-//		assertEquals(os.toString(), message);
-//	}
-//	
-//	@Test
-//	public void parseUserSendTemps(){
-//		OutputStream os = new ByteArrayOutputStream();
-//		//ConfirmStatus confStat = new ConfirmStatus(5, 1, 1234, true, 1, 0, 111222334);
-//		BoeseJson.parseMessage(confStat, os);
-//		assertEquals(os.toString(), message);
-//	}
-//	
-//	@Test
-//	public void readUserSendTemps(){
-//		InputStream is = new ByteArrayInputStream(message.getBytes());
-//		BoeseJson bs = BoeseJson.readMessage(is);
-//		assertNotNull(bs);
-//		
-//		OutputStream os = new ByteArrayOutputStream();
-//		BoeseJson.parseMessage(bs, os);
-//		assertEquals(os.toString(), message);
-//	}
+	@Test
+	public void parseUserSendConnectors(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":56,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				//+ "\"DeviceId\":5," //TODO soll die dabei sein?
+				+ "\"Connectors\":[{"
+				+ "\"ConnectorId\":2,"
+				+ "\"ConnectorName\":\"Homematic\""
+				+ "}]"
+				+ "}";
+		OutputStream os = new ByteArrayOutputStream();
+		HashMap<Integer, String> connectors = new HashMap<Integer, String>();
+		connectors.put(2, "Homematic");
+		UserSendConnectors usc = new UserSendConnectors(connectors, 1, 0, 111222334);
+		BoeseJson.parseMessage(usc, os);
+		assertEquals(os.toString(), message);
+	}
+	@Test
+	public void readUserSendConnectors(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":56,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				//+ "\"DeviceId\":5," //TODO soll das dadrin sein?
+				+ "\"Connectors\":[{"
+				+ "\"ConnectorId\":1,"
+				+ "\"ConnectorName\":\"Homematic\""
+				+ "}]"
+				+ "}";
+		
+		InputStream is = new ByteArrayInputStream(message.getBytes());
+		BoeseJson bs = BoeseJson.readMessage(is);
+		assertNotNull(bs);
+		
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(bs, os);
+		assertEquals(os.toString(), message);
+	}
+	
+	@Test
+	public void parseUserRequestAllZones(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":57,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "}"
+				+ "}";
+		
+		OutputStream os = new ByteArrayOutputStream();
+		UserRequestGeneral urg = new UserRequestGeneral(MessageType.USERREQUESTALLZONES, 1, 0, 111222334);
+		BoeseJson.parseMessage(urg, os);
+		assertEquals(os.toString(), message);
+	}
+	@Test
+	public void readUserRequestAllZones(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":57,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "}"
+				+ "}";
+		
+		InputStream is = new ByteArrayInputStream(message.getBytes());
+		BoeseJson bs = BoeseJson.readMessage(is);
+		assertNotNull(bs);
+		
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(bs, os);
+		assertEquals(os.toString(), message);
+	}
+	
+	@Test
+	public void parseUserSendZones(){	
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":58,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"Zones\":[{"
+				+ "\"ZoneId\":1,"
+				+ "\"SuperZoneId\":0,"
+				+ "\"ZoneName\":\"Wohnzimmer\""
+				+ "}]"
+				+ "}";
+		
+		OutputStream os = new ByteArrayOutputStream();
+		HashSet<ZoneJSON> zones = new HashSet<ZoneJSON>();
+		ZoneJSON zone = new ZoneJSON(1, 0, "Wohnzimmer");
+		zones.add(zone);
+		UserSendZones usz = new UserSendZones(zones, 1, 0, 111222334);
+		BoeseJson.parseMessage(usz, os);
+		assertEquals(os.toString(), message);
+	}
+
+	@Test
+	public void readUserSendZones(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":58,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"Zones\":[{"
+				+ "\"ZoneId\":1,"
+				+ "\"SuperZoneId\":0,"
+				+ "\"ZoneName\":\"Wohnzimmer\""
+				+ "}]"
+				+ "}";
+		
+		InputStream is = new ByteArrayInputStream(message.getBytes());
+		BoeseJson bs = BoeseJson.readMessage(is);
+		assertNotNull(bs);
+		
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(bs, os);
+		assertEquals(os.toString(), message);
+	}
+	
+	@Test
+	public void parseUserRequestAllRules(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":59,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "}"
+				+ "}";
+		
+		OutputStream os = new ByteArrayOutputStream();
+		UserRequestGeneral urg = new UserRequestGeneral(MessageType.USERREQUESTALLRULES, 1, 0, 111222334);
+		BoeseJson.parseMessage(urg, os);
+		assertEquals(os.toString(), message);
+	}
+	
+	@Test
+	public void readUserRequestAllRules(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":59,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "}"
+				+ "}";
+		
+		InputStream is = new ByteArrayInputStream(message.getBytes());
+		BoeseJson bs = BoeseJson.readMessage(is);
+		assertNotNull(bs);
+		
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(bs, os);
+		assertEquals(os.toString(), message);
+	}
+	
+	@Test
+	public void parseUsersendRules(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":60,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"Rules\":[{"
+				+ "\"RuleId\":1,"
+				+ "\"Active\":true,"
+				+ "\"InsertDate\":123123,"
+				+ "\"ModifyDate\":321321,"
+				+ "\"Permissions\":\"<>\","
+				+ "\"Conditions\":\"<>\","
+				+ "\"Actions\":\"<>\""
+				+ "}]"
+				+ "}";
+		
+		OutputStream os = new ByteArrayOutputStream();
+		HashSet<RuleJSON> rules = new HashSet<RuleJSON>();
+		RuleJSON rule = new RuleJSON(1, true, 123123, 321321, "<>", "<>", "<>");
+		rules.add(rule);
+		UserSendRules usr = new UserSendRules(rules, 1, 0, 111222334);
+		BoeseJson.parseMessage(usr, os);
+		assertEquals(os.toString(), message);
+	}
+	
+	@Test
+	public void readUserSendRules(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":60,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"Rules\":[{"
+				+ "\"RuleId\":1,"
+				+ "\"Active\":true,"
+				+ "\"InsertDate\":123123,"
+				+ "\"ModifyDate\":321321,"
+				+ "\"Permissions\":\"<>\","
+				+ "\"Conditions\":\"<>\","
+				+ "\"Actions\":\"<>\""
+				+ "}]"
+				+ "}";
+		
+		InputStream is = new ByteArrayInputStream(message.getBytes());
+		BoeseJson bs = BoeseJson.readMessage(is);
+		assertNotNull(bs);
+		
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(bs, os);
+		assertEquals(os.toString(), message);
+	}
+	
+	@Test
+	public void parseUserRequestTemps(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":80,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "}"
+				+ "}";
+		
+		OutputStream os = new ByteArrayOutputStream();
+		UserRequestGeneral urg = new UserRequestGeneral(MessageType.USERREQUESTTEMPS, 1, 0, 111222334);
+		BoeseJson.parseMessage(urg, os);
+		assertEquals(os.toString(), message);
+	}
+	
+	@Test
+	public void readUserRequestTemps(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":80,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "}"
+				+ "}";
+		
+		InputStream is = new ByteArrayInputStream(message.getBytes());
+		BoeseJson bs = BoeseJson.readMessage(is);
+		assertNotNull(bs);
+		
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(bs, os);
+		assertEquals(os.toString(), message);
+	}
+	
+	@Test
+	public void parseUserSendTemps(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":81,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"TmpConnectors\":[{"
+				+ "\"ConnectorTmpId\":3,"
+				+ "\"ConnectorName\":\"HUE\""
+				+ "}],"
+				+ "\"TmpDevices\":[{"
+				+ "\"DeviceTmpId\":3,"
+				+ "\"DeviceName\":\"Steckdose\","
+				+ "\"ConnectorId\":2"
+				+ "}],"
+				+ "\"TmpDeviceComponents\":[{"
+				+ "\"ComponentTmpId\":4,"
+				+ "\"DeviceId\":3,"
+				+ "\"ConnectorId\":2,"
+				+ "\"Name\":\"Strom messen\","
+				+ "\"Description\":\"misst den Strom\","
+				+ "\"Actor\":false,"
+				+ "\"Unit\":\"A\""
+				+ "}]"
+				+ "}";
+		//TODO tempDevice und tempComponent als eigene Klassen
+		OutputStream os = new ByteArrayOutputStream();
+		HashMap<Integer, String> tempConnectors = new HashMap<Integer, String>();
+		tempConnectors.put(3, "HUE");
+		HashMap<Integer, TempDevice> tempDevices = new HashMap<Integer, TempDevice>();
+		TempDevice tempDev = new TempDevice(2, "Steckdose");
+		tempDevices.put(3, tempDev);
+		HashMap<Integer, TempComponent> tempDeviceComponents = new HashMap<Integer, TempComponent>();
+		TempComponent tempComp = new TempComponent(3, "Strom messen", 0, 0, 2, "misst den Strom", "A", false);
+		tempDeviceComponents.put(4, tempComp);
+		UserSendTemps ust = new UserSendTemps(tempConnectors, tempDevices, tempDeviceComponents, 1, 0, 111222334);
+		BoeseJson.parseMessage(ust, os);
+		assertEquals(os.toString(), message);
+	}
+	
+	@Test
+	public void readUserSendTemps(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":81,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"TmpConnectors\":[{"
+				+ "\"ConnectorTmpId\":3,"
+				+ "\"ConnectorName\":\"HUE\""
+				+ "}],"
+				+ "\"TmpDevices\":[{"
+				+ "\"DeviceTmpId\":3,"
+				+ "\"DeviceName\":\"Steckdose\","
+				+ "\"ConnectorId\":2"
+				+ "}],"
+				+ "\"TmpDeviceComponents\":[{"
+				+ "\"ComponentTmpId\":4,"
+				+ "\"DeviceId\":3,"
+				+ "\"ConnectorId\":2,"
+				+ "\"Name\":\"Strom messen\","
+				+ "\"Description\":\"misst den Strom\","
+				+ "\"Actor\":false,"
+				+ "\"Unit\":\"A\""
+				+ "}]"
+				+ "}";
+		
+		InputStream is = new ByteArrayInputStream(message.getBytes());
+		BoeseJson bs = BoeseJson.readMessage(is);
+		assertNotNull(bs);
+		
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(bs, os);
+		assertEquals(os.toString(), message);
+	}
 //	@Test
 //	public void parseUserConfirmTemps(){
+//		String message = "{"
+//				+ "\"Header\":{"
+//				+ "\"MessageType\":82,"
+//				+ "\"ConnectorId\":1,"
+//				+ "\"Status\":0,"
+//				+ "\"Timestamp\":111222334"
+//				+ "}"
+//				+ "}";
+//		
 //		OutputStream os = new ByteArrayOutputStream();
 //		//ConfirmStatus confStat = new ConfirmStatus(5, 1, 1234, true, 1, 0, 111222334);
 //		BoeseJson.parseMessage(confStat, os);
@@ -1291,6 +1523,15 @@ public class protokollTest {
 //	
 //	@Test
 //	public void readUserConfirmTemps(){
+//		String message = "{"
+//				+ "\"Header\":{"
+//				+ "\"MessageType\":82,"
+//				+ "\"ConnectorId\":1,"
+//				+ "\"Status\":0,"
+//				+ "\"Timestamp\":111222334"
+//				+ "}"
+//				+ "}";
+//		
 //		InputStream is = new ByteArrayInputStream(message.getBytes());
 //		BoeseJson bs = BoeseJson.readMessage(is);
 //		assertNotNull(bs);
@@ -1301,6 +1542,15 @@ public class protokollTest {
 //	}
 //	@Test
 //	public void parseUserCreateRules(){
+//		String message = "{"
+//				+ "\"Header\":{"
+//				+ "\"MessageType\":90,"
+//				+ "\"ConnectorId\":1,"
+//				+ "\"Status\":0,"
+//				+ "\"Timestamp\":111222334"
+//				+ "}"
+//				+ "}";
+//		
 //		OutputStream os = new ByteArrayOutputStream();
 //		//ConfirmStatus confStat = new ConfirmStatus(5, 1, 1234, true, 1, 0, 111222334);
 //		BoeseJson.parseMessage(confStat, os);
@@ -1309,6 +1559,15 @@ public class protokollTest {
 //	
 //	@Test
 //	public void readUserCreateRules(){
+//		String message = "{"
+//				+ "\"Header\":{"
+//				+ "\"MessageType\":90,"
+//				+ "\"ConnectorId\":1,"
+//				+ "\"Status\":0,"
+//				+ "\"Timestamp\":111222334"
+//				+ "}"
+//				+ "}";
+//		
 //		InputStream is = new ByteArrayInputStream(message.getBytes());
 //		BoeseJson bs = BoeseJson.readMessage(is);
 //		assertNotNull(bs);
@@ -1319,6 +1578,15 @@ public class protokollTest {
 //	}
 //	@Test
 //	public void parseUserConfirmRules(){
+//		String message = "{"
+//				+ "\"Header\":{"
+//				+ "\"MessageType\":91,"
+//				+ "\"ConnectorId\":1,"
+//				+ "\"Status\":0,"
+//				+ "\"Timestamp\":111222334"
+//				+ "}"
+//				+ "}";
+//		
 //		OutputStream os = new ByteArrayOutputStream();
 //		//ConfirmStatus confStat = new ConfirmStatus(5, 1, 1234, true, 1, 0, 111222334);
 //		BoeseJson.parseMessage(confStat, os);
@@ -1327,6 +1595,15 @@ public class protokollTest {
 //	
 //	@Test
 //	public void readUserConfirmRules(){
+//		String message = "{"
+//				+ "\"Header\":{"
+//				+ "\"MessageType\":91,"
+//				+ "\"ConnectorId\":1,"
+//				+ "\"Status\":0,"
+//				+ "\"Timestamp\":111222334"
+//				+ "}"
+//				+ "}";
+//		
 //		InputStream is = new ByteArrayInputStream(message.getBytes());
 //		BoeseJson bs = BoeseJson.readMessage(is);
 //		assertNotNull(bs);

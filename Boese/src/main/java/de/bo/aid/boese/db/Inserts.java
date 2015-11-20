@@ -204,6 +204,7 @@ public class Inserts {
 		DeviceComponent deco = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoid));
 		if(deco != null){
 			deco.setCurrentValue(new BigDecimal(value));
+			
 		}
 		else{
 			session.getTransaction().rollback();
@@ -221,6 +222,7 @@ public class Inserts {
 		
 		LogDeviceComponent logcomp = new LogDeviceComponent();
 		logcomp.setDeviceComponent(deco);
+		//TODO TIMESTAMP wird hier gespeichert
 		logcomp.setTimestamp(timestamp);
 		logcomp.setValue(new BigDecimal(value));
 		
