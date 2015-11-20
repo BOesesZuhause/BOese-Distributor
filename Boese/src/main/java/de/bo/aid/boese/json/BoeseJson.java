@@ -355,7 +355,7 @@ public class BoeseJson {
 			int deviceComponentIdCS = jo.getInt("DeviceComponentId", -1);
 			int statusCodeCS = jo.getInt("StatusCode", -1);
 			long timestampCS = jo.getJsonNumber("Timestamp").longValue();
-			bj = new SendStatus(deviceComponentIdCS, statusCodeCS, timestampCS, false, headerConnectorID, headerStatus, headerTimestamp);
+			bj = new ConfirmStatus(deviceComponentIdCS, statusCodeCS, timestampCS, false, headerConnectorID, headerStatus, headerTimestamp);
 			break;
 		case 50: // UserRequestAllDevices
 			bj = new RequestAllDevices(headerConnectorID, headerStatus, headerTimestamp, true);
@@ -679,12 +679,14 @@ public class BoeseJson {
 			SendStatus ss = (SendStatus)message;
 			job.add("Header", addHeader(13, ss.getConnectorId(), ss.getStatus(), ss.getTimestamp()));
 			job.add("DeviceComponentId", ss.getDeviceComponentId());
+			job.add("StatusCode", ss.getStatusCode());
 			job.add("Timestamp", ss.getStatusTimestamp());
 			break;
 		case CONFIRMSTATUS:
-			SendStatus cs = (SendStatus)message;
+			ConfirmStatus cs = (ConfirmStatus)message;
 			job.add("Header", addHeader(14, cs.getConnectorId(), cs.getStatus(), cs.getTimestamp()));
 			job.add("DeviceComponentId", cs.getDeviceComponentId());
+			job.add("StatusCode", cs.getStatusCode());
 			job.add("Timestamp", cs.getStatusTimestamp());
 			break;
 		case USERREQUESTALLDEVICES:

@@ -185,6 +185,7 @@ private final String logo =
 //		} catch (DBObjectNotFoundException e) {
 //			Inserts.zone("global", null);
 //		}
+		
 	}
 	
 	/**

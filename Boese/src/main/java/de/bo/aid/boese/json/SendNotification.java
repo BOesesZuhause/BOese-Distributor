@@ -67,6 +67,12 @@ public class SendNotification extends BoeseJson {
 		super(MessageType.SENDNOTIFICATION, connectorId, status, timestamp);
 		this.deviceId = deviceId;
 		this.deviceComponentId = deviceComponentId;
+		this.notificationType = notificationType;
+		this.notificationTimestamp = notificationTimestamp;
+		this.notificationText = notificationText;
+		this.connectorId = connectorId;
+		this.status = status;
+		this.timestamp = timestamp;
 	}
 
 	/**

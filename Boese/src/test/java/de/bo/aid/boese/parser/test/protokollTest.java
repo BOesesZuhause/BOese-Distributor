@@ -26,14 +26,18 @@ import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.ConfirmConnection;
 import de.bo.aid.boese.json.ConfirmDeviceComponents;
 import de.bo.aid.boese.json.ConfirmDevices;
+import de.bo.aid.boese.json.ConfirmStatus;
 import de.bo.aid.boese.json.ConfirmValue;
 import de.bo.aid.boese.json.DeviceComponents;
 import de.bo.aid.boese.json.MultiMessage;
 import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.json.RequestConnection;
 import de.bo.aid.boese.json.RequestDeviceComponents;
+import de.bo.aid.boese.json.RequestValue;
 import de.bo.aid.boese.json.SendDeviceComponents;
 import de.bo.aid.boese.json.SendDevices;
+import de.bo.aid.boese.json.SendNotification;
+import de.bo.aid.boese.json.SendStatus;
 import de.bo.aid.boese.json.SendValue;
 
 // TODO: Auto-generated Javadoc
@@ -41,6 +45,129 @@ import de.bo.aid.boese.json.SendValue;
  * The Class protokollTest.
  */
 public class protokollTest {
+	
+	/**
+	 * Parses the multi.
+	 */
+	@Test
+	public void parseMulti(){
+		
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":0,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"Messages\":["
+				
+				+"{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":8,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"DeviceId\":123,"
+				+ "\"Components\":"
+				+ "[{"
+				+ "\"DeviceComponentId\":5,"
+				+ "\"ComponentName\":\"Horst\""
+				+ "}]"
+				+ "},"
+				
+				+"{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":10,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"DeviceId\":123,"
+				+ "\"DeviceComponentId\":5"
+				+ "}"
+
+				+ "]"
+				+ "}";
+		
+		OutputStream os = new ByteArrayOutputStream();
+		MultiMessage multi = new MultiMessage(1, 0, 111222334);
+		multi.addMessage(new ConfirmValue(123, 5,1, 0, 111222334));
+		
+		HashMap<String, Integer> components = new HashMap<>();
+		components.put("Horst", 5);
+		multi.addMessage(new ConfirmDeviceComponents(123, components, 1, 0, 111222334));
+
+		BoeseJson.parseMessage(multi, os);
+
+
+		try {
+			JSONAssert.assertEquals(os.toString(), message, false);
+		} catch (JSONException e) {
+			e.printStackTrace();
+			fail();
+		}
+		
+	}
+	
+	/**
+	 * Read multi.
+	 */
+	@Test
+	public void readMulti(){
+		
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":0,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"Messages\":["
+				
+				
+				+"{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":10,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"DeviceId\":123,"
+				+ "\"DeviceComponentId\":5"
+				+ "},"
+				
+				+"{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":8,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"DeviceId\":123,"
+				+ "\"Components\":"
+				+ "[{"
+				+ "\"DeviceComponentId\":5,"
+				+ "\"ComponentName\":\"Horst\""
+				+ "}]"
+				+ "}"
+				
+				+ "]"
+				+ "}";
+		
+		InputStream is = new ByteArrayInputStream(message.getBytes());
+		BoeseJson bs = BoeseJson.readMessage(is);
+		assertNotNull(bs);	
+		
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(bs, os);
+		try {
+			JSONAssert.assertEquals(os.toString(), message, false);
+		} catch (JSONException e) {
+			e.printStackTrace();
+			fail();
+		}		
+	}
 	
 	/**
 	 * Parses the request connection.
@@ -573,117 +700,37 @@ public class protokollTest {
 		assertEquals(os.toString(), message); 
 	}
 	
-	/**
-	 * Parses the multi.
-	 */
 	@Test
-	public void parseMulti(){
-		
+	public void parseRequestValue(){
 		String message = "{"
 				+ "\"Header\":{"
-				+ "\"MessageType\":0,"
-				+ "\"ConnectorId\":1,"
-				+ "\"Status\":0,"
-				+ "\"Timestamp\":111222334"
-				+ "},"
-				+ "\"Messages\":["
-				
-				+"{"
-				+ "\"Header\":{"
-				+ "\"MessageType\":8,"
-				+ "\"ConnectorId\":1,"
-				+ "\"Status\":0,"
-				+ "\"Timestamp\":111222334"
-				+ "},"
-				+ "\"DeviceId\":123,"
-				+ "\"Components\":"
-				+ "[{"
-				+ "\"DeviceComponentId\":5,"
-				+ "\"ComponentName\":\"Horst\""
-				+ "}]"
-				+ "},"
-				
-				+"{"
-				+ "\"Header\":{"
-				+ "\"MessageType\":10,"
+				+ "\"MessageType\":11,"
 				+ "\"ConnectorId\":1,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
 				+ "\"DeviceId\":123,"
 				+ "\"DeviceComponentId\":5"
-				+ "}"
-
-				+ "]"
 				+ "}";
 		
 		OutputStream os = new ByteArrayOutputStream();
-		MultiMessage multi = new MultiMessage(1, 0, 111222334);
-		multi.addMessage(new ConfirmValue(123, 5,1, 0, 111222334));
-		
-		HashMap<String, Integer> components = new HashMap<>();
-		components.put("Horst", 5);
-		multi.addMessage(new ConfirmDeviceComponents(123, components, 1, 0, 111222334));
-
-		BoeseJson.parseMessage(multi, os);
-
-
-		try {
-			JSONAssert.assertEquals(os.toString(), message, false);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		RequestValue reqVal = new RequestValue(123, 5,1, 0, 111222334);
+		BoeseJson.parseMessage(reqVal, os);
+		assertEquals(os.toString(), message);			
 	}
 	
-	/**
-	 * Read multi.
-	 */
 	@Test
-	public void readMulti(){
-		
+	public void readRequestValue(){
+
 		String message = "{"
 				+ "\"Header\":{"
-				+ "\"MessageType\":0,"
-				+ "\"ConnectorId\":1,"
-				+ "\"Status\":0,"
-				+ "\"Timestamp\":111222334"
-				+ "},"
-				+ "\"Messages\":["
-				
-				
-				+"{"
-				+ "\"Header\":{"
-				+ "\"MessageType\":10,"
+				+ "\"MessageType\":11,"
 				+ "\"ConnectorId\":1,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
 				+ "\"DeviceId\":123,"
 				+ "\"DeviceComponentId\":5"
-				+ "},"
-				
-				+"{"
-				+ "\"Header\":{"
-				+ "\"MessageType\":8,"
-				+ "\"ConnectorId\":1,"
-				+ "\"Status\":0,"
-				+ "\"Timestamp\":111222334"
-				+ "},"
-				+ "\"DeviceId\":123,"
-				+ "\"Components\":"
-				+ "[{"
-				+ "\"DeviceComponentId\":5,"
-				+ "\"ComponentName\":\"Horst\""
-				+ "}]"
-				+ "}"
-				
-
-
-				
-				
-				+ "]"
 				+ "}";
 		
 		InputStream is = new ByteArrayInputStream(message.getBytes());
@@ -692,16 +739,140 @@ public class protokollTest {
 		
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(bs, os);
-		try {
-			JSONAssert.assertEquals(os.toString(), message, false);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	
+		assertEquals(os.toString(), message); 
 	}
-
 	
+	@Test
+	public void parseSendNotification(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":12,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"DeviceId\":123,"
+				+ "\"DeviceComponentId\":5,"
+				+ "\"NotificationType\":1,"
+				+ "\"Timestamp\":111222334,"
+				+ "\"NotificationText\":\"Error\""
+				+ "}";
+		
+		OutputStream os = new ByteArrayOutputStream();
+		SendNotification sendNotif = new SendNotification(123, 5, 1, 111222334, "Error", 1, 0, 111222334);
+		BoeseJson.parseMessage(sendNotif, os);
+		assertEquals(os.toString(), message);	
+	}
+	
+	@Test
+	public void readSendNotification(){
 
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":12,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"DeviceId\":123,"
+				+ "\"DeviceComponentId\":5,"
+				+ "\"NotificationType\":1,"
+				+ "\"Timestamp\":111222334,"
+				+ "\"NotificationText\":\"Error\""
+				+ "}";
+		
+		InputStream is = new ByteArrayInputStream(message.getBytes());
+		BoeseJson bs = BoeseJson.readMessage(is);
+		assertNotNull(bs);	
+		
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(bs, os);
+		assertEquals(os.toString(), message); 
+	}
+	
+	@Test
+	public void parseSendStatus(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":13,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"DeviceComponentId\":5,"
+				+ "\"StatusCode\":1,"
+				+ "\"Timestamp\":1234"
+				+ "}";
+		
+		OutputStream os = new ByteArrayOutputStream();//TODO was ist isSendStatus?
+		SendStatus sendStat = new SendStatus(5, 1, 1234, true, 1, 0, 111222334);
+		BoeseJson.parseMessage(sendStat, os);
+		assertEquals(os.toString(), message);	
+	}
+	
+	@Test
+	public void readSendStatus(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":13,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"DeviceComponentId\":5,"
+				+ "\"StatusCode\":1,"
+				+ "\"Timestamp\":1234"
+				+ "}";
+		
+		InputStream is = new ByteArrayInputStream(message.getBytes());
+		BoeseJson bs = BoeseJson.readMessage(is);
+		assertNotNull(bs);
+		
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(bs, os);
+		assertEquals(os.toString(), message);
+	}
+	@Test
+	public void parseConfirmStatus(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":14,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"DeviceComponentId\":5,"
+				+ "\"StatusCode\":1,"
+				+ "\"Timestamp\":1234"
+				+ "}";
+		
+		OutputStream os = new ByteArrayOutputStream();
+		ConfirmStatus confStat = new ConfirmStatus(5, 1, 1234, true, 1, 0, 111222334);
+		BoeseJson.parseMessage(confStat, os);
+		assertEquals(os.toString(), message);	
+	}
+	@Test
+	public void readConfirmStatus(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":14,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "},"
+				+ "\"DeviceComponentId\":5,"
+				+ "\"StatusCode\":1,"
+				+ "\"Timestamp\":1234"
+				+ "}";
+		
+		InputStream is = new ByteArrayInputStream(message.getBytes());
+		BoeseJson bs = BoeseJson.readMessage(is);
+		assertNotNull(bs);
+		
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(bs, os);
+		assertEquals(os.toString(), message);
+	}
+	
+	
 }
