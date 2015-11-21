@@ -257,6 +257,9 @@ public class Connector implements java.io.Serializable {
 		this.logConnectors = logConnectors;
 	}
   
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

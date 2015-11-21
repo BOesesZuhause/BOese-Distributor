@@ -44,7 +44,6 @@ import de.bo.aid.boese.cli.Parameters;
 import de.bo.aid.boese.db.Connection;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
-import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.ConfirmConnection;
@@ -266,6 +265,9 @@ private final String logo =
 		//distr.startHeartbeat();
 	}
 	
+	/**
+	 * Start heartbeat.
+	 */
 	public void startHeartbeat() {
 		HeartbeatWorker worker = new HeartbeatWorker();
 		worker.start();
@@ -564,7 +566,7 @@ private final String logo =
 		for(DeviceComponent deco : decos){
 			in.add(new Inquiry(deco.getDeCoId(), new Date().getTime(), deco.getCurrentValue().doubleValue()));
 		}
-		Control controll = new Control();
+		//Control controll = new Control();
 		try {
 			// TODO sendToDos
 //			.sendToDos(controll.getToDos(in));

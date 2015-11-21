@@ -532,12 +532,12 @@ public class Selects {
 	}
 	
 	/**
-	 * deviceGroup
+	 * deviceGroup.
 	 *
 	 * @param deid the Device ID
 	 * @param grpid the Group ID
 	 * @return the Device Group
-	 * @throws DBObjectNotFoundException 
+	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */	
 	public static DeviceGroup deviceGroup(int deid, short grpid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();

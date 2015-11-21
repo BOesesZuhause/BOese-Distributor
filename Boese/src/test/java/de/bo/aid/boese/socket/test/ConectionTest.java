@@ -1,6 +1,6 @@
-
-
-
+/*
+ * 
+ */
 package de.bo.aid.boese.socket.test;
 
 import static org.junit.Assert.*;
@@ -13,7 +13,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.bo.aid.boese.socket.SocketEndpoint;
 import de.bo.aid.boese.socket.SocketServer;
 
 // TODO: Auto-generated Javadoc
@@ -24,6 +23,8 @@ public class ConectionTest {
 	
 	/** The server. */
 	private SocketServer server;
+	
+	/** The s1. */
 	private Session s1;
 	
     /**

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package de.bo.aid.boese.exceptions;
 
 // TODO: Auto-generated Javadoc

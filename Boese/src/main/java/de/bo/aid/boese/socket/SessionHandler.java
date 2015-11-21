@@ -41,11 +41,13 @@ import org.apache.logging.log4j.Logger;
  */
 public class SessionHandler {
 	
+	/** The missed answer threshold. */
 	private int missedAnswerThreshold = 5;
 	
 	/** The Constant logger for log4j. */
 	final  Logger logger = LogManager.getLogger(SessionHandler.class);
 	
+	/** The sessions. */
 	private final CopyOnWriteArrayList<SessionData> sessions = new CopyOnWriteArrayList<SessionData>();
 	
 	/** The instance. */ //TODO eventuell HashSet mit ID als key für mehr Performance
@@ -185,12 +187,23 @@ public class SessionHandler {
 		return instance;
 	}
 
+	/**
+	 * Handle heartbeat.
+	 *
+	 * @param session the session
+	 */
 	public void handleHeartbeat(Session session) {
 		SessionData data = getDataBySession(session);
 		data.setLastHeartbeat(System.currentTimeMillis());
 		data.setMissedAnswers(0);
 	}
 	
+	/**
+	 * Gets the data by session.
+	 *
+	 * @param session the session
+	 * @return the data by session
+	 */
 	private SessionData getDataBySession(Session session){
 		for(SessionData data : sessions){
 			if(data.getSession().equals(session)){
@@ -200,6 +213,9 @@ public class SessionHandler {
 		return null;
 	}
 	
+	/**
+	 * Check heartbeat.
+	 */
 	public void checkHeartbeat(){
 		for(SessionData data : sessions){
 			long now = System.currentTimeMillis();
@@ -221,10 +237,20 @@ public class SessionHandler {
 		}
 	}
 
+	/**
+	 * Gets the missed answer threshold.
+	 *
+	 * @return the missed answer threshold
+	 */
 	public int getMissedAnswerThreshold() {
 		return missedAnswerThreshold;
 	}
 
+	/**
+	 * Sets the missed answer threshold.
+	 *
+	 * @param missedAnswerThreshold the new missed answer threshold
+	 */
 	public void setMissedAnswerThreshold(int missedAnswerThreshold) {
 		this.missedAnswerThreshold = missedAnswerThreshold;
 	}

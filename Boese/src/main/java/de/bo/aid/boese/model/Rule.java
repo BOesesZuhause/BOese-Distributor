@@ -311,6 +311,9 @@ public class Rule implements java.io.Serializable {
 		this.repeatRule = repeatRule;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

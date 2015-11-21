@@ -1,6 +1,6 @@
-
-
-
+/*
+ * 
+ */
 package de.bo.aid.boese.parser.test;
 
 import static org.junit.Assert.*;
@@ -9,14 +9,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.HashSet;
-
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.stream.JsonParser;
 
 import org.json.JSONException;
 import org.junit.Test;
@@ -719,6 +713,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message); 
 	}
 	
+	/**
+	 * Parses the request value.
+	 */
 	@Test
 	public void parseRequestValue(){
 		String message = "{"
@@ -738,6 +735,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);			
 	}
 	
+	/**
+	 * Read request value.
+	 */
 	@Test
 	public void readRequestValue(){
 
@@ -761,6 +761,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message); 
 	}
 	
+	/**
+	 * Parses the send notification.
+	 */
 	@Test
 	public void parseSendNotification(){
 		String message = "{"
@@ -783,6 +786,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);	
 	}
 	
+	/**
+	 * Read send notification.
+	 */
 	@Test
 	public void readSendNotification(){
 
@@ -809,6 +815,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message); 
 	}
 	
+	/**
+	 * Parses the send status.
+	 */
 	@Test
 	public void parseSendStatus(){
 		String message = "{"
@@ -829,6 +838,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);	
 	}
 	
+	/**
+	 * Read send status.
+	 */
 	@Test
 	public void readSendStatus(){
 		String message = "{"
@@ -851,6 +863,10 @@ public class protokollTest {
 		BoeseJson.parseMessage(bs, os);
 		assertEquals(os.toString(), message);
 	}
+	
+	/**
+	 * Parses the confirm status.
+	 */
 	@Test
 	public void parseConfirmStatus(){
 		String message = "{"
@@ -870,6 +886,10 @@ public class protokollTest {
 		BoeseJson.parseMessage(confStat, os);
 		assertEquals(os.toString(), message);	
 	}
+	
+	/**
+	 * Read confirm status.
+	 */
 	@Test
 	public void readConfirmStatus(){
 		String message = "{"
@@ -892,6 +912,10 @@ public class protokollTest {
 		BoeseJson.parseMessage(bs, os);
 		assertEquals(os.toString(), message);
 	}
+	
+	/**
+	 * Parses the user request all devices.
+	 */
 	@Test
 	public void parseUserRequestAllDevices(){
 		String message = "{"
@@ -909,6 +933,10 @@ public class protokollTest {
 		BoeseJson.parseMessage(urg, os);
 		assertEquals(os.toString(), message);
 	}
+	
+	/**
+	 * Read user request all devices.
+	 */
 	@Test
 	public void readUserRequestAllDevices(){
 		String message = "{"
@@ -930,6 +958,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Parses the user send devices.
+	 */
 	@Test
 	public void parseUserSendDevices(){
 		String message = "{"
@@ -957,6 +988,10 @@ public class protokollTest {
 		BoeseJson.parseMessage(usd, os);
 		assertEquals(os.toString(), message);
 	}
+	
+	/**
+	 * Read user send devices.
+	 */
 	@Test
 	public void readUserSendDevices(){
 		String message = "{"
@@ -983,6 +1018,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Parses the user request device components.
+	 */
 	@Test
 	public void parseUserRequestDeviceComponents(){
 		String message = "{"
@@ -1004,6 +1042,10 @@ public class protokollTest {
 		BoeseJson.parseMessage(urdc, os);
 		assertEquals(os.toString(), message);
 	}
+	
+	/**
+	 * Read user request device components.
+	 */
 	@Test
 	public void readUserRequestDeviceComponents(){
 		String message = "{"
@@ -1025,6 +1067,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Parses the user send device components.
+	 */
 	@Test
 	public void parseUserSendDeviceComponents(){
 		String message = "{"
@@ -1055,6 +1100,10 @@ public class protokollTest {
 		BoeseJson.parseMessage(usdc, os);
 		assertEquals(os.toString(), message);
 	}
+	
+	/**
+	 * Read user send device components.
+	 */
 	@Test
 	public void readUserSendDeviceComponents(){
 		String message = "{"
@@ -1086,6 +1135,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Parses the user request connectors.
+	 */
 	@Test
 	public void parseUserRequestConnectors(){
 		String message = "{"
@@ -1107,6 +1159,10 @@ public class protokollTest {
 		BoeseJson.parseMessage(urc, os);
 		assertEquals(os.toString(), message);
 	}
+	
+	/**
+	 * Read user request connectors.
+	 */
 	@Test
 	public void readUserRequestConnectors(){
 		String message = "{"
@@ -1128,6 +1184,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Parses the user request all connectors.
+	 */
 	@Test
 	public void parseUserRequestAllConnectors(){
 		String message = "{"
@@ -1144,6 +1203,10 @@ public class protokollTest {
 		BoeseJson.parseMessage(urc, os);
 		assertEquals(os.toString(), message);
 	}
+	
+	/**
+	 * Read user request all connectors.
+	 */
 	@Test
 	public void readUserRequestAllConnectors(){
 		String message = "{"
@@ -1163,6 +1226,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Parses the user send connectors.
+	 */
 	@Test
 	public void parseUserSendConnectors(){
 		String message = "{"
@@ -1185,6 +1251,10 @@ public class protokollTest {
 		BoeseJson.parseMessage(usc, os);
 		assertEquals(os.toString(), message);
 	}
+	
+	/**
+	 * Read user send connectors.
+	 */
 	@Test
 	public void readUserSendConnectors(){
 		String message = "{"
@@ -1210,6 +1280,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Parses the user request all zones.
+	 */
 	@Test
 	public void parseUserRequestAllZones(){
 		String message = "{"
@@ -1226,6 +1299,10 @@ public class protokollTest {
 		BoeseJson.parseMessage(urg, os);
 		assertEquals(os.toString(), message);
 	}
+	
+	/**
+	 * Read user request all zones.
+	 */
 	@Test
 	public void readUserRequestAllZones(){
 		String message = "{"
@@ -1246,6 +1323,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Parses the user send zones.
+	 */
 	@Test
 	public void parseUserSendZones(){	
 		String message = "{"
@@ -1271,6 +1351,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 
+	/**
+	 * Read user send zones.
+	 */
 	@Test
 	public void readUserSendZones(){
 		String message = "{"
@@ -1296,6 +1379,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Parses the user request all rules.
+	 */
 	@Test
 	public void parseUserRequestAllRules(){
 		String message = "{"
@@ -1313,6 +1399,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Read user request all rules.
+	 */
 	@Test
 	public void readUserRequestAllRules(){
 		String message = "{"
@@ -1333,6 +1422,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Parses the usersend rules.
+	 */
 	@Test
 	public void parseUsersendRules(){
 		String message = "{"
@@ -1362,6 +1454,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Read user send rules.
+	 */
 	@Test
 	public void readUserSendRules(){
 		String message = "{"
@@ -1391,6 +1486,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Parses the user request temps.
+	 */
 	@Test
 	public void parseUserRequestTemps(){
 		String message = "{"
@@ -1408,6 +1506,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Read user request temps.
+	 */
 	@Test
 	public void readUserRequestTemps(){
 		String message = "{"
@@ -1428,6 +1529,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Parses the user send temps.
+	 */
 	@Test
 	public void parseUserSendTemps(){
 		String message = "{"
@@ -1471,6 +1575,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Read user send temps.
+	 */
 	@Test
 	public void readUserSendTemps(){
 		String message = "{"
@@ -1508,6 +1615,10 @@ public class protokollTest {
 		BoeseJson.parseMessage(bs, os);
 		assertEquals(os.toString(), message);
 	}
+	
+	/**
+	 * Parses the user confirm temps.
+	 */
 	@Test
 	public void parseUserConfirmTemps(){
 		String message = "{"
@@ -1547,6 +1658,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Read user confirm temps.
+	 */
 	@Test
 	public void readUserConfirmTemps(){
 		String message = "{"
@@ -1576,6 +1690,10 @@ public class protokollTest {
 		BoeseJson.parseMessage(bs, os);
 		assertEquals(os.toString(), message);
 	}
+	
+	/**
+	 * Parses the user create rules.
+	 */
 	@Test
 	public void parseUserCreateRules(){
 		String message = "{"
@@ -1604,6 +1722,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Read user create rules.
+	 */
 	@Test
 	public void readUserCreateRules(){
 		String message = "{"
@@ -1631,6 +1752,10 @@ public class protokollTest {
 		BoeseJson.parseMessage(bs, os);
 		assertEquals(os.toString(), message);
 	}
+	
+	/**
+	 * Parses the user confirm rules.
+	 */
 	@Test
 	public void parseUserConfirmRules(){
 		String message = "{"
@@ -1654,6 +1779,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Read user confirm rules.
+	 */
 	@Test
 	public void readUserConfirmRules(){
 		String message = "{"

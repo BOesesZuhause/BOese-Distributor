@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package de.bo.aid.boese.dbTest;
 
 import static org.junit.Assert.*;
@@ -123,7 +126,7 @@ public class ConnectorTest {
 	/**
 	 * Update.
 	 *
-	 * @param id the id
+	 * @param con the con
 	 * @param conUpdate the con update
 	 */
 	private void update(Connector con, Connector conUpdate){

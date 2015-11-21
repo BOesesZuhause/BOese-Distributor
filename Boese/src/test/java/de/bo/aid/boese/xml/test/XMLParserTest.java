@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package de.bo.aid.boese.xml.test;
 
 import static org.junit.Assert.*;

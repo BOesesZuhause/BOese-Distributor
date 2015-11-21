@@ -147,6 +147,9 @@ public class HistoryLogDeviceComponent implements java.io.Serializable {
 		this.value = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

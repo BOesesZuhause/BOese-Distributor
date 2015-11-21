@@ -1,6 +1,6 @@
-
-
-
+/*
+ * 
+ */
 package de.bo.aid.boese.socket.test;
 import java.net.URI;
 
@@ -10,7 +10,6 @@ import javax.websocket.OnMessage;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
-import org.eclipse.jetty.util.component.LifeCycle;
 // TODO: Auto-generated Javadoc
 
 /**

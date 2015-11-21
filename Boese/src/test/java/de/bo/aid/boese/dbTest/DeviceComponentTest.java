@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package de.bo.aid.boese.dbTest;
 
 import static org.junit.Assert.*;
@@ -21,27 +24,53 @@ import de.bo.aid.boese.model.DeviceComponent;
 import de.bo.aid.boese.model.Unit;
 import de.bo.aid.boese.model.Zone;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DeviceComponentTest.
+ */
 public class DeviceComponentTest {
 
+	/** The deco1. */
 	private DeviceComponent deco1;
+	
+	/** The deco2. */
 	private DeviceComponent deco2;
+	
+	/** The deco1 update. */
 	private DeviceComponent deco1Update;
+	
+	/** The deco2 update. */
 	private DeviceComponent deco2Update;
 	
+	/** The test con. */
 	private Connector testCon;
 	
+	/** The test zone. */
 	private Zone testZone;
 
+	/** The test dev. */
 	private Device testDev;
+	
+	/** The test dev update. */
 	private Device testDevUpdate;
 	
+	/** The test unit. */
 	private Unit testUnit;
 
+	/** The test comp. */
 	private Component testComp;
+	
+	/** The test comp update. */
 	private Component testCompUpdate;
 	
+	/** The value. */
 	private double value;
 	
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
@@ -75,6 +104,9 @@ public class DeviceComponentTest {
 		deco2Update = new DeviceComponent("2Update");
 	}
 
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 		
@@ -122,6 +154,11 @@ public class DeviceComponentTest {
 		equal(deco2Update, "2Update");
 	}
 
+	/**
+	 * Insert.
+	 *
+	 * @param deco the deco
+	 */
 	private void insert(DeviceComponent deco){
 		try {
 			Inserts.deviceComponent(testDev.getDeId(), testComp.getCoId(), deco);
@@ -131,6 +168,12 @@ public class DeviceComponentTest {
 		}
 	}
 	
+	/**
+	 * Select.
+	 *
+	 * @param id the id
+	 * @return the device component
+	 */
 	private DeviceComponent select(int id){
 		DeviceComponent comp = null;
 		try {
@@ -142,6 +185,12 @@ public class DeviceComponentTest {
 		return comp;
 	}
 	
+	/**
+	 * Equal.
+	 *
+	 * @param deco the deco
+	 * @param name the name
+	 */
 	private void equal(DeviceComponent deco, String name){
 		DeviceComponent decoTest = select(deco.getDeCoId());
 		assertTrue("DeviceComponent " + name + " Description not equal", deco.getDescription().equals(decoTest.getDescription()));
@@ -152,6 +201,12 @@ public class DeviceComponentTest {
 		assertTrue("DeviceComponent " + name + " ID not equal", deco.getDeCoId() == decoTest.getDeCoId());
 	}
 	
+	/**
+	 * Update.
+	 *
+	 * @param deco the deco
+	 * @param decoUpdate the deco update
+	 */
 	private void update(DeviceComponent deco, DeviceComponent decoUpdate){
 		try {
 			Updates.DeviceComponent(deco, decoUpdate.getDevice(), decoUpdate.getComponent(), decoUpdate.getStatus(), decoUpdate.getDescription(), 0.0);

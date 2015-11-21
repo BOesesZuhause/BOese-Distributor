@@ -159,6 +159,9 @@ public class GroupUser implements java.io.Serializable {
 		this.position = position;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

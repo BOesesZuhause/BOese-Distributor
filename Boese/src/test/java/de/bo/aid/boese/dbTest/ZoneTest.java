@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package de.bo.aid.boese.dbTest;
 
 import static org.junit.Assert.*;
@@ -12,13 +15,29 @@ import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.model.Zone;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ZoneTest.
+ */
 public class ZoneTest {
 
+	/** The zone1. */
 	private Zone zone1; 
+	
+	/** The zone2. */
 	private Zone zone2;
+	
+	/** The zone1 update. */
 	private Zone zone1Update;
+	
+	/** The zone2 update. */
 	private Zone zone2Update;
 
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
@@ -30,6 +49,9 @@ public class ZoneTest {
 		zone2Update = new Zone("update2");
 	}
 
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 		
@@ -59,10 +81,21 @@ public class ZoneTest {
 		
 	}
 	
+	/**
+	 * Insert.
+	 *
+	 * @param zone the zone
+	 */
 	private void insert(Zone zone){
 		Inserts.zone(zone, zone);
 	}
 	
+	/**
+	 * Select.
+	 *
+	 * @param id the id
+	 * @return the zone
+	 */
 	private Zone select(int id){
 		Zone zone = null;
 		try {
@@ -74,6 +107,12 @@ public class ZoneTest {
 		return zone;
 	}
 	
+	/**
+	 * Equal.
+	 *
+	 * @param zone the zone
+	 * @param name the name
+	 */
 	private void equal(Zone zone, String name){
 		Zone zoneTest = select(zone.getZoId());
 		assertTrue("Zone " + name + " Name not equal", zone.getName().equals(zoneTest.getName()));
@@ -81,6 +120,12 @@ public class ZoneTest {
 		assertTrue("Zone " + name + " ID not equal", zone.getZoId() == zoneTest.getZoId());
 	}
 	
+	/**
+	 * Update.
+	 *
+	 * @param zone the zone
+	 * @param zoneUpdate the zone update
+	 */
 	private void update(Zone zone, Zone zoneUpdate){
 		try {
 			Updates.zone(zone, zoneUpdate.getName(), zone);

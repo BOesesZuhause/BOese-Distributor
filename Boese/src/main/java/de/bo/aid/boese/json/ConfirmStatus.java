@@ -1,6 +1,13 @@
+/*
+ * 
+ */
 package de.bo.aid.boese.json;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ConfirmStatus.
+ */
 public class ConfirmStatus extends BoeseJson {
 	
 	
@@ -10,6 +17,7 @@ public class ConfirmStatus extends BoeseJson {
 	/** The status tmestamp. */
 	private long statusTmestamp;
 
+	/** The status code. */
 	private int statusCode;
 
 	/**
@@ -44,6 +52,11 @@ public class ConfirmStatus extends BoeseJson {
 		return deviceComponentIs;
 	}
 	
+	/**
+	 * Gets the status code.
+	 *
+	 * @return the status code
+	 */
 	public int getStatusCode(){
 		return statusCode;
 	}

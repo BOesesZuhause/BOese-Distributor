@@ -192,6 +192,9 @@ public class Group implements java.io.Serializable {
 		this.groupUsers = groupUsers;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

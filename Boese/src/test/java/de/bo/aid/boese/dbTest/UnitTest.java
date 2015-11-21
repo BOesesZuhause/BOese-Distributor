@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package de.bo.aid.boese.dbTest;
 
 import static org.junit.Assert.*;
@@ -12,13 +15,29 @@ import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.model.Unit;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UnitTest.
+ */
 public class UnitTest {
 
+	/** The unit1. */
 	private Unit unit1; 
+	
+	/** The unit2. */
 	private Unit unit2;
+	
+	/** The unit1 update. */
 	private Unit unit1Update;
+	
+	/** The unit2 update. */
 	private Unit unit2Update;
 
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
@@ -30,6 +49,9 @@ public class UnitTest {
 		unit2Update = new Unit("kilogramm", "kg");
 	}
 
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 		
@@ -57,10 +79,21 @@ public class UnitTest {
 		
 	}
 	
+	/**
+	 * Insert.
+	 *
+	 * @param unit the unit
+	 */
 	private void insert(Unit unit){
 		Inserts.unit(unit);
 	}
 	
+	/**
+	 * Select.
+	 *
+	 * @param id the id
+	 * @return the unit
+	 */
 	private Unit select(int id){
 		Unit unit = null;
 		try {
@@ -72,6 +105,12 @@ public class UnitTest {
 		return unit;
 	}
 	
+	/**
+	 * Equal.
+	 *
+	 * @param unit the unit
+	 * @param name the name
+	 */
 	private void equal(Unit unit, String name){
 		Unit unitTest = select(unit.getUnId());
 		assertTrue("Unit " + name + " Name not equal", unit.getName().equals(unitTest.getName()));
@@ -79,6 +118,12 @@ public class UnitTest {
 		assertTrue("Unit " + name + " ID not equal", unit.getUnId() == unitTest.getUnId());
 	}
 	
+	/**
+	 * Update.
+	 *
+	 * @param unit the unit
+	 * @param unitUpdate the unit update
+	 */
 	private void update(Unit unit, Unit unitUpdate){
 		try {
 			Updates.unit(unit, unitUpdate.getName(), unitUpdate.getSymbol());

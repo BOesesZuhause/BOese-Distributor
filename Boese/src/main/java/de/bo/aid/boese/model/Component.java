@@ -70,7 +70,7 @@ public class Component implements java.io.Serializable {
 	 * Instantiates a new component for DB Insert.
 	 *
 	 * @param name the name
-	 * @param sensor the sensor
+	 * @param actor the actor
 	 */
 	public Component(String name, boolean actor) {
 		this.name = name;
@@ -83,7 +83,7 @@ public class Component implements java.io.Serializable {
 	 * @param coId the co id
 	 * @param unit the unit
 	 * @param name the name
-	 * @param sensor the sensor
+	 * @param actor the actor
 	 */
 	public Component(int coId, Unit unit, String name, boolean actor) {
 		this.coId = coId;
@@ -98,7 +98,7 @@ public class Component implements java.io.Serializable {
 	 * @param coId the co id
 	 * @param unit the unit
 	 * @param name the name
-	 * @param sensor the sensor
+	 * @param actor the actor
 	 * @param deviceComponents the device components
 	 */
 	public Component(int coId, Unit unit, String name, boolean actor, Set<DeviceComponent> deviceComponents) {
@@ -199,6 +199,9 @@ public class Component implements java.io.Serializable {
 		this.deviceComponents = deviceComponents;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

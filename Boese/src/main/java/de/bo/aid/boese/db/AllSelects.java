@@ -33,10 +33,6 @@ package de.bo.aid.boese.db;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 
 import de.bo.aid.boese.model.*;

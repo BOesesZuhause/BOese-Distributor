@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package de.bo.aid.boese.main;
 
 import java.util.Set;
@@ -51,6 +54,8 @@ public class DistributorProperties extends Properties{
 
 	/**
 	 * Validate.
+	 *
+	 * @return true, if successful
 	 */
 	private boolean validate(){
 	      ValidatorFactory factory = Validation.buildDefaultValidatorFactory();

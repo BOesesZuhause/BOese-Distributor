@@ -149,6 +149,9 @@ public class DeviceComponenteReplace implements java.io.Serializable {
 		this.timestap = timestap;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

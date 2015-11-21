@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package de.bo.aid.boese.dbTest;
 
 import static org.junit.Assert.*;
@@ -14,13 +17,29 @@ import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.model.User;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UserTest.
+ */
 public class UserTest {
 
+	/** The user1. */
 	private User user1; 
+	
+	/** The user2. */
 	private User user2;
+	
+	/** The user1 update. */
 	private User user1Update;
+	
+	/** The user2 update. */
 	private User user2Update;
 
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
@@ -32,6 +51,9 @@ public class UserTest {
 		user2Update = new User("update", "erste", "abc", true, new Date(), "first", "erste.update@ufirst.de");
 	}
 
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 		
@@ -59,10 +81,21 @@ public class UserTest {
 		
 	}
 	
+	/**
+	 * Insert.
+	 *
+	 * @param user the user
+	 */
 	private void insert(User user){
 		Inserts.user(user);;
 	}
 	
+	/**
+	 * Select.
+	 *
+	 * @param id the id
+	 * @return the user
+	 */
 	private User select(int id){
 		User user = null;
 		try {
@@ -74,6 +107,12 @@ public class UserTest {
 		return user;
 	}
 	
+	/**
+	 * Equal.
+	 *
+	 * @param user the user
+	 * @param name the name
+	 */
 	private void equal(User user, String name){
 		User userTest = select(user.getUsId());
 		assertTrue("User " + name + " Firstname not equal", user.getFirstName().equals(userTest.getFirstName()));
@@ -86,6 +125,12 @@ public class UserTest {
 		assertTrue("User " + name + " ID not equal", user.getUsId() == userTest.getUsId());
 	}
 	
+	/**
+	 * Update.
+	 *
+	 * @param user the user
+	 * @param userUpdate the user update
+	 */
 	private void update(User user, User userUpdate){
 		try {
 			Updates.user(user, userUpdate.getSurname(), userUpdate.getFirstName(), userUpdate.getPassword(), userUpdate.getGender(), userUpdate.getUserName(), userUpdate.getEmail());

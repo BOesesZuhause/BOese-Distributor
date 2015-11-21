@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 
 
 
@@ -44,8 +47,6 @@ public class SimulationTest {
 
 	/**
 	 * Simulation.
-	 *
-	 * @throws Exception the exception
 	 */
 	@Test
 	public void simulation() {

@@ -91,7 +91,7 @@ public class Updates {
 	/**
 	 * Unit.
 	 *
-	 * @param uid the uid
+	 * @param unit the unit
 	 * @param name the name
 	 * @param symbol the symbol
 	 * @throws DBObjectNotFoundException the DB object not found exception
@@ -162,6 +162,8 @@ public class Updates {
 	 * Device component.
 	 *
 	 * @param deco the DeviceComponent to Update
+	 * @param dev the dev
+	 * @param comp the comp
 	 * @param status the status
 	 * @param description the description
 	 * @param logrule the logrule
@@ -435,6 +437,7 @@ public class Updates {
 	 * @param permissions the permissions
 	 * @param conditions the conditions
 	 * @param actions the actions
+	 * @param tdc the tdc
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void rule(Rule rule, boolean active, String permissions, String conditions, String actions, ToDoChecker tdc) throws DBObjectNotFoundException{
@@ -674,6 +677,7 @@ public class Updates {
 	 * @param todo the ToDo to Update
 	 * @param date the date
 	 * @param active the active
+	 * @param tdc the tdc
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void toDo(ToDo todo, Date date, boolean active, ToDoChecker tdc) throws DBObjectNotFoundException{

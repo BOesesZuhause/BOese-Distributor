@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package de.bo.aid.boese.dbTest;
 
 import static org.junit.Assert.*;
@@ -14,19 +17,41 @@ import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.Zone;
 import de.bo.aid.boese.model.Connector;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DeviceTest.
+ */
 public class DeviceTest {
 
+	/** The dev1. */
 	private Device dev1;
+	
+	/** The dev2. */
 	private Device dev2;
+	
+	/** The dev1 update. */
 	private Device dev1Update;
+	
+	/** The dev2 update. */
 	private Device dev2Update;
 	
+	/** The test con. */
 	private Connector testCon;
+	
+	/** The test con update. */
 	private Connector testConUpdate;
 	
+	/** The test zone. */
 	private Zone testZone;
+	
+	/** The test zone update. */
 	private Zone testZoneUpdate;
 	
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
@@ -54,6 +79,9 @@ public class DeviceTest {
 		dev2Update = new Device("dev2Update", "98765");
 	}
 
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 		
@@ -84,6 +112,11 @@ public class DeviceTest {
 		equal(dev2Update, "2Update");
 	}
 
+	/**
+	 * Insert.
+	 *
+	 * @param dev the dev
+	 */
 	private void insert(Device dev){
 		try {
 			Inserts.device(testCon.getCoId(), testZone.getZoId(), dev);
@@ -93,6 +126,12 @@ public class DeviceTest {
 		}
 	}
 	
+	/**
+	 * Select.
+	 *
+	 * @param id the id
+	 * @return the device
+	 */
 	private Device select(int id){
 		Device comp = null;
 		try {
@@ -104,6 +143,12 @@ public class DeviceTest {
 		return comp;
 	}
 	
+	/**
+	 * Equal.
+	 *
+	 * @param dev the dev
+	 * @param name the name
+	 */
 	private void equal(Device dev, String name){
 		Device devTest = select(dev.getDeId());
 		assertTrue("Device " + name + " Alias not equal", dev.getAlias().equals(devTest.getAlias()));
@@ -113,6 +158,12 @@ public class DeviceTest {
 		assertTrue("Device " + name + " ID not equal", dev.getDeId() == devTest.getDeId());
 	}
 	
+	/**
+	 * Update.
+	 *
+	 * @param dev the dev
+	 * @param devUpdate the dev update
+	 */
 	private void update(Device dev, Device devUpdate){
 		try {
 			Updates.device(dev, devUpdate.getAlias(), devUpdate.getSerialNumber(), null, testZoneUpdate, testConUpdate);
