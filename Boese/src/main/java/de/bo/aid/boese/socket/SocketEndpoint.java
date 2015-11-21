@@ -65,9 +65,9 @@ public class SocketEndpoint
 	 * @param session the session
 	 */
 	@OnOpen
-	public void open(Session session) {
-		System.out.println("Socket Connected: " + session);
+	public void open(Session session) {	
 		handler.addSession(session);
+		logger.info("Socket connected: " + session);
 	}
 
 	/**
@@ -77,8 +77,13 @@ public class SocketEndpoint
 	 */
 	@OnClose
 	public void close(Session session) {
-		logger.info("Socket disconnected " + session);
+		int conId = handler.getConnectorId(session);
 		handler.removeSession(session);
+		if(conId == -1){
+			logger.info("Unknown Socket disconnected: " + session);
+		}else{
+			logger.info("Connector with id: " + conId + "disconnected");
+		}
 	}
 
 	/**
