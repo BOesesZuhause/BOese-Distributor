@@ -591,7 +591,9 @@ public class Inserts {
 		try{
 			Selects.rule(0);
 		} catch(DBObjectNotFoundException e){
-			Query query = session.createSQLQuery("INSERT INTO rule (ruid, permissions, conditions, actions) VAlUES (0, '<PERMISSION></PERMISSION>', '<CONDITION></CONDITION>', '<ACTION></ACTION>')");
+			Date d = new Date();
+			String s = (d.getYear()+1900) + "-" + (d.getMonth()+1) + "-" + d.getDate();
+			Query query = session.createSQLQuery("INSERT INTO rule (ruid, permissions, conditions, actions, active, insertdate, modifydate) VAlUES (0, '<PERMISSION></PERMISSION>', '<CONDITION></CONDITION>', '<ACTION></ACTION>', true, '" + s  +"', '" + s + "')");
 			query.executeUpdate();
 		}
 		
