@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package de.bo.aid.boese.socket.test;
 
 import static org.junit.Assert.assertFalse;
@@ -14,12 +17,22 @@ import de.bo.aid.boese.socket.HeartbeatWorker;
 import de.bo.aid.boese.socket.SessionHandler;
 import de.bo.aid.boese.socket.SocketServer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class HeartbeatTest.
+ */
 public class HeartbeatTest {
 	
+	/** The server. */
 	//private Distributor distr ;
 	private SocketServer server;
+	
+	/** The worker. */
 	private HeartbeatWorker worker;
 	
+	/**
+	 * Sets the up.
+	 */
 	@Before
 	public void setUp(){
 //		distr = new Distributor();
@@ -33,6 +46,12 @@ public class HeartbeatTest {
         SessionHandler.getInstance().setMissedAnswerThreshold(3);
         worker.start();
 	}
+	
+	/**
+	 * Test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void test() throws Exception{
 		URI uri = URI.create("ws://localhost:8081/events/");
@@ -40,6 +59,10 @@ public class HeartbeatTest {
 		Thread.sleep(20000);
 		assertFalse("Connection wasn't closed", s1.isOpen());
 	}
+	
+	/**
+	 * Tear down.
+	 */
 	@After
 	public void tearDown(){
 		worker.pause();

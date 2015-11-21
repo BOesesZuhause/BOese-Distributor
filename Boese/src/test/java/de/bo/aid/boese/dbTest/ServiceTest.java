@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package de.bo.aid.boese.dbTest;
 
 import static org.junit.Assert.*;
@@ -12,13 +15,29 @@ import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.model.Service;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ServiceTest.
+ */
 public class ServiceTest {
 
+	/** The service1. */
 	private Service service1; 
+	
+	/** The service2. */
 	private Service service2;
+	
+	/** The service1 update. */
 	private Service service1Update;
+	
+	/** The service2 update. */
 	private Service service2Update;
 
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
@@ -31,6 +50,9 @@ public class ServiceTest {
 		service2Update = new Service("update2");
 	}
 
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 		
@@ -58,10 +80,21 @@ public class ServiceTest {
 		
 	}
 	
+	/**
+	 * Insert.
+	 *
+	 * @param service the service
+	 */
 	private void insert(Service service){
 		Inserts.service(service);
 	}
 	
+	/**
+	 * Select.
+	 *
+	 * @param id the id
+	 * @return the service
+	 */
 	private Service select(int id){
 		Service service = null;
 		try {
@@ -73,12 +106,24 @@ public class ServiceTest {
 		return service;
 	}
 	
+	/**
+	 * Equal.
+	 *
+	 * @param service the service
+	 * @param name the name
+	 */
 	private void equal(Service service, String name){
 		Service serviceTest = select(service.getSeId());
 		assertTrue("Service " + name + " Description not equal", service.getDescription().equals(serviceTest.getDescription()));
 		assertTrue("Service " + name + " ID not equal", service.getSeId() == serviceTest.getSeId());
 	}
 	
+	/**
+	 * Update.
+	 *
+	 * @param service the service
+	 * @param serviceUpdate the service update
+	 */
 	private void update(Service service, Service serviceUpdate){
 		try {
 			Updates.service(service, serviceUpdate.getDescription());

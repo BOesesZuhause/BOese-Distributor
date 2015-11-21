@@ -102,9 +102,7 @@ public class DeviceComponent implements java.io.Serializable {
 	/**
 	 * Instantiates a new device component for DB Insert.
 	 *
-	 * @param deCoId the de co id
-	 * @param component the component
-	 * @param device the device
+	 * @param description the description
 	 */
 	public DeviceComponent(String description) {
 		this.description = description;
@@ -374,6 +372,9 @@ public class DeviceComponent implements java.io.Serializable {
 		this.repeatRule = repeatRule;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

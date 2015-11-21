@@ -31,9 +31,7 @@
 
 package de.bo.aid.boese.ruler;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;

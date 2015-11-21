@@ -70,7 +70,6 @@ public class RepeatRule {
 	/**
 	 * Instantiates a new repeat rule for DB Insert.
 	 *
-	 * @param rrId the rr id
 	 * @param repeat the repeat
 	 * @param value the value
 	 * @param repeatsAfterEnd the repeats after end
@@ -245,6 +244,9 @@ public class RepeatRule {
 		this.deviceComponent = deviceComponent;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

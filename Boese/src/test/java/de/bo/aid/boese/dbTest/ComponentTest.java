@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package de.bo.aid.boese.dbTest;
 
 import static org.junit.Assert.*;
@@ -13,16 +16,35 @@ import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.model.Component;
 import de.bo.aid.boese.model.Unit;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ComponentTest.
+ */
 public class ComponentTest {
 
+	/** The comp1. */
 	private Component comp1;
+	
+	/** The comp2. */
 	private Component comp2;
+	
+	/** The comp1 update. */
 	private Component comp1Update;
+	
+	/** The comp2 update. */
 	private Component comp2Update;
 	
+	/** The test unit. */
 	private Unit testUnit;
+	
+	/** The test unit update. */
 	private Unit testUnitUpdate;
 
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
@@ -48,6 +70,9 @@ public class ComponentTest {
 		comp2Update.setUnit(testUnitUpdate);
 	}
 
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 		
@@ -74,6 +99,11 @@ public class ComponentTest {
 		equal(comp2Update, "2Update");
 	}
 
+	/**
+	 * Insert.
+	 *
+	 * @param comp the comp
+	 */
 	private void insert(Component comp){
 		try {
 			Inserts.component(comp.getUnit().getUnId(), comp);
@@ -83,6 +113,12 @@ public class ComponentTest {
 		}
 	}
 	
+	/**
+	 * Select.
+	 *
+	 * @param id the id
+	 * @return the component
+	 */
 	private Component select(int id){
 		Component comp = null;
 		try {
@@ -94,6 +130,12 @@ public class ComponentTest {
 		return comp;
 	}
 	
+	/**
+	 * Equal.
+	 *
+	 * @param comp the comp
+	 * @param name the name
+	 */
 	private void equal(Component comp, String name){
 		Component compTest = select(comp.getCoId());
 		assertTrue("Component " + name + " Name not equal", comp.getName().equals(compTest.getName()));
@@ -101,6 +143,12 @@ public class ComponentTest {
 		assertTrue("Component " + name + " ID not equal", comp.getCoId() == compTest.getCoId());
 	}
 	
+	/**
+	 * Update.
+	 *
+	 * @param comp the comp
+	 * @param compUpdate the comp update
+	 */
 	private void update(Component comp, Component compUpdate){
 		try {
 			Updates.component(comp, compUpdate.getUnit(), compUpdate.getName(), compUpdate.isActor());

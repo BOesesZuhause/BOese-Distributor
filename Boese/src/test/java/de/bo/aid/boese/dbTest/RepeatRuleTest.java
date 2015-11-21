@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package de.bo.aid.boese.dbTest;
 
 import static org.junit.Assert.*;
@@ -24,21 +27,50 @@ import de.bo.aid.boese.model.Rule;
 import de.bo.aid.boese.model.Unit;
 import de.bo.aid.boese.model.Zone;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RepeatRuleTest.
+ */
 public class RepeatRuleTest {
 
+	/** The rr1. */
 	private RepeatRule rr1; 
+	
+	/** The rr2. */
 	private RepeatRule rr2;
+	
+	/** The rr1 update. */
 	private RepeatRule rr1Update;
+	
+	/** The rr2 update. */
 	private RepeatRule rr2Update;
 	
+	/** The test rule. */
 	private Rule testRule;
+	
+	/** The test deco. */
 	private DeviceComponent testDeco;
+	
+	/** The test con. */
 	private Connector testCon;
+	
+	/** The test zone. */
 	private Zone testZone;
+	
+	/** The test dev. */
 	private Device testDev;
+	
+	/** The test unit. */
 	private Unit testUnit;
+	
+	/** The test comp. */
 	private Component testComp;
 
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
@@ -74,6 +106,9 @@ public class RepeatRuleTest {
 		rr2Update = new RepeatRule("1;2;3;4;2075;fffffff", new BigDecimal(25.0), 4);
 	}
 
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 		
@@ -105,6 +140,11 @@ public class RepeatRuleTest {
 		
 	}
 	
+	/**
+	 * Insert.
+	 *
+	 * @param rr the rr
+	 */
 	private void insert(RepeatRule rr){
 		try {
 			Inserts.repeatRule(rr, testRule.getRuId(), testDeco.getDeCoId(), null);
@@ -114,6 +154,12 @@ public class RepeatRuleTest {
 		}
 	}
 	
+	/**
+	 * Select.
+	 *
+	 * @param id the id
+	 * @return the repeat rule
+	 */
 	private RepeatRule select(int id){
 		RepeatRule rr = null;
 		try {
@@ -125,6 +171,12 @@ public class RepeatRuleTest {
 		return rr;
 	}
 	
+	/**
+	 * Equal.
+	 *
+	 * @param rr the rr
+	 * @param name the name
+	 */
 	private void equal(RepeatRule rr, String name){
 		RepeatRule rrTest = select(rr.getRrId());
 		assertTrue("RepeatRule " + name + " Cron not equal", rr.getRepeat().equals(rrTest.getRepeat()));
@@ -135,6 +187,12 @@ public class RepeatRuleTest {
 		assertTrue("RepeatRule " + name + " ID not equal", rr.getRrId() == rrTest.getRrId());
 	}
 	
+	/**
+	 * Update.
+	 *
+	 * @param rr the rr
+	 * @param rrUpdate the rr update
+	 */
 	private void update(RepeatRule rr, RepeatRule rrUpdate){
 		try {
 			Updates.repeatRule(rr, rrUpdate.getRepeat(), rrUpdate.getValue().doubleValue(), rrUpdate.getRepeatsAfterEnd(), null);

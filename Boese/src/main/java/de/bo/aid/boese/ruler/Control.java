@@ -34,16 +34,11 @@ package de.bo.aid.boese.ruler;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import de.bo.aid.boese.db.AllSelects;
 import de.bo.aid.boese.db.Selects;
-import de.bo.aid.boese.model.DeviceComponent;
 import de.bo.aid.boese.model.Rule;
-import de.bo.aid.boese.model.ToDo;
 import de.bo.aid.boese.xml.Action;
 import de.bo.aid.boese.xml.BoeseXML;
 import de.bo.aid.boese.xml.ComponentXML;

@@ -37,7 +37,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
-import de.bo.aid.boese.main.Distributor;
 
 // TODO: Auto-generated Javadoc
 /**

@@ -1,10 +1,11 @@
+/*
+ * 
+ */
 package de.bo.aid.boese.dbTest;
 
 import static org.junit.Assert.*;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -20,29 +21,54 @@ import de.bo.aid.boese.model.Component;
 import de.bo.aid.boese.model.Connector;
 import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceComponent;
-import de.bo.aid.boese.model.RepeatRule;
-import de.bo.aid.boese.model.Rule;
 import de.bo.aid.boese.model.Rule;
 import de.bo.aid.boese.model.Unit;
 import de.bo.aid.boese.model.Zone;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RuleTest.
+ */
 public class RuleTest {
 
+	/** The rule1. */
 	private Rule rule1; 
+	
+	/** The rule2. */
 	private Rule rule2;
+	
+	/** The rule1 update. */
 	private Rule rule1Update;
+	
+	/** The rule2 update. */
 	private Rule rule2Update;
 	
-	private RepeatRule testRr;
-	private Rule testRule;
+	/** The test deco. */
 	private DeviceComponent testDeco;
+	
+	/** The test con. */
 	private Connector testCon;
+	
+	/** The test zone. */
 	private Zone testZone;
+	
+	/** The test dev. */
 	private Device testDev;
+	
+	/** The test unit. */
 	private Unit testUnit;
+	
+	/** The test comp. */
 	private Component testComp;
+	
+	/** The decolist. */
 	private List<DeviceComponent> decolist;
 
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
@@ -76,6 +102,9 @@ public class RuleTest {
 		rule2Update = new Rule("", "", "");
 	}
 
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 		
@@ -105,6 +134,11 @@ public class RuleTest {
 		
 	}
 	
+	/**
+	 * Insert.
+	 *
+	 * @param rule the rule
+	 */
 	private void insert(Rule rule){
 		try {
 			Inserts.rule(decolist, rule, null);
@@ -114,6 +148,12 @@ public class RuleTest {
 		}
 	}
 	
+	/**
+	 * Select.
+	 *
+	 * @param id the id
+	 * @return the rule
+	 */
 	private Rule select(int id){
 		Rule rule = null;
 		try {
@@ -125,6 +165,12 @@ public class RuleTest {
 		return rule;
 	}
 	
+	/**
+	 * Equal.
+	 *
+	 * @param rule the rule
+	 * @param name the name
+	 */
 	private void equal(Rule rule, String name){
 		Rule ruleTest = select(rule.getRuId());
 		assertTrue("Rule " + name + " Active not equal", rule.getActive() == ruleTest.getActive());
@@ -134,6 +180,12 @@ public class RuleTest {
 		assertTrue("Rule " + name + " ID not equal", rule.getRuId() == ruleTest.getRuId());
 	}
 	
+	/**
+	 * Update.
+	 *
+	 * @param rule the rule
+	 * @param ruleUpdate the rule update
+	 */
 	private void update(Rule rule, Rule ruleUpdate){
 		try {
 			Updates.ruleForTest(rule, ruleUpdate.getActive(), ruleUpdate.getPermissions(), ruleUpdate.getConditions(), ruleUpdate.getActions());

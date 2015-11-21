@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package de.bo.aid.boese.dbTest;
 
 import static org.junit.Assert.*;
@@ -26,23 +29,56 @@ import de.bo.aid.boese.model.ToDo;
 import de.bo.aid.boese.model.Unit;
 import de.bo.aid.boese.model.Zone;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ToDoTest.
+ */
 public class ToDoTest {
 
+	/** The todo1. */
 	private ToDo todo1; 
+	
+	/** The todo2. */
 	private ToDo todo2;
+	
+	/** The todo1 update. */
 	private ToDo todo1Update;
+	
+	/** The todo2 update. */
 	private ToDo todo2Update;
 
+	/** The test rr1. */
 	private RepeatRule testRr1;
+	
+	/** The test rr2. */
 	private RepeatRule testRr2;
+	
+	/** The test rule. */
 	private Rule testRule;
+	
+	/** The test deco. */
 	private DeviceComponent testDeco;
+	
+	/** The test con. */
 	private Connector testCon;
+	
+	/** The test zone. */
 	private Zone testZone;
+	
+	/** The test dev. */
 	private Device testDev;
+	
+	/** The test unit. */
 	private Unit testUnit;
+	
+	/** The test comp. */
 	private Component testComp;
 
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
@@ -84,6 +120,9 @@ public class ToDoTest {
 		todo2Update = new ToDo(new Date());
 	}
 
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 		
@@ -113,6 +152,12 @@ public class ToDoTest {
 		
 	}
 	
+	/**
+	 * Insert.
+	 *
+	 * @param todo the todo
+	 * @param rrId the rr id
+	 */
 	private void insert(ToDo todo, int rrId){
 		try {
 			Inserts.toDoWithoutChange(todo, rrId);
@@ -122,6 +167,12 @@ public class ToDoTest {
 		}
 	}
 	
+	/**
+	 * Select.
+	 *
+	 * @param id the id
+	 * @return the to do
+	 */
 	private ToDo select(int id){
 		ToDo todo = null;
 		try {
@@ -133,6 +184,12 @@ public class ToDoTest {
 		return todo;
 	}
 	
+	/**
+	 * Equal.
+	 *
+	 * @param todo the todo
+	 * @param name the name
+	 */
 	private void equal(ToDo todo, String name){
 		ToDo todoTest = select(todo.getToDoId());
 //		assertTrue("ToDo " + name + " Name not equal", todo.getDate().equals(todoTest.getDate()));
@@ -140,6 +197,12 @@ public class ToDoTest {
 		assertTrue("ToDo " + name + " ID not equal", todo.getToDoId() == todoTest.getToDoId());
 	}
 	
+	/**
+	 * Update.
+	 *
+	 * @param todo the todo
+	 * @param todoUpdate the todo update
+	 */
 	private void update(ToDo todo, ToDo todoUpdate){
 		try {
 			Updates.toDo(todo, todoUpdate.getDate(), true, null);
