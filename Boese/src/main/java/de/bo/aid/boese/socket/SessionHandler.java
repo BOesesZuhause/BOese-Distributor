@@ -28,10 +28,7 @@
  */
 package de.bo.aid.boese.socket;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.websocket.Session;
 
@@ -49,7 +46,7 @@ public class SessionHandler {
 	/** The Constant logger for log4j. */
 	final  Logger logger = LogManager.getLogger(SessionHandler.class);
 	
-	private final List<SessionData> sessions = new ArrayList<SessionData>();
+	private final CopyOnWriteArrayList<SessionData> sessions = new CopyOnWriteArrayList<SessionData>();
 	
 	/** The instance. */ //TODO eventuell HashSet mit ID als key für mehr Performance
 	private static SessionHandler instance = new SessionHandler();
@@ -194,7 +191,7 @@ public class SessionHandler {
 		data.setMissedAnswers(0);
 	}
 	
-	private synchronized SessionData getDataBySession(Session session){
+	private SessionData getDataBySession(Session session){
 		for(SessionData data : sessions){
 			if(data.getSession().equals(session)){
 				return data;
@@ -203,8 +200,8 @@ public class SessionHandler {
 		return null;
 	}
 	
-	public synchronized void checkHeartbeat(){
-		for(SessionData data : sessions){ //TODO add synchronized-wrappers
+	public void checkHeartbeat(){
+		for(SessionData data : sessions){
 			long now = System.currentTimeMillis();
 			if((now - data.getLastHeartbeat()) > 90){
 				if(data.getMissedAnswers() >= missedAnswerThreshold){
@@ -215,9 +212,11 @@ public class SessionHandler {
 						e.printStackTrace();
 					}
 					sessions.remove(data);
-				}
+					logger.warn("Connector with id: " + data.getId() + "exceeded Heartbeat-Threshold");
+				}else{
 				logger.warn("Connector with id: " + data.getId() + " doesnt respond");
 				data.setMissedAnswers(data.getMissedAnswers()+1);
+				}
 			}
 		}
 	}
