@@ -43,7 +43,6 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.LazyInitializationException;
-import org.hibernate.ObjectNotFoundException;
 
 import de.bo.aid.boese.db.AllSelects;
 import de.bo.aid.boese.db.Inserts;
@@ -587,7 +586,7 @@ public class ProtocolHandler implements MessageHandler {
 			if (BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())) == null ||
 					BoeseXML.readXML(new ByteArrayInputStream(rule.getPermissions().getBytes())) == null ||
 					BoeseXML.readXML(new ByteArrayInputStream(rule.getActions().getBytes())) == null) {
-				// TODO Error handlin
+				// TODO Error handling
 				logger.warn("Invalid XML in new Rule");
 			} else {
 				ruleDeCos = interpretor.getAllDeCosCondition(

@@ -489,16 +489,16 @@ public class BoeseJson {
 			HashSet<Integer> tempConnectorsSetUCT = new HashSet<Integer>();
 			HashMap<Integer, Integer> tempDevicesSetUCT = new HashMap<>();
 			HashSet<UserTempComponent> tempDeviceComponentsUCT = new HashSet<>();
-			JsonArray tempConnectorsUCT = jo.getJsonArray("TempConnectors");
+			JsonArray tempConnectorsUCT = jo.getJsonArray("TmpConnectors");
 			for (JsonValue value : tempConnectorsUCT) {
 				tempConnectorsSetUCT.add(Integer.parseInt(value.toString()));
 			}
-			JsonArray tempDevicesUCT = jo.getJsonArray("TempDevices");
+			JsonArray tempDevicesUCT = jo.getJsonArray("TmpDevices");
 			for (int i = 0; i < tempDevicesUCT.size(); i++) {
 				JsonObject dev = tempDevicesUCT.getJsonObject(i);
 				tempDevicesSetUCT.put(dev.getInt("DeviceTmpId"), dev.getInt("ZoneId"));
 			}
-			JsonArray tempComponentsUST = jo.getJsonArray("TempDevices");
+			JsonArray tempComponentsUST = jo.getJsonArray("TmpDeviceComponents");
 			for (int i = 0; i < tempComponentsUST.size(); i++) {
 				JsonObject dev = tempComponentsUST.getJsonObject(i);
 				tempDeviceComponentsUCT.add(new UserTempComponent(dev.getInt("ComponentTmpId"), 
@@ -883,7 +883,7 @@ public class BoeseJson {
 			for (UserTempComponent utc : uct.getTempDeviceComponents()) {
 				tempDeviceComponentUCT = Json.createObjectBuilder();
 				tempDeviceComponentUCT.add("ComponentTmpId", utc.getTempComponentId());
-				tempDeviceComponentUCT.add("UnitID", utc.getUnitId());
+				tempDeviceComponentUCT.add("UnitId", utc.getUnitId());
 				tempDeviceComponentUCT.add("Name", utc.getName());
 				tempDeviceComponentsUCT.add(tempDeviceComponentUCT);
 			}

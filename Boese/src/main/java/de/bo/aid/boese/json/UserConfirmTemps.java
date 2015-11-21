@@ -58,7 +58,7 @@ public class UserConfirmTemps extends BoeseJson {
 	 * @param status the status
 	 * @param timestamp the timestamp
 	 */
-	protected UserConfirmTemps(HashSet<Integer> tempConnectors, HashMap<Integer, Integer> tempDevices, HashSet<UserTempComponent> tempDeviceComponents, 
+	public UserConfirmTemps(HashSet<Integer> tempConnectors, HashMap<Integer, Integer> tempDevices, HashSet<UserTempComponent> tempDeviceComponents, 
 			int connectorId, int status, long timestamp) {
 		super(MessageType.USERCONFIRMTEMPS, connectorId, status, timestamp);
 		this.tempConnectors = tempConnectors;
