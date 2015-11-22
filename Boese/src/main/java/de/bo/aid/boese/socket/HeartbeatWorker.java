@@ -31,7 +31,7 @@ public class HeartbeatWorker extends Thread{
 	}
 
 	/** The running. */
-	private boolean running = true;
+	private volatile boolean running = true;
 	
 	/** The handler. */
 	SessionHandler handler = SessionHandler.getInstance();
