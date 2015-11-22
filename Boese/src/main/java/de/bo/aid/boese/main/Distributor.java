@@ -41,7 +41,6 @@ import org.apache.logging.log4j.Logger;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import de.bo.aid.boese.cli.Parameters;
-import de.bo.aid.boese.db.Connection;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
@@ -262,7 +261,6 @@ private final String logo =
 	 */
 	public void startHeartbeat() {
 		HeartbeatWorker worker = new HeartbeatWorker();
-		worker.setRunning(true);
 		worker.start();
 	}
 
