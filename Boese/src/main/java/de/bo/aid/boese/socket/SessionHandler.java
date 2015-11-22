@@ -228,7 +228,7 @@ public class SessionHandler {
 						e.printStackTrace();
 					}
 					sessions.remove(data);
-					logger.warn("Connector with id: " + data.getId() + "exceeded Heartbeat-Threshold");
+					logger.warn("Connector with id: " + data.getId() + " exceeded Heartbeat-Threshold");
 				}else{
 				logger.warn("Connector with id: " + data.getId() + " doesnt respond");
 				data.setMissedAnswers(data.getMissedAnswers()+1);

@@ -262,6 +262,7 @@ private final String logo =
 	 */
 	public void startHeartbeat() {
 		HeartbeatWorker worker = new HeartbeatWorker();
+		worker.setRunning(true);
 		worker.start();
 	}
 
