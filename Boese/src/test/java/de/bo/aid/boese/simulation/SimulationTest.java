@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.bo.aid.boese.db.Connection;
+import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.main.Distributor;
 
@@ -39,6 +40,7 @@ public class SimulationTest {
 		HibernateUtil.setDBPassword("Di0bPWfw");
 		HibernateUtil.setDBURL("boese", "localhost", "5432");
         Connection.getConnection();
+        Inserts.defaults();
         userSim = new UserSimulation(distr);
     }
     
