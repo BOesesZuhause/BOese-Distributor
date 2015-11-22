@@ -41,6 +41,9 @@ import de.bo.aid.boese.constants.Status;
 import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.db.Updates;
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
+import de.bo.aid.boese.exceptions.NoCalculationTypeException;
+import de.bo.aid.boese.exceptions.NoFirstCalculationException;
+import de.bo.aid.boese.exceptions.OnlyTwoObjectsForModuloException;
 import de.bo.aid.boese.xml.Action;
 import de.bo.aid.boese.xml.CalculationList;
 import de.bo.aid.boese.xml.ComponentXML;
@@ -201,16 +204,23 @@ public class Checker {
 	 *
 	 * @param cl the cl
 	 * @return the double
-	 * @throws Exception the exception
+	 * @throws NoCalculationTypeException the No CalculationType exception
+	 * @throws NoFirstCalculationException the No First in Calculation Exception
+	 * @throws OnlyTwoObjectsForModuloException the Only Two Objects For Modulo Exceptionn
 	 */
-	public double calculate(CalculationList cl) throws Exception{
+	public double calculate(CalculationList cl) throws NoCalculationTypeException, NoFirstCalculationException, OnlyTwoObjectsForModuloException{
 		double erg = 0.0;
-		HashSet<Double> values = new HashSet<>();
+		List<Double> values = new ArrayList<>();
 		for (double d : cl.getConstants()){
 			values.add(d);
 		}
 		for(int i : cl.getVariables()){
-			values.add(Selects.currentValue(i));
+			try {
+				values.add(Selects.currentValue(i));
+			} catch (DBObjectNotFoundException e) {
+				// TODO Logger
+				e.printStackTrace();
+			}
 		}
 		for(CalculationList next : cl.getCalculations()){
 			values.add(calculate(next));
@@ -221,12 +231,17 @@ public class Checker {
 			}
 		}
 		else if(cl.getCalculationType() == null){
-			throw new Exception("PENIS");
+			throw new NoCalculationTypeException("No Calculationtype");
 		}
 		else{
 			switch(cl.getCalculationType()){
 			case ADD:
-				erg = 0.0;
+				if(cl.getFirst() != null){
+					erg = calculate(cl.getFirst());
+				}
+				else{
+					erg = 0.0;
+				}
 				for(double d : values){
 					erg += d;
 				}
@@ -239,11 +254,16 @@ public class Checker {
 					}
 				}
 				else{
-					throw new Exception("No First for a SUB");
+					throw new NoFirstCalculationException("No First for a SUB");
 				}
 				break;
 			case MUL:
-				erg = 1.0;
+				if(cl.getFirst() != null){
+					erg = calculate(cl.getFirst());
+				}
+				else{
+					erg = 0.0;
+				}
 				for(double d : values){
 					erg *= d;
 				}
@@ -256,15 +276,24 @@ public class Checker {
 					}
 				}
 				else{
-					throw new Exception("No First for a DIV");
+					throw new NoFirstCalculationException("No First for a DIV");
 				}
 				break;
 			case MOD:
-				if(cl.getFirst() != null){
+				if(cl.getFirst() != null && values.size() == 1){
 					erg = calculate(cl.getFirst()) % values.iterator().next();
 				}
+				else if(cl.getFirst() == null && values.size() == 1){
+					throw new NoFirstCalculationException("No First for a MOD");
+				}
+				else if(cl.getFirst() != null && values.size() != 1){
+					throw new OnlyTwoObjectsForModuloException("No First for a MOD");
+				}
 				else{
-					throw new Exception("No First for a MOD");
+					OnlyTwoObjectsForModuloException otofme = new OnlyTwoObjectsForModuloException("No First for a MOD");
+					NoFirstCalculationException nfce = new NoFirstCalculationException("No First for a MOD");
+					otofme.addSuppressed(nfce);
+					throw otofme;
 				}
 				break;
 			case ABS:
