@@ -170,7 +170,7 @@ private final String logo =
 	/**
 	 * Inits the database.
 	 */
-	private void initDatabase(){
+	public void initDatabase(){
 		HibernateUtil.setDBUser(props.getDbUser());
 		HibernateUtil.setDBPassword(props.getDbPassword());
 		HibernateUtil.setDBURL(props.getDbName(), props.getDbHost(), props.getDbPort());
@@ -183,7 +183,7 @@ private final String logo =
 	 *
 	 * @param args the args
 	 */
-	private void checkArguments(String[] args){
+	public void checkArguments(String[] args){
 		Parameters params = new Parameters();
 		JCommander cmd = new JCommander(params);
 
@@ -210,7 +210,7 @@ private final String logo =
 	/**
 	 * Load the properties-file.
 	 */
-	private void loadProperties() {
+	public void loadProperties() {
 		props= new DistributorProperties();
 		props.load(configFilePath);
 		
@@ -231,7 +231,7 @@ private final String logo =
 	/**
 	 * Prints the logo.
 	 */
-	private void printLogo(){
+	public void printLogo(){
 		System.out.println(logo);
 		try {
 			Thread.sleep(2000);
@@ -347,7 +347,7 @@ private final String logo =
 		protocolHandler.sendConfirmDevices(devices, connectorId);
 		
 		System.out.println("User confirmed Device with name: " + name + "\n");	
-		tempDevices.remove(temp);
+		tempDevices.remove(tempId);
 	}
 	
 	
@@ -440,7 +440,7 @@ private final String logo =
 		protocolHandler.sendConfirmComponent(deviceId, confirmComponents, connectorId);
 		
 		System.out.println("User confirmed Component with name: " + name + " and Device with id: " + deviceId + "\n");	
-		tempDevices.remove(temp);
+		tempDeviceComponents.remove(tempId);
 	}
 	
 

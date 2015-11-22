@@ -148,7 +148,9 @@ public class BoeseJson {
 		USERCREATERULES,
 		
 		/** The userconfirmrules. */
-		USERCONFIRMRULES
+		USERCONFIRMRULES,
+		
+		USERCREATEZONES, USERCONFIRMZONES
 	}
 
 	/**
@@ -568,6 +570,28 @@ public class BoeseJson {
 			}
 			bj = new UserConfirmRules(tempRuleMapUCoR, headerConnectorID, headerStatus, headerTimestamp);
 			break;
+		case 92: //UserCreateZones
+			HashSet<ZoneJSON> zonesSetUCZ = new HashSet<>();
+			JsonArray zonesUCZ = jo.getJsonArray("Zones");
+			if (zonesUCZ != null) {
+				for (int i = 0; i < zonesUCZ.size(); i++) {
+					JsonObject zone = zonesUCZ.getJsonObject(i);
+					zonesSetUCZ.add(new ZoneJSON(zone.getInt("ZoneId", -1), zone.getInt("TempZoneId", -1), zone.getInt("SuperZoneId", -1), zone.getString("ZoneName")));
+				}
+			}
+			bj = new  UserCreateZones(zonesSetUCZ, headerConnectorID, headerStatus, headerTimestamp);
+			break;
+		case 93: // UserConfirmZones
+			HashMap<Integer, Integer> tempZoneMapUCoZ = new HashMap<>();
+			JsonArray tempZoneUCoZ = jo.getJsonArray("Rules");
+			if (tempZoneUCoZ != null) {
+				for (int i = 0; i < tempZoneUCoZ.size(); i++) {
+					JsonObject zone = tempZoneUCoZ.getJsonObject(i);
+					tempZoneMapUCoZ.put(zone.getInt("TempZoneId"), zone.getInt("ZoneId"));
+				}
+			}
+			bj = new UserConfirmZones(tempZoneMapUCoZ, headerConnectorID, headerStatus, headerTimestamp);
+			break;
 		default:
 			break;
 		}
@@ -958,6 +982,34 @@ public class BoeseJson {
 				rulesUCoR.add(ruleUCoR);
 			}
 			job.add("Rules", rulesUCoR);
+			break;
+		case USERCREATEZONES:
+			UserCreateZones ucz = (UserCreateZones)message;
+			job.add("Header", addHeader(92, ucz.getConnectorId(), ucz.getStatus(), ucz.getTimestamp()));
+			JsonArrayBuilder zonesUCZ = Json.createArrayBuilder();
+			JsonObjectBuilder zoneUCZ;
+			for (ZoneJSON zone : ucz.getZones()) {
+				zoneUCZ = Json.createObjectBuilder();
+				zoneUCZ.add("ZoneId", zone.getZoneId());
+				zoneUCZ.add("TempZoneId", zone.getTempZoneId());
+				zoneUCZ.add("SuperZoneId", zone.getSuperZoneId());
+				zoneUCZ.add("ZoneName", zone.getZoneName());
+				zonesUCZ.add(zoneUCZ);
+			}
+			job.add("Zones", zonesUCZ);
+			break;
+		case USERCONFIRMZONES:
+			UserConfirmZones ucoz = (UserConfirmZones)message;
+			job.add("Header", addHeader(93, ucoz.getConnectorId(), ucoz.getStatus(), ucoz.getTimestamp()));
+			JsonArrayBuilder zonesUCoZ = Json.createArrayBuilder();
+			JsonObjectBuilder zoneUCoZ;
+			for (Entry<Integer, Integer> entry : ucoz.getTempZones().entrySet()) {
+				zoneUCoZ = Json.createObjectBuilder();
+				zoneUCoZ.add("ZoneId", entry.getValue());
+				zoneUCoZ.add("TempZoneId", entry.getKey());
+				zonesUCoZ.add(zoneUCoZ);
+			}
+			job.add("Zones", zonesUCoZ);
 			break;
 		default:
 			break;

@@ -69,7 +69,8 @@ public class SimulationTest {
 		
 		sim.closeConnection();
 		}catch(Exception e){
-			fail(e.getMessage());
+			e.printStackTrace();
+			//fail(e.getMessage());
 		}
 		
 	}

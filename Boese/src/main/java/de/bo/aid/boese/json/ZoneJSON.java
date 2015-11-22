@@ -39,6 +39,8 @@ public class ZoneJSON {
 	/** The zone id. */
 	private int zoneId;
 	
+	private int tempZoneId;
+	
 	/** The super zone id. */
 	private int superZoneId;
 	
@@ -56,6 +58,14 @@ public class ZoneJSON {
 		this.zoneId = zoneId;
 		this.superZoneId = superZoneId;
 		this.zoneName = name;
+		this.tempZoneId = -1;
+	}
+	
+	public ZoneJSON(int zoneId, int tempZoneId, int superZoneId, String name) {
+		this.zoneId = zoneId;
+		this.superZoneId = superZoneId;
+		this.zoneName = name;
+		this.tempZoneId = tempZoneId;
 	}
 
 	/**
@@ -65,6 +75,10 @@ public class ZoneJSON {
 	 */
 	public int getZoneId() {
 		return zoneId;
+	}
+	
+	public int getTempZoneId() {
+		return tempZoneId;
 	}
 
 	/**
