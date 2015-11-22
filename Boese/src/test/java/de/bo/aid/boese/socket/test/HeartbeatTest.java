@@ -44,6 +44,7 @@ public class HeartbeatTest {
         worker = new HeartbeatWorker();
         worker.setIntervall(5000);
         SessionHandler.getInstance().setMissedAnswerThreshold(3);
+        worker.setRunning(true);
         worker.start();
 	}
 	
@@ -65,7 +66,7 @@ public class HeartbeatTest {
 	 */
 	@After
 	public void tearDown(){
-		worker.pause();
+		worker.setRunning(false);
 		server.stop();
 	}
 

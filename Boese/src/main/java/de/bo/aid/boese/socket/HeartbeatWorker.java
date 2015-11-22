@@ -42,7 +42,6 @@ public class HeartbeatWorker extends Thread{
 	 */
 	@Override
 	public void run() {
-		running = true;
 		while(running){
 			handler.sendToAllConnectedSessions("HEARTBEAT");
 			try {
@@ -52,16 +51,13 @@ public class HeartbeatWorker extends Thread{
 				e.printStackTrace();
 			}
 			handler.checkHeartbeat();
-
 		}				
 	}
 	
-	/**
-	 * Pause.
-	 */
-	public void pause(){
-		running = false;
+	public void setRunning(boolean running){
+		this.running = running;
 	}
 	
+
 
 }
