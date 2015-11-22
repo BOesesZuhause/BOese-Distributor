@@ -18,28 +18,62 @@ import de.bo.aid.boese.ruler.Checker;
 import de.bo.aid.boese.xml.CalculationList;
 import de.bo.aid.boese.xml.CalculationList.CalculationTypes;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CalculationTest.
+ */
 public class CalculationTest {
 	
+	/** The cl1. */
 	CalculationList cl1;
+	
+	/** The cl2. */
 	CalculationList cl2;
+	
+	/** The first. */
 	CalculationList first;
 
+	/** The const1. */
 	double const1;
+	
+	/** The const2. */
 	double const2;
+	
+	/** The value1. */
 	double value1;
+	
+	/** The value2. */
 	double value2;
+	
+	/** The value3. */
 	double value3;
+	
+	/** The firstvalue. */
 	double firstvalue;
 	
+	/** The check. */
 	Checker check;
 	
+	/** The deco1. */
 	DeviceComponent deco1;
+	
+	/** The deco2. */
 	DeviceComponent deco2;
+	
+	/** The deco3. */
 	DeviceComponent deco3;
 	
+	/** The erg. */
 	double erg;
+	
+	/** The calc. */
 	double calc;
 
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
@@ -92,6 +126,9 @@ public class CalculationTest {
 		check = new Checker();
 	}
 
+	/**
+	 * Adds the test.
+	 */
 	@Test
 	public void addTest() {
 		cl1.setCalculationType(CalculationTypes.ADD);
@@ -108,6 +145,9 @@ public class CalculationTest {
 		assertTrue("Addition not correct (" + erg + " == " + calc + ")", erg == calc);
 	}
 	
+	/**
+	 * Sub test.
+	 */
 	@Test
 	public void subTest() {
 		cl1.setCalculationType(CalculationTypes.SUB);
@@ -124,6 +164,9 @@ public class CalculationTest {
 		assertTrue("Subtraktion not correct (" + erg + " == " + calc + ")", erg == calc);
 	}
 	
+	/**
+	 * Mul test.
+	 */
 	@Test
 	public void mulTest() {
 		cl1.setCalculationType(CalculationTypes.MUL);
@@ -140,6 +183,9 @@ public class CalculationTest {
 		assertTrue("Multiplikation not correct (" + erg + " == " + calc + ")", erg == calc);
 	}
 	
+	/**
+	 * Div test.
+	 */
 	@Test
 	public void divTest() {
 		cl1.setCalculationType(CalculationTypes.DIV);
@@ -156,6 +202,9 @@ public class CalculationTest {
 		assertTrue("Multiplikation not correct (" + erg + " == " + calc + ")", erg == calc);
 	}
 
+	/**
+	 * Mod test.
+	 */
 	@Test
 	public void modTest() {
 		cl1.setCalculationType(CalculationTypes.MOD);
@@ -174,6 +223,9 @@ public class CalculationTest {
 	
 
 
+	/**
+	 * Abs test.
+	 */
 	@Test
 	public void absTest() {
 		first.setCalculationType(CalculationTypes.ABS);

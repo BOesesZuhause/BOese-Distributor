@@ -56,6 +56,7 @@ import de.bo.aid.boese.json.ConfirmDeviceComponents;
 import de.bo.aid.boese.json.ConfirmDevices;
 import de.bo.aid.boese.json.ConfirmValue;
 import de.bo.aid.boese.json.DeviceComponents;
+import de.bo.aid.boese.json.HeartBeatMessage;
 import de.bo.aid.boese.json.MultiMessage;
 import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.json.RequestConnection;
@@ -189,9 +190,22 @@ public class ProtocolHandler implements MessageHandler {
 		case USERCREATERULES:
 			handleUserCreateRules((UserCreateRules) bjMessage, connectorId);
 			break;
+		case HEARTBEATMESSAGE:
+			handleHeartBeat((HeartBeatMessage) bjMessage, connectorId);
+		break;
 		default:
 			break;
 		}
+	}
+
+	/**
+	 * Handle heart beat.
+	 *
+	 * @param bjMessage the bj message
+	 * @param connectorId the connector id
+	 */
+	private void handleHeartBeat(HeartBeatMessage bjMessage, int connectorId) {
+		SessionHandler.getInstance().handleHeartbeat(connectorId);		
 	}
 
 	/**

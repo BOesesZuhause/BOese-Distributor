@@ -253,7 +253,7 @@ private final String logo =
 		distr.loadProperties();
 		distr.initDatabase();
 		distr.startWebsocketServer(0);
-		//distr.startHeartbeat();
+		distr.startHeartbeat();
 	}
 	
 	/**

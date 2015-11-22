@@ -17,8 +17,15 @@ import de.bo.aid.boese.model.Unit;
 import de.bo.aid.boese.model.User;
 import de.bo.aid.boese.model.Zone;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DBDefaultTest.
+ */
 public class DBDefaultTest {
 
+	/**
+	 * Sets the up.
+	 */
 	@Before
 	public void setUp(){
 		HibernateUtil.setDBUser("postgres");
@@ -28,6 +35,9 @@ public class DBDefaultTest {
 		Inserts.defaults();
 	}
 
+	/**
+	 * Service.
+	 */
 	@Test
 	public void service() {
 		try {
@@ -40,6 +50,9 @@ public class DBDefaultTest {
 		}
 	}
 	
+	/**
+	 * Unit.
+	 */
 	@Test
 	public void unit(){
 		try {
@@ -53,6 +66,9 @@ public class DBDefaultTest {
 		}
 	}
 	
+	/**
+	 * Zone.
+	 */
 	@Test
 	public void zone(){
 		try {
@@ -66,6 +82,9 @@ public class DBDefaultTest {
 		}
 	}
 	
+	/**
+	 * User.
+	 */
 	@Test
 	public void user(){
 		try {
@@ -81,6 +100,9 @@ public class DBDefaultTest {
 		}		
 	}
 	
+	/**
+	 * Group.
+	 */
 	@Test
 	public void group(){
 		try {
@@ -93,6 +115,9 @@ public class DBDefaultTest {
 		}
 	}
 	
+	/**
+	 * Rule.
+	 */
 	@Test
 	public void rule(){
 		try {

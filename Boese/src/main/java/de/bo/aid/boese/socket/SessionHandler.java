@@ -190,12 +190,15 @@ public class SessionHandler {
 	/**
 	 * Handle heartbeat.
 	 *
-	 * @param session the session
+	 * @param connectorId the connector id
 	 */
-	public void handleHeartbeat(Session session) {
-		SessionData data = getDataBySession(session);
-		data.setLastHeartbeat(System.currentTimeMillis());
-		data.setMissedAnswers(0);
+	public void handleHeartbeat(int connectorId) {
+		for(SessionData data : sessions){
+			if(data.getId()==connectorId){
+				data.setLastHeartbeat(System.currentTimeMillis());
+				data.setMissedAnswers(0);
+			}
+		}
 	}
 	
 	/**
@@ -230,6 +233,7 @@ public class SessionHandler {
 					sessions.remove(data);
 					logger.warn("Connector with id: " + data.getId() + " exceeded Heartbeat-Threshold");
 				}else{
+				//TODO is send every time
 				logger.warn("Connector with id: " + data.getId() + " doesnt respond");
 				data.setMissedAnswers(data.getMissedAnswers()+1);
 				}
@@ -254,6 +258,17 @@ public class SessionHandler {
 	public void setMissedAnswerThreshold(int missedAnswerThreshold) {
 		this.missedAnswerThreshold = missedAnswerThreshold;
 	}
+
+	/**
+	 * Gets the sessions.
+	 *
+	 * @return the sessions
+	 */
+	public CopyOnWriteArrayList<SessionData> getSessions() {
+		return sessions;
+	}
+	
+	
 	
 	
 

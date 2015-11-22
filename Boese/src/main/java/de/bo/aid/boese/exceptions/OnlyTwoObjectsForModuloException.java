@@ -1,5 +1,9 @@
 package de.bo.aid.boese.exceptions;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class OnlyTwoObjectsForModuloException.
+ */
 public class OnlyTwoObjectsForModuloException extends Exception{
 	
 	/** The Constant serialVersionUID. */

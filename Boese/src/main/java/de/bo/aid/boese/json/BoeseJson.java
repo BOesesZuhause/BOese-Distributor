@@ -150,7 +150,14 @@ public class BoeseJson {
 		/** The userconfirmrules. */
 		USERCONFIRMRULES,
 		
-		USERCREATEZONES, USERCONFIRMZONES
+		/** The usercreatezones. */
+		USERCREATEZONES,
+		
+		/** The userconfirmzones. */
+		USERCONFIRMZONES,
+		
+		/** The heartbeatmessage. */
+		HEARTBEATMESSAGE
 	}
 
 	/**
@@ -592,6 +599,10 @@ public class BoeseJson {
 			}
 			bj = new UserConfirmZones(tempZoneMapUCoZ, headerConnectorID, headerStatus, headerTimestamp);
 			break;
+			
+		case 120: //HeartBeatMessage
+			bj = new HeartBeatMessage(headerConnectorID, headerStatus, headerTimestamp);			
+		break;
 		default:
 			break;
 		}
@@ -1011,6 +1022,11 @@ public class BoeseJson {
 			}
 			job.add("Zones", zonesUCoZ);
 			break;
+			
+		case HEARTBEATMESSAGE:
+			HeartBeatMessage hm = (HeartBeatMessage) message;
+			job.add("Header", addHeader(120, hm.getConnectorId(), hm.getStatus(), hm.getTimestamp()));
+		break;
 		default:
 			break;
 		}

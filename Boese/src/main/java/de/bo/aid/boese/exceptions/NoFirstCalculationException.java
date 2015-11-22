@@ -1,5 +1,9 @@
 package de.bo.aid.boese.exceptions;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NoFirstCalculationException.
+ */
 public class NoFirstCalculationException extends Exception{
 	
 	/** The Constant serialVersionUID. */

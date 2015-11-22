@@ -1,5 +1,9 @@
 package de.bo.aid.boese.exceptions;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NoCalculationTypeException.
+ */
 public class NoCalculationTypeException extends Exception{
 	
 	/** The Constant serialVersionUID. */

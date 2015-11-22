@@ -24,6 +24,7 @@ import de.bo.aid.boese.json.ConfirmDevices;
 import de.bo.aid.boese.json.ConfirmStatus;
 import de.bo.aid.boese.json.ConfirmValue;
 import de.bo.aid.boese.json.DeviceComponents;
+import de.bo.aid.boese.json.HeartBeatMessage;
 import de.bo.aid.boese.json.MultiMessage;
 import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.json.RequestConnection;
@@ -1795,6 +1796,50 @@ public class protokollTest {
 				+ "\"RuleId\":2,"
 				+ "\"TempRuleId\":1"
 				+ "}]"
+				+ "}";
+		
+		InputStream is = new ByteArrayInputStream(message.getBytes());
+		BoeseJson bs = BoeseJson.readMessage(is);
+		assertNotNull(bs);
+		
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(bs, os);
+		assertEquals(os.toString(), message);
+	}
+	
+
+	/**
+	 * Parses the heart beat.
+	 */
+	@Test
+	public void parseHeartBeat(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":120,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "}"
+				+ "}";
+		
+		OutputStream os = new ByteArrayOutputStream();
+		HeartBeatMessage hm = new HeartBeatMessage(1, 0, 111222334);
+		BoeseJson.parseMessage(hm, os);
+		assertEquals(os.toString(), message);
+	}
+	
+	/**
+	 * Read heart beat.
+	 */
+	@Test
+	public void readHeartBeat(){
+		String message = "{"
+				+ "\"Header\":{"
+				+ "\"MessageType\":120,"
+				+ "\"ConnectorId\":1,"
+				+ "\"Status\":0,"
+				+ "\"Timestamp\":111222334"
+				+ "}"
 				+ "}";
 		
 		InputStream is = new ByteArrayInputStream(message.getBytes());

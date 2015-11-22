@@ -548,6 +548,9 @@ public class Inserts {
 		session.close();
 	}
 	
+	/**
+	 * Defaults.
+	 */
 	public static void defaults(){
 		Session session = connection.getSession();
 		session.beginTransaction();

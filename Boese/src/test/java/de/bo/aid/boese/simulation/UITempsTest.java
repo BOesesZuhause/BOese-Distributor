@@ -14,9 +14,18 @@ import de.bo.aid.boese.main.Distributor;
 import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempDevice;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UITempsTest.
+ */
 public class UITempsTest {
+	
+	/** The distr. */
 	Distributor distr;
 	
+	/**
+	 * Sets the temp connectors.
+	 */
 	private void setTempConnectors() {
 		HashMap<Integer, String> tempConnectors = new HashMap<>();
 		tempConnectors.put(1000, "Erster Connector");
@@ -25,6 +34,9 @@ public class UITempsTest {
 		distr.setTempConnectors(tempConnectors);
 	}
 	
+	/**
+	 * Sets the temp devices.
+	 */
 	private void setTempDevices() {
 		HashMap<Integer, TempDevice> tempDevices = new HashMap<>();
 		tempDevices.put(234, new TempDevice(1, "Cooles Gerät"));
@@ -34,6 +46,9 @@ public class UITempsTest {
 		distr.setTempDevices(tempDevices);
 	}
 	
+	/**
+	 * Sets the temp de cos.
+	 */
 	private void setTempDeCos() {
 		HashMap<Integer, TempComponent> tempDeviceComponents = new HashMap<>();
 		tempDeviceComponents.put(1122, new TempComponent(1, "outdoorTemperature", 12.5, 112233, 1000, "Misst Temperatur", "degree", false));
@@ -41,6 +56,9 @@ public class UITempsTest {
 		distr.setTempDeviceComponents(tempDeviceComponents);
 	}
 	
+	/**
+	 * Start server.
+	 */
 	@Before
 	public void startServer() {
 		String args[] = {"-config", "settings.properties"};
@@ -55,12 +73,18 @@ public class UITempsTest {
 		setTempDeCos();
 	}
 	
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 //		while(true) {;}
 		assertTrue(true);
 	}
 	
+	/**
+	 * After.
+	 */
 	@After
 	public void after() {
 		distr = null;
