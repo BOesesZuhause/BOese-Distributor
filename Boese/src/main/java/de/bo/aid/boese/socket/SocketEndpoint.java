@@ -82,7 +82,7 @@ public class SocketEndpoint
 		if(conId == -1){
 			logger.info("Unknown Socket disconnected: " + session);
 		}else{
-			logger.info("Connector with id: " + conId + "disconnected");
+			logger.info("Connector with id: " + conId + " disconnected");
 		}
 	}
 
@@ -106,6 +106,8 @@ public class SocketEndpoint
 	@OnMessage
 	public void handleMessage(String message, Session session) {
 		logger.info("Server received Message: " + message);
+		//TODO bei jeder Nachricht heartbeatcount zurücksetzen 
+		//TODO Heartbeat als MessageType
 		if(message.equals("HEARTBEAT")){
 			handler.handleHeartbeat(session);
 		}else{

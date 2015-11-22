@@ -5,7 +5,6 @@
 <hibernate-mapping>
     <class name="de.bo.aid.boese.model.Rule" table="rule" schema="public" optimistic-lock="version">
         <id name="ruId" type="int">
-            <column name="RuID" />
             <generator class="sequence">
                 <param name="sequence">rule_id_generator</param>
         	</generator>

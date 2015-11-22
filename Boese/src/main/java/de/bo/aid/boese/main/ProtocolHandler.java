@@ -306,7 +306,7 @@ public class ProtocolHandler implements MessageHandler {
 		for (DeviceComponents component : components) { //iterate over sendComponents from connector
 			if (component.getDeviceComponentId() == -1) { //component has no id
 				TempComponent temp = new TempComponent(deviceId, component.getComponentName(), component.getValue(),
-						component.getTimestamp(), connectorId, component.getDescription(), component.getUnit(),
+						component.getTimestamp(), connectorId, component.getDescription(), component.getUnit()==null? "undefined" : component.getUnit() ,
 						component.isActor());
 				distributor.addTempComponent(temp);
 			} else { // Component has id
@@ -593,6 +593,7 @@ public class ProtocolHandler implements MessageHandler {
 						BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())));
 				try {
 					r = new Rule(rule.getPermissions(), rule.getConditions(), rule.getActions());
+					r.setActive(rule.isActive()); // TODO constructor mit active erstellen
 					Inserts.rule(ruleDeCos, r, distributor.getTdc());
 				} catch (DBForeignKeyNotFoundException e) {
 					logger.error(e.getMessage());
