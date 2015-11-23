@@ -32,20 +32,16 @@
 package de.bo.aid.boese.db;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.ObjectNotFoundException;
 import org.hibernate.PropertyValueException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 import de.bo.aid.boese.exceptions.DBForeignKeyNotFoundException;
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
-import de.bo.aid.boese.main.Distributor;
 import de.bo.aid.boese.model.*;
-import de.bo.aid.boese.ruler.Control;
 import de.bo.aid.boese.ruler.Interpretor;
 import de.bo.aid.boese.ruler.ToDoChecker;
 
@@ -290,7 +286,7 @@ public class Inserts {
 		}
 		
 		
-		int ruID = rule.getRuId();
+		rule.getRuId();
 		
 		try{
 			for(DeviceComponent deco : deCo){

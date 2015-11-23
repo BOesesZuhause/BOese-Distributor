@@ -42,7 +42,8 @@ public class ZoneTest {
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");
-		HibernateUtil.setDBURL("boese", "localhost", "5432");
+		HibernateUtil.setDBURL("boeseTest", "localhost", "5432");
+		HibernateUtil.setDBAuto("create");
 		zone1 = new Zone("test1");
 		zone2 = new Zone("test2");
 		zone1Update = new Zone("update1");
