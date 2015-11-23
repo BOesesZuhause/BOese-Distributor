@@ -46,6 +46,8 @@ public class UserTest {
 		HibernateUtil.setDBPassword("Di0bPWfw");
 		HibernateUtil.setDBURL("boeseTest", "localhost", "5432");
 		HibernateUtil.setDBAuto("create");
+
+		Inserts.defaults();
 		user1 = new User("Person", "erste", "123", true, new Date(), "first", "erste.person@first.de");
 		user2 = new User("Person", "zweite", "456", true, new Date(), "second", "zweite.person@second.de");
 		user1Update = new User("update", "erste", "789", true, new Date(), "ufirst", "erste.update@ufirst.de");

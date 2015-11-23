@@ -91,7 +91,7 @@ public class Rule implements java.io.Serializable {
 	}
 
 	/**
-	 * Instantiates a new rule.
+	 * Instantiates a new rule for DB insert.
 	 *
 	 * @param permissions the permissions
 	 * @param conditions the conditions
@@ -101,6 +101,9 @@ public class Rule implements java.io.Serializable {
 		this.permissions = permissions;
 		this.conditions = conditions;
 		this.actions = actions;
+		this.active = true;
+		this.insertDate = new Date();
+		this.modifyDate = new Date();
 	}
 
 	/**

@@ -42,8 +42,8 @@ public class DBDefaultTest {
 	@Test
 	public void service() {
 		try {
-			Service service = Selects.service(0);
-			assertTrue("Service ID not correct", service.getSeId() == 0);
+			Service service = Selects.service(1);
+			assertTrue("Service ID not correct", service.getSeId() == 1);
 			assertTrue("Service Description not correct", service.getDescription().equals("Default"));
 		} catch (DBObjectNotFoundException e) {
 			fail(e.getMessage());
@@ -57,8 +57,8 @@ public class DBDefaultTest {
 	@Test
 	public void unit(){
 		try {
-			Unit unit = Selects.unit(0);
-			assertTrue("Unit ID not correct", unit.getUnId() == 0);
+			Unit unit = Selects.unit(1);
+			assertTrue("Unit ID not correct", unit.getUnId() == 1);
 			assertTrue("Unit Name not correct", unit.getName().equals("Undefined"));
 			assertTrue("Unit Symbol not correct", unit.getSymbol().equals("ud"));
 		} catch (DBObjectNotFoundException e) {
@@ -72,15 +72,18 @@ public class DBDefaultTest {
 	 */
 	@Test
 	public void zone(){
+		Zone zone = null;
 		try {
-			Zone zone = Selects.zone(0);
-			assertTrue("Zone ID not correct", zone.getZoId() == 0);
+			zone = Selects.zone(1);
+			assertTrue("Zone ID not correct", zone.getZoId() == 1);
 			assertTrue("Zone Name not correct", zone.getName().equals("Global"));
-			System.out.println("ID: " + zone.getZoId() + ", Name: " + zone.getName());
 		} catch (DBObjectNotFoundException e) {
 			fail(e.getMessage());
 			e.printStackTrace();
 		}
+		
+		Zone z = new Zone("in Global");
+		Inserts.zone(z, zone);
 	}
 	
 	/**
@@ -89,8 +92,8 @@ public class DBDefaultTest {
 	@Test
 	public void user(){
 		try {
-			User user = Selects.user(0);
-			assertTrue("User ID not correct", user.getUsId() == 0);
+			User user = Selects.user(1);
+			assertTrue("User ID not correct", user.getUsId() == 1);
 			assertTrue("User Firstname not correct", user.getFirstName().equals("Super"));
 			assertTrue("User Surname not correct", user.getSurname().equals("User"));
 			assertTrue("User Password not correct", user.getPassword().equals("MasterPassword")); //TODO Masterpw anpassen fall nötig
@@ -107,8 +110,8 @@ public class DBDefaultTest {
 	@Test
 	public void group(){
 		try {
-			Group grp = Selects.group((short)0);
-			assertTrue("Group ID not correct", grp.getGrId() == 0);
+			Group grp = Selects.group((short)1);
+			assertTrue("Group ID not correct", grp.getGrId() == 1);
 			assertTrue("Group Name not correct", grp.getName().equals("Users"));
 		} catch (DBObjectNotFoundException e) {
 			fail(e.getMessage());
@@ -122,8 +125,8 @@ public class DBDefaultTest {
 	@Test
 	public void rule(){
 		try {
-			Rule rule = Selects.rule(0);
-			assertTrue("Rule ID not correct", rule.getRuId() == 0);
+			Rule rule = Selects.rule(1);
+			assertTrue("Rule ID not correct", rule.getRuId() == 1);
 			assertTrue("Rule Actions not correct", rule.getActions().equals("<ACTION></ACTION>"));
 			assertTrue("Rule Conditions not correct", rule.getConditions().equals("<CONDITION></CONDITION>"));
 			assertTrue("Rule Permissions not correct", rule.getPermissions().equals("<PERMISSION></PERMISSION>"));

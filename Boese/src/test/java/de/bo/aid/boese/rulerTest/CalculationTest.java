@@ -97,8 +97,8 @@ public class CalculationTest {
 		deco3 = new DeviceComponent("3");
 		
 		Inserts.connector(con);
-		Inserts.component(0, comp);
-		Inserts.device(con.getCoId(), 0, dev);
+		Inserts.component(1, comp);
+		Inserts.device(con.getCoId(), 1, dev);
 		Inserts.deviceComponent(dev.getDeId(), comp.getCoId(), deco1);
 		Inserts.deviceComponent(dev.getDeId(), comp.getCoId(), deco2);
 		Inserts.deviceComponent(dev.getDeId(), comp.getCoId(), deco3);
