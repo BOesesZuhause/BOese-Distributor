@@ -28,7 +28,6 @@
  */
 package de.bo.aid.boese.socket;
 import java.io.IOException;
-import java.sql.Date;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.websocket.Session;
@@ -37,6 +36,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 // TODO: Auto-generated Javadoc
+//TODO for-Schleifen auslagern und bei nicht auffinden Error-Handling
 /**
  * The Class SocketHandler.
  */
@@ -231,7 +231,8 @@ public class SessionHandler {
 						logger.warn("Unable to close session: " + data.getSession());
 						e.printStackTrace();
 					}
-					sessions.remove(data);
+					//TODO Die ConnectorId kann danach nicht mehr ermittelt werden für die close()-Nachricht
+					sessions.remove(data); 
 					logger.warn("Connector with id: " + data.getId() + " exceeded Heartbeat-Threshold");
 				}else{
 				//TODO is send every time
@@ -268,7 +269,22 @@ public class SessionHandler {
 	public CopyOnWriteArrayList<SessionData> getSessions() {
 		return sessions;
 	}
-	
+
+	public void setUserConnector(int coId) {
+		for(SessionData data : sessions){
+			if(data.getId() == coId){
+				data.setUserConnector(true);
+			}
+		}
+	}
+
+	public void sendToUserConnectors(String message){
+		for(SessionData data : sessions){
+			if(data.isUserConnector()){
+				sendToSession(data.getSession(), message);
+			}
+		}
+	}
 	
 	
 	

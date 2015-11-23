@@ -14,6 +14,8 @@ public class SessionData {
 	/** The id. */
 	private int id;
 	
+	private boolean isUserConnector = false;
+	
 	/** The missed answers. */
 	private int missedAnswers;
 	
@@ -59,6 +61,16 @@ public class SessionData {
 		this.id = id;
 	}
 	
+	
+	
+	public boolean isUserConnector() {
+		return isUserConnector;
+	}
+
+	public void setUserConnector(boolean isUserConnector) {
+		this.isUserConnector = isUserConnector;
+	}
+
 	/**
 	 * Gets the last heartbeat.
 	 *

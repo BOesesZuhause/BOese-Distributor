@@ -52,6 +52,7 @@ import de.bo.aid.boese.json.UserSendZones;
 import de.bo.aid.boese.json.UserTempComponent;
 import de.bo.aid.boese.json.ZoneJSON;
 import de.bo.aid.boese.main.model.TempComponent;
+import de.bo.aid.boese.main.model.TempConnector;
 import de.bo.aid.boese.main.model.TempDevice;
 
 // TODO: Auto-generated Javadoc
@@ -197,11 +198,12 @@ public class protokollTest {
 				+ "\"Timestamp\":111222334"
 				+ "},"
 				+ "\"ConnectorName\":\"Konnektor1\","
-				+ "\"Password\":\"sicher!\""
+				+ "\"Password\":\"sicher!\","
+				+ "\"IsUserConnector\":false"
 				+ "}";
 		
 		OutputStream os = new ByteArrayOutputStream();
-		RequestConnection recCon = new RequestConnection("Konnektor1", "sicher!", 1, 0, 111222334);
+		RequestConnection recCon = new RequestConnection("Konnektor1", "sicher!", 1, 0, 111222334, false);
 		BoeseJson.parseMessage(recCon, os);
 		assertEquals(os.toString(), message);			
 	}
@@ -220,7 +222,8 @@ public class protokollTest {
 				+ "\"Timestamp\":111222334"
 				+ "},"
 				+ "\"ConnectorName\":\"Konnektor1\","
-				+ "\"Password\":\"sicher!\""
+				+ "\"Password\":\"sicher!\","
+				+ "\"IsUserConnector\":false"
 				+ "}";
 		
 		InputStream is = new ByteArrayInputStream(message.getBytes());
@@ -1544,7 +1547,8 @@ public class protokollTest {
 				+ "},"
 				+ "\"TmpConnectors\":[{"
 				+ "\"ConnectorTmpId\":3,"
-				+ "\"ConnectorName\":\"HUE\""
+				+ "\"ConnectorName\":\"HUE\","
+				+ "\"IsUserConnector\":false"
 				+ "}],"
 				+ "\"TmpDevices\":[{"
 				+ "\"DeviceTmpId\":3,"
@@ -1563,8 +1567,11 @@ public class protokollTest {
 				+ "}";
 		//TODO tempDevice und tempComponent als eigene Klassen
 		OutputStream os = new ByteArrayOutputStream();
-		HashMap<Integer, String> tempConnectors = new HashMap<Integer, String>();
-		tempConnectors.put(3, "HUE");
+		HashMap<Integer, TempConnector> tempConnectors = new HashMap<Integer, TempConnector>();
+		TempConnector tempCon = new TempConnector();
+		tempCon.setName("HUE");
+		tempCon.setUserConnector(false);
+		tempConnectors.put(3, tempCon);
 		HashMap<Integer, TempDevice> tempDevices = new HashMap<Integer, TempDevice>();
 		TempDevice tempDev = new TempDevice(2, "Steckdose");
 		tempDevices.put(3, tempDev);
@@ -1590,7 +1597,8 @@ public class protokollTest {
 				+ "},"
 				+ "\"TmpConnectors\":[{"
 				+ "\"ConnectorTmpId\":3,"
-				+ "\"ConnectorName\":\"HUE\""
+				+ "\"ConnectorName\":\"HUE\","
+				+ "\"IsUserConnector\":false"
 				+ "}],"
 				+ "\"TmpDevices\":[{"
 				+ "\"DeviceTmpId\":3,"

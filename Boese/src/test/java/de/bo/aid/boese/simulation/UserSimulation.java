@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import de.bo.aid.boese.main.Distributor;
 import de.bo.aid.boese.main.model.TempComponent;
+import de.bo.aid.boese.main.model.TempConnector;
 import de.bo.aid.boese.main.model.TempDevice;
 import javassist.NotFoundException;
 
@@ -37,10 +38,10 @@ public class UserSimulation {
 	 * Confirm connectors.
 	 */
 	public void confirmConnectors(){
-		HashMap<Integer, String> connectors = distr.getTempConnectors();
+		HashMap<Integer, TempConnector> connectors = distr.getTempConnectors();
 		for(Integer key : connectors.keySet()){
 			try {
-				distr.confirmConnector(key, false);
+				distr.confirmConnector(key);
 				//Hier ist der Connector schon entfernt (connectors zeigt auf die Map in der MainClass)
 			} catch (NotFoundException e) {
 				// TODO Auto-generated catch block

@@ -224,11 +224,14 @@ public class ProtocolHandler implements MessageHandler {
 	private void handleRequestConnection(RequestConnection rc, int tempId) {
 
 		if (rc.getPassword() == null && rc.getConnectorId() == -1) { //connector without id
-
+			
 			// Add requesting Connector to tempConnectors with tempId from
 			// SocketHandler
-			distributor.addTempConnector(rc.getConnectorName(), tempId);
-
+			if(rc.isUserConnector()){
+				distributor.addTempConnector(rc.getConnectorName(), tempId, true);
+			}else{
+				distributor.addTempConnector(rc.getConnectorName(), tempId, false);
+			}
 		} else { //connector with id
 			String pw = rc.getPassword();
 			int conId = rc.getConnectorId();
@@ -391,6 +394,12 @@ public class ProtocolHandler implements MessageHandler {
 		inquiryList.add(new Inquiry(deviceComponentId, sv.getValueTimestamp(), sv.getValue()));
 		sendToDos(inquiryList);
 		sendConfirmValue(deviceId, deviceComponentId, connectorId);
+		
+		
+		//sendValue to all userConnectors
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(sv, os);
+		SessionHandler.getInstance().sendToUserConnectors(os.toString());
 	}
 
 	/**
@@ -563,7 +572,7 @@ public class ProtocolHandler implements MessageHandler {
 		}
 		for (Integer con : uct.getTempConnectors()) {
 			try {
-				distributor.confirmConnector(con, false);
+				distributor.confirmConnector(con);
 			} catch (NotFoundException nfe) {
 				// TODO
 			}
