@@ -610,7 +610,7 @@ public class BoeseJson {
 			break;
 		case 93: // UserConfirmZones
 			HashMap<Integer, Integer> tempZoneMapUCoZ = new HashMap<>();
-			JsonArray tempZoneUCoZ = jo.getJsonArray("Rules");
+			JsonArray tempZoneUCoZ = jo.getJsonArray("Zones");
 			if (tempZoneUCoZ != null) {
 				for (int i = 0; i < tempZoneUCoZ.size(); i++) {
 					JsonObject zone = tempZoneUCoZ.getJsonObject(i);
@@ -619,7 +619,29 @@ public class BoeseJson {
 			}
 			bj = new UserConfirmZones(tempZoneMapUCoZ, headerConnectorID, headerStatus, headerTimestamp);
 			break;
-			
+		case 94: // UserCreateUnits
+			HashSet<UnitJSON> unitsSetUCU = new HashSet<>();
+			JsonArray unitsUCU = jo.getJsonArray("Units");
+			if (unitsUCU != null) {
+				for (int i = 0; i < unitsUCU.size(); i++) {
+					JsonObject unit = unitsUCU.getJsonObject(i);
+					unitsSetUCU.add(new UnitJSON(unit.getInt("UnitId", -1), unit.getInt("TempUnitId", -1), 
+							unit.getString("UnitName"), unit.getString("UnitSymbol")));
+				}
+			}
+			bj = new  UserCreateUnits(unitsSetUCU, headerConnectorID, headerStatus, headerTimestamp);
+			break;
+		case 95: // UserConfirmUnits
+			HashMap<Integer, Integer> tempUnitMapUCoU = new HashMap<>();
+			JsonArray tempUnitUCoU = jo.getJsonArray("Units");
+			if (tempUnitUCoU != null) {
+				for (int i = 0; i < tempUnitUCoU.size(); i++) {
+					JsonObject unit = tempUnitUCoU.getJsonObject(i);
+					tempUnitMapUCoU.put(unit.getInt("TempUnitId"), unit.getInt("UnitId"));
+				}
+			}
+			bj = new UserConfirmUnits(tempUnitMapUCoU, headerConnectorID, headerStatus, headerTimestamp);
+			break;
 		case 120: //HeartBeatMessage
 			bj = new HeartBeatMessage(headerConnectorID, headerStatus, headerTimestamp);			
 		break;
@@ -1059,6 +1081,34 @@ public class BoeseJson {
 				zonesUCoZ.add(zoneUCoZ);
 			}
 			job.add("Zones", zonesUCoZ);
+			break;
+		case USERCREATEUNITS:
+			UserCreateUnits ucu = (UserCreateUnits)message;
+			job.add("Header", addHeader(94, ucu.getConnectorId(), ucu.getStatus(), ucu.getTimestamp()));
+			JsonArrayBuilder unitsUCU = Json.createArrayBuilder();
+			JsonObjectBuilder unitUCU;
+			for (UnitJSON unit : ucu.getUnits()) {
+				unitUCU = Json.createObjectBuilder();
+				unitUCU.add("ZoneId", unit.getUnitId());
+				unitUCU.add("TempZoneId", unit.getTempUnitId());
+				unitUCU.add("UnitName", unit.getUnitName());
+				unitUCU.add("UnitSymbol", unit.getUnitSymbol());
+				unitsUCU.add(unitUCU);
+			}
+			job.add("Units", unitsUCU);
+			break;
+		case USERCONFIRMUNITS:
+			UserConfirmUnits ucou = (UserConfirmUnits)message;
+			job.add("Header", addHeader(95, ucou.getConnectorId(), ucou.getStatus(), ucou.getTimestamp()));
+			JsonArrayBuilder unitsUCoU = Json.createArrayBuilder();
+			JsonObjectBuilder unitUCoU;
+			for (Entry<Integer, Integer> entry : ucou.getTempUnits().entrySet()) {
+				unitUCoU = Json.createObjectBuilder();
+				unitUCoU.add("UnitId", entry.getValue());
+				unitUCoU.add("TempUnitId", entry.getKey());
+				unitsUCoU.add(unitUCoU);
+			}
+			job.add("Units", unitsUCoU);
 			break;
 			
 		case HEARTBEATMESSAGE:
