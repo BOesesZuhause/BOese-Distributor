@@ -50,6 +50,7 @@ import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.ConfirmConnection;
 import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.main.model.TempComponent;
+import de.bo.aid.boese.main.model.TempConnector;
 import de.bo.aid.boese.main.model.TempDevice;
 import de.bo.aid.boese.model.Component;
 import de.bo.aid.boese.model.Connector;
@@ -104,7 +105,7 @@ private final String logo =
 	
 	/** The temp connectors. */
 	//hashmaps for unconfirmed Objects with a temporary Id as key
-	private HashMap<Integer, String> tempConnectors = new HashMap<Integer, String>();
+	private HashMap<Integer, TempConnector> tempConnectors = new HashMap<Integer, TempConnector>();
 	
 	/** The temp devices. */
 	private HashMap<Integer, TempDevice> tempDevices = new HashMap<Integer, TempDevice>();
@@ -158,7 +159,6 @@ private final String logo =
 		}else{
 			socketServer.start(port);
 		}
-
 	}
 	
 	/**
@@ -272,7 +272,7 @@ private final String logo =
 	 *
 	 * @return the temp connectors
 	 */
-	public HashMap<Integer, String> getTempConnectors(){
+	public HashMap<Integer, TempConnector> getTempConnectors(){
 		return tempConnectors;
 	}
 	
@@ -280,16 +280,15 @@ private final String logo =
 	 * Confirm connector.
 	 *
 	 * @param tempId the temp id
-	 * @param isUserConnector if it is an user connector
 	 * @throws NotFoundException the not found exception
 	 */
-	public void confirmConnector(int tempId, boolean isUserConnector) throws NotFoundException{
+	public void confirmConnector(int tempId) throws NotFoundException{
 	
-		String name= tempConnectors.get(tempId);
-		
+		String name= tempConnectors.get(tempId).getName();		
 		if(name == null){
 			throw new NotFoundException("Connector with tempId " + tempId + " not Found");
 		}
+		boolean isUserConnector = tempConnectors.get(tempId).isUserConnector();
 
 		SecureRandom sr = new SecureRandom();
 		String pw = String.valueOf(sr.nextLong());
@@ -310,6 +309,8 @@ private final String logo =
 			os = new ByteArrayOutputStream();
 			BoeseJson.parseMessage(rad, os);
 			SessionHandler.getInstance().sendToConnector(con.getCoId(), os.toString());
+		}else{
+			SessionHandler.getInstance().setUserConnector(con.getCoId());
 		}
 		
 		System.out.println("User confirmed Connector with name: " + name + "\n");
@@ -386,7 +387,7 @@ private final String logo =
 	 *
 	 * @param tempConnectors the temp connectors
 	 */
-	public void setTempConnectors(HashMap<Integer, String> tempConnectors) {
+	public void setTempConnectors(HashMap<Integer, TempConnector> tempConnectors) {
 		this.tempConnectors = tempConnectors;
 	}
 
@@ -492,11 +493,14 @@ private final String logo =
 	 * @param name the name
 	 * @param tempId the temp id
 	 */
-	public void addTempConnector(String name, int tempId){
-		tempConnectors.put(tempId, name);
+	public void addTempConnector(String name, int tempId, boolean userConnector){
+		TempConnector tempCon = new TempConnector();
+		tempCon.setName(name);
+		tempCon.setUserConnector(userConnector);
+		tempConnectors.put(tempId, tempCon);
 		if(autoConfirm){
 			try {
-				confirmConnector(tempId, false);
+				confirmConnector(tempId);
 			} catch (NotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

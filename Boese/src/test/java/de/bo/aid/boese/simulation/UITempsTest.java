@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import de.bo.aid.boese.main.Distributor;
 import de.bo.aid.boese.main.model.TempComponent;
+import de.bo.aid.boese.main.model.TempConnector;
 import de.bo.aid.boese.main.model.TempDevice;
 
 // TODO: Auto-generated Javadoc
@@ -27,10 +28,11 @@ public class UITempsTest {
 	 * Sets the temp connectors.
 	 */
 	private void setTempConnectors() {
-		HashMap<Integer, String> tempConnectors = new HashMap<>();
-		tempConnectors.put(1000, "Erster Connector");
-		tempConnectors.put(666, "Böser Connector");
-		tempConnectors.put(1234, "Standard Connector");
+		HashMap<Integer, TempConnector> tempConnectors = new HashMap<>();
+		
+		tempConnectors.put(1000, new TempConnector("Erster Connector", false));
+		tempConnectors.put(666, new TempConnector("Böser Connector", false));
+		tempConnectors.put(1234, new TempConnector("Standard Connector", false));
 		distr.setTempConnectors(tempConnectors);
 	}
 	

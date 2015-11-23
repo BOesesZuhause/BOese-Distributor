@@ -42,6 +42,7 @@ import java.util.Map.Entry;
 import javax.json.*;
 
 import de.bo.aid.boese.main.model.TempComponent;
+import de.bo.aid.boese.main.model.TempConnector;
 import de.bo.aid.boese.main.model.TempDevice;
 
 // TODO: Auto-generated Javadoc
@@ -509,14 +510,17 @@ public class BoeseJson {
 			bj = new UserRequestGeneral(MessageType.USERREQUESTTEMPS, headerConnectorID, headerStatus, headerTimestamp);
 			break;
 		case 81: // UserSendTemps
-			HashMap<Integer, String> tempConnectorsUST = new HashMap<>();
+			HashMap<Integer, TempConnector> tempConnectorsUST = new HashMap<>();
 			HashMap<Integer, TempDevice> tempDevicesUST = new HashMap<>();
 			HashMap<Integer, TempComponent> tempDeviceComponentsUST = new HashMap<>();
 			JsonArray tempConsUST = jo.getJsonArray("TmpConnectors");
 			if (tempConsUST != null) {
 				for (int i = 0; i < tempConsUST.size(); i++) {
 					JsonObject con = tempConsUST.getJsonObject(i);
-					tempConnectorsUST.put(con.getInt("ConnectorTmpId"), con.getString("ConnectorName"));
+					TempConnector tempCon = new TempConnector();
+					tempCon.setName(con.getString("ConnectorName"));
+					tempCon.setUserConnector(con.getBoolean("IsUserConnector"));
+					tempConnectorsUST.put(con.getInt("ConnectorTmpId"), tempCon);
 				}
 			}
 			JsonArray tempDevsUST = jo.getJsonArray("TmpDevices");
@@ -697,6 +701,7 @@ public class BoeseJson {
 			if (rc.getPassword() != null) {
 				job.add("Password", rc.getPassword());
 			}
+				job.add("IsUserConnector", rc.isUserConnector());
 			break;
 		case CONFIRMCONNECTION:
 			ConfirmConnection cc = (ConfirmConnection)message;
@@ -964,10 +969,11 @@ public class BoeseJson {
 			job.add("Header", addHeader(81, ust.getConnectorId(), ust.getStatus(), ust.getTimestamp()));
 			JsonArrayBuilder tempConnectorsUST = Json.createArrayBuilder();
 			JsonObjectBuilder tempConnectorUST;
-			for (Entry<Integer, String> entry : ust.getTempConnectors().entrySet()) {
+			for (Entry<Integer, TempConnector> entry : ust.getTempConnectors().entrySet()) {
 				tempConnectorUST = Json.createObjectBuilder();
 				tempConnectorUST.add("ConnectorTmpId", entry.getKey());
-				tempConnectorUST.add("ConnectorName", entry.getValue());
+				tempConnectorUST.add("ConnectorName", entry.getValue().getName());
+				tempConnectorUST.add("IsUserConnector", entry.getValue().isUserConnector());
 				tempConnectorsUST.add(tempConnectorUST);
 			}
 			job.add("TmpConnectors", tempConnectorsUST);

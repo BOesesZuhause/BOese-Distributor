@@ -33,6 +33,7 @@ package de.bo.aid.boese.json;
 import java.util.HashMap;
 
 import de.bo.aid.boese.main.model.TempComponent;
+import de.bo.aid.boese.main.model.TempConnector;
 import de.bo.aid.boese.main.model.TempDevice;
 
 // TODO: Auto-generated Javadoc
@@ -42,7 +43,7 @@ import de.bo.aid.boese.main.model.TempDevice;
 public class UserSendTemps extends BoeseJson{
 	
 	/** The temp connectors. */
-	private HashMap<Integer, String> tempConnectors;
+	private HashMap<Integer, TempConnector> tempConnectors;
 	
 	/** The temp devices. */
 	private HashMap<Integer, TempDevice> tempDevices;
@@ -60,7 +61,7 @@ public class UserSendTemps extends BoeseJson{
 	 * @param status the status
 	 * @param timestamp the timestamp
 	 */
-	public UserSendTemps(HashMap<Integer, String> tempConnectors, HashMap<Integer, TempDevice> tempDevices, 
+	public UserSendTemps(HashMap<Integer, TempConnector> tempConnectors, HashMap<Integer, TempDevice> tempDevices, 
 			HashMap<Integer, TempComponent> tempDeviceComponents,
 			int connectorId, int status, long timestamp) {
 		super(MessageType.USERSENDTEMPS, connectorId, status, timestamp);
@@ -74,7 +75,7 @@ public class UserSendTemps extends BoeseJson{
 	 *
 	 * @return the temp connectors
 	 */
-	public HashMap<Integer, String> getTempConnectors() {
+	public HashMap<Integer, TempConnector> getTempConnectors() {
 		return tempConnectors;
 	}
 
