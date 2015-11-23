@@ -16,14 +16,14 @@ import de.bo.aid.boese.json.HeartBeatMessage;
 public class HeartbeatWorker extends Thread{
 	
 	/** The intervall. */
-	private long intervall = 60000;	
+	public static long intervall = 60000;	
 	
 	/**
 	 * Gets the intervall.
 	 *
 	 * @return the intervall
 	 */
-	public long getIntervall() {
+	public static long getIntervall() {
 		return intervall;
 	}
 
@@ -33,7 +33,7 @@ public class HeartbeatWorker extends Thread{
 	 * @param intervall the new intervall
 	 */
 	public void setIntervall(long intervall) {
-		this.intervall = intervall;
+		HeartbeatWorker.intervall = intervall;
 	}
 
 	/** The running. */
@@ -56,8 +56,7 @@ public class HeartbeatWorker extends Thread{
 					OutputStream os = new ByteArrayOutputStream();
 					BoeseJson.parseMessage(hm, os);
 					handler.sendToConnector(conId, os.toString());
-				}
-				
+				}				
 			}
 			try {
 				Thread.sleep(intervall);

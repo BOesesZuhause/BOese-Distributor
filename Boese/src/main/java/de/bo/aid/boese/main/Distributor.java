@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.SocketHandler;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -261,6 +263,7 @@ private final String logo =
 	 */
 	public void startHeartbeat() {
 		HeartbeatWorker worker = new HeartbeatWorker();
+		SessionHandler.getInstance().setMissedAnswerThreshold(1);
 		worker.start();
 	}
 

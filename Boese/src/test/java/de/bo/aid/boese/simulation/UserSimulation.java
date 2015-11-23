@@ -54,7 +54,7 @@ public class UserSimulation {
 	 */
 	public void confirmDevices(){
 		HashMap<Integer, TempDevice> devices = distr.getTempDevices();
-		for(Integer key : devices.keySet()){
+		for(Integer key : devices.keySet()){ //TODO ConncurentModificationException
 			try {
 				distr.confirmDevice(key, 0, null);
 				} catch (NotFoundException e) {

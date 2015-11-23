@@ -28,6 +28,7 @@
  */
 package de.bo.aid.boese.socket;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.websocket.Session;
@@ -222,12 +223,12 @@ public class SessionHandler {
 	public void checkHeartbeat(){
 		for(SessionData data : sessions){
 			long now = System.currentTimeMillis();
-			if((now - data.getLastHeartbeat()) > 90){
+			if((now - data.getLastHeartbeat()) > HeartbeatWorker.getIntervall()){
 				if(data.getMissedAnswers() >= missedAnswerThreshold){
 					try {
 						data.getSession().close();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
+						logger.warn("Unable to close session: " + data.getSession());
 						e.printStackTrace();
 					}
 					sessions.remove(data);
