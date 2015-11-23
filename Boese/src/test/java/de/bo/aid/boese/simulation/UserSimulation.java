@@ -56,7 +56,7 @@ public class UserSimulation {
 		HashMap<Integer, TempDevice> devices = distr.getTempDevices();
 		for(Integer key : devices.keySet()){ //TODO ConncurentModificationException
 			try {
-				distr.confirmDevice(key, 0, null);
+				distr.confirmDevice(key, 1, null);
 				} catch (NotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -72,7 +72,7 @@ public class UserSimulation {
 		HashMap<Integer, TempComponent> devices = distr.getTempComponents();
 		for(Integer key : devices.keySet()){
 			try {
-				distr.confirmDeviceComponent(key, 0, null);
+				distr.confirmDeviceComponent(key, 1, null);
 				} catch (NotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -19,7 +19,7 @@ public class UserConfirmZones extends BoeseJson {
 	 * @param status the status
 	 * @param timestamp the timestamp
 	 */
-	protected UserConfirmZones(HashMap<Integer, Integer> tempZones, int connectorId, int status, long timestamp) {
+	public UserConfirmZones(HashMap<Integer, Integer> tempZones, int connectorId, int status, long timestamp) {
 		super(MessageType.USERCONFIRMZONES, connectorId, status, timestamp);
 		this.tempZones = tempZones;
 	}

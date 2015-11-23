@@ -42,8 +42,10 @@ public class ServiceTest {
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");
-		HibernateUtil.setDBURL("boese", "localhost", "5432");
-		
+		HibernateUtil.setDBURL("boeseTest", "localhost", "5432");
+		HibernateUtil.setDBAuto("create");
+
+		Inserts.defaults();
 		service1 = new Service("test1");
 		service2 = new Service("test2");
 		service1Update = new Service("update1");

@@ -43,8 +43,10 @@ public class ConnectorTest {
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");
-		HibernateUtil.setDBURL("boese", "localhost", "5432");
-		
+		HibernateUtil.setDBURL("boeseTest", "localhost", "5432");
+		HibernateUtil.setDBAuto("create");
+
+		Inserts.defaults();
 		con1 = new Connector("first", "123");
 		con2 = new Connector("second", "456");
 		con1Update = new Connector("firstup", "123up");

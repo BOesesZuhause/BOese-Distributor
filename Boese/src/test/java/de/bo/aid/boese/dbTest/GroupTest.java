@@ -42,7 +42,10 @@ public class GroupTest {
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");
-		HibernateUtil.setDBURL("boese", "localhost", "5432");
+		HibernateUtil.setDBURL("boeseTest", "localhost", "5432");
+		HibernateUtil.setDBAuto("create");
+
+		Inserts.defaults();
 		group1 = new Group("test1");
 		group2 = new Group("test2");
 		group1Update = new Group("update1");

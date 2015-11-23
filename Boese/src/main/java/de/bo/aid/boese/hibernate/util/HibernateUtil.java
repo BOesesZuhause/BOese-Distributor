@@ -120,6 +120,10 @@ public class HibernateUtil {
     		String url = "jdbc:postgresql://" + host+ ":" +port+"/"+name;
     		configuration.setProperty("hibernate.connection.url", url); 
       	}
+	    
+	    public static void setDBAuto(String auto){
+	    	configuration.setProperty("hibernate.hbm2ddl.auto", auto);
+	    }
 
 
 }

@@ -32,20 +32,18 @@
 package de.bo.aid.boese.db;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.ObjectNotFoundException;
+import javax.swing.text.html.HTMLDocument.RunElement;
+
 import org.hibernate.PropertyValueException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 import de.bo.aid.boese.exceptions.DBForeignKeyNotFoundException;
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
-import de.bo.aid.boese.main.Distributor;
 import de.bo.aid.boese.model.*;
-import de.bo.aid.boese.ruler.Control;
 import de.bo.aid.boese.ruler.Interpretor;
 import de.bo.aid.boese.ruler.ToDoChecker;
 
@@ -206,7 +204,7 @@ public class Inserts {
  
 		DeviceComponent deco = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoid));
 		if(deco != null){
-			deco.setCurrentValue(new BigDecimal(value));
+			deco.setCurrentValue(BigDecimal.valueOf(value));
 			
 		}
 		else{
@@ -227,7 +225,7 @@ public class Inserts {
 		logcomp.setDeviceComponent(deco);
 		//TODO TIMESTAMP wird hier gespeichert
 		logcomp.setTimestamp(timestamp);
-		logcomp.setValue(new BigDecimal(value));
+		logcomp.setValue(BigDecimal.valueOf(value));
 		
 		try{
 			session.save(logcomp);
@@ -290,23 +288,25 @@ public class Inserts {
 		}
 		
 		
-		int ruID = rule.getRuId();
+		rule.getRuId();
 		
-		try{
-			for(DeviceComponent deco : deCo){
-				session.beginTransaction();
-				DeviceComponentRule decorule = new DeviceComponentRule();
-				decorule.setDevicecomponent(deco);
-				decorule.setRule(rule);
-				decorule.setId(new DeviceComponentRuleId(deco.getDeCoId(), rule.getRuId()));
-				session.save(decorule);
-				session.getTransaction().commit();
+		if (deCo != null){
+			try{
+				for(DeviceComponent deco : deCo){
+					session.beginTransaction();
+					DeviceComponentRule decorule = new DeviceComponentRule();
+					decorule.setDevicecomponent(deco);
+					decorule.setRule(rule);
+					decorule.setId(new DeviceComponentRuleId(deco.getDeCoId(), rule.getRuId()));
+					session.save(decorule);
+					session.getTransaction().commit();
+				}
 			}
-		}
-		catch(PropertyValueException pve){
-			session.getTransaction().rollback();
-			session.close();
-			throw pve; //not null Value is null
+			catch(PropertyValueException pve){
+				session.getTransaction().rollback();
+				session.close();
+				throw pve; //not null Value is null
+			}
 		}
 
 		session.close();
@@ -552,55 +552,102 @@ public class Inserts {
 	 * Defaults.
 	 */
 	public static void defaults(){
-		Session session = connection.getSession();
-		session.beginTransaction();
+//		Session session = connection.getSession();
+//		session.beginTransaction();
 
 		//Default Unit
 		try {
-			Selects.unit(0);
+			Selects.unit(1);
 		} catch (DBObjectNotFoundException e) {
-			Query query = session.createSQLQuery("INSERT INTO Unit (UnId, name, symbol) VALUES (0, 'Undefined', 'ud')");
-			query.executeUpdate();
+			Unit unit = new Unit("Undefined", "ud");
+			unit(unit);
 		}
 		//Default Zone
 		try{
-			Selects.zone(0);
+			Selects.zone(1);
 		} catch (DBObjectNotFoundException e) {
-			Query query = session.createSQLQuery("INSERT INTO Zone (ZoId, SuZoId, name) VALUES (0, 0, 'Global')");
-			query.executeUpdate();
+			Zone zone = new Zone("Global");
+			zone(zone, zone);
 		}
 		//Default Service
 		try{
-			Selects.service(0);
+			Selects.service(1);
 		} catch(DBObjectNotFoundException e){
-			Query query = session.createSQLQuery("INSERT INTO Service (SeId, description) VALUES (0, 'Default')");
-			query.executeUpdate();
+			Service service = new Service("Default");
+			service(service);
 		}
 		//Default User
 		try{
-			Selects.user(0);
+			Selects.user(1);
 		} catch(DBObjectNotFoundException e){
-			Query query = session.createSQLQuery("INSERT INTO \"user\" (usid, firstname, surname, \"password\", username) VALUES (0, 'Super', 'User', 'MasterPassword', 'root')");
-			query.executeUpdate();
+			User user = new User("User", "Super", "MasterPassword", true, null, "root", null);
+			user(user);
 		}
 		//Default Group
 		try{
-			Selects.group((short)0);
+			Selects.group((short)1);
 		} catch(DBObjectNotFoundException e){
-			Query query = session.createSQLQuery("INSERT INTO \"group\" (grid, name) VAlUES (0, 'Users')");
-			query.executeUpdate();
+			Group grp = new Group("Users");
+			group(grp);
 		}
 		//Default Rule
 		try{
-			Selects.rule(0);
+			Selects.rule(1);
 		} catch(DBObjectNotFoundException e){
-			Date d = new Date();
-			String s = (d.getYear()+1900) + "-" + (d.getMonth()+1) + "-" + d.getDate();
-			Query query = session.createSQLQuery("INSERT INTO rule (ruid, permissions, conditions, actions, active, insertdate, modifydate) VAlUES (0, '<PERMISSION></PERMISSION>', '<CONDITION></CONDITION>', '<ACTION></ACTION>', true, '" + s  +"', '" + s + "')");
-			query.executeUpdate();
+			Rule rule = new Rule("<PERMISSION></PERMISSION>", "<CONDITION></CONDITION>", "<ACTION></ACTION>");
+			try {
+				rule(null, rule, null);
+			} catch (DBForeignKeyNotFoundException e1) {
+				// TODO Logger
+				e1.printStackTrace();
+			}
 		}
 		
-		session.getTransaction().commit();
+//		session.getTransaction().commit();
+//		session.close();
+	}
+	
+	/**
+	 * LogConnector.
+	 *
+	 * @param logcon the Log_Connector to Insert
+	 */
+	public static void logConnector(LogConnector logcon){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		try{
+			session.save(logcon);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.getTransaction().rollback();
+			session.close();
+			throw pve; //not null Value is null
+		}
+		
+		session.close();
+	}
+	
+	/**
+	 * LogRule.
+	 *
+	 * @param logrule the Log_Rule to Insert
+	 */
+	public static void logRule(LogRule logrule){
+		Session session = connection.getSession();
+		session.beginTransaction();
+		
+		try{
+			session.save(logrule);
+			session.getTransaction().commit();
+		}
+		catch(PropertyValueException pve){
+			session.getTransaction().rollback();
+			session.close();
+			throw pve; //not null Value is null
+		}
+		
 		session.close();
 	}
 }

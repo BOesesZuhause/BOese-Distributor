@@ -42,7 +42,10 @@ public class ZoneTest {
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");
-		HibernateUtil.setDBURL("boese", "localhost", "5432");
+		HibernateUtil.setDBURL("boeseTest", "localhost", "5432");
+		HibernateUtil.setDBAuto("create");
+		
+		Inserts.defaults();
 		zone1 = new Zone("test1");
 		zone2 = new Zone("test2");
 		zone1Update = new Zone("update1");
@@ -56,11 +59,11 @@ public class ZoneTest {
 	public void test() {
 		
 		//Insert Zone 1
-		insert(zone1);
+		insert(zone1, zone1);
 		zone1Update.setZoId(zone1.getZoId());
 		zone1Update.setZone(zone1Update);
 		//Insert Zone 2
-		insert(zone2);
+		insert(zone2, zone1);
 		zone2Update.setZoId(zone2.getZoId());
 		zone2Update.setZone(zone2Update);
 
@@ -86,8 +89,8 @@ public class ZoneTest {
 	 *
 	 * @param zone the zone
 	 */
-	private void insert(Zone zone){
-		Inserts.zone(zone, zone);
+	private void insert(Zone zone, Zone suzone){
+		Inserts.zone(zone, suzone);
 	}
 	
 	/**
