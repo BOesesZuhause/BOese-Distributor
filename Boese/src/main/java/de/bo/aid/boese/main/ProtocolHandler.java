@@ -69,8 +69,10 @@ import de.bo.aid.boese.json.SendValue;
 import de.bo.aid.boese.json.UnitJSON;
 import de.bo.aid.boese.json.UserConfirmRules;
 import de.bo.aid.boese.json.UserConfirmTemps;
+import de.bo.aid.boese.json.UserConfirmUnits;
 import de.bo.aid.boese.json.UserConfirmZones;
 import de.bo.aid.boese.json.UserCreateRules;
+import de.bo.aid.boese.json.UserCreateUnits;
 import de.bo.aid.boese.json.UserCreateZones;
 import de.bo.aid.boese.json.UserDevice;
 import de.bo.aid.boese.json.UserRequestConnectors;
@@ -203,6 +205,10 @@ public class ProtocolHandler implements MessageHandler {
 			break;
 		case USERREQUESTALLUNITS:
 			handleUserRequestAllUnits((UserRequestGeneral) bjMessage, connectorId);
+			break;
+		case USERCREATEUNITS:
+			handleUserCreateUnits((UserCreateUnits) bjMessage, connectorId);
+			break;
 		default:
 			break;
 		}
@@ -667,6 +673,24 @@ public class ProtocolHandler implements MessageHandler {
 		}
 	}
 	
+	private void handleUserCreateUnits(UserCreateUnits ucu, int connectorId) {
+		if (connectorId != ucu.getConnectorId()) {
+			SessionHandler.getInstance().rejectConnection(connectorId);
+			return;
+		}
+		HashMap<Integer, Integer> tempUnits = new HashMap<>();
+		for (UnitJSON unit : ucu.getUnits()) {
+			Unit u = null;
+			u = new Unit(unit.getUnitName(), unit.getUnitSymbol());
+			Inserts.unit(u);
+			tempUnits.put(unit.getTempUnitId(), u.getUnId());
+			
+		}
+		if (!tempUnits.isEmpty()) {
+			sendConfirmUnits(tempUnits, connectorId);
+		}
+	}
+	
 	/**
 	 * Handle multi messages.
 	 *
@@ -869,6 +893,13 @@ public class ProtocolHandler implements MessageHandler {
 		BoeseJson ucoz = new UserConfirmZones(tempZones, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(ucoz, os);
+		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
+	}
+	
+	public void sendConfirmUnits(HashMap<Integer, Integer> tempUnits, int connectorId) {
+		BoeseJson ucou = new UserConfirmUnits(tempUnits, connectorId, 0, new Date().getTime());
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(ucou, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 
