@@ -66,6 +66,7 @@ import de.bo.aid.boese.json.SendDeviceComponents;
 import de.bo.aid.boese.json.SendDevices;
 import de.bo.aid.boese.json.SendStatus;
 import de.bo.aid.boese.json.SendValue;
+import de.bo.aid.boese.json.UnitJSON;
 import de.bo.aid.boese.json.UserConfirmRules;
 import de.bo.aid.boese.json.UserConfirmTemps;
 import de.bo.aid.boese.json.UserConfirmZones;
@@ -80,6 +81,7 @@ import de.bo.aid.boese.json.UserSendDeviceComponent;
 import de.bo.aid.boese.json.UserSendDevices;
 import de.bo.aid.boese.json.UserSendRules;
 import de.bo.aid.boese.json.UserSendTemps;
+import de.bo.aid.boese.json.UserSendUnits;
 import de.bo.aid.boese.json.UserSendZones;
 import de.bo.aid.boese.json.UserTempComponent;
 import de.bo.aid.boese.json.ZoneJSON;
@@ -90,6 +92,7 @@ import de.bo.aid.boese.model.Connector;
 import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceComponent;
 import de.bo.aid.boese.model.Rule;
+import de.bo.aid.boese.model.Unit;
 import de.bo.aid.boese.model.Zone;
 import de.bo.aid.boese.ruler.Inquiry;
 import de.bo.aid.boese.ruler.Interpretor;
@@ -194,10 +197,12 @@ public class ProtocolHandler implements MessageHandler {
 			break;
 		case HEARTBEATMESSAGE:
 			handleHeartBeat((HeartBeatMessage) bjMessage, connectorId);
-		break;
+			break;
 		case USERCREATEZONES:
 			handleUserCreateZones((UserCreateZones) bjMessage, connectorId);
 			break;
+		case USERREQUESTALLUNITS:
+			handleUserRequestAllUnits((UserRequestGeneral) bjMessage, connectorId);
 		default:
 			break;
 		}
@@ -530,6 +535,19 @@ public class ProtocolHandler implements MessageHandler {
 					rule.getModifyDate().getTime(), rule.getPermissions(), rule.getConditions(), rule.getActions()));
 		}
 		sendUserSendRules(rules, connectorId);
+	}
+	
+	private void handleUserRequestAllUnits(UserRequestGeneral urg, int connectorId) {
+		if (connectorId != urg.getConnectorId()) {
+			SessionHandler.getInstance().rejectConnection(connectorId);
+			return;
+		}
+		HashSet<UnitJSON> units = new HashSet<>();
+		List<Unit> unitList = AllSelects.Units();
+		for (Unit unit : unitList) {
+			units.add(new UnitJSON(unit.getUnId(), unit.getName(), unit.getSymbol()));
+		}
+		sendUserSendUnits(units, connectorId);
 	}
 
 	/**
@@ -878,6 +896,14 @@ public class ProtocolHandler implements MessageHandler {
 		BoeseJson usc = new UserSendRules(rules, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(usc, os);
+		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
+	}
+	
+	public void sendUserSendUnits(HashSet<UnitJSON> units, int connectorId) {
+
+		BoeseJson usu = new UserSendUnits(units, connectorId, 0, new Date().getTime());
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(usu, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 

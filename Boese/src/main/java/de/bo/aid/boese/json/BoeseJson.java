@@ -157,7 +157,11 @@ public class BoeseJson {
 		USERCONFIRMZONES,
 		
 		/** The heartbeatmessage. */
-		HEARTBEATMESSAGE
+		HEARTBEATMESSAGE,
+		USERREQUESTALLUNITS,
+		USERSENDUNITS,
+		USERCREATEUNITS,
+		USERCONFIRMUNITS
 	}
 
 	/**
@@ -484,6 +488,22 @@ public class BoeseJson {
 				}
 			} else {}
 			bj = new UserSendRules(ruleSetURAR, headerConnectorID, headerStatus, headerTimestamp);
+			break;
+		case 61: // UserRequestAllUnits
+			bj = new UserRequestGeneral(MessageType.USERREQUESTALLUNITS, headerConnectorID, headerStatus, headerTimestamp);
+			break;
+		case 62: // UserSendUnits
+			HashSet<UnitJSON> unitSetURAU = new HashSet<>();
+			JsonArray unitsURAR = jo.getJsonArray("Units");
+			if (unitsURAR != null) {
+				for (int i = 0; i < unitsURAR.size(); i++) {
+					JsonObject unitURAR = unitsURAR.getJsonObject(i);
+					unitSetURAU.add(new UnitJSON(unitURAR.getInt("UnitId"),
+									unitURAR.getString("UnitName"), 
+									unitURAR.getString("UnitSymbol")));
+				}
+			} else {}
+			bj = new UserSendUnits(unitSetURAU, headerConnectorID, headerStatus, headerTimestamp);
 			break;
 		case 80: // UserRequestTemps
 			bj = new UserRequestGeneral(MessageType.USERREQUESTTEMPS, headerConnectorID, headerStatus, headerTimestamp);
@@ -894,6 +914,24 @@ public class BoeseJson {
 				rulesUSR.add(ruleUSR);
 			}
 			job.add("Rules", rulesUSR);
+			break;
+		case USERREQUESTALLUNITS:
+			UserRequestGeneral urau = (UserRequestGeneral)message;
+			job.add("Header", addHeader(61, urau.getConnectorId(), urau.getStatus(), urau.getTimestamp()));
+			break;
+		case USERSENDUNITS:
+			UserSendUnits usu = (UserSendUnits)message;
+			job.add("Header", addHeader(62, usu.getConnectorId(), usu.getStatus(), usu.getTimestamp()));
+			JsonArrayBuilder unitsUSU = Json.createArrayBuilder();
+			JsonObjectBuilder unitUSU;
+			for (UnitJSON unit : usu.getUnits()) {
+				unitUSU = Json.createObjectBuilder();
+				unitUSU.add("UnitId", unit.getUnitId());
+				unitUSU.add("UnitName", unit.getUnitName());
+				unitUSU.add("UnitSymbol", unit.getUnitSymbol());
+				unitsUSU.add(unitUSU);
+			}
+			job.add("Units", unitsUSU);
 			break;
 		case USERREQUESTTEMPS:
 			UserRequestGeneral urt = (UserRequestGeneral)message;
