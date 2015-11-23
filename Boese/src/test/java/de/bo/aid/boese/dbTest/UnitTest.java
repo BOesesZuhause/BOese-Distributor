@@ -44,6 +44,8 @@ public class UnitTest {
 		HibernateUtil.setDBPassword("Di0bPWfw");
 		HibernateUtil.setDBURL("boeseTest", "localhost", "5432");
 		HibernateUtil.setDBAuto("create");
+
+		Inserts.defaults();
 		unit1 = new Unit("meter", "m");;
 		unit2 = new Unit("gramm", "g");
 		unit1Update = new Unit("Kilometer", "km");

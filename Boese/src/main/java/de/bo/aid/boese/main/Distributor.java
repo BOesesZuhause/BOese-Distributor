@@ -510,7 +510,7 @@ private final String logo =
 		tempDevices.put(tempDeviceId, temp);
 		if(autoConfirm){
 			try {
-				confirmDevice(tempDeviceId, 0, null);
+				confirmDevice(tempDeviceId, 1, null);
 			} catch (NotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -528,7 +528,7 @@ private final String logo =
 		tempDeviceComponents.put(tempCompId, temp);
 		if(autoConfirm){
 			try {
-				confirmDeviceComponent(tempCompId, 0, null);
+				confirmDeviceComponent(tempCompId, 1, null);
 			} catch (NotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

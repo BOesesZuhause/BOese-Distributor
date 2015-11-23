@@ -51,7 +51,8 @@ public class ComponentTest {
 		HibernateUtil.setDBPassword("Di0bPWfw");
 		HibernateUtil.setDBURL("boeseTest", "localhost", "5432");
 		HibernateUtil.setDBAuto("create");
-		
+
+		Inserts.defaults();
 		testUnit = new Unit("test", "test");
 		Inserts.unit(testUnit);
 		

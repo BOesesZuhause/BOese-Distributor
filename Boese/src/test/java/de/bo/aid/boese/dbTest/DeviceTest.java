@@ -58,7 +58,8 @@ public class DeviceTest {
 		HibernateUtil.setDBPassword("Di0bPWfw");
 		HibernateUtil.setDBURL("boeseTest", "localhost", "5432");
 		HibernateUtil.setDBAuto("create");
-		
+
+		Inserts.defaults();
 		testCon = new Connector("test", "test");
 		Inserts.connector(testCon);
 		
