@@ -68,7 +68,9 @@ import de.bo.aid.boese.json.SendStatus;
 import de.bo.aid.boese.json.SendValue;
 import de.bo.aid.boese.json.UserConfirmRules;
 import de.bo.aid.boese.json.UserConfirmTemps;
+import de.bo.aid.boese.json.UserConfirmZones;
 import de.bo.aid.boese.json.UserCreateRules;
+import de.bo.aid.boese.json.UserCreateZones;
 import de.bo.aid.boese.json.UserDevice;
 import de.bo.aid.boese.json.UserRequestConnectors;
 import de.bo.aid.boese.json.UserRequestDeviceComponents;
@@ -193,6 +195,9 @@ public class ProtocolHandler implements MessageHandler {
 		case HEARTBEATMESSAGE:
 			handleHeartBeat((HeartBeatMessage) bjMessage, connectorId);
 		break;
+		case USERCREATEZONES:
+			handleUserCreateZones((UserCreateZones) bjMessage, connectorId);
+			break;
 		default:
 			break;
 		}
@@ -619,6 +624,31 @@ public class ProtocolHandler implements MessageHandler {
 		sendConfirmRules(tempRules, connectorId);
 	}
 	
+	private void handleUserCreateZones(UserCreateZones ucz, int connectorId) {
+		if (connectorId != ucz.getConnectorId()) {
+			SessionHandler.getInstance().rejectConnection(connectorId);
+			return;
+		}
+		HashMap<Integer, Integer> tempZones = new HashMap<>();
+		for (ZoneJSON zone : ucz.getZones()) {
+			Zone z = null;
+			z = new Zone(zone.getZoneName());
+			Zone superZone = null;
+			try {
+				superZone = Selects.zone(zone.getSuperZoneId());
+			} catch (DBObjectNotFoundException e) {
+				logger.error(e.getMessage());
+				e.printStackTrace();
+			}
+			Inserts.zone(z, superZone);
+			tempZones.put(zone.getTempZoneId(), z.getZoId());
+			
+		}
+		if (!tempZones.isEmpty()) {
+			sendConfirmZones(tempZones, connectorId);
+		}
+	}
+	
 	/**
 	 * Handle multi messages.
 	 *
@@ -814,6 +844,13 @@ public class ProtocolHandler implements MessageHandler {
 		BoeseJson ucor = new UserConfirmRules(tempRules, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(ucor, os);
+		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
+	}
+	
+	public void sendConfirmZones(HashMap<Integer, Integer> tempZones, int connectorId) {
+		BoeseJson ucoz = new UserConfirmZones(tempZones, connectorId, 0, new Date().getTime());
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(ucoz, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 
