@@ -49,6 +49,12 @@ public class Connection {
 	//SessionFactory is Expensive and Threadsafe
 	private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
+	/**
+	 * Instantiates a new connection.
+	 */
+	private Connection(){
+		
+	}
 	
 	/**
 	 * Gets the connection.

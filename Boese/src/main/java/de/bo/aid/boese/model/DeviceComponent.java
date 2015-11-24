@@ -74,7 +74,7 @@ public class DeviceComponent implements java.io.Serializable {
 	/** The max value. */
 	private BigDecimal maxValue;
 	
-	/** will this DeviceComponent logged */
+	/**  will this DeviceComponent logged. */
 	private boolean loggen;
 	
 	/** The device componente replaces for de co id. */
@@ -304,26 +304,56 @@ public class DeviceComponent implements java.io.Serializable {
 		this.currentValue = currentValue;
 	}
 
+	/**
+	 * Gets the min value.
+	 *
+	 * @return the min value
+	 */
 	public BigDecimal getMinValue() {
 		return minValue;
 	}
 
+	/**
+	 * Sets the min value.
+	 *
+	 * @param minValue the new min value
+	 */
 	public void setMinValue(BigDecimal minValue) {
 		this.minValue = minValue;
 	}
 
+	/**
+	 * Gets the max value.
+	 *
+	 * @return the max value
+	 */
 	public BigDecimal getMaxValue() {
 		return maxValue;
 	}
 
+	/**
+	 * Sets the max value.
+	 *
+	 * @param maxValue the new max value
+	 */
 	public void setMaxValue(BigDecimal maxValue) {
 		this.maxValue = maxValue;
 	}
 
+	/**
+	 * Checks if is loggen.
+	 *
+	 * @return true, if is loggen
+	 */
 	public boolean isLoggen() {
 		return loggen;
 	}
 
+	/**
+	 * Sets the loggen.
+	 *
+	 * @param loggen the new loggen
+	 */
 	public void setLoggen(boolean loggen) {
 		this.loggen = loggen;
 	}

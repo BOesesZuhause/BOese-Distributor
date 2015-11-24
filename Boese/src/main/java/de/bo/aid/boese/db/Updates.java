@@ -34,15 +34,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
-import de.bo.aid.boese.main.Distributor;
 import de.bo.aid.boese.model.*;
-import de.bo.aid.boese.ruler.Control;
 import de.bo.aid.boese.ruler.Interpretor;
-import de.bo.aid.boese.ruler.TimeTodos;
 import de.bo.aid.boese.ruler.ToDoChecker;
 
 // TODO: Auto-generated Javadoc
@@ -53,6 +49,14 @@ public class Updates {
 	
 	/** The connection. */
 	private static Connection connection = Connection.getConnection();
+	
+	
+	/**
+	 * Instantiates a new updates.
+	 */
+	private Updates(){
+		
+	}
 	
 	/**
 	 * Value.
@@ -468,11 +472,8 @@ public class Updates {
 			DBObjectNotFoundException onfe = new DBObjectNotFoundException("Rule not found");
 			onfe.initCause(e.getCause());
 			throw onfe;
-		}
-		
+		}		
 		session.close();
-		
-		Distributor.changeInRule(rule.getRuId());
 		if(tdc != null)
 			tdc.changeInToDo();
 	}
@@ -530,7 +531,7 @@ public class Updates {
 		
 		Rule rule = null;
 		try{
-			Selects.rule(ruid);
+			rule = Selects.rule(ruid);
 		}
 		catch(Exception e){
 			session.getTransaction().rollback();
@@ -558,7 +559,7 @@ public class Updates {
 		
 		Rule rule = null;
 		try{
-			Selects.rule(ruid);
+			rule = Selects.rule(ruid);
 		}
 		catch(Exception e){
 			session.getTransaction().rollback();

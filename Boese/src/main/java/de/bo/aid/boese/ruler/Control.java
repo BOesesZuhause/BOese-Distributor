@@ -34,7 +34,6 @@ package de.bo.aid.boese.ruler;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import de.bo.aid.boese.db.Selects;

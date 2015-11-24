@@ -118,7 +118,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 		this.calculate = new boolean[5];
 		cron = cron.replace(" ", "");
 		String[] cronElements = cron.split(";");
-		if(cron.equals("*;*;*;*;*;*")){
+		if(("*;*;*;*;*;*").equals(cron)){
 			setMin("+1");
 		}
 		else{
@@ -186,7 +186,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	public String getMinString(){
 		if(this.calculate[0]){
 			if(this.min < 0){
-				return this.min + "";
+				return Integer.toString(this.min);
 			}
 			else if(this.min == 0){
 				return "*";
@@ -196,7 +196,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 			}
 		}
 		else{
-			return this.min + "";
+			return Integer.toString(this.min);
 		}
 	}
 	
@@ -220,7 +220,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 			}
 			else if(this.min >59){
 				i[0] = min % 60;
-				i[1] = (min / 60);
+				i[1] = min / 60;
 			}
 			else{
 				i[0] = min;
@@ -247,7 +247,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	 * @param min the new min
 	 */
 	public void setMin(String min) {
-		if(min.equals("*")){
+		if("*".equals(min)){
 			this.calculate[0] = true;
 			this.min = 0;
 		}
@@ -276,7 +276,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	public String getHourString(){
 		if(this.calculate[1]){
 			if(this.hour < 0){
-				return this.hour + "";
+				return Integer.toString(this.hour);
 			}
 			else if(this.hour == 0){
 				return "*";
@@ -286,7 +286,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 			}
 		}
 		else{
-			return this.hour + "";
+			return Integer.toString(this.hour);
 		}
 	}
 	
@@ -312,7 +312,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 		}
 		else if(hour > 23){
 			i[0] = hour % 24 + 1;
-			i[1] = ((hour - 1) / 24);
+			i[1] = (hour - 1) / 24;
 		}
 		else{
 			i[0] = hour;
@@ -338,7 +338,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	 * @param hour the new hour
 	 */
 	public void setHour(String hour) {
-		if(hour.equals("*")){
+		if(("*").equals(hour)){
 			this.calculate[1] = true;
 			this.hour = 0;
 		}
@@ -367,7 +367,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	public String getDayString(){
 		if(this.calculate[2]){
 			if(this.day < 0){
-				return this.day + "";
+				return Integer.toString(this.day);
 			}
 			else if(this.day == 0){
 				return "*";
@@ -377,7 +377,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 			}
 		}
 		else{
-			return this.day + "";
+			return Integer.toString(this.day);
 		}
 	}
 	
@@ -431,7 +431,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	 * @param day the new day
 	 */
 	public void setDay(String day) {
-		if(day.equals("*")){
+		if("*".equals(day)){
 			this.day = 0;
 			this.calculate[4] = true;
 		}
@@ -461,7 +461,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	public String getMonthString(){
 		if(this.calculate[3]){
 			if(this.month < 0){
-				return this.month + "";
+				return Integer.toString(this.month);
 			}
 			else if(this.month == 0){
 				return "*";
@@ -471,7 +471,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 			}
 		}
 		else{
-			return this.month + "";
+			return Integer.toString(this.month);
 		}
 	}
 	
@@ -497,7 +497,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 		}
 		else if(month > 12){
 			i[0] = month % 12 + 1;
-			i[1] = ((month - 1) / 12);
+			i[1] = (month - 1) / 12;
 		}
 		else{
 			i[0] = month;
@@ -523,7 +523,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	 * @param month the new month
 	 */
 	public void setMonth(String month) {
-		if(month.equals("*")){
+		if("*".equals(month)){
 			this.calculate[3] = true;
 			this.month = 0;
 		}
@@ -552,7 +552,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	public String getYearString(){
 		if(this.calculate[4]){
 			if(this.year < 0){
-				return this.year + "";
+				return Integer.toString(this.year);
 			}
 			else if(this.year == 0){
 				return "*";
@@ -562,7 +562,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 			}
 		}
 		else{
-			return this.year + "";
+			return Integer.toString(this.year);
 		}
 	}
 	
@@ -598,7 +598,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	 * @param year the new year
 	 */
 	public void setYear(String year) {
-		if(year.equals("*")){
+		if("*".equals(year)){
 			this.year = 0;
 			this.calculate[4] = true;
 		}
@@ -650,7 +650,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	 * @param dow the new dow
 	 */
 	public void setDow(String dow) {
-		if(dow.equals("*")){
+		if("*".equals(dow)){
 			this.dow = new boolean[7];
 			for(int i = 0; i < this.dow.length; i++){
 				this.dow[i] = true;
@@ -691,6 +691,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString(){
 		return 	getMinString() + ", " + getHourString() + ", " + getDayString() 
 				+ ", " + getMonthString() + ", " + getYearString() + ", " + getDowString();

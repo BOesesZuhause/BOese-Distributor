@@ -34,6 +34,9 @@ package de.bo.aid.boese.ruler;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.bo.aid.boese.db.AllSelects;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
@@ -51,6 +54,9 @@ import de.bo.aid.boese.xml.Condition;
  * The Class Interpretor.
  */
 public class Interpretor {
+
+    /** The Constant logger. */
+    private static final Logger logger = LogManager.getLogger(Interpretor.class);
 	
 	/**
 	 * Gets the all de co ids condition.
@@ -64,7 +70,7 @@ public class Interpretor {
 			try {
 				list.add(Selects.deviceComponent(comp.getId()));
 			} catch (DBObjectNotFoundException e) {
-				// TODO write Log
+			    logger.error(e);
 				e.printStackTrace();
 			}
 		}
@@ -95,7 +101,7 @@ public static void createTodos(ToDoChecker tdc){
 				ToDo todo = new ToDo(new TimeFormat(rr.getRepeat()).getDate());
 				Inserts.toDoWithoutChange(todo, rr.getRrId());
 			} catch (DBForeignKeyNotFoundException e) {
-				// TODO Logger
+				logger.error(e);
 				e.printStackTrace();
 			}
 		}
