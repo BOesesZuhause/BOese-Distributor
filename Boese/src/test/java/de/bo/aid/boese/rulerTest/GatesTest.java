@@ -4,14 +4,12 @@ import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import de.bo.aid.boese.db.Inserts;
-import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.model.Component;

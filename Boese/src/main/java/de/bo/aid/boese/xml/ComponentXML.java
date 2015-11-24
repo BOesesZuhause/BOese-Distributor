@@ -147,6 +147,15 @@ public class ComponentXML {
 	}
 	
 	/**
+	 * Sets the comparator.
+	 *
+	 * @param comperator the new comparator
+	 */
+	public void setValue(Comperator comperator) {
+		this.comperator = comperator;
+	}
+	
+	/**
 	 * Gets the comperator.
 	 *
 	 * @return the comperator
