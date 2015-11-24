@@ -31,7 +31,6 @@
 
 package de.bo.aid.boese.db;
 
-import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 
 import de.bo.aid.boese.model.ToDo;
@@ -42,6 +41,13 @@ import de.bo.aid.boese.model.ToDo;
  */
 public class Deletes {
 	
+	/**
+	 * Instantiates a new deletes.
+	 */
+	private Deletes(){
+		
+	}
+	
 	/** The connection. */
 	private static Connection connection = Connection.getConnection();
 	
@@ -50,7 +56,7 @@ public class Deletes {
 	 *
 	 * @param toDo the to do
 	 */
-	public static void ToDo(ToDo toDo){
+	public static void toDo(ToDo toDo){
 		Session session = connection.getSession();
 		session.beginTransaction();
 		

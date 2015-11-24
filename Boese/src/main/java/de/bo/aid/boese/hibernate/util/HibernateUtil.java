@@ -48,7 +48,7 @@ public class HibernateUtil {
  	private static SessionFactory sessionFactory;
  	
  	/** The Constant logger. */
-	 final static  Logger logger = LogManager.getLogger(HibernateUtil.class);
+	private final static  Logger logger = LogManager.getLogger(HibernateUtil.class);
 	
 
  	
@@ -121,7 +121,12 @@ public class HibernateUtil {
     		configuration.setProperty("hibernate.connection.url", url); 
       	}
 	    
-	    public static void setDBAuto(String auto){
+	    /**
+    	 * Sets the DB auto.
+    	 *
+    	 * @param auto the new DB auto
+    	 */
+    	public static void setDBAuto(String auto){
 	    	configuration.setProperty("hibernate.hbm2ddl.auto", auto);
 	    }
 

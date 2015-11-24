@@ -33,7 +33,6 @@ package de.bo.aid.boese.db;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
@@ -47,6 +46,13 @@ public class Selects {
 	
 	/** The connection. */
 	private static Connection connection = Connection.getConnection();
+	
+	/**
+	 * Instantiates a new selects.
+	 */
+	private Selects(){
+		
+	}
 	
 	/**
 	 * Connector.

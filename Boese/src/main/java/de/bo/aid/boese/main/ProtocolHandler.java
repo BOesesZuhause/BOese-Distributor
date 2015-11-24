@@ -236,8 +236,7 @@ public class ProtocolHandler implements MessageHandler {
 
 		if (rc.getPassword() == null && rc.getConnectorId() == -1) { //connector without id
 			
-			// Add requesting Connector to tempConnectors with tempId from
-			// SocketHandler
+			// Add requesting Connector to tempConnectors with tempId from SocketHandler
 			if(rc.isUserConnector()){
 				distributor.addTempConnector(rc.getConnectorName(), tempId, true);
 			}else{
@@ -426,7 +425,7 @@ public class ProtocolHandler implements MessageHandler {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
-		List<Device> devList = AllSelects.Devices();
+		List<Device> devList = AllSelects.devices();
 		HashSet<UserDevice> deviceList = new HashSet<>();
 		for (Device dev : devList) {
 			deviceList.add(new UserDevice(dev.getAlias(), dev.getDeId(), dev.getZone().getZoId(),
@@ -501,7 +500,7 @@ public class ProtocolHandler implements MessageHandler {
 				connectors.put(conId, con.getName());
 			}
 		} else if (urc.getType() == MessageType.USERREQUESTALLCONNECTORS) {
-			List<Connector> connectorList = AllSelects.Connector();
+			List<Connector> connectorList = AllSelects.connector();
 			for (Connector connector : connectorList) {
 				connectors.put(connector.getCoId(), connector.getName());
 			}
@@ -523,7 +522,7 @@ public class ProtocolHandler implements MessageHandler {
 			return;
 		}
 		HashSet<ZoneJSON> zones = new HashSet<>();
-		List<Zone> zoneList = AllSelects.Zones();
+		List<Zone> zoneList = AllSelects.zones();
 		for (Zone zone : zoneList) {
 			zones.add(new ZoneJSON(zone.getZoId(), zone.getZone().getZoId(), zone.getName()));
 		}
@@ -544,7 +543,7 @@ public class ProtocolHandler implements MessageHandler {
 			return;
 		}
 		HashSet<RuleJSON> rules = new HashSet<>();
-		List<Rule> ruleList = AllSelects.Rules();
+		List<Rule> ruleList = AllSelects.rules();
 		for (Rule rule : ruleList) {
 			rules.add(new RuleJSON(rule.getRuId(), rule.getActive().booleanValue(), rule.getInsertDate().getTime(),
 					rule.getModifyDate().getTime(), rule.getPermissions(), rule.getConditions(), rule.getActions()));
@@ -552,13 +551,19 @@ public class ProtocolHandler implements MessageHandler {
 		sendUserSendRules(rules, connectorId);
 	}
 	
+	/**
+	 * Handle user request all units.
+	 *
+	 * @param urg the urg
+	 * @param connectorId the connector id
+	 */
 	private void handleUserRequestAllUnits(UserRequestGeneral urg, int connectorId) {
 		if (connectorId != urg.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
 		HashSet<UnitJSON> units = new HashSet<>();
-		List<Unit> unitList = AllSelects.Units();
+		List<Unit> unitList = AllSelects.units();
 		for (Unit unit : unitList) {
 			units.add(new UnitJSON(unit.getUnId(), unit.getName(), unit.getSymbol()));
 		}
@@ -657,6 +662,12 @@ public class ProtocolHandler implements MessageHandler {
 		sendConfirmRules(tempRules, connectorId);
 	}
 	
+	/**
+	 * Handle user create zones.
+	 *
+	 * @param ucz the ucz
+	 * @param connectorId the connector id
+	 */
 	private void handleUserCreateZones(UserCreateZones ucz, int connectorId) {
 		if (connectorId != ucz.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
@@ -682,6 +693,12 @@ public class ProtocolHandler implements MessageHandler {
 		}
 	}
 	
+	/**
+	 * Handle user create units.
+	 *
+	 * @param ucu the ucu
+	 * @param connectorId the connector id
+	 */
 	private void handleUserCreateUnits(UserCreateUnits ucu, int connectorId) {
 		if (connectorId != ucu.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
@@ -898,6 +915,12 @@ public class ProtocolHandler implements MessageHandler {
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
+	/**
+	 * Send confirm zones.
+	 *
+	 * @param tempZones the temp zones
+	 * @param connectorId the connector id
+	 */
 	public void sendConfirmZones(HashMap<Integer, Integer> tempZones, int connectorId) {
 		BoeseJson ucoz = new UserConfirmZones(tempZones, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
@@ -905,6 +928,12 @@ public class ProtocolHandler implements MessageHandler {
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
+	/**
+	 * Send confirm units.
+	 *
+	 * @param tempUnits the temp units
+	 * @param connectorId the connector id
+	 */
 	public void sendConfirmUnits(HashMap<Integer, Integer> tempUnits, int connectorId) {
 		BoeseJson ucou = new UserConfirmUnits(tempUnits, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
@@ -939,6 +968,12 @@ public class ProtocolHandler implements MessageHandler {
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
+	/**
+	 * Send user send units.
+	 *
+	 * @param units the units
+	 * @param connectorId the connector id
+	 */
 	public void sendUserSendUnits(HashSet<UnitJSON> units, int connectorId) {
 
 		BoeseJson usu = new UserSendUnits(units, connectorId, 0, new Date().getTime());

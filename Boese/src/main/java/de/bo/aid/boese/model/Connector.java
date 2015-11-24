@@ -212,10 +212,20 @@ public class Connector implements java.io.Serializable {
 		this.status = status;
 	}
 
+	/**
+	 * Checks if is user connector.
+	 *
+	 * @return true, if is user connector
+	 */
 	public boolean isUserConnector() {
 		return userConnector;
 	}
 
+	/**
+	 * Sets the user connector.
+	 *
+	 * @param userConnector the new user connector
+	 */
 	public void setUserConnector(boolean userConnector) {
 		this.userConnector = userConnector;
 	}

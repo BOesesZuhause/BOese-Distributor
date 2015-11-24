@@ -74,7 +74,7 @@ public class ToDoChecker extends Thread{
 	 */
 	public void run(){
 		while(true){
-			if(ttl.size() == 0){
+			if(ttl.isEmpty()){
 				try {
 					b = false;
 					sleep(1000*5);
@@ -99,7 +99,7 @@ public class ToDoChecker extends Thread{
 						
 						ToDo todo = Selects.toDo(tt.getId());
 						RepeatRule rr = todo.getRepeatRule();
-						Deletes.ToDo(todo);
+						Deletes.toDo(todo);
 						if(rr.getRrId() == 0){
 							todo = null;
 						}
@@ -116,7 +116,7 @@ public class ToDoChecker extends Thread{
 						todos.add(new ComponentXML(tt.getDeco().getDeCoId(), tt.getValue()));
 						ToDo todo = Selects.toDo(tt.getId());
 						RepeatRule rr = todo.getRepeatRule();
-						Deletes.ToDo(todo);
+						Deletes.toDo(todo);
 						if(rr.getRrId() == 0){
 							todo = null;
 						}
@@ -145,7 +145,8 @@ public class ToDoChecker extends Thread{
 	 * Change in to do.
 	 */
 	public void changeInToDo(){
-		while(b){
+		//TODO anders lösen
+	    while(b){
 		}
 		List<ToDo> todos = AllSelects.toDos();
 		this.ttl = new ArrayList<TimeTodos>();

@@ -33,7 +33,6 @@ package de.bo.aid.boese.db;
 
 import org.hibernate.Session;
 
-import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceComponent;
 
 // TODO: Auto-generated Javadoc
@@ -46,6 +45,13 @@ public class Checks {
 	private static Connection connection = Connection.getConnection();
 	
 	/**
+	 * Instantiates a new checks.
+	 */
+	private Checks(){
+		
+	}
+	
+	/**
 	 * Device component id.
 	 *
 	 * @param decoid the decoid
@@ -56,8 +62,8 @@ public class Checks {
 		session.beginTransaction();
 		
 		try{
-			DeviceComponent devcomp = new DeviceComponent();
-			devcomp = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoid));
+			//TODO @Fabio nachgucken was das macht
+			session.get(DeviceComponent.class, new Integer(decoid));
 			session.getTransaction().commit();
 			session.close();
 			return true;

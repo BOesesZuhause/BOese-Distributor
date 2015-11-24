@@ -1568,9 +1568,7 @@ public class protokollTest {
 		//TODO tempDevice und tempComponent als eigene Klassen
 		OutputStream os = new ByteArrayOutputStream();
 		HashMap<Integer, TempConnector> tempConnectors = new HashMap<Integer, TempConnector>();
-		TempConnector tempCon = new TempConnector();
-		tempCon.setName("HUE");
-		tempCon.setUserConnector(false);
+		TempConnector tempCon = new TempConnector("HUE", false);
 		tempConnectors.put(3, tempCon);
 		HashMap<Integer, TempDevice> tempDevices = new HashMap<Integer, TempDevice>();
 		TempDevice tempDev = new TempDevice(2, "Steckdose");

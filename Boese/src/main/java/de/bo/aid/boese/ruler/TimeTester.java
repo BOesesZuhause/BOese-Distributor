@@ -37,7 +37,6 @@ import java.util.Date;
 import java.util.List;
 
 import de.bo.aid.boese.db.Inserts;
-import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.model.Component;
 import de.bo.aid.boese.model.Connector;
 import de.bo.aid.boese.model.Device;

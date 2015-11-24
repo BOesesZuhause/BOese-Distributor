@@ -35,10 +35,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.text.html.HTMLDocument.RunElement;
-
 import org.hibernate.PropertyValueException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 
 import de.bo.aid.boese.exceptions.DBForeignKeyNotFoundException;
@@ -57,6 +54,13 @@ public class Inserts {
 	/** The connection. */
 	private static Connection connection = Connection.getConnection();
 	
+	
+	/**
+	 * Instantiates a new inserts.
+	 */
+	private Inserts(){
+		
+	}
 	/**
 	 * Device.
 	 *

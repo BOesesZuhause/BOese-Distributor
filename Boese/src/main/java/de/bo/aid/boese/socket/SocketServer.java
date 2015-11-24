@@ -32,6 +32,8 @@ package de.bo.aid.boese.socket;
 
 import javax.websocket.server.ServerContainer;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -42,14 +44,25 @@ import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainer
  * The Class SocketServer.
  */
 public class SocketServer {
+    
+    /** The Constant logger for log4j. */
+    final  Logger logger = LogManager.getLogger(SocketServer.class);
 	
 	/** The instance. */
 	private static SocketServer instance = new SocketServer();
+
+    /** The server. */
+    private Server server;
+    
+    /** The message handler. */
+    private MessageHandler messageHandler;
 	
 	/**
 	 * Instantiates a new socket server.
 	 */
-	private SocketServer(){};
+	private SocketServer(){
+	    
+	};
 
 
 	/**
@@ -69,14 +82,6 @@ public class SocketServer {
 	public void setMessageHandler(MessageHandler messageHandler) {
 		this.messageHandler = messageHandler;
 	}
-
-	/** The server. */
-	private Server server;
-	
-	/** The message handler. */
-	private MessageHandler messageHandler;
-
-
 
 	/**
 	 * Start.
@@ -105,12 +110,11 @@ public class SocketServer {
             wscontainer.addEndpoint(SocketEndpoint.class);
 
             server.start();
-            server.dump(System.err);
-            //server.join();
+            logger.info(server.dump());
         }
         catch (Throwable t)
         {
-            t.printStackTrace(System.err);
+            logger.error(t);
         }
     }
 	
@@ -121,7 +125,7 @@ public class SocketServer {
 		try {
 			server.stop();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		    logger.error(e);
 			e.printStackTrace();
 		}
 	}

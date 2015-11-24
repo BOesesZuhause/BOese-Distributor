@@ -60,7 +60,31 @@ public class TempComponent {
 	
 	/** The unit. */
 	private String unit;
+    
 	
+	/**
+     * Instantiates a new temp component.
+     *
+     * @param deviceId the device id
+     * @param deviceName the device name
+     * @param value the value
+     * @param valueTimestamp the value timestamp
+     * @param connectorId the connector id
+     * @param description the description
+     * @param unit the unit
+     * @param actor the actor
+     */
+    public TempComponent(int deviceId, String deviceName, double value, long valueTimestamp, int connectorId, String description, String unit, boolean actor) {
+        this.connectorId = connectorId;
+        this.deviceId = deviceId;
+        this.name = deviceName;
+        this.value = value;
+        this.valueTimestamp = valueTimestamp;
+        this.description = description;
+        this.actor = actor;
+        this.unit = unit;
+    }
+    
 	/**
 	 * Gets the description.
 	 *
@@ -79,28 +103,6 @@ public class TempComponent {
 		this.description = description;
 	}
 
-	/**
-	 * Instantiates a new temp component.
-	 *
-	 * @param deviceId the device id
-	 * @param deviceName the device name
-	 * @param value the value
-	 * @param valueTimestamp the value timestamp
-	 * @param connectorId the connector id
-	 * @param description the description
-	 * @param unit the unit
-	 * @param actor the actor
-	 */
-	public TempComponent(int deviceId, String deviceName, double value, long valueTimestamp, int connectorId, String description, String unit, boolean actor) {
-		this.connectorId = connectorId;
-		this.deviceId = deviceId;
-		this.name = deviceName;
-		this.value = value;
-		this.valueTimestamp = valueTimestamp;
-		this.description = description;
-		this.actor = actor;
-		this.unit = unit;
-	}
 
 	/**
 	 * Checks if is actor.

@@ -106,12 +106,6 @@ public class SocketEndpoint
 	@OnMessage
 	public void handleMessage(String message, Session session) {
 		logger.info("Server received Message: " + message);
-		//TODO bei jeder Nachricht heartbeatcount zurücksetzen 
-		//TODO Heartbeat als MessageType
-//		if(message.equals("HEARTBEAT")){
-//			handler.handleHeartbeat(session);
-//		}else{
 			SocketServer.getInstance().handleMessage(message, handler.getConnectorId(session));
-//		}
 	}
 }

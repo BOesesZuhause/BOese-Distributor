@@ -14,6 +14,7 @@ public class SessionData {
 	/** The id. */
 	private int id;
 	
+	/**  The type of the connector is cached here to quickly determine if it is a user connector. */
 	private boolean isUserConnector = false;
 	
 	/** The missed answers. */
@@ -63,10 +64,20 @@ public class SessionData {
 	
 	
 	
+	/**
+	 * Checks if is user connector.
+	 *
+	 * @return true, if is user connector
+	 */
 	public boolean isUserConnector() {
 		return isUserConnector;
 	}
 
+	/**
+	 * Sets the user connector.
+	 *
+	 * @param isUserConnector the new user connector
+	 */
 	public void setUserConnector(boolean isUserConnector) {
 		this.isUserConnector = isUserConnector;
 	}

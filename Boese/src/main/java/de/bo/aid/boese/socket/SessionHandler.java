@@ -36,7 +36,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 // TODO: Auto-generated Javadoc
-//TODO for-Schleifen auslagern und bei nicht auffinden Error-Handling
 /**
  * The Class SocketHandler.
  */
@@ -48,10 +47,11 @@ public class SessionHandler {
 	/** The Constant logger for log4j. */
 	final  Logger logger = LogManager.getLogger(SessionHandler.class);
 	
-	/** The sessions. */
+	/** Saves the session. We use a threadsafe list because the heartbeat-thread needs to check the sessions.
+	 * The performance-drawback is minimal because the sessions are read more often than manipulated. */
 	private final CopyOnWriteArrayList<SessionData> sessions = new CopyOnWriteArrayList<SessionData>();
 	
-	/** The instance. */ //TODO eventuell HashSet mit ID als key für mehr Performance
+	/** The instance. */ 
 	private static SessionHandler instance = new SessionHandler();
 	
 	/** The current id. */
@@ -86,17 +86,16 @@ public class SessionHandler {
 	 * @param connectorId the connector id
 	 */
 	public void rejectConnection(int connectorId) {
-		for(SessionData data : sessions){
-			if(data.getId() == connectorId){
+			SessionData data = getDataByConnector(connectorId);
+			if(data != null){
 				try {
 					data.getSession().close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					logger.error("Could not close connection to connector with id: " + connectorId);
 					e.printStackTrace();
 				}
 				sessions.remove(data);
 			}
-		}
 	}
 	
 	/**
@@ -120,10 +119,9 @@ public class SessionHandler {
 	 * @param newId the new id
 	 */
 	public void setConnectorId(int tmpId, int newId) {
-		for(SessionData data : sessions){
-			if(data.getId()==tmpId){
-				data.setId(newId);
-			}
+		SessionData data = getDataByConnector(tmpId);
+		if(data != null){
+			data.setId(newId);
 		}
 	}
 	
@@ -134,7 +132,9 @@ public class SessionHandler {
 	 */
 	public void removeSession(Session session){
 		SessionData data = getDataBySession(session);
-		sessions.remove(data);
+		if(data != null){
+			sessions.remove(data);	
+		}
 	}
 	
 	/**
@@ -143,12 +143,10 @@ public class SessionHandler {
 	 * @param connectorId the connector id
 	 * @param message the message
 	 */
-	//TODO error handling
 	public void sendToConnector(int connectorId, String message) {
-		for(SessionData data : sessions){
-			if(data.getId()==connectorId){
-				sendToSession(data.getSession(), message);
-			}
+		SessionData data = getDataByConnector(connectorId);
+		if(data != null){
+			sendToSession(data.getSession(), message);
 		}
     }
 	
@@ -194,12 +192,11 @@ public class SessionHandler {
 	 * @param connectorId the connector id
 	 */
 	public void handleHeartbeat(int connectorId) {
-		for(SessionData data : sessions){
-			if(data.getId()==connectorId){
-				data.setLastHeartbeat(System.currentTimeMillis());
-				data.setMissedAnswers(0);
-			}
-		}
+				SessionData data = getDataByConnector(connectorId);
+				if(data != null){
+					data.setLastHeartbeat(System.currentTimeMillis());
+					data.setMissedAnswers(0);
+				}
 	}
 	
 	/**
@@ -214,9 +211,27 @@ public class SessionHandler {
 				return data;
 			}
 		}
+		logger.error("Could not find session: " + session);
 		return null;
 	}
 	
+	
+	/**
+	 * Gets the data by connector.
+	 *
+	 * @param connectorId the connector id
+	 * @return the data by connector
+	 */
+	public SessionData getDataByConnector(int connectorId){
+		for(SessionData data : sessions){
+			if(data.getId() == connectorId){
+				return data;
+			}
+		}
+		logger.error("Could not find session for connector with id: " + connectorId);
+		return null;
+	}
+
 	/**
 	 * Check heartbeat.
 	 */
@@ -232,12 +247,11 @@ public class SessionHandler {
 						e.printStackTrace();
 					}
 					//TODO Die ConnectorId kann danach nicht mehr ermittelt werden für die close()-Nachricht
-					sessions.remove(data); 
+					sessions.remove(data);
 					logger.warn("Connector with id: " + data.getId() + " exceeded Heartbeat-Threshold");
 				}else{
-				//TODO is send every time
-				logger.warn("Connector with id: " + data.getId() + " doesnt respond");
-				data.setMissedAnswers(data.getMissedAnswers()+1);
+					logger.warn("Connector with id: " + data.getId() + " does not respond");
+					data.setMissedAnswers(data.getMissedAnswers() + 1);
 				}
 			}
 		}
@@ -270,14 +284,23 @@ public class SessionHandler {
 		return sessions;
 	}
 
+	/**
+	 * Sets the user connector.
+	 *
+	 * @param coId the new user connector
+	 */
 	public void setUserConnector(int coId) {
-		for(SessionData data : sessions){
-			if(data.getId() == coId){
-				data.setUserConnector(true);
-			}
+		SessionData data = getDataByConnector(coId);
+		if(data != null){
+			data.setUserConnector(true);
 		}
 	}
 
+	/**
+	 * Send to user connectors.
+	 *
+	 * @param message the message
+	 */
 	public void sendToUserConnectors(String message){
 		for(SessionData data : sessions){
 			if(data.isUserConnector()){
@@ -285,8 +308,4 @@ public class SessionHandler {
 			}
 		}
 	}
-	
-	
-	
-
 }

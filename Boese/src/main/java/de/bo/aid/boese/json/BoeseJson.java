@@ -159,9 +159,17 @@ public class BoeseJson {
 		
 		/** The heartbeatmessage. */
 		HEARTBEATMESSAGE,
+		
+		/** The userrequestallunits. */
 		USERREQUESTALLUNITS,
+		
+		/** The usersendunits. */
 		USERSENDUNITS,
+		
+		/** The usercreateunits. */
 		USERCREATEUNITS,
+		
+		/** The userconfirmunits. */
 		USERCONFIRMUNITS
 	}
 
@@ -517,9 +525,8 @@ public class BoeseJson {
 			if (tempConsUST != null) {
 				for (int i = 0; i < tempConsUST.size(); i++) {
 					JsonObject con = tempConsUST.getJsonObject(i);
-					TempConnector tempCon = new TempConnector();
-					tempCon.setName(con.getString("ConnectorName"));
-					tempCon.setUserConnector(con.getBoolean("IsUserConnector"));
+					TempConnector tempCon = new TempConnector(con.getString("ConnectorName"),
+					        con.getBoolean("IsUserConnector"));
 					tempConnectorsUST.put(con.getInt("ConnectorTmpId"), tempCon);
 				}
 			}

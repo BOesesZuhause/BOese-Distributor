@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.SocketHandler;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,7 +43,6 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import de.bo.aid.boese.cli.Parameters;
 import de.bo.aid.boese.db.Inserts;
-import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.ConfirmConnection;
@@ -136,7 +134,7 @@ private final String logo =
 	private String configFilePath;
 	
 	/** The Constant logger for log4j. */
-	final  Logger logger = LogManager.getLogger(Distributor.class);
+	private final  Logger logger = LogManager.getLogger(Distributor.class);
 	
 	/** The tdc. */
 	private ToDoChecker tdc;
@@ -310,10 +308,11 @@ private final String logo =
 			BoeseJson.parseMessage(rad, os);
 			SessionHandler.getInstance().sendToConnector(con.getCoId(), os.toString());
 		}else{
+			//save isUserConnector in sessionData for caching 
 			SessionHandler.getInstance().setUserConnector(con.getCoId());
 		}
 		
-		System.out.println("User confirmed Connector with name: " + name + "\n");
+		logger.info("User confirmed Connector with name: " + name + "\n");
 		tempConnectors.remove(tempId);
 	}
 	
@@ -444,7 +443,7 @@ private final String logo =
 		
 		protocolHandler.sendConfirmComponent(deviceId, confirmComponents, connectorId);
 		
-		System.out.println("User confirmed Component with name: " + name + " and Device with id: " + deviceId + "\n");	
+		logger.info("User confirmed Component with name: " + name + " and Device with id: " + deviceId + "\n");	
 		tempDeviceComponents.remove(tempId);
 	}
 	
@@ -493,11 +492,10 @@ private final String logo =
 	 *
 	 * @param name the name
 	 * @param tempId the temp id
+	 * @param userConnector the user connector
 	 */
 	public void addTempConnector(String name, int tempId, boolean userConnector){
-		TempConnector tempCon = new TempConnector();
-		tempCon.setName(name);
-		tempCon.setUserConnector(userConnector);
+		TempConnector tempCon = new TempConnector(name, userConnector);
 		tempConnectors.put(tempId, tempCon);
 		if(autoConfirm){
 			try {
@@ -539,6 +537,7 @@ private final String logo =
 				confirmDeviceComponent(tempCompId, 1, null);
 			} catch (NotFoundException e) {
 				// TODO Auto-generated catch block
+			    logger.error("Couldnt confirm Component with name: " + temp.getName() + " (not found)");
 				e.printStackTrace();
 			}
 		}
@@ -553,26 +552,4 @@ private final String logo =
 	public ToDoChecker getTdc() {
 		return tdc;
 	}
-
-	/**
-	 * Change in rule.
-	 *
-	 * @param ruleId the rule id
-	 */
-	public static void changeInRule(int ruleId){
-		List<DeviceComponent> decos = Selects.deviceComponentsByRule(ruleId);
-		List<Inquiry> in = new ArrayList<Inquiry>();
-		for(DeviceComponent deco : decos){
-			in.add(new Inquiry(deco.getDeCoId(), new Date().getTime(), deco.getCurrentValue().doubleValue()));
-		}
-		//Control controll = new Control();
-		try {
-			// TODO sendToDos
-//			.sendToDos(controll.getToDos(in));
-		} catch (Exception e) {
-			System.err.println("Bad XML: " + e.getMessage());
-			// TODO Exception Handling
-		}
-	}
-
 }

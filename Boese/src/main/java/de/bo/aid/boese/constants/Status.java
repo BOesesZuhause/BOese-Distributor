@@ -35,6 +35,7 @@ package de.bo.aid.boese.constants;
  * The Class Status.
  */
 public class Status {
+
 	
 	/** The Constant NO_STATUS. */
 	public static final int NO_STATUS = -1; // Ignore bzw return false
@@ -66,4 +67,11 @@ public class Status {
 	/** The Constant ACTOR_DOES_NOT_REACT. */
 	public static final int ACTOR_DOES_NOT_REACT = 110;  //Normal Reaktion
 
+	   
+    /**
+     * Instantiates a new status.
+     */
+    private Status(){
+        
+    }
 }

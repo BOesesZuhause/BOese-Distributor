@@ -21,26 +21,54 @@ import de.bo.aid.boese.ruler.Checker;
 import de.bo.aid.boese.xml.BoeseXML;
 import de.bo.aid.boese.xml.Condition;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GatesTest.
+ */
 public class GatesTest {
 	
+	/** The rule. */
 	String rule;
 	
+	/** The c. */
 	Checker c;
 	
+	/** The b xml. */
 	BoeseXML bXML;
 	
+	/** The con. */
 	Connector con;
+	
+	/** The dev. */
 	Device dev;
+	
+	/** The comp. */
 	Component comp;
+	
+	/** The deco1. */
 	DeviceComponent deco1;
+	
+	/** The deco2. */
 	DeviceComponent deco2;
+	
+	/** The deco3. */
 	DeviceComponent deco3;
+	
+	/** The deco4. */
 	DeviceComponent deco4;
 	
+	/** The value1. */
 	double value1;
+	
+	/** The value2. */
 	double value2;
+	
+	/** The valuefalse. */
 	double valuefalse;
 	
+	/**
+	 * Sets the up.
+	 */
 	@Before
 	public void setUp(){
 		HibernateUtil.setDBUser("postgres");
@@ -125,6 +153,9 @@ public class GatesTest {
 		bXML = BoeseXML.readXML(is);
 	}
 
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 		//Fall (f ^ f) v (f ^ f) = f
