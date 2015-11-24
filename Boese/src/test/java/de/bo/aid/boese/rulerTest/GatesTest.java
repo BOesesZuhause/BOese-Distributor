@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.bo.aid.boese.db.Inserts;
+import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.model.Component;
@@ -75,44 +76,44 @@ public class GatesTest {
 		}
 
 		value1 = 11.1;
-		value2 = 21.1;
-		valuefalse = 1;
+		value2 = 21.5;
+		valuefalse = 1.8;
 		
 		rule = "<CONDITION>"
 				+ "<OR>"
 				+ 	"<AND>"
 				+ 		"<COMPONENT>"
 				+ 			"<ID>" + deco1.getDeCoId() + "</ID>"
-				+ 			"<VALUE>" + value1 + "</VALUE>"
+				+ 			"<VALUE>"
+				+ 				"<CONSTANT>" + value1 + "</CONSTANT>"
+				+ 			"</VALUE>"
 				+ 			"<RESET_VALUE>10</RESET_VALUE>"
-//				+ 			"<START_TIME>*;*;*;*;*;*</START_TIME>"
-				+ 			"<DURATION>15</DURATION>"
 				+ 			"<COMPERATOR>==</COMPERATOR>"
 				+ 		"</COMPONENT>"
 				+ 		"<COMPONENT>"
 				+ 			"<ID>" + deco2.getDeCoId() + "</ID>"
-				+ 			"<VALUE>" + value2 + "</VALUE>"
+				+ 			"<VALUE>"
+				+ 				"<CONSTANT>" + value2 + "</CONSTANT>"
+				+ 			"</VALUE>"
 				+ 			"<RESET_VALUE>20</RESET_VALUE>"
-//				+ 			"<START_TIME>*;*;*;*;*;*</START_TIME>"
-				+ 			"<DURATION>25</DURATION>"
 				+ 			"<COMPERATOR>!=</COMPERATOR>"
 				+ 		"</COMPONENT>"
 				+ 	"</AND>"
 				+ 	"<AND>"
 				+ 		"<COMPONENT>"
 				+ 			"<ID>" + deco3.getDeCoId() + "</ID>"
-				+ 			"<VALUE>" + value1 + "</VALUE>"
+				+ 			"<VALUE>"
+				+ 				"<CONSTANT>" + value1 + "</CONSTANT>"
+				+ 			"</VALUE>"
 				+ 			"<RESET_VALUE>10</RESET_VALUE>"
-//				+ 			"<START_TIME>*;*;*;*;*;*</START_TIME>"
-				+ 			"<DURATION>15</DURATION>"
 				+ 			"<COMPERATOR>!=</COMPERATOR>"
 				+ 		"</COMPONENT>"
 				+ 		"<COMPONENT>"
 				+ 			"<ID>" + deco4.getDeCoId() + "</ID>"
-				+ 			"<VALUE>" + value2 + "</VALUE>"
+				+ 			"<VALUE>"
+				+ 				"<CONSTANT>" + value2 + "</CONSTANT>"
+				+ 			"</VALUE>"
 				+ 			"<RESET_VALUE>20</RESET_VALUE>"
-//				+ 			"<START_TIME>*;*;*;*;*;*</START_TIME>"
-				+ 			"<DURATION>25</DURATION>"
 				+ 			"<COMPERATOR>==</COMPERATOR>"
 				+ 		"</COMPONENT>"
 				+ 	"</AND>"
@@ -127,18 +128,82 @@ public class GatesTest {
 
 	@Test
 	public void test() {
+		//((deco1 == value1) ^ (deco2 != value2)) v ((deco3 != value1) ^ (deco4 == value2))
 		//Fall (f ^ f) v (f ^ f) = f
+		insertValue(valuefalse, value2, value1, valuefalse);
+		assertTrue("Fall (f ^ f) v (f ^ f) = f stimmt nicht", !c.condition(((Condition)bXML).getRule()));
+		
+		//Fall (f ^ f) v (f ^ t) = f
+		insertValue(valuefalse, value2, value1, value2);
+		assertTrue("Fall (f ^ f) v (f ^ t) = f stimmt nicht", !c.condition(((Condition)bXML).getRule()));
+		
+		//Fall (f ^ f) v (t ^ f) = f
+		insertValue(valuefalse, value2, valuefalse, valuefalse);
+		assertTrue("Fall (f ^ f) v (t ^ f) = f stimmt nicht", !c.condition(((Condition)bXML).getRule()));
+		
+		//Fall (f ^ f) v (t ^ t) = t
+		insertValue(valuefalse, value2, valuefalse, value2);
+		assertTrue("Fall (f ^ f) v (t ^ t) = t stimmt nicht", c.condition(((Condition)bXML).getRule()));
+		
+		//Fall (f ^ t) v (f ^ f) = f
+		insertValue(valuefalse, valuefalse, value1, valuefalse);
+		assertTrue("Fall (f ^ t) v (f ^ f) = f stimmt nicht", !c.condition(((Condition)bXML).getRule()));
+		
+		//Fall (f ^ t) v (f ^ t) = f
+		insertValue(valuefalse, valuefalse, value1, value2);
+		assertTrue("Fall (f ^ t) v (f ^ t) = f stimmt nicht", !c.condition(((Condition)bXML).getRule()));
+		
+		//Fall (f ^ t) v (t ^ f) = f
+		insertValue(valuefalse, valuefalse, valuefalse, valuefalse);
+		assertTrue("Fall (f ^ t) v (t ^ f) = f stimmt nicht", !c.condition(((Condition)bXML).getRule()));
+		
+		//Fall (f ^ t) v (t ^ t) = t
+		insertValue(valuefalse, valuefalse, valuefalse, value2);
+		assertTrue("Fall (f ^ t) v (t ^ t) = t stimmt nicht", c.condition(((Condition)bXML).getRule()));
+		
+		//Fall (t ^ f) v (f ^ f) = f
+		insertValue(value1, value2, value1, valuefalse);
+		assertTrue("Fall (t ^ f) v (f ^ f) = f stimmt nicht", !c.condition(((Condition)bXML).getRule()));
+		
+		//Fall (t ^ f) v (f ^ t) = f
+		insertValue(value1, value2, value1, value2);
+		assertTrue("Fall (t ^ f) v (f ^ t) = f stimmt nicht", !c.condition(((Condition)bXML).getRule()));
+		
+		//Fall (t ^ f) v (t ^ f) = f
+		insertValue(value1, value2, valuefalse, valuefalse);
+		assertTrue("Fall (t ^ f) v (t ^ f) = f stimmt nicht", !c.condition(((Condition)bXML).getRule()));
+		
+		//Fall (t ^ f) v (t ^ t) = t
+		insertValue(value1, value2, valuefalse, value2);
+		assertTrue("Fall (t ^ f) v (t ^ t) = t stimmt nicht", c.condition(((Condition)bXML).getRule()));
+		
+		//Fall (t ^ t) v (f ^ f) = t
+		insertValue(value1, valuefalse, value1, valuefalse);
+		assertTrue("Fall (t ^ t) v (f ^ f) = t stimmt nicht", c.condition(((Condition)bXML).getRule()));
+		
+		//Fall (t ^ t) v (f ^ t) = t
+		insertValue(value1, valuefalse, value1, value2);
+		assertTrue("Fall (t ^ t) v (f ^ t) = t stimmt nicht", c.condition(((Condition)bXML).getRule()));
+		
+		//Fall (t ^ t) v (t ^ f) = t
+		insertValue(value1, valuefalse, valuefalse, valuefalse);
+		assertTrue("Fall (t ^ t) v (t ^ f) = t stimmt nicht", c.condition(((Condition)bXML).getRule()));
+		
+		//Fall (t ^ t) v (t ^ t) = t	
+		insertValue(value1, valuefalse, valuefalse, value2);
+		assertTrue("Fall (t ^ t) v (t ^ t) = t stimmt nicht", c.condition(((Condition)bXML).getRule()));			
+	}
+	
+	private void insertValue(double vdeco1, double vdeco2, double vdeco3, double vdeco4){
 		try {
-			Inserts.value(deco1.getDeCoId(), new Date(), valuefalse);
-			Inserts.value(deco2.getDeCoId(), new Date(), value2);
-			Inserts.value(deco3.getDeCoId(), new Date(), value1);
-			Inserts.value(deco4.getDeCoId(), new Date(), valuefalse);
+			Inserts.value(deco1.getDeCoId(), new Date(), vdeco1);
+			Inserts.value(deco2.getDeCoId(), new Date(), vdeco2);
+			Inserts.value(deco3.getDeCoId(), new Date(), vdeco3);
+			Inserts.value(deco4.getDeCoId(), new Date(), vdeco4);
 		} catch (DBObjectNotFoundException e) {
 			fail(e.getMessage());
 			e.printStackTrace();
 		}
-//TODO Bad XML: No Calculationtype
-		assertTrue("Fall (f ^ f) v (f ^ f) = f stimmt nicht", !c.condition(((Condition)bXML).getRule()));
 	}
 
 }

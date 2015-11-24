@@ -14,7 +14,7 @@
             <column name="Repeat" length="100" not-null="true"/>
         </property>
         <property name="value" type="big_decimal">
-            <column name="Value" precision="1000" scale="0" />
+            <column name="Value" precision="25" scale="10" />
         </property>
         <property name="repeatsAfterEnd" type="int">
             <column name="Repeats_After_Ende" not-null="true" />

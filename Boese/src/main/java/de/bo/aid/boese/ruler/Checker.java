@@ -79,39 +79,39 @@ public class Checker {
 	 * @return the boolean
 	 */
 	public Boolean condition(GateList gate){
-		Boolean b = null;
-		GateType gt = gate.getGateType();
-		Set<GateList> sg = gate.getGate();
-		for(GateList gl : sg){			
-			Boolean zwi = condition(gl);
-			for(ComponentXML c : gl.getComponents()){
-				if(zwi == null){
-					zwi = condition(c);
+		Boolean ergebnis = null;
+		GateType gatetype = gate.getGateType();
+		Set<GateList> setGateList = gate.getGate();
+		for(GateList gatelist : setGateList){
+			Boolean zwischenErgebnis = condition(gatelist);
+			for(ComponentXML c : gatelist.getComponents()){
+				if(zwischenErgebnis == null){
+					zwischenErgebnis = condition(c);
 				}
-				else if (gl.getGateType() == GateType.AND_GATE){
-					zwi = condition(c) && zwi;
+				else if (gatelist.getGateType() == GateType.AND_GATE){
+					zwischenErgebnis =  zwischenErgebnis && condition(c);
 				}
 				else{
-					zwi = condition(c) || zwi;
+					zwischenErgebnis = zwischenErgebnis || condition(c);
 				}
 			}
-			if(b == null){
-				b = new Boolean(zwi);
+			if(ergebnis == null){
+				ergebnis = new Boolean(zwischenErgebnis);
 			}
-			else if (gt == GateType.AND_GATE){
-				b = new Boolean(zwi && b);
+			else if (gatetype == GateType.AND_GATE){
+				ergebnis = new Boolean(zwischenErgebnis && ergebnis);
 			}
-			else if (gt == GateType.OR_GATE){
-				b = new Boolean(zwi || b);
+			else if (gatetype == GateType.OR_GATE){
+				ergebnis = new Boolean(zwischenErgebnis || ergebnis);
 			}
 			else{
 				//b = b;
 			}				
 		}
-		if( b == null && gate.getGate().isEmpty() && !gate.getComponents().isEmpty()){
-			b = condition(gate.getComponents().iterator().next());
+		if( ergebnis == null && gate.getGate().isEmpty() && !gate.getComponents().isEmpty()){
+			ergebnis = condition(gate.getComponents().iterator().next());
 		}
-		return b;
+		return ergebnis;
 
 	}
 	

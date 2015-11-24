@@ -23,16 +23,16 @@
             <column name="Description" />
         </property>
         <property name="logRule" type="big_decimal">
-            <column name="LogRule" precision="1000" scale="0" />
+            <column name="LogRule" precision="25" scale="10" />
         </property>
         <property name="currentValue" type="big_decimal">
-            <column name="CurrentValue" precision="1000" scale="0" />
+            <column name="CurrentValue" precision="25" scale="10" />
         </property>
         <property name="minValue" type="big_decimal">
-            <column name="MinValue" precision="1000" scale="0" />
+            <column name="MinValue" precision="25" scale="10" />
         </property>
         <property name="maxValue" type="big_decimal">
-            <column name="MaxValue" precision="1000" scale="0" />
+            <column name="MaxValue" precision="25" scale="10" />
         </property>
         <property name="loggen" type="boolean">
             <column name="Loggen" not-null="true" />

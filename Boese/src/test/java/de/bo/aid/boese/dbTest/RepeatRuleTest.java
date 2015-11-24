@@ -102,8 +102,8 @@ public class RepeatRuleTest {
 		decolist.add(testDeco);
 		Inserts.rule(decolist, testRule, null);
 		
-		rr1 = new RepeatRule("*;*;*;*;*;*", new BigDecimal(10.0), 1);
-		rr2 = new RepeatRule("*;*;*;*;*;*", new BigDecimal(20.0), 2);
+		rr1 = new RepeatRule("*;*;*;*;*;*", BigDecimal.valueOf(10.1), 1);
+		rr2 = new RepeatRule("*;*;*;*;*;*", BigDecimal.valueOf(20.0), 2);
 		rr1Update = new RepeatRule("1;1;1;1;2070;ttttttt", new BigDecimal(15.0), 3);
 		rr2Update = new RepeatRule("1;2;3;4;2075;fffffff", new BigDecimal(25.0), 4);
 	}
@@ -182,7 +182,7 @@ public class RepeatRuleTest {
 	private void equal(RepeatRule rr, String name){
 		RepeatRule rrTest = select(rr.getRrId());
 		assertTrue("RepeatRule " + name + " Cron not equal", rr.getRepeat().equals(rrTest.getRepeat()));
-		assertTrue("RepeatRule " + name + " Value not equal", rr.getValue().equals(rrTest.getValue()));
+		assertTrue("RepeatRule " + name + " Value not equal", rr.getValue().doubleValue() == rrTest.getValue().doubleValue());
 		assertTrue("RepeatRule " + name + " RepeatsAfterEnd not equal", rr.getRepeatsAfterEnd() == rrTest.getRepeatsAfterEnd());
 		assertTrue("RepeatRule " + name + " Rule not equal", rr.getRule().getRuId() == rrTest.getRule().getRuId());
 		assertTrue("RepeatRule " + name + " DeviceComponent not equal", rr.getDeviceComponent().getDeCoId() == rrTest.getDeviceComponent().getDeCoId());

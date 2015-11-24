@@ -169,7 +169,7 @@ public class Updates {
 	 * @param logrule the logrule
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void DeviceComponent (DeviceComponent deco, Device dev, Component comp, int status, String description, double logrule) throws DBObjectNotFoundException{
+	public static void DeviceComponent (DeviceComponent deco, Device dev, Component comp, int status, String description, double logrule, boolean loggen) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 
@@ -187,6 +187,7 @@ public class Updates {
 		if (logrule != -1){
 			deco.setLogRule(new BigDecimal(logrule));
 		}
+		deco.setLoggen(loggen);
 		
 		try{
 			session.update(deco);
@@ -258,7 +259,7 @@ public class Updates {
 	 * @param status the status
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
-	public static void connector(Connector con, String name, String pw, int status) throws DBObjectNotFoundException{
+	public static void connector(Connector con, String name, String pw, int status, boolean userConnector) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -271,6 +272,7 @@ public class Updates {
 		if (status != -1){
 			con.setStatus(status);;
 		}
+		con.setUserConnector(userConnector);
 		
 		try{
 			session.update(con);

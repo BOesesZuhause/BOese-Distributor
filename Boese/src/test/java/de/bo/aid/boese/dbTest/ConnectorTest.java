@@ -122,6 +122,7 @@ public class ConnectorTest {
 		assertTrue("Connector " + name + " Name not equal", con.getName().equals(conTest.getName()));
 		assertTrue("Connector " + name + " Password not equal", con.getPassword().equals(conTest.getPassword()));
 		assertTrue("Connector " + name + " Status not equal", con.getStatus() == conTest.getStatus());
+		assertTrue("Connector " + name + " UserConnector not equal", con.isUserConnector() == conTest.isUserConnector());
 		assertTrue("Connector " + name + " ID not equal", con.getCoId() == conTest.getCoId());
 	}
 	
@@ -133,7 +134,7 @@ public class ConnectorTest {
 	 */
 	private void update(Connector con, Connector conUpdate){
 		try {
-			Updates.connector(con, conUpdate.getName(), conUpdate.getPassword(), conUpdate.getStatus());
+			Updates.connector(con, conUpdate.getName(), conUpdate.getPassword(), conUpdate.getStatus(),conUpdate.isUserConnector());
 		} catch (DBObjectNotFoundException e) {
 			e.printStackTrace();
 			fail(e.getMessage() + "with ID: " + con.getCoId());

@@ -15,7 +15,7 @@
             <column name="DeCoID" not-null="true" />
         </many-to-one>
         <property name="value" type="big_decimal">
-            <column name="Value" precision="1000" scale="0" not-null="true" />
+            <column name="Value" precision="25" scale="10" not-null="true" />
         </property>
     </class>
 </hibernate-mapping>

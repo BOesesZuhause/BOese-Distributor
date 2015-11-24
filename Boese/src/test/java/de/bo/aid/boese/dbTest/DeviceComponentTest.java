@@ -83,9 +83,9 @@ public class DeviceComponentTest {
 		HibernateUtil.setDBAuto("create");
 
 		Inserts.defaults();
-		value = -1000.0;
-		minvalue = -1000.0;
-		maxvalue = 1000.0;
+		value = -1000.5;
+		minvalue = -2000.8;
+		maxvalue = 1000.9;
 		
 		testCon = new Connector("test", "test", false);
 		Inserts.connector(testCon);
@@ -208,6 +208,7 @@ public class DeviceComponentTest {
 		assertTrue("DeviceComponent " + name + " minValue not equal", deco.getMinValue().doubleValue() == decoTest.getMinValue().doubleValue());
 		assertTrue("DeviceComponent " + name + " maxValue not equal", deco.getMaxValue().doubleValue() == decoTest.getMaxValue().doubleValue());
 		assertTrue("DeviceComponent " + name + " Device not equal", deco.getDevice().getDeId() == decoTest.getDevice().getDeId());
+		assertTrue("DeviceComponent " + name + " Loggen not equal", deco.isLoggen() == decoTest.isLoggen());
 		assertTrue("DeviceComponent " + name + " ID not equal", deco.getDeCoId() == decoTest.getDeCoId());
 	}
 	
@@ -219,7 +220,7 @@ public class DeviceComponentTest {
 	 */
 	private void update(DeviceComponent deco, DeviceComponent decoUpdate){
 		try {
-			Updates.DeviceComponent(deco, decoUpdate.getDevice(), decoUpdate.getComponent(), decoUpdate.getStatus(), decoUpdate.getDescription(), 0.0);
+			Updates.DeviceComponent(deco, decoUpdate.getDevice(), decoUpdate.getComponent(), decoUpdate.getStatus(), decoUpdate.getDescription(), 0.0, decoUpdate.isLoggen());
 		} catch (DBObjectNotFoundException e) {
 			fail(e.getMessage() + "with ID: " + deco.getDeCoId());
 			e.printStackTrace();
