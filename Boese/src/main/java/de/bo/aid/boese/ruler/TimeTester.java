@@ -66,13 +66,13 @@ public class TimeTester{
 		tdc.start();
 		
 		try{
-			Connector con = new Connector("leer", "123");
+			Connector con = new Connector("leer", "123", false);
 			Inserts.connector(con);
 			Device dev = new Device("leer", "123");
 			Inserts.device(con.getCoId(), 0, dev);
 			Component comp = new Component("leer", true);
 			Inserts.component(0, comp);
-			DeviceComponent deco = new DeviceComponent("leer", -1000.0, 1000.0);
+			DeviceComponent deco = new DeviceComponent("leer", -1000.0, 1000.0, true);
 			Inserts.deviceComponent(dev.getDeId(), comp.getCoId(), deco);
 		
 			List<DeviceComponent> decoList = new ArrayList<DeviceComponent>();

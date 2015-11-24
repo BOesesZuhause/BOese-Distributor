@@ -205,7 +205,6 @@ public class Inserts {
 		DeviceComponent deco = (DeviceComponent)session.get(DeviceComponent.class, new Integer(decoid));
 		if(deco != null){
 			deco.setCurrentValue(BigDecimal.valueOf(value));
-			
 		}
 		else{
 			session.getTransaction().rollback();
@@ -221,22 +220,23 @@ public class Inserts {
 			throw pve; //not null Value is null
 		}
 		
-		LogDeviceComponent logcomp = new LogDeviceComponent();
-		logcomp.setDeviceComponent(deco);
-		//TODO TIMESTAMP wird hier gespeichert
-		logcomp.setTimestamp(timestamp);
-		logcomp.setValue(BigDecimal.valueOf(value));
-		
-		try{
-			session.save(logcomp);
-			session.getTransaction().commit();
+		if(deco.isLoggen()){
+			LogDeviceComponent logcomp = new LogDeviceComponent();
+			logcomp.setDeviceComponent(deco);
+			logcomp.setTimestamp(timestamp);
+			logcomp.setValue(BigDecimal.valueOf(value));
+			
+			try{
+				session.save(logcomp);
+			}
+			catch(PropertyValueException pve){
+				session.getTransaction().rollback();
+				session.close();
+				throw pve; //not null Value is null
+			}
 		}
-		catch(PropertyValueException pve){
-			session.getTransaction().rollback();
-			session.close();
-			throw pve; //not null Value is null
-		}
 		
+		session.getTransaction().commit();
 		session.close();
 	}
 	

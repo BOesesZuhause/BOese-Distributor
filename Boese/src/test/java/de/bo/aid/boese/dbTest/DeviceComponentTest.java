@@ -87,7 +87,7 @@ public class DeviceComponentTest {
 		minvalue = -1000.0;
 		maxvalue = 1000.0;
 		
-		testCon = new Connector("test", "test");
+		testCon = new Connector("test", "test", false);
 		Inserts.connector(testCon);
 		
 		testZone = new Zone("1");
@@ -106,10 +106,10 @@ public class DeviceComponentTest {
 		testCompUpdate = new Component("Lichtsensor", false);
 		Inserts.component(testUnit.getUnId(), testCompUpdate);
 		
-		deco1 = new DeviceComponent("1", minvalue, maxvalue);
-		deco2 = new DeviceComponent("2", minvalue, maxvalue);
-		deco1Update = new DeviceComponent("1Update", minvalue, maxvalue);
-		deco2Update = new DeviceComponent("2Update", minvalue, maxvalue);
+		deco1 = new DeviceComponent("1", minvalue, maxvalue, true);
+		deco2 = new DeviceComponent("2", minvalue, maxvalue, false);
+		deco1Update = new DeviceComponent("1Update", minvalue, maxvalue, false);
+		deco2Update = new DeviceComponent("2Update", minvalue, maxvalue, true);
 	}
 
 	/**

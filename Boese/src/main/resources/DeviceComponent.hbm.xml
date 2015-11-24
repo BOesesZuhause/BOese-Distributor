@@ -34,6 +34,9 @@
         <property name="maxValue" type="big_decimal">
             <column name="MaxValue" precision="1000" scale="0" />
         </property>
+        <property name="loggen" type="boolean">
+            <column name="Loggen" not-null="true" />
+        </property>
         <set name="deviceComponenteReplacesForDeCoId" table="device_componente_replace" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="DeCoID" not-null="true" />

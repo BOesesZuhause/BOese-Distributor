@@ -55,6 +55,9 @@ public class Connector implements java.io.Serializable {
 
 	/** The status. */
 	private int status;
+
+	/** The status. */
+	private boolean userConnector;
 	
 	/** The history log connectors. */
 	private Set<HistoryLogConnector> historyLogConnectors = new HashSet<HistoryLogConnector>(0);
@@ -86,11 +89,13 @@ public class Connector implements java.io.Serializable {
 	 *
 	 * @param name the name
 	 * @param password the password
+	 * @param userConnector the userConnector
 	 */
-	public Connector(String name, String password) {
+	public Connector(String name, String password, boolean userConnector) {
 		this.name = name;
 		this.password = password;
 		this.status = Status.ACTIVE;
+		this.userConnector = userConnector;
 	}
 
 	/**
@@ -100,12 +105,14 @@ public class Connector implements java.io.Serializable {
 	 * @param name the name
 	 * @param password the password
 	 * @param status the status
+	 * @param userConnector the userConnector
 	 */
-	public Connector(int coId, String name, String password, int status) {
+	public Connector(int coId, String name, String password, int status, boolean userConnector) {
 		this.coId = coId;
 		this.name = name;
 		this.password = password;
 		this.status = status;
+		this.userConnector = userConnector;
 	}
 
 	/**
@@ -115,16 +122,18 @@ public class Connector implements java.io.Serializable {
 	 * @param name the name
 	 * @param password the password
 	 * @param status the status
+	 * @param userConnector the userConnector
 	 * @param historyLogConnectors the history log connectors
 	 * @param devices the devices
 	 * @param logConnectors the log connectors
 	 */
-	public Connector(int coId, String name, String password, int status,
+	public Connector(int coId, String name, String password, int status, boolean userConnector,
 			Set<HistoryLogConnector> historyLogConnectors, Set<Device> devices, Set<LogConnector> logConnectors) {
 		this.coId = coId;
 		this.name = name;
 		this.password = password;
 		this.status = status;
+		this.userConnector = userConnector;
 		this.historyLogConnectors = historyLogConnectors;
 		this.devices = devices;
 		this.logConnectors = logConnectors;
@@ -201,6 +210,14 @@ public class Connector implements java.io.Serializable {
 	 */
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public boolean isUserConnector() {
+		return userConnector;
+	}
+
+	public void setUserConnector(boolean userConnector) {
+		this.userConnector = userConnector;
 	}
 
 	/**

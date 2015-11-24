@@ -293,7 +293,7 @@ private final String logo =
 		SecureRandom sr = new SecureRandom();
 		String pw = String.valueOf(sr.nextLong());
 
-		Connector con = new Connector(name, pw);
+		Connector con = new Connector(name, pw, isUserConnector);
 		Inserts.connector(con);
 		SessionHandler.getInstance().setConnectorId(tempId, con.getCoId());
 
@@ -425,7 +425,8 @@ private final String logo =
 		try{
 			Component comp = new Component(name, temp.isActor());
 			Inserts.component(unitId, comp); 
-			DeviceComponent deco = new DeviceComponent(temp.getDescription(), -1000.0, 1000.0); //TODO min und max value mitgeben
+			//TODO min und max value mitgeben und ob geloggt werden soll
+			DeviceComponent deco = new DeviceComponent(temp.getDescription(), -1000.0, 1000.0, true);
 			Inserts.deviceComponent(deviceId, comp.getCoId(), deco);
 			deCoId = deco.getDeCoId();
 		}

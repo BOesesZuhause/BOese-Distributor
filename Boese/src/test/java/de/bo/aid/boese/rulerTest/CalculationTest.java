@@ -90,12 +90,12 @@ public class CalculationTest {
 		value3 = 40.0;
 		firstvalue = 1000.0;
 		
-		Connector con  = new Connector("test", "123");
+		Connector con  = new Connector("test", "123", false);
 		Device dev = new Device("test", "123");
 		Component comp = new Component("Sensor", false);
-		deco1 = new DeviceComponent("1", -1000.0, 1000.0);
-		deco2 = new DeviceComponent("2", -1000.0, 1000.0);
-		deco3 = new DeviceComponent("3", -1000.0, 1000.0);
+		deco1 = new DeviceComponent("1", -1000.0, 1000.0, false);
+		deco2 = new DeviceComponent("2", -1000.0, 1000.0, false);
+		deco3 = new DeviceComponent("3", -1000.0, 1000.0, false);
 		
 		Inserts.connector(con);
 		Inserts.component(1, comp);

@@ -60,10 +60,10 @@ public class DeviceTest {
 		HibernateUtil.setDBAuto("create");
 
 		Inserts.defaults();
-		testCon = new Connector("test", "test");
+		testCon = new Connector("test", "test", false);
 		Inserts.connector(testCon);
 		
-		testConUpdate = new Connector("update", "update");
+		testConUpdate = new Connector("update", "update", false);
 		Inserts.connector(testConUpdate);
 		
 		testZone = new Zone("1");

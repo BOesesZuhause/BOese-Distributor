@@ -19,6 +19,9 @@
         <property name="status" type="java.lang.Integer">
             <column name="Status" />
         </property>
+        <property name="userConnector" type="boolean">
+            <column name="UserConnector" not-null="true" />
+        </property>
         <set name="historyLogConnectors" table="history_log_connector" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="CoID" not-null="true" />

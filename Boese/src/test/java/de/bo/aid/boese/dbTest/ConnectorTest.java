@@ -47,11 +47,11 @@ public class ConnectorTest {
 		HibernateUtil.setDBAuto("create");
 
 		Inserts.defaults();
-		con1 = new Connector("first", "123");
-		con2 = new Connector("second", "456");
-		con1Update = new Connector("firstup", "123up");
+		con1 = new Connector("first", "123", true);
+		con2 = new Connector("second", "456", false);
+		con1Update = new Connector("firstup", "123up", false);
 		con1Update.setStatus(Status.INACTIVE);
-		con2Update = new Connector("secondup", "456up");
+		con2Update = new Connector("secondup", "456up", true);
 		con2Update.setStatus(Status.INACTIVE);
 	}
 

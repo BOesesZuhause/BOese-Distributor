@@ -48,13 +48,13 @@ public class GatesTest {
 		HibernateUtil.setDBURL("boeseTest", "localhost", "5432");
 		HibernateUtil.setDBAuto("create");
 		
-		con = new Connector("test", "123");
+		con = new Connector("test", "123", false);
 		dev = new Device("test", "123");
 		comp = new Component("licht", false);
-		deco1 = new DeviceComponent("1", -1000.0, 1000.0);
-		deco2 = new DeviceComponent("2", -1000.0, 1000.0);
-		deco3 = new DeviceComponent("3", -1000.0, 1000.0);
-		deco4 = new DeviceComponent("4", -1000.0, 1000.0);
+		deco1 = new DeviceComponent("1", -1000.0, 1000.0, false);
+		deco2 = new DeviceComponent("2", -1000.0, 1000.0, false);
+		deco3 = new DeviceComponent("3", -1000.0, 1000.0, false);
+		deco4 = new DeviceComponent("4", -1000.0, 1000.0, false);
 		
 		try{
 			Inserts.defaults();

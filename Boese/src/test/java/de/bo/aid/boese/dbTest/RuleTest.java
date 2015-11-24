@@ -77,7 +77,7 @@ public class RuleTest {
 		HibernateUtil.setDBAuto("create");
 
 		Inserts.defaults();
-		testCon = new Connector("test", "test");
+		testCon = new Connector("test", "test", false);
 		Inserts.connector(testCon);
 		
 		testZone = new Zone("1");
@@ -92,7 +92,7 @@ public class RuleTest {
 		testComp = new Component("Taster", true);
 		Inserts.component(testUnit.getUnId(), testComp);
 		
-		testDeco = new DeviceComponent("test", -1000.0, 1000.0);
+		testDeco = new DeviceComponent("test", -1000.0, 1000.0, false);
 		Inserts.deviceComponent(testDev.getDeId(), testComp.getCoId(), testDeco);
 		
 		decolist = new ArrayList<>();
