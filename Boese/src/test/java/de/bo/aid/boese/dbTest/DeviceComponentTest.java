@@ -62,9 +62,13 @@ public class DeviceComponentTest {
 	
 	/** The test comp update. */
 	private Component testCompUpdate;
-	
+
 	/** The value. */
 	private double value;
+	/** The minvalue. */
+	private double minvalue;
+	/** The maxvalue. */
+	private double maxvalue;
 	
 	/**
 	 * Sets the up.
@@ -79,7 +83,9 @@ public class DeviceComponentTest {
 		HibernateUtil.setDBAuto("create");
 
 		Inserts.defaults();
-		value = 100.0;
+		value = -1000.0;
+		minvalue = -1000.0;
+		maxvalue = 1000.0;
 		
 		testCon = new Connector("test", "test");
 		Inserts.connector(testCon);
@@ -100,10 +106,10 @@ public class DeviceComponentTest {
 		testCompUpdate = new Component("Lichtsensor", false);
 		Inserts.component(testUnit.getUnId(), testCompUpdate);
 		
-		deco1 = new DeviceComponent("1");
-		deco2 = new DeviceComponent("2");
-		deco1Update = new DeviceComponent("1Update");
-		deco2Update = new DeviceComponent("2Update");
+		deco1 = new DeviceComponent("1", minvalue, maxvalue);
+		deco2 = new DeviceComponent("2", minvalue, maxvalue);
+		deco1Update = new DeviceComponent("1Update", minvalue, maxvalue);
+		deco2Update = new DeviceComponent("2Update", minvalue, maxvalue);
 	}
 
 	/**
@@ -130,9 +136,9 @@ public class DeviceComponentTest {
 		//Value equal DB Value?
 		try {
 			Inserts.value(deco1.getDeCoId(), new Date(), value);
-			deco1.setCurrentValue(new BigDecimal(value));
+			deco1.setCurrentValue(BigDecimal.valueOf(value));
 			Inserts.value(deco2.getDeCoId(), new Date(), value);
-			deco2.setCurrentValue(new BigDecimal(value));
+			deco2.setCurrentValue(BigDecimal.valueOf(value));
 			if(value != Selects.currentValue(deco1.getDeCoId()))
 				fail("Value not Equal");
 		} catch (DBObjectNotFoundException e) {
@@ -198,7 +204,9 @@ public class DeviceComponentTest {
 		assertTrue("DeviceComponent " + name + " Description not equal", deco.getDescription().equals(decoTest.getDescription()));
 		assertTrue("DeviceComponent " + name + " Status not equal", deco.getStatus().equals(decoTest.getStatus()));
 		assertTrue("DeviceComponent " + name + " Component not equal", deco.getComponent().getCoId() == decoTest.getComponent().getCoId());
-		assertTrue("DeviceComponent " + name + " Value not equal", deco.getCurrentValue().equals(decoTest.getCurrentValue()));
+		assertTrue("DeviceComponent " + name + " Value not equal", deco.getCurrentValue().doubleValue() == decoTest.getCurrentValue().doubleValue());
+		assertTrue("DeviceComponent " + name + " minValue not equal", deco.getMinValue().doubleValue() == decoTest.getMinValue().doubleValue());
+		assertTrue("DeviceComponent " + name + " maxValue not equal", deco.getMaxValue().doubleValue() == decoTest.getMaxValue().doubleValue());
 		assertTrue("DeviceComponent " + name + " Device not equal", deco.getDevice().getDeId() == decoTest.getDevice().getDeId());
 		assertTrue("DeviceComponent " + name + " ID not equal", deco.getDeCoId() == decoTest.getDeCoId());
 	}

@@ -94,7 +94,7 @@ public class RepeatRuleTest {
 		testComp = new Component("Taster", true);
 		Inserts.component(testUnit.getUnId(), testComp);
 		
-		testDeco = new DeviceComponent("test");
+		testDeco = new DeviceComponent("test", -1000.0, 1000.0);
 		Inserts.deviceComponent(testDev.getDeId(), testComp.getCoId(), testDeco);
 		
 		testRule = new Rule("", "", "");

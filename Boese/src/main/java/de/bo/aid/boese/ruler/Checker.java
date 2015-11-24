@@ -76,24 +76,23 @@ public class Checker {
 	 * Condition.
 	 *
 	 * @param gate the gate
-	 * @param deCoValue the de co value
 	 * @return the boolean
 	 */
-	public Boolean condition(GateList gate, HashMap<Integer, Double> deCoValue){
+	public Boolean condition(GateList gate){
 		Boolean b = null;
 		GateType gt = gate.getGateType();
 		Set<GateList> sg = gate.getGate();
 		for(GateList gl : sg){			
-			Boolean zwi = condition(gl, deCoValue);
+			Boolean zwi = condition(gl);
 			for(ComponentXML c : gl.getComponents()){
 				if(zwi == null){
-					zwi = condition(c, deCoValue);
+					zwi = condition(c);
 				}
 				else if (gl.getGateType() == GateType.AND_GATE){
-					zwi = condition(c, deCoValue) && zwi;
+					zwi = condition(c) && zwi;
 				}
 				else{
-					zwi = condition(c, deCoValue) || zwi;
+					zwi = condition(c) || zwi;
 				}
 			}
 			if(b == null){
@@ -110,7 +109,7 @@ public class Checker {
 			}				
 		}
 		if( b == null && gate.getGate().isEmpty() && !gate.getComponents().isEmpty()){
-			b = condition(gate.getComponents().iterator().next(), deCoValue);
+			b = condition(gate.getComponents().iterator().next());
 		}
 		return b;
 
@@ -120,10 +119,9 @@ public class Checker {
 	 * Condition.
 	 *
 	 * @param comp the comp
-	 * @param deCoValue the de co value
 	 * @return the boolean
 	 */
-	public Boolean condition(ComponentXML comp, HashMap<Integer, Double> deCoValue){
+	public Boolean condition(ComponentXML comp){
 		if(comp == null){
 			return false;
 		}

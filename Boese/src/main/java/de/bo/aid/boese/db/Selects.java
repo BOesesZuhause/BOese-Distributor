@@ -116,7 +116,7 @@ public class Selects {
 		else{
 			session.getTransaction().rollback();
 			session.close();
-			throw new DBObjectNotFoundException("DeviceComponent not found");
+			throw new DBObjectNotFoundException("DeviceComponent mit ID: " + decoid + " not found");
 		}
 		
 		session.close();

@@ -68,6 +68,12 @@ public class DeviceComponent implements java.io.Serializable {
 	/** The current value. */
 	private BigDecimal currentValue;
 	
+	/** The current value. */
+	private BigDecimal minValue;
+	
+	/** The current value. */
+	private BigDecimal maxValue;
+	
 	/** The device componente replaces for de co id. */
 	private Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoId = new HashSet<DeviceComponenteReplace>(0);
 	
@@ -103,10 +109,14 @@ public class DeviceComponent implements java.io.Serializable {
 	 * Instantiates a new device component for DB Insert.
 	 *
 	 * @param description the description
+	 * @param minValue the min Value
+	 * @param maxValue the max Value
 	 */
-	public DeviceComponent(String description) {
+	public DeviceComponent(String description, double minValue, double maxValue) {
 		this.description = description;
 		this.status = Status.ACTIVE;
+		this.minValue = BigDecimal.valueOf(minValue);
+		this.maxValue = BigDecimal.valueOf(maxValue);
 	}
 
 	/**
@@ -132,6 +142,8 @@ public class DeviceComponent implements java.io.Serializable {
 	 * @param description the description
 	 * @param logRule the log rule
 	 * @param currentValue the current value
+	 * @param minValue the min Value
+	 * @param maxValue the max Value
 	 * @param deviceComponenteReplacesForDeCoId the device componente replaces for de co id
 	 * @param historyLogDeviceComponents the history log device components
 	 * @param deviceComponenteReplacesForDeCoIdreplaced the device componente replaces for de co idreplaced
@@ -139,7 +151,7 @@ public class DeviceComponent implements java.io.Serializable {
 	 * @param repeatRule the repeatRule
 	 */
 	public DeviceComponent(int deCoId, Component component, Device device, Integer status, String description,
-			BigDecimal logRule, BigDecimal currentValue, Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoId,
+			BigDecimal logRule, BigDecimal currentValue, double minValue, double maxValue, Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoId,
 			Set<HistoryLogDeviceComponent> historyLogDeviceComponents, Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoIdreplaced,
 			Set<LogDeviceComponent> logDeviceComponents, Set<RepeatRule> repeatRule) {
 		this.deCoId = deCoId;
@@ -149,6 +161,8 @@ public class DeviceComponent implements java.io.Serializable {
 		this.description = description;
 		this.logRule = logRule;
 		this.currentValue = currentValue;
+		this.minValue = BigDecimal.valueOf(minValue);
+		this.maxValue = BigDecimal.valueOf(maxValue);
 		this.deviceComponenteReplacesForDeCoId = deviceComponenteReplacesForDeCoId;
 		this.historyLogDeviceComponents = historyLogDeviceComponents;
 		this.deviceComponenteReplacesForDeCoIdreplaced = deviceComponenteReplacesForDeCoIdreplaced;
@@ -280,6 +294,22 @@ public class DeviceComponent implements java.io.Serializable {
 	 */
 	public void setCurrentValue(BigDecimal currentValue) {
 		this.currentValue = currentValue;
+	}
+
+	public BigDecimal getMinValue() {
+		return minValue;
+	}
+
+	public void setMinValue(BigDecimal minValue) {
+		this.minValue = minValue;
+	}
+
+	public BigDecimal getMaxValue() {
+		return maxValue;
+	}
+
+	public void setMaxValue(BigDecimal maxValue) {
+		this.maxValue = maxValue;
 	}
 
 	/**

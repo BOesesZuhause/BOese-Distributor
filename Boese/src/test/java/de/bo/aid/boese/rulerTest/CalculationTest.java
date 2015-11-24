@@ -78,7 +78,8 @@ public class CalculationTest {
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");
-		HibernateUtil.setDBURL("boese", "localhost", "5432");
+		HibernateUtil.setDBURL("boeseTest", "localhost", "5432");
+		HibernateUtil.setDBAuto("create");
 		
 		Inserts.defaults();
 		
@@ -92,9 +93,9 @@ public class CalculationTest {
 		Connector con  = new Connector("test", "123");
 		Device dev = new Device("test", "123");
 		Component comp = new Component("Sensor", false);
-		deco1 = new DeviceComponent("1");
-		deco2 = new DeviceComponent("2");
-		deco3 = new DeviceComponent("3");
+		deco1 = new DeviceComponent("1", -1000.0, 1000.0);
+		deco2 = new DeviceComponent("2", -1000.0, 1000.0);
+		deco3 = new DeviceComponent("3", -1000.0, 1000.0);
 		
 		Inserts.connector(con);
 		Inserts.component(1, comp);

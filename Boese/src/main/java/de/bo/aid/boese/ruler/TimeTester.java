@@ -72,7 +72,7 @@ public class TimeTester{
 			Inserts.device(con.getCoId(), 0, dev);
 			Component comp = new Component("leer", true);
 			Inserts.component(0, comp);
-			DeviceComponent deco = new DeviceComponent("leer");
+			DeviceComponent deco = new DeviceComponent("leer", -1000.0, 1000.0);
 			Inserts.deviceComponent(dev.getDeId(), comp.getCoId(), deco);
 		
 			List<DeviceComponent> decoList = new ArrayList<DeviceComponent>();

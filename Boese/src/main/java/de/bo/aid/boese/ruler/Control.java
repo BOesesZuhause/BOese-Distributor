@@ -85,16 +85,16 @@ public class Control {
 					BoeseXML actBXML = BoeseXML.readXML(is);
 //					is = new ByteArrayInputStream(rule.getPermissions().getBytes());
 //					BoeseXML perBXML = BoeseXML.readXML(is);
-					HashMap<Integer, Double> deCoValue = new HashMap<>();
-					for(int i : ((Condition)conBXML).getComponentIds()){
-						if(i == id){
-							deCoValue.put(id, inquiry.getValue());
-						}
-						else{
-							deCoValue.put(i, Selects.currentValue(i));
-						}
-					}
-					Boolean con = check.condition(((Condition)conBXML).getRule(), deCoValue);
+//					HashMap<Integer, Double> deCoValue = new HashMap<>();
+//					for(int i : ((Condition)conBXML).getComponentIds()){
+//						if(i == id){
+//							deCoValue.put(id, inquiry.getValue());
+//						}
+//						else{
+//							deCoValue.put(i, Selects.currentValue(i));
+//						}
+//					}
+					Boolean con = check.condition(((Condition)conBXML).getRule());
 					if(con != null && con){
 						try {
 							toDo.addAll(toDo.size(), (check.action((Action)actBXML)));

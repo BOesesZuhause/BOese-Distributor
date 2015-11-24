@@ -425,7 +425,7 @@ private final String logo =
 		try{
 			Component comp = new Component(name, temp.isActor());
 			Inserts.component(unitId, comp); 
-			DeviceComponent deco = new DeviceComponent(temp.getDescription());
+			DeviceComponent deco = new DeviceComponent(temp.getDescription(), -1000.0, 1000.0); //TODO min und max value mitgeben
 			Inserts.deviceComponent(deviceId, comp.getCoId(), deco);
 			deCoId = deco.getDeCoId();
 		}
