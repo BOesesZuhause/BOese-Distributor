@@ -777,6 +777,8 @@ public class ProtocolHandler implements MessageHandler {
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(cs, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
+		//send status to all userConnectors
+		SessionHandler.getInstance().sendToUserConnectors(os.toString());
 	}
 
 	/**
