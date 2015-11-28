@@ -400,16 +400,8 @@ public class ProtocolHandler implements MessageHandler {
 		}
 		int deviceId = sv.getDeviceId();
 		int deviceComponentId = sv.getDeviceComponentId();
-		ArrayList<Inquiry> inquiryList = new ArrayList<>();
-		inquiryList.add(new Inquiry(deviceComponentId, sv.getValueTimestamp(), sv.getValue()));
-		sendToDos(inquiryList);
-		sendConfirmValue(deviceId, deviceComponentId, connectorId);
-		
-		
-		//sendValue to all userConnectors
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(sv, os);
-		SessionHandler.getInstance().sendToUserConnectors(os.toString());
 		if (SessionHandler.getInstance().getIsUserConnectorByConnector(connectorId)) {
 			// SendValue came from a user connector
 			// if deco is actor, send SendValue to the actor
@@ -423,6 +415,14 @@ public class ProtocolHandler implements MessageHandler {
 			}
 			
 		}
+		ArrayList<Inquiry> inquiryList = new ArrayList<>();
+		inquiryList.add(new Inquiry(deviceComponentId, sv.getValueTimestamp(), sv.getValue()));
+		sendToDos(inquiryList);
+		sendConfirmValue(deviceId, deviceComponentId, connectorId);
+		
+		
+		//sendValue to all userConnectors
+		SessionHandler.getInstance().sendToUserConnectors(os.toString());
 	}
 
 	/**
