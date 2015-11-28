@@ -410,6 +410,19 @@ public class ProtocolHandler implements MessageHandler {
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(sv, os);
 		SessionHandler.getInstance().sendToUserConnectors(os.toString());
+		if (SessionHandler.getInstance().getIsUserConnectorByConnector(connectorId)) {
+			// SendValue came from a user connector
+			// if deco is actor, send SendValue to the actor
+			try {
+				int deviceConnectorId = Selects.deviceComponent(deviceComponentId).getDevice().getConnector().getCoId();
+				SessionHandler.getInstance().sendToConnector(deviceConnectorId, os.toString());
+			} catch (DBObjectNotFoundException e) {
+				// The deco, device, or connector does not exist -> db inconsistent?
+				logger.error(e.getMessage());
+				e.printStackTrace();
+			}
+			
+		}
 	}
 
 	/**

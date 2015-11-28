@@ -231,6 +231,21 @@ public class SessionHandler {
 		logger.error("Could not find session for connector with id: " + connectorId);
 		return null;
 	}
+	
+	/**
+	 * Gets true if the connector is a user connector, or false if the connector is no user connector or does not exist
+	 * @param connectorId the connector id
+	 * @return true if the connector is a user connector, or false if the connector is no user connector or does not exist
+	 */
+	public boolean getIsUserConnectorByConnector(int connectorId){
+		for(SessionData data : sessions){
+			if(data.getId() == connectorId){
+				return data.isUserConnector();
+			}
+		}
+		logger.error("Could not find session for connector with id: " + connectorId);
+		return false;
+	}
 
 	/**
 	 * Check heartbeat.
