@@ -32,8 +32,11 @@
 package de.bo.aid.boese.db;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.PropertyValueException;
 import org.hibernate.Session;
@@ -609,6 +612,77 @@ public class Inserts {
 		
 //		session.getTransaction().commit();
 //		session.close();
+	}
+	
+	/**
+	 * Insert default Units
+	 */
+	public static void defaultUnits(){
+		List <Unit> units = AllSelects.units();
+		
+		final String volt = "Volt";
+		final String ampere = "milliAmpere";
+		final String procent = "Procent";
+		final String bool = "OnOff";
+		final String temp = "Temperature";
+		final String dist = "Distance";
+		final String rgb = "ColorRGB";
+		final String watt = "Watt";
+		final String time = "Time";
+		final String vel = "Velocity";
+		final String weight = "Weight";
+		
+		Map<String, String> defaults = new HashMap<>(); 
+		defaults.put(volt, "V"); 
+		defaults.put(ampere, "mA"); 
+		defaults.put(procent, "%"); 
+		defaults.put(bool, "Zeichen fehlt"); 
+		defaults.put(temp, "°C"); 
+		defaults.put(dist, "m"); 
+		defaults.put(rgb, "rgb"); 
+		defaults.put(watt, "W"); 
+		defaults.put(time, "ms"); 
+		defaults.put(vel, "m/s"); 
+		defaults.put(weight, "g");
+		
+		List <String> namen = new ArrayList<>();
+		for(Unit unit : units){
+			namen.add(unit.getName());
+		}
+		
+		if (!namen.contains(volt)){
+			Inserts.unit(new Unit(volt, defaults.get(volt)));
+		}
+		if(!namen.contains(ampere)){
+			Inserts.unit(new Unit(ampere, defaults.get(ampere)));
+		}
+		if(!namen.contains(procent)){
+			Inserts.unit(new Unit(procent, defaults.get(procent)));
+		}
+		if(!namen.contains(bool)){
+			Inserts.unit(new Unit(bool, defaults.get(bool)));
+		}
+		if(!namen.contains(temp)){
+			Inserts.unit(new Unit(temp, defaults.get(temp)));
+		}
+		if(!namen.contains(dist)){
+			Inserts.unit(new Unit(dist, defaults.get(dist)));
+		}
+		if(!namen.contains(rgb)){
+			Inserts.unit(new Unit(rgb, defaults.get(rgb)));
+		}
+		if(!namen.contains(watt)){
+			Inserts.unit(new Unit(watt, defaults.get(watt)));
+		}
+		if(!namen.contains(time)){
+			Inserts.unit(new Unit(time, defaults.get(time)));
+		}
+		if(!namen.contains(vel)){
+			Inserts.unit(new Unit(vel, defaults.get(vel)));
+		}
+		if(!namen.contains(weight)){
+			Inserts.unit(new Unit(weight, defaults.get(weight)));
+		}
 	}
 	
 	/**
