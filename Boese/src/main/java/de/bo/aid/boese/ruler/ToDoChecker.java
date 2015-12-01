@@ -40,6 +40,7 @@ import de.bo.aid.boese.db.AllSelects;
 import de.bo.aid.boese.db.Deletes;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
+import de.bo.aid.boese.main.ProtocolHandler;
 import de.bo.aid.boese.model.RepeatRule;
 import de.bo.aid.boese.model.ToDo;
 import de.bo.aid.boese.xml.ComponentXML;
@@ -53,13 +54,18 @@ public class ToDoChecker extends Thread{
 	/** The ttl. */
 	List<TimeTodos> ttl;
 	
+	ProtocolHandler ph;
+	
 	/** The b. */
 	boolean b;
 	
 	/**
 	 * Instantiates a new to do checker.
+	 * 
+	 * @param ph the ProtocolHandler
 	 */
-	public ToDoChecker(){
+	public ToDoChecker(ProtocolHandler ph){
+		this.ph = ph;
 		b = true;
 		List<ToDo> todos = AllSelects.toDos();
 		ttl = new ArrayList<TimeTodos>();
@@ -130,6 +136,7 @@ public class ToDoChecker extends Thread{
 						tt = ttl.iterator().next();
 					}
 					Collections.sort(this.ttl);
+					ph.sendToDos(todos);
 					// TODO MainClass.sendToDos(todos);
 					b = false;
 					sleep(1000*60);

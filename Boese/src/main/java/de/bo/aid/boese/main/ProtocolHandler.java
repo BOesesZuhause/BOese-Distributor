@@ -380,7 +380,7 @@ public class ProtocolHandler implements MessageHandler {
 			}
 		}
 		if (!confirmComponents.isEmpty()) {
-			sendToDos(inquiryList);
+			sendToDos(getToDos(inquiryList));
 			sendConfirmComponent(deviceId, confirmComponents, connectorId);
 		}
 	}
@@ -417,7 +417,7 @@ public class ProtocolHandler implements MessageHandler {
 		}
 		ArrayList<Inquiry> inquiryList = new ArrayList<>();
 		inquiryList.add(new Inquiry(deviceComponentId, sv.getValueTimestamp(), sv.getValue()));
-		sendToDos(inquiryList);
+		sendToDos(getToDos(inquiryList));
 		sendConfirmValue(deviceId, deviceComponentId, connectorId);
 		
 		
@@ -854,15 +854,23 @@ public class ProtocolHandler implements MessageHandler {
 		BoeseJson.parseMessage(rdc, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
+	
+	/**
+	 * Get ToDos.
+	 * 
+	 * @param inquirys a Inquiry List
+	 * @return the List
+	 */
+	public List<ComponentXML> getToDos(List<Inquiry> inquirys) {
+		return distributor.insertValues(inquirys);
+	}
 
 	/**
 	 * Send to dos.
 	 *
-	 * @param inquirys
-	 *            the inquirys
+	 * @param todos a ComponentXML Liste
 	 */
-	public void sendToDos(List<Inquiry> inquirys) {
-		List<ComponentXML> todos = distributor.insertValues(inquirys);
+	public void sendToDos(List<ComponentXML> todos) {
 		for (ComponentXML component : todos) {
 			int deCoId = component.getId();
 			int deviceId = -1;

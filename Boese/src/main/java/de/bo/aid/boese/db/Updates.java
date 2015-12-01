@@ -171,6 +171,7 @@ public class Updates {
 	 * @param status the status
 	 * @param description the description
 	 * @param logrule the logrule
+	 * @param loggen should it be Log?
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void DeviceComponent (DeviceComponent deco, Device dev, Component comp, int status, String description, double logrule, boolean loggen) throws DBObjectNotFoundException{
@@ -261,6 +262,7 @@ public class Updates {
 	 * @param name the name
 	 * @param pw the pw
 	 * @param status the status
+	 * @param userConnector is User Connector
 	 * @throws DBObjectNotFoundException the DB object not found exception
 	 */
 	public static void connector(Connector con, String name, String pw, int status, boolean userConnector) throws DBObjectNotFoundException{

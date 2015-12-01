@@ -163,7 +163,7 @@ private final String logo =
 	 * Start Todo Checker.
 	 */
 	public void startToDoChecker(){
-		tdc = new ToDoChecker();
+		tdc = new ToDoChecker(protocolHandler);
 		tdc.start();
 	}
 	
@@ -439,7 +439,7 @@ private final String logo =
 		confirmComponents.put(name, deCoId);
 		ArrayList<Inquiry> inquiryList = new ArrayList<>();
 		inquiryList.add(new Inquiry(deCoId, temp.getValueTimestamp(), temp.getValue()));
-		protocolHandler.sendToDos(inquiryList);
+		protocolHandler.sendToDos(protocolHandler.getToDos(inquiryList));
 		
 		protocolHandler.sendConfirmComponent(deviceId, confirmComponents, connectorId);
 		
