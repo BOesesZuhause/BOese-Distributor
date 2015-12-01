@@ -1020,7 +1020,7 @@ public class BoeseJson {
 			JsonObjectBuilder ruleUSRR;
 			for (RepeatRuleJSON rule : usrr.getRules()) {
 				ruleUSRR = Json.createObjectBuilder();
-				ruleUSRR.add("RepeatRuleId", rule.getRuleId());
+				ruleUSRR.add("RepeatRuleId", rule.getId());
 				ruleUSRR.add("CronString", rule.getCron());
 				ruleUSRR.add("RepeatsAfterEnd", rule.getRepeatsAfterEnd());
 				ruleUSRR.add("Value", rule.getValue());

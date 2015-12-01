@@ -37,8 +37,8 @@ import de.bo.aid.boese.json.SendDevices;
 import de.bo.aid.boese.json.SendNotification;
 import de.bo.aid.boese.json.SendStatus;
 import de.bo.aid.boese.json.SendValue;
+import de.bo.aid.boese.json.UnitJSON;
 import de.bo.aid.boese.json.UserConfirmRepeatRules;
-import de.bo.aid.boese.json.UserConfirmRules;
 import de.bo.aid.boese.json.UserConfirmTemps;
 import de.bo.aid.boese.json.UserCreateRepeatRules;
 import de.bo.aid.boese.json.UserCreateRules;
@@ -49,8 +49,10 @@ import de.bo.aid.boese.json.UserRequestGeneral;
 import de.bo.aid.boese.json.UserSendConnectors;
 import de.bo.aid.boese.json.UserSendDeviceComponent;
 import de.bo.aid.boese.json.UserSendDevices;
+import de.bo.aid.boese.json.UserSendRepeatRules;
 import de.bo.aid.boese.json.UserSendRules;
 import de.bo.aid.boese.json.UserSendTemps;
+import de.bo.aid.boese.json.UserSendUnits;
 import de.bo.aid.boese.json.UserSendZones;
 import de.bo.aid.boese.json.UserTempComponent;
 import de.bo.aid.boese.json.ZoneJSON;
@@ -1492,6 +1494,200 @@ public class protokollTest {
 		BoeseJson.parseMessage(bs, os);
 		assertEquals(os.toString(), message);
 	}
+	
+	@Test
+	public void parseUserRequestAllUnits(){
+        String message = "{"
+                + "\"Header\":{"
+                + "\"MessageType\":61,"
+                + "\"ConnectorId\":1,"
+                + "\"Status\":0,"
+                + "\"Timestamp\":111222334"
+                + "}"
+                + "}";
+        
+        OutputStream os = new ByteArrayOutputStream();
+        
+        UserRequestGeneral urg = new UserRequestGeneral(MessageType.USERREQUESTALLUNITS, 1, 0, 111222334);
+        BoeseJson.parseMessage(urg, os);
+        assertEquals(os.toString(), message);
+	}
+	
+	@Test
+	public void readUserRequestAllUnits(){
+        String message = "{"
+                + "\"Header\":{"
+                + "\"MessageType\":61,"
+                + "\"ConnectorId\":1,"
+                + "\"Status\":0,"
+                + "\"Timestamp\":111222334"
+                + "}"
+                + "}";
+        
+        InputStream is = new ByteArrayInputStream(message.getBytes());
+        BoeseJson bs = BoeseJson.readMessage(is);
+        assertNotNull(bs);
+        
+        OutputStream os = new ByteArrayOutputStream();
+        BoeseJson.parseMessage(bs, os);
+        assertEquals(os.toString(), message);
+	}
+	
+	
+	
+	@Test
+    public void parseUserRequestAllRepeatRules(){
+        String message = "{"
+                + "\"Header\":{"
+                + "\"MessageType\":63,"
+                + "\"ConnectorId\":1,"
+                + "\"Status\":0,"
+                + "\"Timestamp\":111222334"
+                + "}"
+                + "}";
+        
+        OutputStream os = new ByteArrayOutputStream();
+        
+        UserRequestGeneral urg = new UserRequestGeneral(MessageType.USERREQUESTALLREPEATRULES, 1, 0, 111222334);
+        BoeseJson.parseMessage(urg, os);
+        assertEquals(os.toString(), message);
+    }
+    
+    @Test
+    public void readUserRequestAllRepeatRules(){
+        String message = "{"
+                + "\"Header\":{"
+                + "\"MessageType\":63,"
+                + "\"ConnectorId\":1,"
+                + "\"Status\":0,"
+                + "\"Timestamp\":111222334"
+                + "}"
+                + "}";
+        
+        InputStream is = new ByteArrayInputStream(message.getBytes());
+        BoeseJson bs = BoeseJson.readMessage(is);
+        assertNotNull(bs);
+        
+        OutputStream os = new ByteArrayOutputStream();
+        BoeseJson.parseMessage(bs, os);
+        assertEquals(os.toString(), message);
+    }
+	
+	
+    @Test
+    public void parseUserSendRepeatRules(){
+        String message = "{"
+                + "\"Header\":{"
+                + "\"MessageType\":64,"
+                + "\"ConnectorId\":1,"
+                + "\"Status\":0,"
+                + "\"Timestamp\":111222334"
+                + "},"
+                + "\"Rules\":[{"
+                + "\"RepeatRuleId\":2,"
+                + "\"CronString\":\"1;2;3;4;5;6\","
+                + "\"RepeatsAfterEnd\":7,"
+                + "\"Value\":4.6,"
+                + "\"RuleId\":1,"
+                + "\"DeviceComponentId\":1"
+                + "}]"
+                + "}";
+        
+        OutputStream os = new ByteArrayOutputStream();
+        
+        
+        HashSet<RepeatRuleJSON> rules = new HashSet<>();
+        rules.add(new RepeatRuleJSON(2, 7, 4.6, 1, 1, "1;2;3;4;5;6"));
+        UserSendRepeatRules usrr = new UserSendRepeatRules(rules, 1, 0, 111222334);
+        
+        BoeseJson.parseMessage(usrr, os);
+        assertEquals(os.toString(), message);
+    }
+    
+    @Test
+    public void readUserSendRepeatRules(){
+        String message = "{"
+                + "\"Header\":{"
+                + "\"MessageType\":64,"
+                + "\"ConnectorId\":1,"
+                + "\"Status\":0,"
+                + "\"Timestamp\":111222334"
+                + "},"
+                + "\"Rules\":[{"
+                + "\"RepeatRuleId\":2,"
+                + "\"CronString\":\"1;2;3;4;5;6\","
+                + "\"RepeatsAfterEnd\":7,"
+                + "\"Value\":4.6,"
+                + "\"RuleId\":1,"
+                + "\"DeviceComponentId\":1"
+                + "}]"
+                + "}";
+        
+        InputStream is = new ByteArrayInputStream(message.getBytes());
+        BoeseJson bs = BoeseJson.readMessage(is);
+        assertNotNull(bs);
+        
+        OutputStream os = new ByteArrayOutputStream();
+        BoeseJson.parseMessage(bs, os);
+        assertEquals(os.toString(), message);
+    }
+    
+    @Test
+    public void parseUserSendUnits(){
+        String message = "{"
+                + "\"Header\":{"
+                + "\"MessageType\":62,"
+                + "\"ConnectorId\":1,"
+                + "\"Status\":0,"
+                + "\"Timestamp\":111222334"
+                + "},"
+                + "\"Units\":[{"
+                + "\"UnitId\":1,"
+                + "\"UnitName\":\"Volt\","
+                + "\"UnitSymbol\":\"V\""
+                + "}]"
+                + "}";
+        
+        OutputStream os = new ByteArrayOutputStream();
+        
+        HashSet<UnitJSON> units = new HashSet<>();
+        units.add(new UnitJSON(1, "Volt", "V"));
+        UserSendUnits usu = new UserSendUnits(units, 1, 0, 111222334);
+  
+        BoeseJson.parseMessage(usu, os);
+        assertEquals(os.toString(), message);
+    }
+    
+    @Test
+    public void readUserSendUnits(){
+        String message = "{"
+                + "\"Header\":{"
+                + "\"MessageType\":62,"
+                + "\"ConnectorId\":1,"
+                + "\"Status\":0,"
+                + "\"Timestamp\":111222334"
+                + "},"
+                + "\"Units\":[{"
+                + "\"UnitId\":1,"
+                + "\"UnitName\":\"Volt\","
+                + "\"UnitSymbol\":\"V\""
+                + "}]"
+                + "}";
+        
+        InputStream is = new ByteArrayInputStream(message.getBytes());
+        BoeseJson bs = BoeseJson.readMessage(is);
+        assertNotNull(bs);
+        
+        OutputStream os = new ByteArrayOutputStream();
+        BoeseJson.parseMessage(bs, os);
+        assertEquals(os.toString(), message);
+    }
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * Parses the user request temps.
