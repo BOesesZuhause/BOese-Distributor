@@ -26,6 +26,7 @@ import de.bo.aid.boese.json.ConfirmValue;
 import de.bo.aid.boese.json.DeviceComponents;
 import de.bo.aid.boese.json.HeartBeatMessage;
 import de.bo.aid.boese.json.MultiMessage;
+import de.bo.aid.boese.json.RepeatRuleJSON;
 import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.json.RequestConnection;
 import de.bo.aid.boese.json.RequestDeviceComponents;
@@ -36,8 +37,10 @@ import de.bo.aid.boese.json.SendDevices;
 import de.bo.aid.boese.json.SendNotification;
 import de.bo.aid.boese.json.SendStatus;
 import de.bo.aid.boese.json.SendValue;
+import de.bo.aid.boese.json.UserConfirmRepeatRules;
 import de.bo.aid.boese.json.UserConfirmRules;
 import de.bo.aid.boese.json.UserConfirmTemps;
+import de.bo.aid.boese.json.UserCreateRepeatRules;
 import de.bo.aid.boese.json.UserCreateRules;
 import de.bo.aid.boese.json.UserDevice;
 import de.bo.aid.boese.json.UserRequestConnectors;
@@ -1764,25 +1767,31 @@ public class protokollTest {
 	 * Parses the user confirm rules.
 	 */
 	@Test
-	public void parseUserConfirmRules(){
+	public void parseUserCreateRepeatRules(){
 		String message = "{"
 				+ "\"Header\":{"
-				+ "\"MessageType\":91,"
+				+ "\"MessageType\":96,"
 				+ "\"ConnectorId\":1,"
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
 				+ "\"Rules\":[{"
-				+ "\"RuleId\":2,"
-				+ "\"TempRuleId\":1"
+				+ "\"RepeatRuleId\":2,"
+				+ "\"TempRepeatRuleId\":3,"
+				+ "\"CronString\":\"1;2;3;4;5;6\","
+				+ "\"RepeatsAfterEnd\":7,"
+				+ "\"Value\":4.6,"
+				+ "\"RuleId\":1,"
+				+ "\"DeviceComponentId\":1"
 				+ "}]"
 				+ "}";
 		
 		OutputStream os = new ByteArrayOutputStream();
-		HashMap<Integer, Integer> tempRules = new HashMap<Integer, Integer>();
-		tempRules.put(1, 2);
-		UserConfirmRules ucr = new UserConfirmRules(tempRules, 1, 0, 111222334);
-		BoeseJson.parseMessage(ucr, os);
+		RepeatRuleJSON rule = new RepeatRuleJSON(2, 3, 7, 4.6, 1, 1, "1;2;3;4;5;6");
+		HashSet<RepeatRuleJSON> rules = new HashSet<>();
+		rules.add(rule);
+        UserCreateRepeatRules ucrr = new UserCreateRepeatRules(rules, 1, 0, 111222334);
+		BoeseJson.parseMessage(ucrr, os);
 		assertEquals(os.toString(), message);
 	}
 	
@@ -1790,19 +1799,24 @@ public class protokollTest {
 	 * Read user confirm rules.
 	 */
 	@Test
-	public void readUserConfirmRules(){
-		String message = "{"
-				+ "\"Header\":{"
-				+ "\"MessageType\":91,"
-				+ "\"ConnectorId\":1,"
-				+ "\"Status\":0,"
-				+ "\"Timestamp\":111222334"
-				+ "},"
-				+ "\"Rules\":[{"
-				+ "\"RuleId\":2,"
-				+ "\"TempRuleId\":1"
-				+ "}]"
-				+ "}";
+	public void readUserCreateRepeatRules(){
+        String message = "{"
+                + "\"Header\":{"
+                + "\"MessageType\":96,"
+                + "\"ConnectorId\":1,"
+                + "\"Status\":0,"
+                + "\"Timestamp\":111222334"
+                + "},"
+                + "\"Rules\":[{"
+                + "\"RepeatRuleId\":2,"
+                + "\"TempRepeatRuleId\":3,"
+                + "\"CronString\":\"1;2;3;4;5;6\","
+                + "\"RepeatsAfterEnd\":7,"
+                + "\"Value\":4.6,"
+                + "\"RuleId\":1,"
+                + "\"DeviceComponentId\":1"
+                + "}]"
+                + "}";
 		
 		InputStream is = new ByteArrayInputStream(message.getBytes());
 		BoeseJson bs = BoeseJson.readMessage(is);
@@ -1812,6 +1826,62 @@ public class protokollTest {
 		BoeseJson.parseMessage(bs, os);
 		assertEquals(os.toString(), message);
 	}
+
+	
+	   /**
+     * Parses the user confirm rules.
+     */
+    @Test
+    public void parseUserConfirmRepeatRules(){
+        String message = "{"
+                + "\"Header\":{"
+                + "\"MessageType\":97,"
+                + "\"ConnectorId\":1,"
+                + "\"Status\":0,"
+                + "\"Timestamp\":111222334"
+                + "},"
+                + "\"Rules\":[{"
+                + "\"TempRuleId\":2,"
+                + "\"RepeatRuleId\":1"
+                + "}]"
+                + "}";
+        
+        OutputStream os = new ByteArrayOutputStream();
+        HashMap<Integer, Integer> tempRules = new HashMap<Integer, Integer>();
+        tempRules.put(2, 1);
+        UserConfirmRepeatRules ucrr = new UserConfirmRepeatRules(tempRules, 1, 0, 111222334);
+        BoeseJson.parseMessage(ucrr, os);
+        assertEquals(os.toString(), message);
+    }
+    
+    /**
+     * Read user confirm rules.
+     */
+    @Test
+    public void readUserConfirmRepeatRules(){
+        String message = "{"
+                + "\"Header\":{"
+                + "\"MessageType\":97,"
+                + "\"ConnectorId\":1,"
+                + "\"Status\":0,"
+                + "\"Timestamp\":111222334"
+                + "},"
+                + "\"Rules\":[{"
+                + "\"TempRuleId\":2,"
+                + "\"RepeatRuleId\":1"
+                + "}]"
+                + "}";
+        
+        InputStream is = new ByteArrayInputStream(message.getBytes());
+        BoeseJson bs = BoeseJson.readMessage(is);
+        assertNotNull(bs);
+        
+        OutputStream os = new ByteArrayOutputStream();
+        BoeseJson.parseMessage(bs, os);
+        assertEquals(os.toString(), message);
+    }
+	
+	
 	
 
 	/**

@@ -177,7 +177,8 @@ private final String logo =
 		HibernateUtil.setDBPassword(props.getDbPassword());
 		HibernateUtil.setDBURL(props.getDbName(), props.getDbHost(), props.getDbPort());
 		
-		Inserts.defaults();		
+		Inserts.defaults();	
+		Inserts.defaultUnits();
 	}
 	
 	/**
