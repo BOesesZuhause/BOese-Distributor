@@ -1183,8 +1183,8 @@ public class BoeseJson {
 			JsonObjectBuilder unitUCU;
 			for (UnitJSON unit : ucu.getUnits()) {
 				unitUCU = Json.createObjectBuilder();
-				unitUCU.add("ZoneId", unit.getUnitId());
-				unitUCU.add("TempZoneId", unit.getTempUnitId());
+				unitUCU.add("UnitId", unit.getUnitId());
+				unitUCU.add("TempUnitId", unit.getTempUnitId());
 				unitUCU.add("UnitName", unit.getUnitName());
 				unitUCU.add("UnitSymbol", unit.getUnitSymbol());
 				unitsUCU.add(unitUCU);

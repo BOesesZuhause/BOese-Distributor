@@ -19,7 +19,7 @@ public class UserCreateZones extends BoeseJson {
 	 * @param status the status
 	 * @param timestamp the timestamp
 	 */
-	protected UserCreateZones(HashSet<ZoneJSON> zones, int connectorId, int status, long timestamp) {
+	public UserCreateZones(HashSet<ZoneJSON> zones, int connectorId, int status, long timestamp) {
 		super(MessageType.USERCREATEZONES, connectorId, status, timestamp);
 		this.zones = zones;
 	}
