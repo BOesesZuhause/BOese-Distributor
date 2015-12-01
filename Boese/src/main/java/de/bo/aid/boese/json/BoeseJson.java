@@ -170,7 +170,11 @@ public class BoeseJson {
 		USERCREATEUNITS,
 		
 		/** The userconfirmunits. */
-		USERCONFIRMUNITS
+		USERCONFIRMUNITS,
+		
+		USERCREATEREPEATRULES,
+		
+		USERCONFIRMREPEATRULES
 	}
 
 	/**
@@ -653,6 +657,38 @@ public class BoeseJson {
 			}
 			bj = new UserConfirmUnits(tempUnitMapUCoU, headerConnectorID, headerStatus, headerTimestamp);
 			break;
+		case 96: // UserCreateRepeatRules
+	           HashSet<RepeatRuleJSON> rulesSetUCRR = new HashSet<>();
+	            JsonArray rulesUCRR = jo.getJsonArray("Rules");
+	            if (rulesUCRR != null) {
+	                for (int i = 0; i < rulesUCRR.size(); i++) {
+	                    JsonObject rule = rulesUCRR.getJsonObject(i);
+	                    long currentDateUCR = new Date().getTime();
+	                    rulesSetUCRR.add(new RepeatRuleJSON(rule.getInt("RepeatRuleId"), 
+	                            rule.getInt("TempRepeatRuleId"),
+	                            rule.getInt("RepeatsAfterEnd"), 
+	                            rule.getJsonNumber("Value").doubleValue(), 
+	                            rule.getInt("RuleId"), 
+	                            rule.getInt("DeviceComponentId"), 
+	                            rule.getString("CronString")));
+	                }
+	            }
+	            bj = new UserCreateRepeatRules(rulesSetUCRR, headerConnectorID, headerStatus, headerTimestamp);
+	            break;
+		case 97: // UserConfirmRepeatRules
+		    
+		    HashMap<Integer, Integer> tempRepeatRuleMapUCoR = new HashMap<>();
+            JsonArray tempRepeatRuleUCoR = jo.getJsonArray("Rules");
+            if (tempRepeatRuleUCoR != null) {
+                for (int i = 0; i < tempRepeatRuleUCoR.size(); i++) {
+                    JsonObject rule = tempRepeatRuleUCoR.getJsonObject(i);
+                    tempRepeatRuleMapUCoR.put(rule.getInt("TempRuleId"), rule.getInt("RepeatRuleId"));
+                }
+            }
+            bj = new UserConfirmRepeatRules(tempRepeatRuleMapUCoR, headerConnectorID, headerStatus, headerTimestamp);
+		    
+		    
+            break;
 		case 120: //HeartBeatMessage
 			bj = new HeartBeatMessage(headerConnectorID, headerStatus, headerTimestamp);			
 		break;
@@ -1124,6 +1160,40 @@ public class BoeseJson {
 			job.add("Units", unitsUCoU);
 			break;
 			
+		case USERCREATEREPEATRULES:
+		    UserCreateRepeatRules ucrr = (UserCreateRepeatRules)message;
+		    job.add("Header", addHeader(96, ucrr.getConnectorId(), ucrr.getStatus(), ucrr.getTimestamp()));
+		    JsonArrayBuilder repeatRuleArrayBuilder = Json.createArrayBuilder();
+		    JsonObjectBuilder repeatRuleObjectBuilder = Json.createObjectBuilder();
+		    for(RepeatRuleJSON rrule : ucrr.getRules()){
+		        repeatRuleObjectBuilder = Json.createObjectBuilder();
+		  
+		        repeatRuleObjectBuilder.add("RepeatRuleId", rrule.getId());
+		        repeatRuleObjectBuilder.add("TempRepeatRuleId", rrule.getTempId());
+		        repeatRuleObjectBuilder.add("CronString", rrule.getCron());
+		        repeatRuleObjectBuilder.add("RepeatsAfterEnd", rrule.getRepeatsAfterEnd());
+		        repeatRuleObjectBuilder.add("Value", rrule.getValue());
+		        repeatRuleObjectBuilder.add("RuleId", rrule.getRuleId());
+		        repeatRuleObjectBuilder.add("DeviceComponentId", rrule.getDecoId());
+		  
+		        repeatRuleArrayBuilder.add(repeatRuleObjectBuilder);
+		    }
+		    job.add("Rules", repeatRuleArrayBuilder);
+		    break;
+		case USERCONFIRMREPEATRULES:
+		    UserConfirmRepeatRules uconfrr  = (UserConfirmRepeatRules) message;
+		    job.add("Header", addHeader(97, uconfrr.getConnectorId(), uconfrr.getStatus(), uconfrr.getTimestamp()));
+		    JsonArrayBuilder rrulesArrayBuilder = Json.createArrayBuilder();
+		    JsonObjectBuilder rrulesObjectBuilder;
+		    for(Entry<Integer, Integer> entry : uconfrr.getTempRules().entrySet()){
+		        rrulesObjectBuilder = Json.createObjectBuilder();
+		        rrulesObjectBuilder.add("TempRuleId", entry.getKey());
+		        rrulesObjectBuilder.add("RepeatRuleId", entry.getValue());
+		        rrulesArrayBuilder.add(rrulesObjectBuilder);
+		    }
+		    job.add("Rules", rrulesArrayBuilder);
+		    break;
+	
 		case HEARTBEATMESSAGE:
 			HeartBeatMessage hm = (HeartBeatMessage) message;
 			job.add("Header", addHeader(120, hm.getConnectorId(), hm.getStatus(), hm.getTimestamp()));
