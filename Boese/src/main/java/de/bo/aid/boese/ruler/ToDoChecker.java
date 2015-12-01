@@ -147,6 +147,12 @@ public class ToDoChecker extends Thread{
 	public void changeInToDo(){
 		//TODO anders lösen
 	    while(b){
+	    	try {
+				sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		List<ToDo> todos = AllSelects.toDos();
 		this.ttl = new ArrayList<TimeTodos>();

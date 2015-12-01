@@ -78,6 +78,7 @@ public class TimeTester{
 			decoList.add(deco);
 			Rule rule = new Rule("", "", "");
 			Inserts.rule(decoList, rule, tdc);
+			
 			RepeatRule rr = new RepeatRule("30; 21; *; *; *; *", new BigDecimal(100), 0);
 			Inserts.repeatRule(rr , rule.getRuId(), deco.getDeCoId(), tdc);
 			ToDo todo = new ToDo(new Date());
