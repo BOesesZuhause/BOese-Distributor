@@ -310,6 +310,15 @@ public class SessionHandler {
 			data.setUserConnector(true);
 		}
 	}
+	
+	public boolean hasUserConnectors(){
+	       for(SessionData data : sessions){
+	            if(data.isUserConnector()){
+	                return true;
+	            }
+	        }
+	       return false;
+	}
 
 	/**
 	 * Send to user connectors.
