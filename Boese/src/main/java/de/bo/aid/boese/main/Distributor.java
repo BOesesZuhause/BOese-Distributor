@@ -141,6 +141,8 @@ private final String logo =
 	
 	/** The props. */
 	DistributorProperties props;
+
+    private String default_password = "";
 	
 	/**
 	 * Start websocket server.
@@ -216,6 +218,7 @@ private final String logo =
 		
 		websocketPort = props.getPort();
 		autoConfirm = props.isAutoConfirm();
+		default_password = props.getDefaultPassword();
 	}
 
 	/**
@@ -552,4 +555,8 @@ private final String logo =
 	public ToDoChecker getTdc() {
 		return tdc;
 	}
+
+    public boolean checkDefaultPassword(String pw) {
+        return pw.equals(default_password);
+    }
 }

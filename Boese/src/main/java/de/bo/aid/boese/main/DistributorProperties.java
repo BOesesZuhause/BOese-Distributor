@@ -48,6 +48,8 @@ public class DistributorProperties extends Properties{
 	/** The db port. */
 	private final String DB_PORT = "DB_PORT";
 	
+	private final String DEFAULT_PASSWORD = "DEFAULT_CONNECTOR_PASSWORD";
+	
 	
 	/** The logger. */
 	final  Logger logger = LogManager.getLogger(DistributorProperties.class);
@@ -140,6 +142,7 @@ public class DistributorProperties extends Properties{
 		this.setDbName("boese");
 		this.setDbHost("localhost");
 		this.setDbPort("5432");
+		this.setDefaultPassword("Boese");
 	}
 	
 	/**
@@ -281,5 +284,14 @@ public class DistributorProperties extends Properties{
 	@NotNull
 	public String getDbPort() {
 		return this.getProperty(DB_PORT);
+	}
+	
+	public void setDefaultPassword(String pw){
+	    this.setProperty(DEFAULT_PASSWORD, pw);
+	}
+	
+	@NotNull
+	public String getDefaultPassword(){
+	    return this.getProperty(DEFAULT_PASSWORD);
 	}
 }

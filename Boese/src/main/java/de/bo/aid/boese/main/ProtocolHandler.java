@@ -234,6 +234,26 @@ public class ProtocolHandler implements MessageHandler {
 	 */
 	private void handleRequestConnection(RequestConnection rc, int tempId) {
 
+	    //first gui-connector
+        if(rc.isUserConnector() && !SessionHandler.getInstance().hasUserConnectors()){
+            String pw = rc.getPassword();
+            String conName = rc.getConnectorName();
+            
+            if(distributor.checkDefaultPassword(pw)){
+                distributor.addTempConnector(conName, tempId, true);
+                try {
+                    distributor.confirmConnector(tempId);
+                } catch (NotFoundException e) {
+                    logger.error("Error while adding default gui-connector",e);
+                }
+                return;          
+            }else{
+                logger.info("Gui-Connector submitted wrong default password");
+                SessionHandler.getInstance().rejectConnection(tempId);
+                return;
+            }
+        }  
+	    
 		if (rc.getPassword() == null && rc.getConnectorId() == -1) { //connector without id
 			
 			// Add requesting Connector to tempConnectors with tempId from SocketHandler
@@ -243,26 +263,26 @@ public class ProtocolHandler implements MessageHandler {
 				distributor.addTempConnector(rc.getConnectorName(), tempId, false);
 			}
 		} else { //connector with id
-			String pw = rc.getPassword();
-			int conId = rc.getConnectorId();
-			String conName = rc.getConnectorName();
-
-			Connector con = null;
-			try{
-				con = Selects.connector(conId);
-				if (con.getName().compareTo(conName) == 0 && con.getPassword().compareTo(pw) == 0) {
-					SessionHandler.getInstance().setConnectorId(tempId, conId);
-					sendConfirmConnection(pw, conId);
-					sendRequestAllDevices(conId);
-				} else {
-					SessionHandler.getInstance().rejectConnection(conId);
-				}
-			}
-			catch (DBObjectNotFoundException onfe){ //connector not found
-				SessionHandler.getInstance().rejectConnection(tempId);
-				logger.error(onfe.getMessage());
-				onfe.printStackTrace();
-			}
+    			String pw = rc.getPassword();
+    			int conId = rc.getConnectorId();
+    			String conName = rc.getConnectorName();
+    
+    			Connector con = null;
+    			try{
+    				con = Selects.connector(conId);
+    				if (con.getName().compareTo(conName) == 0 && con.getPassword().compareTo(pw) == 0) {
+    					SessionHandler.getInstance().setConnectorId(tempId, conId);
+    					sendConfirmConnection(pw, conId);
+    					sendRequestAllDevices(conId);
+    				} else {
+    					SessionHandler.getInstance().rejectConnection(conId);
+    				}
+    			}
+    			catch (DBObjectNotFoundException onfe){ //connector not found
+    				SessionHandler.getInstance().rejectConnection(tempId);
+    				logger.error(onfe.getMessage());
+    				onfe.printStackTrace();
+    			}
 		}
 	}
 
@@ -617,6 +637,7 @@ public class ProtocolHandler implements MessageHandler {
 				distributor.confirmConnector(con);
 			} catch (NotFoundException nfe) {
 				// TODO
+			    nfe.printStackTrace();
 			}
 		}
 		for (Entry<Integer, Integer> entry : uct.getTempDevices().entrySet()) {
@@ -624,6 +645,7 @@ public class ProtocolHandler implements MessageHandler {
 				distributor.confirmDevice(entry.getKey(), entry.getValue(), null);
 			} catch (NotFoundException nfe) {
 				// TODO
+			    nfe.printStackTrace();
 			}
 		}
 		for (UserTempComponent comp : uct.getTempDeviceComponents()) {
@@ -631,6 +653,7 @@ public class ProtocolHandler implements MessageHandler {
 				distributor.confirmDeviceComponent(comp.getTempComponentId(), comp.getUnitId(), comp.getName());
 			} catch (NotFoundException nfe) {
 				// TODO
+			    nfe.printStackTrace();
 			}
 		}
 	}
