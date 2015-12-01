@@ -12,7 +12,16 @@ public class RepeatRuleJSON{
     private String cron;
 
     
-
+    public RepeatRuleJSON(int id, int repeatsAfterEnd, double value, int ruleId, int decoId, String cron) {
+        super();
+        Id = id;
+        this.tempId = -1;
+        this.repeatsAfterEnd = repeatsAfterEnd;
+        this.value = value;
+        this.ruleId = ruleId;
+        this.decoId = decoId;
+        this.cron = cron;
+    }
 
     public RepeatRuleJSON(int id, int tempId, int repeatsAfterEnd, double value, int ruleId, int decoId, String cron) {
         super();

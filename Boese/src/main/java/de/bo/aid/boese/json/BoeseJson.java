@@ -174,7 +174,11 @@ public class BoeseJson {
 		
 		USERCREATEREPEATRULES,
 		
-		USERCONFIRMREPEATRULES
+		USERCONFIRMREPEATRULES,
+		
+		USERREQUESTALLREPEATRULES,
+		
+		USERSENDREPEATRULES
 	}
 
 	/**
@@ -517,6 +521,26 @@ public class BoeseJson {
 				}
 			} else {}
 			bj = new UserSendUnits(unitSetURAU, headerConnectorID, headerStatus, headerTimestamp);
+			break;
+		case 63: // UserRequestAllRepeatRules
+			bj = new UserRequestGeneral(MessageType.USERREQUESTALLREPEATRULES, headerConnectorID, headerStatus, headerTimestamp);
+			break;
+		case 64: // UserSendRepeatRules
+			HashSet<RepeatRuleJSON> ruleSetUSARR = new HashSet<>();
+			JsonArray rulesUSARR = jo.getJsonArray("Rules");
+			if (rulesUSARR != null) {
+				for (int i = 0; i < rulesUSARR.size(); i++) {
+					JsonObject repeatRuleUSARR = rulesUSARR.getJsonObject(i);
+					ruleSetUSARR.add(new RepeatRuleJSON(repeatRuleUSARR.getInt("RepeatRuleId"),
+							repeatRuleUSARR.getInt("RepeatsAfterEnd"),
+							repeatRuleUSARR.getJsonNumber("Value").doubleValue(),
+							repeatRuleUSARR.getInt("RuleId"),
+							repeatRuleUSARR.getInt("DeviceComponentId"),
+							repeatRuleUSARR.getString("CronString")
+							));
+				}
+			} else {}
+			bj = new UserSendRepeatRules(ruleSetUSARR, headerConnectorID, headerStatus, headerTimestamp);
 			break;
 		case 80: // UserRequestTemps
 			bj = new UserRequestGeneral(MessageType.USERREQUESTTEMPS, headerConnectorID, headerStatus, headerTimestamp);
@@ -984,6 +1008,27 @@ public class BoeseJson {
 				rulesUSR.add(ruleUSR);
 			}
 			job.add("Rules", rulesUSR);
+			break;
+		case USERREQUESTALLREPEATRULES:
+			UserRequestGeneral urarr = (UserRequestGeneral)message;
+			job.add("Header", addHeader(63, urarr.getConnectorId(), urarr.getStatus(), urarr.getTimestamp()));
+			break;
+		case USERSENDREPEATRULES:
+			UserSendRepeatRules usrr = (UserSendRepeatRules)message;
+			job.add("Header", addHeader(64, usrr.getConnectorId(), usrr.getStatus(), usrr.getTimestamp()));
+			JsonArrayBuilder rulesUSRR = Json.createArrayBuilder();
+			JsonObjectBuilder ruleUSRR;
+			for (RepeatRuleJSON rule : usrr.getRules()) {
+				ruleUSRR = Json.createObjectBuilder();
+				ruleUSRR.add("RepeatRuleId", rule.getRuleId());
+				ruleUSRR.add("CronString", rule.getCron());
+				ruleUSRR.add("RepeatsAfterEnd", rule.getRepeatsAfterEnd());
+				ruleUSRR.add("Value", rule.getValue());
+				ruleUSRR.add("RuleId", rule.getRuleId());
+				ruleUSRR.add("DeviceComponentId", rule.getDecoId());
+				rulesUSRR.add(ruleUSRR);
+			}
+			job.add("Rules", rulesUSRR);
 			break;
 		case USERREQUESTALLUNITS:
 			UserRequestGeneral urau = (UserRequestGeneral)message;
