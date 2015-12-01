@@ -45,6 +45,7 @@ import de.bo.aid.boese.exceptions.DBForeignKeyNotFoundException;
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.model.*;
 import de.bo.aid.boese.ruler.Interpretor;
+import de.bo.aid.boese.ruler.TimeFormat;
 import de.bo.aid.boese.ruler.ToDoChecker;
 
 // TODO: Auto-generated Javadoc
@@ -479,8 +480,11 @@ public class Inserts {
 		}
 		
 		session.close();
-		if(tdc != null)
-			Interpretor.createTodos(tdc);
+		
+		ToDo todo = new ToDo(new TimeFormat(rr.getRepeat()).getDate());
+		if(tdc != null){
+			Inserts.toDo(todo, rr.getRrId(), tdc);
+		}
 	}
 	
 	/**
@@ -618,7 +622,7 @@ public class Inserts {
 	 * Insert default Units
 	 */
 	public static void defaultUnits(){
-		List <Unit> units = AllSelects.units();
+		List <Unit> units = AllSelects.units();		
 		
 		final String volt = "Volt";
 		final String ampere = "milliAmpere";

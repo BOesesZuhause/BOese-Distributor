@@ -113,7 +113,7 @@ public class ToDoTest {
 		testRr1 = new RepeatRule("*;*;*;*;*;*", new BigDecimal(10.0), 1);
 		Inserts.repeatRule(testRr1, testRule.getRuId(), testDeco.getDeCoId(), null);
 		
-		testRr2 = new RepeatRule("*;*;*;*;*;*", new BigDecimal(10.0), 1);
+		testRr2 = new RepeatRule("*;*;*;*;*;*", new BigDecimal(20.0), 1);
 		Inserts.repeatRule(testRr2, testRule.getRuId(), testDeco.getDeCoId(), null);
 		
 		todo1 = new ToDo(new Date());
