@@ -31,6 +31,7 @@ package de.bo.aid.boese.main;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -58,6 +59,7 @@ import de.bo.aid.boese.json.ConfirmValue;
 import de.bo.aid.boese.json.DeviceComponents;
 import de.bo.aid.boese.json.HeartBeatMessage;
 import de.bo.aid.boese.json.MultiMessage;
+import de.bo.aid.boese.json.RepeatRuleJSON;
 import de.bo.aid.boese.json.RequestAllDevices;
 import de.bo.aid.boese.json.RequestConnection;
 import de.bo.aid.boese.json.RequestDeviceComponents;
@@ -67,10 +69,12 @@ import de.bo.aid.boese.json.SendDevices;
 import de.bo.aid.boese.json.SendStatus;
 import de.bo.aid.boese.json.SendValue;
 import de.bo.aid.boese.json.UnitJSON;
+import de.bo.aid.boese.json.UserConfirmRepeatRules;
 import de.bo.aid.boese.json.UserConfirmRules;
 import de.bo.aid.boese.json.UserConfirmTemps;
 import de.bo.aid.boese.json.UserConfirmUnits;
 import de.bo.aid.boese.json.UserConfirmZones;
+import de.bo.aid.boese.json.UserCreateRepeatRules;
 import de.bo.aid.boese.json.UserCreateRules;
 import de.bo.aid.boese.json.UserCreateUnits;
 import de.bo.aid.boese.json.UserCreateZones;
@@ -81,6 +85,7 @@ import de.bo.aid.boese.json.UserRequestGeneral;
 import de.bo.aid.boese.json.UserSendConnectors;
 import de.bo.aid.boese.json.UserSendDeviceComponent;
 import de.bo.aid.boese.json.UserSendDevices;
+import de.bo.aid.boese.json.UserSendRepeatRules;
 import de.bo.aid.boese.json.UserSendRules;
 import de.bo.aid.boese.json.UserSendTemps;
 import de.bo.aid.boese.json.UserSendUnits;
@@ -93,6 +98,7 @@ import de.bo.aid.boese.main.model.TempDevice;
 import de.bo.aid.boese.model.Connector;
 import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceComponent;
+import de.bo.aid.boese.model.RepeatRule;
 import de.bo.aid.boese.model.Rule;
 import de.bo.aid.boese.model.Unit;
 import de.bo.aid.boese.model.Zone;
@@ -188,6 +194,9 @@ public class ProtocolHandler implements MessageHandler {
 		case USERREQUESTALLRULES:
 			handleUserRequestAllRules((UserRequestGeneral) bjMessage, connectorId);
 			break;
+		case USERREQUESTALLREPEATRULES:
+			handleUserRequestAllRepeatRules((UserRequestGeneral) bjMessage, connectorId);
+			break;
 		case USERREQUESTTEMPS:
 			handleUserRequestTemps((UserRequestGeneral) bjMessage, connectorId);
 			break;
@@ -209,6 +218,8 @@ public class ProtocolHandler implements MessageHandler {
 		case USERCREATEUNITS:
 			handleUserCreateUnits((UserCreateUnits) bjMessage, connectorId);
 			break;
+		case USERCREATEREPEATRULES:
+			handleUserCreateRepeatRules((UserCreateRepeatRules) bjMessage, connectorId);
 		default:
 			break;
 		}
@@ -584,6 +595,20 @@ public class ProtocolHandler implements MessageHandler {
 		sendUserSendRules(rules, connectorId);
 	}
 	
+	private void handleUserRequestAllRepeatRules(UserRequestGeneral urg, int connectorId) {
+		if (connectorId != urg.getConnectorId()) {
+			SessionHandler.getInstance().rejectConnection(connectorId);
+			return;
+		}
+		HashSet<RepeatRuleJSON> rules = new HashSet<>();
+		List<RepeatRule> ruleList = AllSelects.repeatRules();
+		for (RepeatRule rule : ruleList) {
+			rules.add(new RepeatRuleJSON(rule.getRrId(), rule.getRepeatsAfterEnd(), rule.getValue().doubleValue(), 
+					rule.getRule().getRuId(), rule.getDeviceComponent().getDeCoId(), rule.getRepeat()));
+		}
+		sendUserSendRepeatRules(rules, connectorId);
+	}
+	
 	/**
 	 * Handle user request all units.
 	 *
@@ -696,6 +721,28 @@ public class ProtocolHandler implements MessageHandler {
 			}
 		}
 		sendConfirmRules(tempRules, connectorId);
+	}
+	
+	private void handleUserCreateRepeatRules(UserCreateRepeatRules ucrr, int connectorId) {
+		if (connectorId != ucrr.getConnectorId()) {
+			SessionHandler.getInstance().rejectConnection(connectorId);
+			return;
+		}
+		HashMap<Integer, Integer> tempRules = new HashMap<>();
+		Interpretor interpretor = new Interpretor();
+		for (RepeatRuleJSON rule : ucrr.getRules()) {
+			RepeatRule r = null;
+			try {
+				r = new RepeatRule(rule.getCron(), BigDecimal.valueOf(rule.getValue()), rule.getRepeatsAfterEnd());
+				Inserts.repeatRule(r, rule.getRuleId(), rule.getDecoId(), distributor.getTdc());
+			} catch (DBForeignKeyNotFoundException e) {
+				logger.error(e.getMessage());
+				e.printStackTrace();
+			}
+			tempRules.put(rule.getTempId(), r.getRrId());
+			
+		}
+		sendConfirmRepeatRules(tempRules, connectorId);
 	}
 	
 	/**
@@ -961,6 +1008,13 @@ public class ProtocolHandler implements MessageHandler {
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
+	public void sendConfirmRepeatRules(HashMap<Integer, Integer> tempRules, int connectorId) {
+		BoeseJson ucorr = new UserConfirmRepeatRules(tempRules, connectorId, 0, new Date().getTime());
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(ucorr, os);
+		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
+	}
+	
 	/**
 	 * Send confirm zones.
 	 *
@@ -1009,6 +1063,14 @@ public class ProtocolHandler implements MessageHandler {
 	public void sendUserSendRules(HashSet<RuleJSON> rules, int connectorId) {
 
 		BoeseJson usc = new UserSendRules(rules, connectorId, 0, new Date().getTime());
+		OutputStream os = new ByteArrayOutputStream();
+		BoeseJson.parseMessage(usc, os);
+		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
+	}
+	
+	public void sendUserSendRepeatRules(HashSet<RepeatRuleJSON> rules, int connectorId) {
+
+		BoeseJson usc = new UserSendRepeatRules(rules, connectorId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(usc, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
