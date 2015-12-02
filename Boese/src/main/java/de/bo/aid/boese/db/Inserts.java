@@ -626,7 +626,7 @@ public class Inserts {
 		
 		final String volt = "Volt";
 		final String ampere = "milliAmpere";
-		final String procent = "Procent";
+		final String percent = "Percent";
 		final String bool = "OnOff";
 		final String temp = "Temperature";
 		final String dist = "Distance";
@@ -639,7 +639,7 @@ public class Inserts {
 		Map<String, String> defaults = new HashMap<>(); 
 		defaults.put(volt, "V"); 
 		defaults.put(ampere, "mA"); 
-		defaults.put(procent, "%"); 
+		defaults.put(percent, "%"); 
 		defaults.put(bool, "Zeichen fehlt"); 
 		defaults.put(temp, "°C"); 
 		defaults.put(dist, "m"); 
@@ -660,8 +660,8 @@ public class Inserts {
 		if(!namen.contains(ampere)){
 			Inserts.unit(new Unit(ampere, defaults.get(ampere)));
 		}
-		if(!namen.contains(procent)){
-			Inserts.unit(new Unit(procent, defaults.get(procent)));
+		if(!namen.contains(percent)){
+			Inserts.unit(new Unit(percent, defaults.get(percent)));
 		}
 		if(!namen.contains(bool)){
 			Inserts.unit(new Unit(bool, defaults.get(bool)));

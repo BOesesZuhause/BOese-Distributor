@@ -21,7 +21,7 @@ public class DefaultUnitTest {
 	
 	final String volt = "Volt";
 	final String ampere = "milliAmpere";
-	final String procent = "Procent";
+	final String percent = "Percent";
 	final String bool = "OnOff";
 	final String temp = "Temperature";
 	final String dist = "Distance";
@@ -58,8 +58,8 @@ public class DefaultUnitTest {
 		if(!namen.contains(ampere)){
 			fail(ampere + " not in DB");
 		}
-		if(!namen.contains(procent)){
-			fail(procent + " not in DB");
+		if(!namen.contains(percent)){
+			fail(percent + " not in DB");
 		}
 		if(!namen.contains(bool)){
 			fail(bool + " not in DB");
