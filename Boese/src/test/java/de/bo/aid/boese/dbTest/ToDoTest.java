@@ -127,7 +127,6 @@ public class ToDoTest {
 	 */
 	@Test
 	public void test() {
-		
 		//Insert ToDo 1
 		insert(todo1, testRr1.getRrId());
 		todo1Update.setToDoId(todo1.getToDoId());

@@ -708,6 +708,10 @@ public class TimeFormat implements Comparable<TimeFormat>{
 		int[] d = getRealDay(h[1]);
 		int[] mo = getRealMonth(d[1]);
 		int y = getRealYear(mo[1]);
+		if(y < 2000){
+			y += 1900; 
+			mo[0]++;
+		}
 		return new GregorianCalendar(y, mo[0]-1, d[0], h[0], mi[0]).getTime();
 	}
 

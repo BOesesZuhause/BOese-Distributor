@@ -38,6 +38,7 @@ import java.util.List;
 
 import de.bo.aid.boese.db.AllSelects;
 import de.bo.aid.boese.db.Deletes;
+//import de.bo.aid.boese.db.Empfänger;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.main.ProtocolHandler;
@@ -55,6 +56,8 @@ public class ToDoChecker extends Thread{
 	List<TimeTodos> ttl;
 	
 	ProtocolHandler ph;
+	
+//	Empfänger e;
 	
 	/** The b. */
 	boolean b;
@@ -75,6 +78,22 @@ public class ToDoChecker extends Thread{
 		Collections.sort(ttl);
 	}
 	
+//	/**
+//	 * Instantiates a new to do checker.
+//	 * 
+//	 * @param ph the ProtocolHandler
+//	 */
+//	public ToDoChecker(Empfänger e){
+//		this.e = e;
+//		b = true;
+//		List<ToDo> todos = AllSelects.toDos();
+//		ttl = new ArrayList<TimeTodos>();
+//		for(ToDo todo : todos){
+//			ttl.add(new TimeTodos(todo.getToDoId(), todo.getDate(), todo.getRepeatRule().getValue().doubleValue(), todo.getRepeatRule().getDeviceComponent()));
+//		}
+//		Collections.sort(ttl);
+//	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Thread#run()
 	 */
@@ -91,6 +110,7 @@ public class ToDoChecker extends Thread{
 				}
 			}
 			else{
+				List<TimeTodos> ttlnew = new ArrayList<>();
 				try {
 					TimeTodos tt = new TimeTodos();
 					try{
@@ -101,8 +121,7 @@ public class ToDoChecker extends Thread{
 						System.exit(0);
 					}
 					List<ComponentXML> todos = new ArrayList<ComponentXML>();
-					while(isPast(tt.getDate())){
-						
+					while(tt != null && isPast(tt.getDate())){					
 						ToDo todo = Selects.toDo(tt.getId());
 						RepeatRule rr = todo.getRepeatRule();
 						Deletes.toDo(todo);
@@ -113,12 +132,17 @@ public class ToDoChecker extends Thread{
 //							todo = Selects.toDo(Inserts.toDoWithoutChange(new TimeFormat(rr.getRepeat()).getDate(), rr.getRrId()));
 							todo.setDate(new TimeFormat(rr.getRepeat()).getDate());
 							Inserts.toDoWithoutChange(todo, rr.getRrId());
-							ttl.add(new TimeTodos(todo.getToDoId(), todo.getDate(), todo.getRepeatRule().getValue().doubleValue(), todo.getRepeatRule().getDeviceComponent()));
+							ttlnew.add(new TimeTodos(todo.getToDoId(), todo.getDate(), todo.getRepeatRule().getValue().doubleValue(), todo.getRepeatRule().getDeviceComponent()));
 						}
 						ttl.remove(tt);
-						tt = ttl.iterator().next();
+						if(!ttl.isEmpty()){
+							tt = ttl.iterator().next();
+						}
+						else{
+							tt = null;
+						}
 					}
-					while(sameTime(tt.getDate())){
+					while(tt != null && sameTime(tt.getDate())){
 						todos.add(new ComponentXML(tt.getDeco().getDeCoId(), tt.getValue()));
 						ToDo todo = Selects.toDo(tt.getId());
 						RepeatRule rr = todo.getRepeatRule();
@@ -130,20 +154,31 @@ public class ToDoChecker extends Thread{
 //							todo = Selects.toDo(Inserts.toDoWithoutChange(new TimeFormat(rr.getRepeat()).getDate(), rr.getRrId()));
 							todo.setDate(new TimeFormat(rr.getRepeat()).getDate());
 							Inserts.toDoWithoutChange(todo, rr.getRrId());
-							ttl.add(new TimeTodos(todo.getToDoId(), todo.getDate(), todo.getRepeatRule().getValue().doubleValue(), todo.getRepeatRule().getDeviceComponent()));
+							ttlnew.add(new TimeTodos(todo.getToDoId(), todo.getDate(), todo.getRepeatRule().getValue().doubleValue(), todo.getRepeatRule().getDeviceComponent()));
 						}
 						ttl.remove(tt);
-						tt = ttl.iterator().next();
+						if(!ttl.isEmpty()){
+							tt = ttl.iterator().next();
+						}
+						else{
+							tt = null;
+						}
 					}
 					Collections.sort(this.ttl);
-					ph.sendToDos(todos);
-					// TODO MainClass.sendToDos(todos);
+					System.out.println(toDosToString(todos) + "Todos werden gesendet");
+//					if(ph != null){
+						ph.sendToDos(todos);
+//					}
+//					else{
+//						e.send();
+//					}
 					b = false;
 					sleep(1000*60);
 					b = true;
 				} catch (Exception e) {
 					e.printStackTrace();
-				}	
+				}
+				ttl.addAll(ttlnew);
 			}
 		}
 	}
@@ -176,6 +211,7 @@ public class ToDoChecker extends Thread{
 	 * @return true, if successful
 	 */
 	private boolean sameTime(TimeFormat tf){
+		System.out.println("SameTime: " + (tf.getDate().getTime() / 60000) + " < " + (new Date().getTime() / 60000));
 		return (tf.getDate().getTime() / 60000) == (new Date().getTime() / 60000);
 	}
 	
@@ -186,6 +222,16 @@ public class ToDoChecker extends Thread{
 	 * @return true, if is past
 	 */
 	private boolean isPast(TimeFormat tf){
+		System.out.println("isPast: " + (tf.getDate().toString()) + " < " + (new Date().toString()));
+//		System.out.println("isPast: " + (tf.getDate().getTime() / 60000) + " < " + (new Date().getTime() / 60000));
 		return (tf.getDate().getTime() / 60000) < (new Date().getTime() / 60000);
+	}
+	
+	private String toDosToString(List<ComponentXML> todos){
+		String returner = "";
+		for(ComponentXML todo : todos){
+			returner += todo.toStringForToDoChecker() + "\n";
+		}
+		return returner;
 	}
 }

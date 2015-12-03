@@ -228,4 +228,8 @@ public class ComponentXML {
 	public long getDuration() {
 		return duration;
 	}
+	
+	public String toStringForToDoChecker(){
+		return "DeviceComponent " + this.id + " wird auf den Wert " + this.value + " geschaltet!";
+	}
 }
