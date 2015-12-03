@@ -258,6 +258,7 @@ private final String logo =
 		distr.initDatabase();
 		distr.startWebsocketServer(0);
 		distr.startHeartbeat();
+	    distr.startToDoChecker();
 	}
 	
 	/**
