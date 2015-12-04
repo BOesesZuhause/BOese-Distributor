@@ -53,10 +53,10 @@ import de.bo.aid.boese.xml.Condition;
 /**
  * The Class Interpretor.
  */
-public class Interpretor {
+public class Interpreter {
 
     /** The Constant logger. */
-    private static final Logger logger = LogManager.getLogger(Interpretor.class);
+    private static final Logger logger = LogManager.getLogger(Interpreter.class);
 	
 	/**
 	 * Gets the all de co ids condition.

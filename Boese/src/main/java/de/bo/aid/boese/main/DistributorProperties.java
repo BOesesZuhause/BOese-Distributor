@@ -81,8 +81,7 @@ public class DistributorProperties extends Properties{
 		try {
 			file = new FileInputStream(path);
 		} catch (FileNotFoundException e) {
-			logger.error("config File not found at: " + path);
-			e.printStackTrace();
+			logger.error("config File not found at: " + path, e);
 			System.exit(0);
 		}
 
@@ -90,8 +89,7 @@ public class DistributorProperties extends Properties{
 		try {
 			this.load(file);
 		} catch (IOException e) {
-			logger.error("IO-Exception while loading config-file");
-			e.printStackTrace();
+			logger.error("IO-Exception while loading config-file", e);
 			System.exit(0);
 		}
 
@@ -99,8 +97,7 @@ public class DistributorProperties extends Properties{
 		try {
 			file.close();
 		} catch (IOException e) {
-			logger.error("IO-Exception while closing config-file");
-			e.printStackTrace();
+			logger.error("IO-Exception while closing config-file", e);
 			System.exit(0);
 		}
 		if(!validate()){
@@ -233,7 +230,7 @@ public class DistributorProperties extends Properties{
 		try{
 		port = Integer.parseInt(this.getProperty(WS_PORT));
 		}catch (NumberFormatException e){
-			logger.error("Unable to load Port from properties");
+			logger.error("Unable to load Port from properties", e);
 			logger.info("Trying to use default port 8081");
 			port = 8081;
 		}

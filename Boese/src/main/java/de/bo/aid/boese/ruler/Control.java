@@ -53,14 +53,14 @@ public class Control {
 	Checker check;
 	
 	/** The interpretor. */
-	Interpretor interpretor;
+	Interpreter interpretor;
 	
 	/**
 	 * Instantiates a new controll.
 	 */
 	public Control(){
 		check = new Checker();
-		interpretor = new Interpretor();
+		interpretor = new Interpreter();
 	}
 
 	/**

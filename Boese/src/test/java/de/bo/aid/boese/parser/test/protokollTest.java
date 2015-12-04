@@ -499,7 +499,6 @@ public class protokollTest {
 	/**
 	 * Parses the send device components.
 	 */
-	//TODO Test mit mehreren Komponenten
 	@Test
 	public void parseSendDeviceComponents(){
 		
@@ -532,7 +531,6 @@ public class protokollTest {
 	/**
 	 * Read send device components.
 	 */
-	//TODO Test mit mehreren Komponenten
 	@Test
 	public void readSendDeviceComponents(){
 		
@@ -566,7 +564,6 @@ public class protokollTest {
 	/**
 	 * Parses the confirm device components.
 	 */
-	//TODO Test mit mehreren Komponenten
 	@Test
 	public void parseConfirmDeviceComponents(){
 		
@@ -596,7 +593,6 @@ public class protokollTest {
 	/**
 	 * Read confirm device components.
 	 */
-	//TODO Test mit mehreren Komponenten
 	@Test
 	public void readConfirmDeviceComponents(){
 		
@@ -842,7 +838,7 @@ public class protokollTest {
 				+ "\"Timestamp\":1234"
 				+ "}";
 		
-		OutputStream os = new ByteArrayOutputStream();//TODO was ist isSendStatus?
+		OutputStream os = new ByteArrayOutputStream();
 		SendStatus sendStat = new SendStatus(5, 1, 1234, true, 1, 0, 111222334);
 		BoeseJson.parseMessage(sendStat, os);
 		assertEquals(os.toString(), message);	
@@ -1248,7 +1244,6 @@ public class protokollTest {
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
-				//+ "\"DeviceId\":5," //TODO soll die dabei sein?
 				+ "\"Connectors\":[{"
 				+ "\"ConnectorId\":2,"
 				+ "\"ConnectorName\":\"Homematic\""
@@ -1274,7 +1269,6 @@ public class protokollTest {
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
-				//+ "\"DeviceId\":5," //TODO soll das dadrin sein?
 				+ "\"Connectors\":[{"
 				+ "\"ConnectorId\":1,"
 				+ "\"ConnectorName\":\"Homematic\""

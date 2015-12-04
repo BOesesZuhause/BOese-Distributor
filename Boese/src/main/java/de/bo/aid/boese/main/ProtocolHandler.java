@@ -45,6 +45,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.LazyInitializationException;
 
+import de.bo.aid.boese.constants.NotificationType;
 import de.bo.aid.boese.db.AllSelects;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
@@ -104,7 +105,7 @@ import de.bo.aid.boese.model.Rule;
 import de.bo.aid.boese.model.Unit;
 import de.bo.aid.boese.model.Zone;
 import de.bo.aid.boese.ruler.Inquiry;
-import de.bo.aid.boese.ruler.Interpretor;
+import de.bo.aid.boese.ruler.Interpreter;
 import de.bo.aid.boese.socket.MessageHandler;
 import de.bo.aid.boese.socket.SessionHandler;
 import de.bo.aid.boese.xml.BoeseXML;
@@ -154,7 +155,7 @@ public class ProtocolHandler implements MessageHandler {
 	public void handleMessage(String message, int connectorId) {
 		BoeseJson bjMessage = BoeseJson.readMessage(new ByteArrayInputStream(message.getBytes()));
 		if (bjMessage == null) {
-			logger.warn("empty message");
+			logger.warn("received empty message");
 			SessionHandler.getInstance().rejectConnection(connectorId);
 		}
 		// System.out.println(bjMessage.getType());
@@ -225,6 +226,7 @@ public class ProtocolHandler implements MessageHandler {
 		case USERCREATEREPEATRULES:
 			handleUserCreateRepeatRules((UserCreateRepeatRules) bjMessage, connectorId);
 		default:
+		    logger.warn("Unknown message type");
 			break;
 		}
 	}
@@ -261,8 +263,8 @@ public class ProtocolHandler implements MessageHandler {
 	 */
 	private void handleRequestConnection(RequestConnection rc, int tempId) {
 
-	    //gui connector without id but with password
-        if(rc.isUserConnector() && rc.getPassword() != null && tempId == -1){
+	    //Gui-connector without id but with password
+        if(rc.isUserConnector() && rc.getPassword() != null && rc.getConnectorId() == -1){
             String pw = rc.getPassword();
             String conName = rc.getConnectorName();
             
@@ -271,7 +273,7 @@ public class ProtocolHandler implements MessageHandler {
                 try {
                     distributor.confirmConnector(tempId);
                 } catch (NotFoundException e) {
-                    logger.error("Error while adding default gui-connector",e);
+                    logger.error("Error while adding gui-connector with default-password", e);
                 }
                 return;          
             }else{
@@ -307,8 +309,7 @@ public class ProtocolHandler implements MessageHandler {
     			}
     			catch (DBObjectNotFoundException onfe){ //connector not found
     				SessionHandler.getInstance().rejectConnection(tempId);
-    				logger.error(onfe.getMessage());
-    				onfe.printStackTrace();
+    				logger.error(onfe.getMessage(), onfe);
     			}
 		}
 	}
@@ -341,8 +342,7 @@ public class ProtocolHandler implements MessageHandler {
 					//TODO check name?
 					confirmDevices.put(deviceName, dev.getDeId());
 				}catch (DBObjectNotFoundException onfe){ 
-					logger.error(onfe.getMessage());
-					onfe.printStackTrace();
+					logger.error(onfe.getMessage(), onfe);
 					logger.warn("Received device with unknown id. DeviceName: " + deviceName);
 					TempDevice temp = new TempDevice(connectorId, deviceName);
 					distributor.addTempDevie(temp);
@@ -377,8 +377,7 @@ public class ProtocolHandler implements MessageHandler {
 			device = Selects.device(deviceId);
 		}
 		catch (DBObjectNotFoundException onfe){ 
-			logger.error(onfe.getMessage());
-			onfe.printStackTrace();
+			logger.error(onfe.getMessage(), onfe);
 			logger.warn("Device with id: " + deviceId + " not found.");
 			return;
 		}
@@ -393,8 +392,7 @@ public class ProtocolHandler implements MessageHandler {
 					try {
 						itDc = device.getDeviceComponents().iterator();
 					} catch (LazyInitializationException lix) {
-						lix.printStackTrace();	
-						//TODO
+					    logger.error(lix);
 					}
 					boolean found = false;
 					DeviceComponent dc = null;
@@ -422,7 +420,6 @@ public class ProtocolHandler implements MessageHandler {
 									component.isActor());
 							distributor.addTempComponent(temp);
 						}
-						
 					}
 			}
 		}
@@ -457,8 +454,9 @@ public class ProtocolHandler implements MessageHandler {
 				SessionHandler.getInstance().sendToConnector(deviceConnectorId, os.toString());
 			} catch (DBObjectNotFoundException e) {
 				// The deco, device, or connector does not exist -> db inconsistent?
-				logger.error(e.getMessage());
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
+				sendNotificationToAllUserConnectors("Unable to switch component with id: " + deviceComponentId +
+				        "The component, device or connector is unknown.", NotificationType.ERROR, System.currentTimeMillis());
 			}
 			
 		}
@@ -491,6 +489,9 @@ public class ProtocolHandler implements MessageHandler {
 			deviceList.add(new UserDevice(dev.getAlias(), dev.getDeId(), dev.getZone().getZoId(),
 					dev.getConnector().getCoId()));
 		}
+		if(deviceList.isEmpty()){
+		    sendNotificationToAllUserConnectors("The distributor has no known devices", NotificationType.WARNING, System.currentTimeMillis());
+		}
 		sendUserSendDevices(deviceList, connectorId);
 	}
 
@@ -514,8 +515,9 @@ public class ProtocolHandler implements MessageHandler {
 				decoSet = Selects.device(devId.intValue()).getDeviceComponents();
 			} 
 			catch (DBObjectNotFoundException onfe){ 
-				logger.error(onfe.getMessage());
-				onfe.printStackTrace();
+				logger.error(onfe.getMessage(), onfe);
+				sendNotificationToAllUserConnectors("requested deviceComponent with id: " + devId.intValue() + " is unknown.",
+				        NotificationType.ERROR, System.currentTimeMillis());
 			}
 			HashSet<DeviceComponents> decos = new HashSet<>();
 			for (DeviceComponent deco : decoSet) {
@@ -554,8 +556,9 @@ public class ProtocolHandler implements MessageHandler {
 					con = Selects.connector(conId.intValue());
 				} 
 				catch (DBObjectNotFoundException onfe){ 
-					logger.error(onfe.getMessage());
-					onfe.printStackTrace();
+					logger.error(onfe.getMessage(), onfe);
+					sendNotificationToAllUserConnectors("requested connecter with id: " + conId.intValue() + " is unknown.",
+					        NotificationType.ERROR, System.currentTimeMillis());
 				}
 				connectors.put(conId, con.getName());
 			}
@@ -586,6 +589,9 @@ public class ProtocolHandler implements MessageHandler {
 		for (Zone zone : zoneList) {
 			zones.add(new ZoneJSON(zone.getZoId(), zone.getZone().getZoId(), zone.getName()));
 		}
+		if(zones.isEmpty()){
+		    sendNotificationToAllUserConnectors("The distributor has no known zones", NotificationType.WARNING, System.currentTimeMillis());
+		}
 		sendUserSendZone(zones, connectorId);
 	}
 
@@ -608,6 +614,9 @@ public class ProtocolHandler implements MessageHandler {
 			rules.add(new RuleJSON(rule.getRuId(), rule.getActive().booleanValue(), rule.getInsertDate().getTime(),
 					rule.getModifyDate().getTime(), rule.getPermissions(), rule.getConditions(), rule.getActions()));
 		}
+		if(rules.isEmpty()){
+		    sendNotificationToAllUserConnectors("The distributor has no known rules", NotificationType.WARNING, System.currentTimeMillis());
+		}
 		sendUserSendRules(rules, connectorId);
 	}
 	
@@ -628,6 +637,9 @@ public class ProtocolHandler implements MessageHandler {
 			rules.add(new RepeatRuleJSON(rule.getRrId(), rule.getRepeatsAfterEnd(), rule.getValue().doubleValue(), 
 					rule.getRule().getRuId(), rule.getDeviceComponent().getDeCoId(), rule.getRepeat()));
 		}
+		if(rules.isEmpty()){
+		    sendNotificationToAllUserConnectors("The distributor has no known repeatRules", NotificationType.WARNING, System.currentTimeMillis());
+		}
 		sendUserSendRepeatRules(rules, connectorId);
 	}
 	
@@ -647,6 +659,7 @@ public class ProtocolHandler implements MessageHandler {
 		for (Unit unit : unitList) {
 			units.add(new UnitJSON(unit.getUnId(), unit.getName(), unit.getSymbol()));
 		}
+		sendNotificationToAllUserConnectors("The distributor has no known units", NotificationType.WARNING, System.currentTimeMillis());
 		sendUserSendUnits(units, connectorId);
 	}
 
@@ -683,24 +696,31 @@ public class ProtocolHandler implements MessageHandler {
 			try {
 				distributor.confirmConnector(con);
 			} catch (NotFoundException nfe) {
-				// TODO
-			    nfe.printStackTrace();
+				logger.error(nfe.getMessage(), nfe);
+				sendNotificationToAllUserConnectors("The connecter with tempId: " + con.intValue() + " could not be found", 
+				        NotificationType.ERROR, 
+				        System.currentTimeMillis());
 			}
 		}
 		for (Entry<Integer, Integer> entry : uct.getTempDevices().entrySet()) {
 			try {
+			    //TODO device-name soll mitgesndet werden
 				distributor.confirmDevice(entry.getKey(), entry.getValue(), null);
 			} catch (NotFoundException nfe) {
-				// TODO
-			    nfe.printStackTrace();
+			    logger.error(nfe.getMessage(), nfe);
+	             sendNotificationToAllUserConnectors("The device with tempId: " + entry.getKey() + " could not be found", 
+	                        NotificationType.ERROR, 
+	                        System.currentTimeMillis());
 			}
 		}
 		for (UserTempComponent comp : uct.getTempDeviceComponents()) {
 			try {
 				distributor.confirmDeviceComponent(comp.getTempComponentId(), comp.getUnitId(), comp.getName());
 			} catch (NotFoundException nfe) {
-				// TODO
-			    nfe.printStackTrace();
+				logger.error(nfe.getMessage(), nfe);
+                sendNotificationToAllUserConnectors("The deviceComponent with tempId: " + comp.getTempComponentId() + " could not be found", 
+                        NotificationType.ERROR, 
+                        System.currentTimeMillis());
 			}
 		}
 	}
@@ -720,14 +740,15 @@ public class ProtocolHandler implements MessageHandler {
 		}
 		HashMap<Integer, Integer> tempRules = new HashMap<>();
 		List<DeviceComponent> ruleDeCos = new ArrayList<>();
-		Interpretor interpretor = new Interpretor();
+		Interpreter interpretor = new Interpreter();
 		for (RuleJSON rule : ucr.getRules()) {
 			Rule r = null;
 			if (BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())) == null ||
 					BoeseXML.readXML(new ByteArrayInputStream(rule.getPermissions().getBytes())) == null ||
 					BoeseXML.readXML(new ByteArrayInputStream(rule.getActions().getBytes())) == null) {
-				// TODO Error handling
 				logger.warn("Invalid XML in new Rule");
+				sendNotificationToAllUserConnectors("Syntax error in rule with id: " + rule.getRuleId(),
+				        NotificationType.ERROR, System.currentTimeMillis());
 			} else {
 				ruleDeCos = interpretor.getAllDeCosCondition(
 						BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())));
@@ -736,8 +757,10 @@ public class ProtocolHandler implements MessageHandler {
 					r.setActive(rule.isActive()); // TODO constructor mit active erstellen
 					Inserts.rule(ruleDeCos, r, distributor.getTdc());
 				} catch (DBForeignKeyNotFoundException e) {
-					logger.error(e.getMessage());
-					e.printStackTrace();
+					sendNotificationToAllUserConnectors("Error while saving rule with id: " + rule.getRuleId() +
+					        ". The referenced devicecomponents are unknown.", 
+					        NotificationType.ERROR, System.currentTimeMillis());
+				    logger.error(e.getMessage(), e);
 				}
 				tempRules.put(rule.getTempRuleId(), r.getRuId());
 			}
@@ -757,18 +780,19 @@ public class ProtocolHandler implements MessageHandler {
 			return;
 		}
 		HashMap<Integer, Integer> tempRules = new HashMap<>();
-		Interpretor interpretor = new Interpretor();
 		for (RepeatRuleJSON rule : ucrr.getRules()) {
 			RepeatRule r = null;
+			//TODO validate rules
 			try {
 				r = new RepeatRule(rule.getCron(), BigDecimal.valueOf(rule.getValue()), rule.getRepeatsAfterEnd());
 				Inserts.repeatRule(r, rule.getRuleId(), rule.getDecoId(), distributor.getTdc());
 			} catch (DBForeignKeyNotFoundException e) {
-				logger.error(e.getMessage());
-				e.printStackTrace();
+			    sendNotificationToAllUserConnectors("Error while saving repeaterule with id: " + rule.getRuleId() +
+                        ". The referenced devicecomponents are unknown.", 
+                        NotificationType.ERROR, System.currentTimeMillis());
+				logger.error(e.getMessage(), e);
 			}
 			tempRules.put(rule.getTempId(), r.getRrId());
-			
 		}
 		sendConfirmRepeatRules(tempRules, connectorId);
 	}
@@ -792,8 +816,10 @@ public class ProtocolHandler implements MessageHandler {
 			try {
 				superZone = Selects.zone(zone.getSuperZoneId());
 			} catch (DBObjectNotFoundException e) {
-				logger.error(e.getMessage());
-				e.printStackTrace();
+			    sendNotificationToAllUserConnectors("Error while saving zone with id: " + zone.getZoneId() +
+                        ". The referenced superzone is unknown.", 
+                        NotificationType.ERROR, System.currentTimeMillis());
+				logger.error(e.getMessage(), e);
 			}
 			Inserts.zone(z, superZone);
 			tempZones.put(zone.getTempZoneId(), z.getZoId());
@@ -820,8 +846,7 @@ public class ProtocolHandler implements MessageHandler {
 			Unit u = null;
 			u = new Unit(unit.getUnitName(), unit.getUnitSymbol());
 			Inserts.unit(u);
-			tempUnits.put(unit.getTempUnitId(), u.getUnId());
-			
+			tempUnits.put(unit.getTempUnitId(), u.getUnId());			
 		}
 		if (!tempUnits.isEmpty()) {
 			sendConfirmUnits(tempUnits, connectorId);
@@ -865,8 +890,7 @@ public class ProtocolHandler implements MessageHandler {
 		try {
 			Updates.deviceComponentStatus(ss.getStatusCode(), ss.getDeviceComponentId());
 		} catch (DBObjectNotFoundException e) {
-			logger.error(e.getMessage());
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 
 		// TODO Shouldn't this be ConfirmStatus?
@@ -977,8 +1001,7 @@ public class ProtocolHandler implements MessageHandler {
 				deviceId = Selects.deviceComponent(deCoId).getDevice().getDeId();
 				idConnector = Selects.device(deviceId).getConnector().getCoId();
 			} catch (DBObjectNotFoundException e) {
-				logger.error(e.getMessage());
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 			sendValue(deviceId, deCoId, component.getValue(), new Date().getTime(), idConnector);
 		}
@@ -1082,7 +1105,7 @@ public class ProtocolHandler implements MessageHandler {
 	 */
 	public void sendUserSendTemps(int connectorId) {
 		BoeseJson ust = new UserSendTemps(distributor.getTempConnectors(), distributor.getTempDevices(),
-				distributor.getTempComponents(), distributor.getConnectorID(), 0, new Date().getTime());
+		distributor.getTempComponents(), distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(ust, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());

@@ -38,7 +38,7 @@ import org.hibernate.Session;
 
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.model.*;
-import de.bo.aid.boese.ruler.Interpretor;
+import de.bo.aid.boese.ruler.Interpreter;
 import de.bo.aid.boese.ruler.ToDoChecker;
 
 // TODO: Auto-generated Javadoc
@@ -673,7 +673,7 @@ public class Updates {
 		
 		session.close();
 		if(tdc != null)
-			Interpretor.createTodos(tdc);
+			Interpreter.createTodos(tdc);
 	}
 	
 	/**

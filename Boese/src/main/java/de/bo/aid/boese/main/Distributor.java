@@ -42,6 +42,7 @@ import org.apache.logging.log4j.Logger;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import de.bo.aid.boese.cli.Parameters;
+import de.bo.aid.boese.constants.NotificationType;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.json.BoeseJson;
@@ -137,7 +138,7 @@ private final String logo =
 	private String configFilePath;
 	
 	/** The Constant logger for log4j. */
-	private final  Logger logger = LogManager.getLogger(Distributor.class);
+	private static final  Logger logger = LogManager.getLogger(Distributor.class);
 	
 	/** The tdc. */
 	private ToDoChecker tdc;
@@ -147,6 +148,33 @@ private final String logo =
 
     /** The default_password. */
     private String default_password = "";
+    
+    
+    /**
+     * The main method.
+     *
+     * @param args the arguments
+     */
+    public static void main(String[] args) {
+        Distributor distr = new Distributor();
+        distr.printLogo();
+        distr.checkArguments(args);
+        logger.info("Loading properties");
+        distr.loadProperties();
+        logger.info("Properties loades successfully");
+        logger.info("Beginning database initialization");
+        distr.initDatabase();
+        logger.info("Database initialized successfully");
+        logger.info("Starting websocketserver");
+        distr.startWebsocketServer(0);
+        logger.info("websocketserver started successfully");
+        logger.info("starting heartbeat-thread");
+        distr.startHeartbeat();
+        logger.info("heartbeat-thread started successfully");
+        logger.info("starting todochecker-thread");
+        distr.startToDoChecker();
+        logger.info("todochecker-thread started successfully");
+    }
 	
 	/**
 	 * Start websocket server.
@@ -244,26 +272,10 @@ private final String logo =
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Failed to sleep", e);
 		}
 	}
-	
-	/**
-	 * The main method.
-	 *
-	 * @param args the arguments
-	 */
-	public static void main(String[] args) {
-		Distributor distr = new Distributor();
-		distr.printLogo();
-		distr.checkArguments(args);
-		distr.loadProperties();
-		distr.initDatabase();
-		distr.startWebsocketServer(0);
-		distr.startHeartbeat();
-	    distr.startToDoChecker();
-	}
+
 	
 	/**
 	 * Start heartbeat.
@@ -321,7 +333,7 @@ private final String logo =
 			SessionHandler.getInstance().setUserConnector(con.getCoId());
 		}
 		
-		logger.info("User confirmed Connector with name: " + name + "\n");
+		logger.info("User confirmed Connector with name: " + name);
 		tempConnectors.remove(tempId);
 	}
 	
@@ -352,13 +364,10 @@ private final String logo =
 			Inserts.device(connectorId, zoneId, dev);
 			devices.put(name, dev.getDeId());
 		} catch (Exception e) {
-			logger.error(e.getMessage());
-			e.printStackTrace();
-		}
-		
-		protocolHandler.sendConfirmDevices(devices, connectorId);
-		
-		System.out.println("User confirmed Device with name: " + name + "\n");	
+			logger.error(e.getMessage(), e);
+		}		
+		protocolHandler.sendConfirmDevices(devices, connectorId);		
+		logger.info("User confirmed Device with name: " + name );
 		tempDevices.remove(tempId);
 	}
 	
@@ -439,9 +448,8 @@ private final String logo =
 			deCoId = deco.getDeCoId();
 		}
 		catch(Exception e){
-			logger.error(e.getMessage());
-			e.printStackTrace();
-			//User hat DeviceComponent bestätigt, aber es gab ein Fehler
+			logger.error(e.getMessage(), e);
+			//User hat DeviceComponent bestätigt, aber es gab einen Fehler
 			return;
 		}
 		HashMap<String, Integer> confirmComponents = new HashMap<String, Integer>();
@@ -452,7 +460,7 @@ private final String logo =
 		
 		protocolHandler.sendConfirmComponent(deviceId, confirmComponents, connectorId);
 		
-		logger.info("User confirmed Component with name: " + name + " and Device with id: " + deviceId + "\n");	
+		logger.info("User confirmed Component with name: " + name + " and Device with id: " + deviceId);	
 		tempDeviceComponents.remove(tempId);
 	}
 	
@@ -479,8 +487,7 @@ private final String logo =
 				Inserts.value(inq.getDeviceComponentId(), new Date(inq.getTimestamp()), inq.getValue());
 			}
 			catch(Exception e){
-				logger.error(e.getMessage());
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 		}
 		Control controll = new Control();
@@ -506,12 +513,12 @@ private final String logo =
 	public void addTempConnector(String name, int tempId, boolean userConnector){
 		TempConnector tempCon = new TempConnector(name, userConnector);
 		tempConnectors.put(tempId, tempCon);
+		protocolHandler.sendNotificationToAllUserConnectors("New Connector connected", NotificationType.INFO, System.currentTimeMillis());
 		if(autoConfirm){
 			try {
 				confirmConnector(tempId);
 			} catch (NotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.warn("Connector with tempId: " + tempId + " not found for auto-confirmation", e);
 			}
 		}
 	}
@@ -527,8 +534,7 @@ private final String logo =
 			try {
 				confirmDevice(tempDeviceId, 1, null);
 			} catch (NotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			    logger.warn("Device with tempId: " + tempDeviceId + " not found for auto-confirmation", e);
 			}
 		}
 		tempDeviceId++;
@@ -545,9 +551,7 @@ private final String logo =
 			try {
 				confirmDeviceComponent(tempCompId, 1, null);
 			} catch (NotFoundException e) {
-				// TODO Auto-generated catch block
-			    logger.error("Couldnt confirm Component with name: " + temp.getName() + " (not found)");
-				e.printStackTrace();
+			    logger.error("Couldnt confirm Component with name: " + temp.getName() + " (not found)", e);
 			}
 		}
 		tempCompId++;

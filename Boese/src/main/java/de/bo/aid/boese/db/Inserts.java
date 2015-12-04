@@ -44,7 +44,6 @@ import org.hibernate.Session;
 import de.bo.aid.boese.exceptions.DBForeignKeyNotFoundException;
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.model.*;
-import de.bo.aid.boese.ruler.Interpretor;
 import de.bo.aid.boese.ruler.TimeFormat;
 import de.bo.aid.boese.ruler.ToDoChecker;
 
