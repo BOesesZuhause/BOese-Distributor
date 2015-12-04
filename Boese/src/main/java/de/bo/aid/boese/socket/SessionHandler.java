@@ -233,7 +233,8 @@ public class SessionHandler {
 	}
 	
 	/**
-	 * Gets true if the connector is a user connector, or false if the connector is no user connector or does not exist
+	 * Gets true if the connector is a user connector, or false if the connector is no user connector or does not exist.
+	 *
 	 * @param connectorId the connector id
 	 * @return true if the connector is a user connector, or false if the connector is no user connector or does not exist
 	 */
@@ -311,6 +312,11 @@ public class SessionHandler {
 		}
 	}
 	
+	/**
+	 * Checks for user connectors.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean hasUserConnectors(){
 	       for(SessionData data : sessions){
 	            if(data.isUserConnector()){

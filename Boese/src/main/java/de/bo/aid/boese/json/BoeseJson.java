@@ -172,12 +172,16 @@ public class BoeseJson {
 		/** The userconfirmunits. */
 		USERCONFIRMUNITS,
 		
+		/** The usercreaterepeatrules. */
 		USERCREATEREPEATRULES,
 		
+		/** The userconfirmrepeatrules. */
 		USERCONFIRMREPEATRULES,
 		
+		/** The userrequestallrepeatrules. */
 		USERREQUESTALLREPEATRULES,
 		
+		/** The usersendrepeatrules. */
 		USERSENDREPEATRULES
 	}
 
@@ -379,12 +383,10 @@ public class BoeseJson {
 			bj = new RequestValue(deviceIdRV, deviceComponentIdRV, headerConnectorID, headerStatus, headerTimestamp);
 			break;
 		case 12: // SendNotification
-			int deviceIdSN = jo.getInt("DeviceId", -1);
-			int deviceComponentIdSN = jo.getInt("DeviceComponentId", -1);
 			int notificationType = jo.getInt("NotificationType", -1);
 			long timestampSN = jo.getJsonNumber("Timestamp").longValue();
 			String notificationStringSN = jo.getString("NotificationText", "");
-			bj = new SendNotification(deviceIdSN, deviceComponentIdSN, notificationType, timestampSN, notificationStringSN, headerConnectorID, headerStatus, headerTimestamp);
+			bj = new SendNotification(notificationType, timestampSN, notificationStringSN, headerConnectorID, headerStatus, headerTimestamp);
 			break;
 		case 13: // SendStatus
 			int deviceComponentIdSS = jo.getInt("DeviceComponentId", -1);
@@ -871,8 +873,6 @@ public class BoeseJson {
 		case SENDNOTIFICATION:
 			SendNotification sn = (SendNotification)message;
 			job.add("Header", addHeader(12, sn.getConnectorId(), sn.getStatus(), sn.getTimestamp()));
-			job.add("DeviceId", sn.getDeviceId());
-			job.add("DeviceComponentId", sn.getDeviceComponentId());
 			job.add("NotificationType", sn.getNotificationType());
 			job.add("Timestamp", sn.getNotificationTimestamp());
 			job.add("NotificationText", sn.getNotificationText());

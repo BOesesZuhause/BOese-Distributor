@@ -20,9 +20,11 @@ import de.bo.aid.boese.ruler.Checker;
 import de.bo.aid.boese.xml.BoeseXML;
 import de.bo.aid.boese.xml.Condition;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author Fabio Spiekermann
+ * The Class AndGateTest.
  *
+ * @author Fabio Spiekermann
  */
 public class AndGateTest {
 
@@ -145,6 +147,12 @@ public class AndGateTest {
 		assertTrue("Fall (t ^ t) = t stimmt nicht", c.condition(((Condition)bXML).getRule()));		
 	}
 	
+	/**
+	 * Insert value.
+	 *
+	 * @param vdeco1 the vdeco1
+	 * @param vdeco2 the vdeco2
+	 */
 	private void insertValue(double vdeco1, double vdeco2){
 		try {
 			Inserts.value(deco1.getDeCoId(), new Date(), vdeco1);

@@ -787,15 +787,13 @@ public class protokollTest {
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
-				+ "\"DeviceId\":123,"
-				+ "\"DeviceComponentId\":5,"
 				+ "\"NotificationType\":1,"
 				+ "\"Timestamp\":111222334,"
 				+ "\"NotificationText\":\"Error\""
 				+ "}";
 		
 		OutputStream os = new ByteArrayOutputStream();
-		SendNotification sendNotif = new SendNotification(123, 5, 1, 111222334, "Error", 1, 0, 111222334);
+		SendNotification sendNotif = new SendNotification(1, 111222334, "Error", 1, 0, 111222334);
 		BoeseJson.parseMessage(sendNotif, os);
 		assertEquals(os.toString(), message);	
 	}
@@ -813,8 +811,6 @@ public class protokollTest {
 				+ "\"Status\":0,"
 				+ "\"Timestamp\":111222334"
 				+ "},"
-				+ "\"DeviceId\":123,"
-				+ "\"DeviceComponentId\":5,"
 				+ "\"NotificationType\":1,"
 				+ "\"Timestamp\":111222334,"
 				+ "\"NotificationText\":\"Error\""
@@ -1500,6 +1496,9 @@ public class protokollTest {
 		assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Parses the user request all units.
+	 */
 	@Test
 	public void parseUserRequestAllUnits(){
         String message = "{"
@@ -1518,6 +1517,9 @@ public class protokollTest {
         assertEquals(os.toString(), message);
 	}
 	
+	/**
+	 * Read user request all units.
+	 */
 	@Test
 	public void readUserRequestAllUnits(){
         String message = "{"
@@ -1540,6 +1542,9 @@ public class protokollTest {
 	
 
     
+    /**
+     * Parses the user send units.
+     */
     @Test
     public void parseUserSendUnits(){
         String message = "{"
@@ -1566,6 +1571,9 @@ public class protokollTest {
         assertEquals(os.toString(), message);
     }
     
+    /**
+     * Read user send units.
+     */
     @Test
     public void readUserSendUnits(){
         String message = "{"
@@ -1591,6 +1599,9 @@ public class protokollTest {
         assertEquals(os.toString(), message);
     }
 	
+	/**
+	 * Parses the user request all repeat rules.
+	 */
 	@Test
     public void parseUserRequestAllRepeatRules(){
         String message = "{"
@@ -1609,6 +1620,9 @@ public class protokollTest {
         assertEquals(os.toString(), message);
     }
     
+    /**
+     * Read user request all repeat rules.
+     */
     @Test
     public void readUserRequestAllRepeatRules(){
         String message = "{"
@@ -1630,6 +1644,9 @@ public class protokollTest {
     }
 	
 	
+    /**
+     * Parses the user send repeat rules.
+     */
     @Test
     public void parseUserSendRepeatRules(){
         String message = "{"
@@ -1660,6 +1677,9 @@ public class protokollTest {
         assertEquals(os.toString(), message);
     }
     
+    /**
+     * Read user send repeat rules.
+     */
     @Test
     public void readUserSendRepeatRules(){
         String message = "{"
@@ -1959,6 +1979,9 @@ public class protokollTest {
 	}
 	
 	
+	/**
+	 * Parses the user confirm rules.
+	 */
 	@Test
 	public void parseUserConfirmRules(){
         String message = "{"
@@ -1984,6 +2007,9 @@ public class protokollTest {
         assertEquals(os.toString(), message); 
 	}
 	
+	/**
+	 * Read user confirm rules.
+	 */
 	@Test
 	public void readUserConfirmRules(){
         String message = "{"
@@ -2008,7 +2034,10 @@ public class protokollTest {
 	        assertEquals(os.toString(), message);
 	}
 	
-	   @Test
+	   /**
+   	 * Parses the user create zones.
+   	 */
+   	@Test
 	    public void parseUserCreateZones(){
            String message = "{"
                    + "\"Header\":{"
@@ -2035,7 +2064,10 @@ public class protokollTest {
 	        assertEquals(os.toString(), message); 
 	    }
 	    
-	    @Test
+	    /**
+    	 * Read user create zones.
+    	 */
+    	@Test
 	    public void readUserCreateZones(){
 	           String message = "{"
 	                    + "\"Header\":{"
@@ -2061,7 +2093,10 @@ public class protokollTest {
 	            assertEquals(os.toString(), message);
 	    }
 	    
-	    @Test
+	    /**
+    	 * Parses the user confirm zones.
+    	 */
+    	@Test
 	    public void parseUserConfirmZones(){
 	        String message = "{"
 	                + "\"Header\":{"
@@ -2085,7 +2120,10 @@ public class protokollTest {
 	        assertEquals(os.toString(), message); 
 	    }
 	    
-	    @Test
+	    /**
+    	 * Read user confirm zones.
+    	 */
+    	@Test
 	    public void readUserConfirmZones(){
 	        String message = "{"
                     + "\"Header\":{"
@@ -2109,7 +2147,10 @@ public class protokollTest {
 	            assertEquals(os.toString(), message);
 	    }
 	    
-	    @Test
+	    /**
+    	 * Parses the user create units.
+    	 */
+    	@Test
 	    public void parseUserCreateUnits(){
 	        String message = "{"
 	                + "\"Header\":{"
@@ -2136,7 +2177,10 @@ public class protokollTest {
 	        assertEquals(os.toString(), message); 
 	    }
 	    
-	    @Test
+	    /**
+    	 * Read user create units.
+    	 */
+    	@Test
 	    public void readUserCreateUnits(){
 	           String message = "{"
 	                    + "\"Header\":{"
@@ -2162,7 +2206,10 @@ public class protokollTest {
 	            assertEquals(os.toString(), message);
 	    }
 	    
-	    @Test
+	    /**
+    	 * Parses the user confirm units.
+    	 */
+    	@Test
 	    public void parseUserConfirmUnits(){
 	        String message = "{"
 	                + "\"Header\":{"
@@ -2187,7 +2234,10 @@ public class protokollTest {
 	        assertEquals(os.toString(), message); 
 	    }
 	    
-	    @Test
+	    /**
+    	 * Read user confirm units.
+    	 */
+    	@Test
 	    public void readUserConfirmUnits(){
 	           String message = "{"
 	                    + "\"Header\":{"

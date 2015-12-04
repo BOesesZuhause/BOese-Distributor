@@ -15,24 +15,56 @@ import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.model.Unit;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DefaultUnitTest.
+ */
 public class DefaultUnitTest {
 
+	/** The namen. */
 	List <String> namen;
 	
+	/** The volt. */
 	final String volt = "Volt";
+	
+	/** The ampere. */
 	final String ampere = "milliAmpere";
+	
+	/** The percent. */
 	final String percent = "Percent";
+	
+	/** The bool. */
 	final String bool = "OnOff";
+	
+	/** The temp. */
 	final String temp = "Temperature";
+	
+	/** The dist. */
 	final String dist = "Distance";
+	
+	/** The rgb. */
 	final String rgb = "ColorRGB";
+	
+	/** The watt. */
 	final String watt = "Watt";
+	
+	/** The time. */
 	final String time = "Time";
+	
+	/** The vel. */
 	final String vel = "Velocity";
+	
+	/** The weight. */
 	final String weight = "Weight";
 	
+	/** The defaults. */
 	Map<String, String> defaults = new HashMap<>(); 
 	
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
@@ -50,6 +82,9 @@ public class DefaultUnitTest {
 		}
 	}
 
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 		if (!namen.contains(volt)){

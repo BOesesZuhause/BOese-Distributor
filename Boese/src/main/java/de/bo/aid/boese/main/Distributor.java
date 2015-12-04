@@ -111,6 +111,9 @@ private final String logo =
 	/** The temp device components. */
 	private HashMap<Integer, TempComponent> tempDeviceComponents = new HashMap<Integer, TempComponent>();
 	
+	/** The connector id. */
+	private final int connectorID = 0;
+	
 	/** The temp device id. */
 	//tempIds for unconfirmed Objects
 	private int tempDeviceId = 1;
@@ -142,6 +145,7 @@ private final String logo =
 	/** The props. */
 	DistributorProperties props;
 
+    /** The default_password. */
     private String default_password = "";
 	
 	/**
@@ -549,7 +553,18 @@ private final String logo =
 		tempCompId++;
 	}
 	
+	
+	
 	/**
+	 * Gets the connector id.
+	 *
+	 * @return the connector id
+	 */
+	public int getConnectorID() {
+        return connectorID;
+    }
+
+    /**
 	 * Gets the tdc.
 	 *
 	 * @return the tdc
@@ -558,6 +573,12 @@ private final String logo =
 		return tdc;
 	}
 
+    /**
+     * Check default password.
+     *
+     * @param pw the pw
+     * @return true, if successful
+     */
     public boolean checkDefaultPassword(String pw) {
         return pw.equals(default_password);
     }

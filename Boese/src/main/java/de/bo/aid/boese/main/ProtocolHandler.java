@@ -66,6 +66,7 @@ import de.bo.aid.boese.json.RequestDeviceComponents;
 import de.bo.aid.boese.json.RuleJSON;
 import de.bo.aid.boese.json.SendDeviceComponents;
 import de.bo.aid.boese.json.SendDevices;
+import de.bo.aid.boese.json.SendNotification;
 import de.bo.aid.boese.json.SendStatus;
 import de.bo.aid.boese.json.SendValue;
 import de.bo.aid.boese.json.UnitJSON;
@@ -176,6 +177,9 @@ public class ProtocolHandler implements MessageHandler {
 		case SENDSTATUS:
 			handleSendStatus((SendStatus) bjMessage, connectorId);
 			break;
+		case SENDNOTIFICATION:
+		    handleSendNotification((SendNotification) bjMessage, connectorId);
+		    break;
 		case USERREQUESTALLDEVICES:
 			handleUserRequestAllDevices((RequestAllDevices) bjMessage, connectorId);
 			break;
@@ -226,6 +230,18 @@ public class ProtocolHandler implements MessageHandler {
 	}
 
 	/**
+	 * Handle send notification.
+	 *
+	 * @param bjMessage the bj message
+	 * @param connectorId the connector id
+	 */
+	private void handleSendNotification(SendNotification bjMessage, int connectorId) {	    
+	    OutputStream os = new ByteArrayOutputStream();
+        BoeseJson.parseMessage(bjMessage, os);
+        SessionHandler.getInstance().sendToUserConnectors(os.toString());       
+    }
+
+    /**
 	 * Handle heart beat.
 	 *
 	 * @param bjMessage the bj message
@@ -595,6 +611,12 @@ public class ProtocolHandler implements MessageHandler {
 		sendUserSendRules(rules, connectorId);
 	}
 	
+	/**
+	 * Handle user request all repeat rules.
+	 *
+	 * @param urg the urg
+	 * @param connectorId the connector id
+	 */
 	private void handleUserRequestAllRepeatRules(UserRequestGeneral urg, int connectorId) {
 		if (connectorId != urg.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
@@ -723,6 +745,12 @@ public class ProtocolHandler implements MessageHandler {
 		sendConfirmRules(tempRules, connectorId);
 	}
 	
+	/**
+	 * Handle user create repeat rules.
+	 *
+	 * @param ucrr the ucrr
+	 * @param connectorId the connector id
+	 */
 	private void handleUserCreateRepeatRules(UserCreateRepeatRules ucrr, int connectorId) {
 		if (connectorId != ucrr.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
@@ -862,7 +890,7 @@ public class ProtocolHandler implements MessageHandler {
 	 *            the connector id
 	 */
 	public void sendConfirmComponent(int deviceId, HashMap<String, Integer> components, int connectorId) {
-		BoeseJson cdc = new ConfirmDeviceComponents(deviceId, components, connectorId, 0, new Date().getTime());
+		BoeseJson cdc = new ConfirmDeviceComponents(deviceId, components, distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(cdc, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
@@ -884,7 +912,7 @@ public class ProtocolHandler implements MessageHandler {
 	 */
 	public void sendValue(int deId, int deCoId, double value, long valueTimestamp, int connectorId) {
 		OutputStream os = new ByteArrayOutputStream();
-		BoeseJson sv = new SendValue(deId, deCoId, value, valueTimestamp, connectorId, 0, new Date().getTime());
+		BoeseJson sv = new SendValue(deId, deCoId, value, valueTimestamp, distributor.getConnectorID(), 0, new Date().getTime());
 		os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(sv, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
@@ -900,7 +928,7 @@ public class ProtocolHandler implements MessageHandler {
 	 */
 	public void sendConfirmDevices(HashMap<String, Integer> devices, int connectorId) {
 		// send Confirm Devices
-		BoeseJson cd = new ConfirmDevices(devices, connectorId, 0, new Date().getTime());
+		BoeseJson cd = new ConfirmDevices(devices, distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(cd, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
@@ -919,7 +947,7 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param connectorId the connector id
 	 */
 	public void sendRequestDeviceComponents(int deviceId, int connectorId) {
-		BoeseJson rdc = new RequestDeviceComponents(deviceId, connectorId, 0, new Date().getTime());
+		BoeseJson rdc = new RequestDeviceComponents(deviceId, distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(rdc, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
@@ -963,7 +991,7 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param conId the con id
 	 */
 	public void sendConfirmConnection(String pw, int conId) {
-		BoeseJson cc = new ConfirmConnection(pw, conId, 0, new Date().getTime());
+		BoeseJson cc = new ConfirmConnection(pw, distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(cc, os);
 		SessionHandler.getInstance().sendToConnector(conId, os.toString());
@@ -975,7 +1003,7 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param conId the con id
 	 */
 	public void sendRequestAllDevices(int conId) {
-		BoeseJson rad = new RequestAllDevices(conId, 0, new Date().getTime());
+		BoeseJson rad = new RequestAllDevices(distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(rad, os);
 		SessionHandler.getInstance().sendToConnector(conId, os.toString());
@@ -989,7 +1017,7 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param connectorId the connector id
 	 */
 	public void sendConfirmValue(int deviceId, int deviceComponentId, int connectorId) {
-		BoeseJson cv = new ConfirmValue(deviceId, deviceComponentId, connectorId, 0, new Date().getTime());
+		BoeseJson cv = new ConfirmValue(deviceId, deviceComponentId, distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(cv, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
@@ -1002,14 +1030,20 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param connectorId the connector id
 	 */
 	public void sendConfirmRules(HashMap<Integer, Integer> tempRules, int connectorId) {
-		BoeseJson ucor = new UserConfirmRules(tempRules, connectorId, 0, new Date().getTime());
+		BoeseJson ucor = new UserConfirmRules(tempRules, distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(ucor, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
+	/**
+	 * Send confirm repeat rules.
+	 *
+	 * @param tempRules the temp rules
+	 * @param connectorId the connector id
+	 */
 	public void sendConfirmRepeatRules(HashMap<Integer, Integer> tempRules, int connectorId) {
-		BoeseJson ucorr = new UserConfirmRepeatRules(tempRules, connectorId, 0, new Date().getTime());
+		BoeseJson ucorr = new UserConfirmRepeatRules(tempRules, distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(ucorr, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
@@ -1022,7 +1056,7 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param connectorId the connector id
 	 */
 	public void sendConfirmZones(HashMap<Integer, Integer> tempZones, int connectorId) {
-		BoeseJson ucoz = new UserConfirmZones(tempZones, connectorId, 0, new Date().getTime());
+		BoeseJson ucoz = new UserConfirmZones(tempZones, distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(ucoz, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
@@ -1035,7 +1069,7 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param connectorId the connector id
 	 */
 	public void sendConfirmUnits(HashMap<Integer, Integer> tempUnits, int connectorId) {
-		BoeseJson ucou = new UserConfirmUnits(tempUnits, connectorId, 0, new Date().getTime());
+		BoeseJson ucou = new UserConfirmUnits(tempUnits, distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(ucou, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
@@ -1048,7 +1082,7 @@ public class ProtocolHandler implements MessageHandler {
 	 */
 	public void sendUserSendTemps(int connectorId) {
 		BoeseJson ust = new UserSendTemps(distributor.getTempConnectors(), distributor.getTempDevices(),
-				distributor.getTempComponents(), connectorId, 0, new Date().getTime());
+				distributor.getTempComponents(), distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(ust, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
@@ -1062,15 +1096,21 @@ public class ProtocolHandler implements MessageHandler {
 	 */
 	public void sendUserSendRules(HashSet<RuleJSON> rules, int connectorId) {
 
-		BoeseJson usc = new UserSendRules(rules, connectorId, 0, new Date().getTime());
+		BoeseJson usc = new UserSendRules(rules, distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(usc, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
 	}
 	
+	/**
+	 * Send user send repeat rules.
+	 *
+	 * @param rules the rules
+	 * @param connectorId the connector id
+	 */
 	public void sendUserSendRepeatRules(HashSet<RepeatRuleJSON> rules, int connectorId) {
 
-		BoeseJson usc = new UserSendRepeatRules(rules, connectorId, 0, new Date().getTime());
+		BoeseJson usc = new UserSendRepeatRules(rules, distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(usc, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
@@ -1084,7 +1124,7 @@ public class ProtocolHandler implements MessageHandler {
 	 */
 	public void sendUserSendUnits(HashSet<UnitJSON> units, int connectorId) {
 
-		BoeseJson usu = new UserSendUnits(units, connectorId, 0, new Date().getTime());
+		BoeseJson usu = new UserSendUnits(units, distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(usu, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
@@ -1097,7 +1137,7 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param connectorId the connector id
 	 */
 	public void sendUserSendZone(HashSet<ZoneJSON> zones, int connectorId) {
-		BoeseJson usc = new UserSendZones(zones, connectorId, 0, new Date().getTime());
+		BoeseJson usc = new UserSendZones(zones, distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(usc, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
@@ -1110,7 +1150,7 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param connectorId the connector id
 	 */
 	public void sendUserSendConnectors(HashMap<Integer, String> connectors, int connectorId) {
-		BoeseJson usc = new UserSendConnectors(connectors, connectorId, 0, new Date().getTime());
+		BoeseJson usc = new UserSendConnectors(connectors, distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(usc, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
@@ -1124,7 +1164,7 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param connectorId the connector id
 	 */
 	public void sendUserSendDeviceComponent(Integer devId, HashSet<DeviceComponents> decos, int connectorId) {
-		BoeseJson usdc = new UserSendDeviceComponent(devId.intValue(), decos, connectorId, 0, new Date().getTime());
+		BoeseJson usdc = new UserSendDeviceComponent(devId.intValue(), decos, distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(usdc, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
@@ -1137,10 +1177,24 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param connectorId the connector id
 	 */
 	public void sendUserSendDevices(HashSet<UserDevice> deviceList, int connectorId) {
-		BoeseJson usd = new UserSendDevices(deviceList, connectorId, 0, new Date().getTime());
+		BoeseJson usd = new UserSendDevices(deviceList, distributor.getConnectorID(), 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(usd, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
+	}
+	
+	/**
+	 * Send notification to all user connectors.
+	 *
+	 * @param message the message
+	 * @param type the type
+	 * @param timestamp the timestamp
+	 */
+	public void sendNotificationToAllUserConnectors(String message, int type, long timestamp){
+	    BoeseJson sn = new SendNotification(type, timestamp, message, distributor.getConnectorID(), 0, System.currentTimeMillis());
+	    OutputStream os = new ByteArrayOutputStream();
+	    BoeseJson.parseMessage(sn, os);
+	    SessionHandler.getInstance().sendToUserConnectors(os.toString());
 	}
 
 }

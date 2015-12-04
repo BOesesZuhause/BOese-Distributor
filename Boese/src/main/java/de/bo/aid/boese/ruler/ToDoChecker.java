@@ -55,6 +55,7 @@ public class ToDoChecker extends Thread{
 	/** The ttl. */
 	List<TimeTodos> ttl;
 	
+	/** The ph. */
 	ProtocolHandler ph;
 	
 //	Empfänger e;
@@ -227,6 +228,12 @@ public class ToDoChecker extends Thread{
 		return (tf.getDate().getTime() / 60000) < (new Date().getTime() / 60000);
 	}
 	
+	/**
+	 * To dos to string.
+	 *
+	 * @param todos the todos
+	 * @return the string
+	 */
 	private String toDosToString(List<ComponentXML> todos){
 		String returner = "";
 		for(ComponentXML todo : todos){

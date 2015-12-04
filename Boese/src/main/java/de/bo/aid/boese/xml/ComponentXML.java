@@ -229,6 +229,11 @@ public class ComponentXML {
 		return duration;
 	}
 	
+	/**
+	 * To string for to do checker.
+	 *
+	 * @return the string
+	 */
 	public String toStringForToDoChecker(){
 		return "DeviceComponent " + this.id + " wird auf den Wert " + this.value + " geschaltet!";
 	}

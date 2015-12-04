@@ -48,6 +48,7 @@ public class DistributorProperties extends Properties{
 	/** The db port. */
 	private final String DB_PORT = "DB_PORT";
 	
+	/** The default password. */
 	private final String DEFAULT_PASSWORD = "DEFAULT_CONNECTOR_PASSWORD";
 	
 	
@@ -286,10 +287,20 @@ public class DistributorProperties extends Properties{
 		return this.getProperty(DB_PORT);
 	}
 	
+	/**
+	 * Sets the default password.
+	 *
+	 * @param pw the new default password
+	 */
 	public void setDefaultPassword(String pw){
 	    this.setProperty(DEFAULT_PASSWORD, pw);
 	}
 	
+	/**
+	 * Gets the default password.
+	 *
+	 * @return the default password
+	 */
 	@NotNull
 	public String getDefaultPassword(){
 	    return this.getProperty(DEFAULT_PASSWORD);

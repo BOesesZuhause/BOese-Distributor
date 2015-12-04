@@ -619,7 +619,7 @@ public class Inserts {
 	}
 	
 	/**
-	 * Insert default Units
+	 * Insert default Units.
 	 */
 	public static void defaultUnits(){
 		List <Unit> units = AllSelects.units();		

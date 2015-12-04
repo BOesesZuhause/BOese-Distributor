@@ -35,12 +35,6 @@ package de.bo.aid.boese.json;
  * The Class SendNotification.
  */
 public class SendNotification extends BoeseJson {
-	/** The device id. */
-	private int deviceId;
-	
-	/** The device component id. */
-	private int deviceComponentId;
-	
 	/** The notification type. */
 	private int notificationType;
 	
@@ -53,8 +47,6 @@ public class SendNotification extends BoeseJson {
 	/**
 	 * Instantiates a new send notification.
 	 *
-	 * @param deviceId the device id
-	 * @param deviceComponentId the device component id
 	 * @param notificationType the notification type
 	 * @param notificationTimestamp the notification timestamp
 	 * @param notificationText the notification text
@@ -62,11 +54,9 @@ public class SendNotification extends BoeseJson {
 	 * @param status the status
 	 * @param timestamp the timestamp
 	 */
-	public SendNotification(int deviceId, int deviceComponentId, int notificationType, long notificationTimestamp, String notificationText,
+	public SendNotification(int notificationType, long notificationTimestamp, String notificationText,
 			int connectorId, int status, long timestamp) {
 		super(MessageType.SENDNOTIFICATION, connectorId, status, timestamp);
-		this.deviceId = deviceId;
-		this.deviceComponentId = deviceComponentId;
 		this.notificationType = notificationType;
 		this.notificationTimestamp = notificationTimestamp;
 		this.notificationText = notificationText;
@@ -75,23 +65,6 @@ public class SendNotification extends BoeseJson {
 		this.timestamp = timestamp;
 	}
 
-	/**
-	 * Gets the device id.
-	 *
-	 * @return the device id
-	 */
-	public int getDeviceId() {
-		return deviceId;
-	}
-	
-	/**
-	 * Gets the device component id.
-	 *
-	 * @return the device component id
-	 */
-	public int getDeviceComponentId() {
-		return deviceComponentId;
-	}
 	
 	/**
 	 * Gets the notification type.

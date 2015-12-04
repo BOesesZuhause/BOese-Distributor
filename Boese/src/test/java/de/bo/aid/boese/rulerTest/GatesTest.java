@@ -223,6 +223,14 @@ public class GatesTest {
 		assertTrue("Fall (t ^ t) v (t ^ t) = t stimmt nicht", c.condition(((Condition)bXML).getRule()));			
 	}
 	
+	/**
+	 * Insert value.
+	 *
+	 * @param vdeco1 the vdeco1
+	 * @param vdeco2 the vdeco2
+	 * @param vdeco3 the vdeco3
+	 * @param vdeco4 the vdeco4
+	 */
 	private void insertValue(double vdeco1, double vdeco2, double vdeco3, double vdeco4){
 		try {
 			Inserts.value(deco1.getDeCoId(), new Date(), vdeco1);

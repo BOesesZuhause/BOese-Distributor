@@ -24,8 +24,9 @@ import de.bo.aid.boese.model.ToDo;
 import de.bo.aid.boese.ruler.ToDoChecker;
 
 /**
- * @author Spieki
+ * The Class ToDoCheckerTest.
  *
+ * @author Spieki
  */
 public class ToDoCheckerTest {
 	

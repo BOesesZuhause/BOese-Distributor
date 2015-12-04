@@ -19,19 +19,21 @@ import de.bo.aid.boese.xml.CalculationList;
 import de.bo.aid.boese.xml.ComponentXML;
 import de.bo.aid.boese.xml.ComponentXML.Comperator;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author Fabio Spiekermann
+ * The Class ConditionComponentTest.
  *
+ * @author Fabio Spiekermann
  */
 public class ConditionComponentTest {
 	
 	/** The c. */
 	Checker c;
 	
-	/** The cXML */
+	/**  The cXML. */
 	ComponentXML cXML;
 	
-	/** The cList */
+	/**  The cList. */
 	CalculationList cList;
 	
 	/** The con. */
@@ -204,6 +206,11 @@ public class ConditionComponentTest {
 		assertTrue("False LowerThen(Greater) stimmt nicht", !c.condition(cXML));
 	}
 	
+	/**
+	 * Insert.
+	 *
+	 * @param value the value
+	 */
 	private void insert(double value){
 		try {
 			Inserts.value(deco.getDeCoId(), new Date(), value);
