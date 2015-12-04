@@ -245,7 +245,7 @@ public class ProtocolHandler implements MessageHandler {
 	 */
 	private void handleRequestConnection(RequestConnection rc, int tempId) {
 
-	    //first gui-connector TODO if connector has a password don't check default
+	    //gui connector without id but with password
         if(rc.isUserConnector() && rc.getPassword() != null && tempId == -1){
             String pw = rc.getPassword();
             String conName = rc.getConnectorName();
@@ -286,7 +286,7 @@ public class ProtocolHandler implements MessageHandler {
     					sendConfirmConnection(pw, conId);
     					sendRequestAllDevices(conId);
     				} else {
-    					SessionHandler.getInstance().rejectConnection(conId);
+    					SessionHandler.getInstance().rejectConnection(tempId);
     				}
     			}
     			catch (DBObjectNotFoundException onfe){ //connector not found
