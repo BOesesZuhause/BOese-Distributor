@@ -110,11 +110,11 @@ public class SocketServer {
             wscontainer.addEndpoint(SocketEndpoint.class);
 
             server.start();
-            logger.info(server.dump());
+            logger.debug(server.dump());
         }
-        catch (Throwable t)
+        catch (Exception e)
         {
-            logger.error(t);
+            logger.error("Error while starting the websocket-server", e);
         }
     }
 	
@@ -125,8 +125,7 @@ public class SocketServer {
 		try {
 			server.stop();
 		} catch (Exception e) {
-		    logger.error(e);
-			e.printStackTrace();
+		    logger.error("Error while stopping the websocket-server", e);
 		}
 	}
 

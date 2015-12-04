@@ -93,8 +93,7 @@ public class SocketEndpoint
 	 */
 	@OnError
 	public void onError(Throwable error) {
-		logger.error("Websocketerror:");
-		error.printStackTrace();
+		logger.error("Websocketerror:", error);
 	}
 
 	/**
@@ -106,6 +105,6 @@ public class SocketEndpoint
 	@OnMessage
 	public void handleMessage(String message, Session session) {
 		logger.info("Server received Message: " + message);
-			SocketServer.getInstance().handleMessage(message, handler.getConnectorId(session));
+		SocketServer.getInstance().handleMessage(message, handler.getConnectorId(session));
 	}
 }

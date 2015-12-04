@@ -6,6 +6,9 @@ package de.bo.aid.boese.socket;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.HeartBeatMessage;
 
@@ -17,6 +20,8 @@ public class HeartbeatWorker extends Thread{
 	
 	/** The intervall. */
 	public static long intervall = 60000;	
+	
+	final  Logger logger = LogManager.getLogger(HeartbeatWorker.class);
 	
 	/**
 	 * Gets the intervall.
@@ -61,8 +66,7 @@ public class HeartbeatWorker extends Thread{
 			try {
 				Thread.sleep(intervall);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.warn("Interrupted while sleeping", e);
 			}
 			handler.checkHeartbeat();
 		}				

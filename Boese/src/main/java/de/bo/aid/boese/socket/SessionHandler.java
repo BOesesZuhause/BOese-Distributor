@@ -91,8 +91,7 @@ public class SessionHandler {
 				try {
 					data.getSession().close();
 				} catch (IOException e) {
-					logger.error("Could not close connection to connector with id: " + connectorId);
-					e.printStackTrace();
+					logger.error("Could not close connection to connector with id: " + connectorId, e);
 				}
 				sessions.remove(data);
 			}
@@ -161,8 +160,8 @@ public class SessionHandler {
         	logger.info("Message sent: " + message);
             session.getBasicRemote().sendText(message);
         } catch (IOException ex) {
-            sessions.remove(session);
-            logger.warn("Could not send the message to session: " + session);
+            sessions.remove(getDataBySession(session));
+            logger.warn("Could not send the message to session: " + session, ex);
         }
     }
 	
@@ -259,8 +258,7 @@ public class SessionHandler {
 					try {
 						data.getSession().close();
 					} catch (IOException e) {
-						logger.warn("Unable to close session: " + data.getSession());
-						e.printStackTrace();
+						logger.warn("Unable to close session: " + data.getSession(), e);
 					}
 					//TODO Die ConnectorId kann danach nicht mehr ermittelt werden für die close()-Nachricht
 					sessions.remove(data);
