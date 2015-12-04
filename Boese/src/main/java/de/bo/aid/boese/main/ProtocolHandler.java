@@ -246,7 +246,7 @@ public class ProtocolHandler implements MessageHandler {
 	private void handleRequestConnection(RequestConnection rc, int tempId) {
 
 	    //first gui-connector TODO if connector has a password don't check default
-        if(rc.isUserConnector() && !SessionHandler.getInstance().hasUserConnectors()){
+        if(rc.isUserConnector() && rc.getPassword() != null && tempId == -1){
             String pw = rc.getPassword();
             String conName = rc.getConnectorName();
             
