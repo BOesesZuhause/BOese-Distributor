@@ -300,7 +300,7 @@ public class ProtocolHandler implements MessageHandler {
     			try{
     				con = Selects.connector(conId);
     				if (con.getName().compareTo(conName) == 0 && con.getPassword().compareTo(pw) == 0) {
-    					SessionHandler.getInstance().setConnectorId(tempId, conId);
+    					SessionHandler.getInstance().setConnectorId(tempId, conId, rc.isUserConnector());
     					sendConfirmConnection(pw, conId);
     					sendRequestAllDevices(conId);
     				} else {
@@ -1014,7 +1014,7 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param conId the con id
 	 */
 	public void sendConfirmConnection(String pw, int conId) {
-		BoeseJson cc = new ConfirmConnection(pw, distributor.getConnectorID(), 0, new Date().getTime());
+		BoeseJson cc = new ConfirmConnection(pw, conId, 0, new Date().getTime());
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(cc, os);
 		SessionHandler.getInstance().sendToConnector(conId, os.toString());

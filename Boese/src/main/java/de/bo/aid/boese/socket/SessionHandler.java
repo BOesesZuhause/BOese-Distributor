@@ -117,10 +117,11 @@ public class SessionHandler {
 	 * @param tmpId the tmp id
 	 * @param newId the new id
 	 */
-	public void setConnectorId(int tmpId, int newId) {
+	public void setConnectorId(int tmpId, int newId, boolean isUserConnector) {
 		SessionData data = getDataByConnector(tmpId);
 		if(data != null){
 			data.setId(newId);
+			data.setUserConnector(isUserConnector);
 		}
 	}
 	

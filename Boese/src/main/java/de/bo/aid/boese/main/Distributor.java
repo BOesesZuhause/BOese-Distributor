@@ -314,7 +314,7 @@ private final String logo =
 
 		Connector con = new Connector(name, pw, isUserConnector);
 		Inserts.connector(con);
-		SessionHandler.getInstance().setConnectorId(tempId, con.getCoId());
+		SessionHandler.getInstance().setConnectorId(tempId, con.getCoId(), con.isUserConnector());
 
 		// Send ConfirmConnection
 		BoeseJson cc = new ConfirmConnection(pw, con.getCoId(), 0, new Date().getTime());
@@ -328,10 +328,11 @@ private final String logo =
 			os = new ByteArrayOutputStream();
 			BoeseJson.parseMessage(rad, os);
 			SessionHandler.getInstance().sendToConnector(con.getCoId(), os.toString());
-		}else{
-			//save isUserConnector in sessionData for caching 
-			SessionHandler.getInstance().setUserConnector(con.getCoId());
 		}
+//		else{
+//			//save isUserConnector in sessionData for caching 
+//			SessionHandler.getInstance().setUserConnector(con.getCoId());
+//		}
 		
 		logger.info("User confirmed Connector with name: " + name);
 		tempConnectors.remove(tempId);
