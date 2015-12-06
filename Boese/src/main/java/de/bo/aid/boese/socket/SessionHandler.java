@@ -185,6 +185,7 @@ public class SessionHandler {
 	public static SessionHandler getInstance() {
 		return instance;
 	}
+	
 
 	/**
 	 * Handle heartbeat.
@@ -205,7 +206,7 @@ public class SessionHandler {
 	 * @param session the session
 	 * @return the data by session
 	 */
-	private SessionData getDataBySession(Session session){
+	public SessionData getDataBySession(Session session){
 		for(SessionData data : sessions){
 			if(data.getSession().equals(session)){
 				return data;

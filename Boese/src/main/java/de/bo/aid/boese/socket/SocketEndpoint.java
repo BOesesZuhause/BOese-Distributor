@@ -77,12 +77,12 @@ public class SocketEndpoint
 	 */
 	@OnClose
 	public void close(Session session) {
-		int conId = handler.getConnectorId(session);
 		handler.removeSession(session);
-		if(conId == -1){
-			logger.info("Unknown Socket disconnected: " + session);
+		SessionData data = SessionHandler.getInstance().getDataBySession(session);
+		if(data == null){
+			logger.info("Unknown Connector disconnected session: " + session);
 		}else{
-			logger.info("Connector with id: " + conId + " disconnected");
+			logger.info("Connector with id: " + data.getId() + " disconnected");
 		}
 	}
 
