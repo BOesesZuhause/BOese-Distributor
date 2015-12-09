@@ -1,9 +1,3 @@
-/*
- * 
- */
-
-
-
 package de.bo.aid.boese.hibernateTest;
 
 
@@ -17,7 +11,7 @@ import de.bo.aid.boese.hibernate.util.HibernateUtil;
 /**
  * The Class mappingTest.
  */
-public class mappingTest {
+public class MappingTest {
 
 	/**
 	 * Test.
