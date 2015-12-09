@@ -363,7 +363,7 @@ private final String logo =
 		try {
 			Device dev = new Device(name, "serial");
 			Inserts.device(connectorId, zoneId, dev);
-			devices.put(name, dev.getDeId());
+			devices.put(temp.getName(), dev.getDeId());
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}		
@@ -454,7 +454,7 @@ private final String logo =
 			return;
 		}
 		HashMap<String, Integer> confirmComponents = new HashMap<String, Integer>();
-		confirmComponents.put(name, deCoId);
+		confirmComponents.put(temp.getName(), deCoId);
 		ArrayList<Inquiry> inquiryList = new ArrayList<>();
 		inquiryList.add(new Inquiry(deCoId, temp.getValueTimestamp(), temp.getValue()));
 		protocolHandler.sendToDos(protocolHandler.getToDos(inquiryList));
