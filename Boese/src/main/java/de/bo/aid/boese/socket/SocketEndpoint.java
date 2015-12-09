@@ -40,6 +40,8 @@ import javax.websocket.server.ServerEndpoint;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.bo.aid.boese.main.Distributor;
+
 
 
 // TODO: Auto-generated Javadoc
@@ -77,13 +79,15 @@ public class SocketEndpoint
 	 */
 	@OnClose
 	public void close(Session session) {
-		handler.removeSession(session);
-		SessionData data = SessionHandler.getInstance().getDataBySession(session);
+		SessionData data = SessionHandler.getInstance().getDataBySession(session);		
 		if(data == null){
 			logger.info("Unknown Connector disconnected session: " + session);
 		}else{
+			Distributor.getInstance().removeTempsByConnector(data.getId());	
 			logger.info("Connector with id: " + data.getId() + " disconnected");
 		}
+		handler.removeSession(session);
+		
 	}
 
 	/**
