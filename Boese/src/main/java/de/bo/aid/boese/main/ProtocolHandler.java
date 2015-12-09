@@ -97,6 +97,7 @@ import de.bo.aid.boese.json.ZoneJSON;
 import de.bo.aid.boese.json.BoeseJson.MessageType;
 import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempDevice;
+import de.bo.aid.boese.model.Component;
 import de.bo.aid.boese.model.Connector;
 import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceComponent;
@@ -935,6 +936,16 @@ public class ProtocolHandler implements MessageHandler {
 	 *            the connector id
 	 */
 	public void sendValue(int deId, int deCoId, double value, long valueTimestamp, int connectorId) {
+		try {
+			DeviceComponent deco = Selects.deviceComponent(deCoId);
+			Component comp = deco.getComponent();
+			if(comp.isActor()){
+				logger.warn("Can not send a value to a sensor");
+				sendNotificationToAllUserConnectors("Can not send a value to the sensor: " + comp.getName() , NotificationType.WARNING, System.currentTimeMillis());
+			}
+		} catch (DBObjectNotFoundException e) {
+			logger.error(e);
+		}
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson sv = new SendValue(deId, deCoId, value, valueTimestamp, distributor.getConnectorID(), 0, new Date().getTime());
 		os = new ByteArrayOutputStream();
