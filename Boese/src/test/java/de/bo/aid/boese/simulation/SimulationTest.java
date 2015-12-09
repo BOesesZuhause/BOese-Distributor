@@ -34,7 +34,7 @@ public class SimulationTest {
      */
     @Before
     public void startServer() throws Exception {
-    	Distributor distr = new Distributor();
+    	Distributor distr = Distributor.getInstance();
     	distr.startWebsocketServer(8081);
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");

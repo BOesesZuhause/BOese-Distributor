@@ -64,7 +64,7 @@ public class UITempsTest {
 	@Before
 	public void startServer() {
 		String args[] = {"-config", "settings.properties"};
-		distr = new Distributor();
+		distr = Distributor.getInstance();
 		distr.printLogo();
 		distr.checkArguments(args);
 		distr.loadProperties();

@@ -34,7 +34,10 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,6 +51,7 @@ import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.ConfirmConnection;
 import de.bo.aid.boese.json.RequestAllDevices;
+import de.bo.aid.boese.json.UserSendTemps;
 import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempConnector;
 import de.bo.aid.boese.main.model.TempDevice;
@@ -102,6 +106,8 @@ private final String logo =
 	/** The socket server. */
 	private SocketServer socketServer;
 	
+	private static Distributor instance;
+	
 	/** The temp connectors. */
 	//hashmaps for unconfirmed Objects with a temporary Id as key
 	private HashMap<Integer, TempConnector> tempConnectors = new HashMap<Integer, TempConnector>();
@@ -149,6 +155,15 @@ private final String logo =
     /** The default_password. */
     private String default_password = "";
     
+    private Distributor(){}
+    
+    public static Distributor getInstance(){
+    	if(instance == null){
+    		instance = new Distributor();
+    	}
+    	return instance;
+    }
+    
     
     /**
      * The main method.
@@ -156,7 +171,7 @@ private final String logo =
      * @param args the arguments
      */
     public static void main(String[] args) {
-        Distributor distr = new Distributor();
+        Distributor distr = Distributor.getInstance();
         distr.printLogo();
         distr.checkArguments(args);
         logger.info("Loading properties");
@@ -293,6 +308,39 @@ private final String logo =
 	 */
 	public HashMap<Integer, TempConnector> getTempConnectors(){
 		return tempConnectors;
+	}
+	
+	public void removeTempsByConnector(int tempId){
+	
+	//remove connector
+	tempConnectors.remove(tempId);
+
+	//remove devices
+	Iterator<Map.Entry<Integer, TempDevice>> devIterator = tempDevices.entrySet().iterator();
+	while(devIterator.hasNext()){
+	   Entry<Integer, TempDevice> entry = devIterator.next();
+	   if(entry.getValue().getConnectorID()== tempId){
+		   devIterator.remove();
+	   }
+	}
+	
+	//remove componentd
+	Iterator<Map.Entry<Integer, TempComponent>> compIterator = tempDeviceComponents.entrySet().iterator();
+	while(devIterator.hasNext()){
+	   Entry<Integer, TempComponent> entry = compIterator.next();
+	   if(entry.getValue().getConnectorId()== tempId){
+		   compIterator.remove();
+	   }
+	}
+	
+	//send updated data to gui-connectors
+	BoeseJson ust = new UserSendTemps(getTempConnectors(), getTempDevices(),
+	getTempComponents(), getConnectorID(), 0, new Date().getTime());
+	OutputStream os = new ByteArrayOutputStream();
+	BoeseJson.parseMessage(ust, os);
+	SessionHandler.getInstance().sendToUserConnectors(os.toString());
+	
+
 	}
 	
 	/**

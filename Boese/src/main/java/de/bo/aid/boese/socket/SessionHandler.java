@@ -35,6 +35,8 @@ import javax.websocket.Session;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.bo.aid.boese.main.Distributor;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class SocketHandler.
@@ -263,7 +265,9 @@ public class SessionHandler {
 						logger.warn("Unable to close session: " + data.getSession(), e);
 					}
 					//TODO Die ConnectorId kann danach nicht mehr ermittelt werden für die close()-Nachricht
+					//TODO boolean einführen ob noch Nachrichten gesendet werden sollen
 					sessions.remove(data);
+					Distributor.getInstance().removeTempsByConnector(data.getId());
 					logger.warn("Connector with id: " + data.getId() + " exceeded Heartbeat-Threshold");
 				}else{
 					logger.warn("Connector with id: " + data.getId() + " does not respond");
