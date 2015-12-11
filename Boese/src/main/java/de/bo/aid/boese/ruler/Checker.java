@@ -258,7 +258,7 @@ public class Checker {
 					erg = calculate(cl.getFirst());
 				}
 				else{
-					erg = 0.0;
+					erg = 1.0;
 				}
 				for(double d : values){
 					erg *= d;
