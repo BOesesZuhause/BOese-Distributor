@@ -59,7 +59,7 @@ import de.bo.aid.boese.model.Component;
 import de.bo.aid.boese.model.Connector;
 import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceComponent;
-import de.bo.aid.boese.ruler.Control;
+import de.bo.aid.boese.ruler.Interpreter;
 import de.bo.aid.boese.ruler.Inquiry;
 import de.bo.aid.boese.ruler.ToDoChecker;
 import de.bo.aid.boese.socket.SocketServer;
@@ -539,10 +539,10 @@ private final String logo =
 				logger.error(e.getMessage(), e);
 			}
 		}
-		Control controll = new Control();
+		Interpreter interpreter = new Interpreter();
 		List<ComponentXML> todos;
 		try {
-			todos = controll.getToDos(inquirys);
+			todos = interpreter.getToDos(inquirys);
 		} catch (Exception e) {
 			System.err.println("Bad XML: " + e.getMessage());
 			// TODO Exception Handling
