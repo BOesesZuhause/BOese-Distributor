@@ -106,6 +106,7 @@ private final String logo =
 	/** The socket server. */
 	private SocketServer socketServer;
 	
+	/** The instance. */
 	private static Distributor instance;
 	
 	/** The temp connectors. */
@@ -155,8 +156,16 @@ private final String logo =
     /** The default_password. */
     private String default_password = "";
     
+    /**
+     * Instantiates a new distributor.
+     */
     private Distributor(){}
     
+    /**
+     * Gets the single instance of Distributor.
+     *
+     * @return single instance of Distributor
+     */
     public static Distributor getInstance(){
     	if(instance == null){
     		instance = new Distributor();
@@ -310,6 +319,11 @@ private final String logo =
 		return tempConnectors;
 	}
 	
+	/**
+	 * Removes the temps by connector.
+	 *
+	 * @param tempId the temp id
+	 */
 	public void removeTempsByConnector(int tempId){
 	
 	//remove connector
@@ -351,7 +365,7 @@ private final String logo =
 	 */
 	public void confirmConnector(int tempId) throws NotFoundException{
 	
-		String name= tempConnectors.get(tempId).getName();		
+		String name = tempConnectors.get(tempId).getName();
 		if(name == null){
 			throw new NotFoundException("Connector with tempId " + tempId + " not Found");
 		}
