@@ -118,6 +118,7 @@ public class SessionHandler {
 	 *
 	 * @param tmpId the tmp id
 	 * @param newId the new id
+	 * @param isUserConnector the is user connector
 	 */
 	public void setConnectorId(int tmpId, int newId, boolean isUserConnector) {
 		SessionData data = getDataByConnector(tmpId);

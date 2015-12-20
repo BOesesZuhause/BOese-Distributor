@@ -21,6 +21,7 @@ public class HeartbeatWorker extends Thread{
 	/** The intervall. */
 	public static long intervall = 60000;	
 	
+	/** The logger. */
 	final  Logger logger = LogManager.getLogger(HeartbeatWorker.class);
 	
 	/**
