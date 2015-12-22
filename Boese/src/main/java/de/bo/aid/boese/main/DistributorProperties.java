@@ -136,7 +136,7 @@ public class DistributorProperties extends Properties{
 		this.setPort(8081);
 		this.setAutoConfirm(false);
 		this.setDbUser("postgres");
-		this.setDbPassword("DI0bPWfw");
+		this.setDbPassword("Di0bPWfw");
 		this.setDbName("boese");
 		this.setDbHost("localhost");
 		this.setDbPort("5432");
