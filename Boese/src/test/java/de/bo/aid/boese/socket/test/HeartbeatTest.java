@@ -42,7 +42,7 @@ public class HeartbeatTest {
         server = SocketServer.getInstance();
         server.start(8081);
         worker = new HeartbeatWorker();
-        worker.setIntervall(5000);
+        worker.setInterval(5000);
         SessionHandler.getInstance().setMissedAnswerThreshold(3);
         worker.start();
 	}

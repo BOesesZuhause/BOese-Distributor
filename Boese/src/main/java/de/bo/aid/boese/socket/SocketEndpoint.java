@@ -44,9 +44,9 @@ import de.bo.aid.boese.main.Distributor;
 
 
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class BoeseServer.
+ * The Endpoint-class for Jetty. Here are all websocket-endpoints defined.
+ * every connection has its own socketendpoint object. 
  */
 
 //every connection creates a new SocketEndpoint Object. Therefore there is the SocketServer-Wrapper
@@ -55,16 +55,16 @@ import de.bo.aid.boese.main.Distributor;
 public class SocketEndpoint
 {
 	
-	/** The handler. */
+	/** The instance of the sessionhandler. It is used to manage the connected sessions */
 	private SessionHandler handler = SessionHandler.getInstance();
 
 	/** The Constant logger for log4j. */
 	final  Logger logger = LogManager.getLogger(SocketEndpoint.class);
 	
 	/**
-	 * Open.
+	 * THis method is called when a new session is opened. The connected session is added to the sessionhandler.
 	 *
-	 * @param session the session
+	 * @param session the connected session
 	 */
 	@OnOpen
 	public void open(Session session) {	
@@ -73,9 +73,9 @@ public class SocketEndpoint
 	}
 
 	/**
-	 * Close.
+	 * Is called when a session is closed. THe session is then removed from the sessionhandler.
 	 *
-	 * @param session the session
+	 * @param session the closed session
 	 */
 	@OnClose
 	public void close(Session session) {
@@ -91,7 +91,7 @@ public class SocketEndpoint
 	}
 
 	/**
-	 * On error.
+	 * Is called if an error occured. Logs the error-message.
 	 *
 	 * @param error the error
 	 */
@@ -101,7 +101,7 @@ public class SocketEndpoint
 	}
 
 	/**
-	 * Handle message.
+	 * Is called when a message is received. The message is forwarded to the messagehandler of the socketserver.
 	 *
 	 * @param message the message
 	 * @param session the session

@@ -5,25 +5,24 @@ package de.bo.aid.boese.socket;
 
 import javax.websocket.Session;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class SessionData.
+ * This class is used to store the session-information of a connected session.
  */
 public class SessionData {
 	
-	/** The id. */
+	/** The id of the connector associated with the session. */
 	private int id;
 	
 	/**  The type of the connector is cached here to quickly determine if it is a user connector. */
 	private boolean isUserConnector = false;
 	
-	/** The missed answers. */
+	/** The number of missed answers. */
 	private int missedAnswers;
 	
-	/** The last heartbeat. */
+	/** The timestamp of the last confirmed heartbeat. */
 	private long lastHeartbeat;
 	
-	/** The session. */
+	/** The session-object of the connection. */
 	private Session session;
 	
 	/**
@@ -65,7 +64,7 @@ public class SessionData {
 	
 	
 	/**
-	 * Checks if is user connector.
+	 * Checks if the connector is a user-connector.
 	 *
 	 * @return true, if is user connector
 	 */
@@ -76,7 +75,7 @@ public class SessionData {
 	/**
 	 * Sets the user connector.
 	 *
-	 * @param isUserConnector the new user connector
+	 * @param isUserConnector If the connector is a user-connector
 	 */
 	public void setUserConnector(boolean isUserConnector) {
 		this.isUserConnector = isUserConnector;
