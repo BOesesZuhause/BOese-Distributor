@@ -39,22 +39,21 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class SocketServer.
+ * This class wraps the jetty-websocket-server and embedds it.
  */
 public class SocketServer {
     
     /** The Constant logger for log4j. */
     final  Logger logger = LogManager.getLogger(SocketServer.class);
 	
-	/** The instance. */
+	/** The singleton instance of the class. */
 	private static SocketServer instance = new SocketServer();
 
-    /** The server. */
+    /** The jetty-server-object. */
     private Server server;
     
-    /** The message handler. */
+    /** The registered messagehandler. */
     private MessageHandler messageHandler;
 	
 	/**
@@ -75,7 +74,7 @@ public class SocketServer {
 	}
 
 	/**
-	 * Sets the message handler.
+	 * Registers a new messagehandler.
 	 *
 	 * @param messageHandler the new message handler
 	 */
@@ -84,9 +83,9 @@ public class SocketServer {
 	}
 
 	/**
-	 * Start.
+	 * Starts the websocket-server with the give port.
 	 *
-	 * @param port the port
+	 * @param port the port to listen on
 	 */
 	public void start(int port)
     {
@@ -119,7 +118,7 @@ public class SocketServer {
     }
 	
 	/**
-	 * Stop.
+	 * Stops the running websocket-server.
 	 */
 	public void stop(){
 		try {
@@ -140,9 +139,9 @@ public class SocketServer {
 
 
 	/**
-	 * Handle message.
+	 * Forwards received messages to the messagehandler.
 	 *
-	 * @param message the message
+	 * @param message the received message
 	 * @param connectorId the connector id
 	 */
 	public void handleMessage(String message, int connectorId) {

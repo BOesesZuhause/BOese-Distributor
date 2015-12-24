@@ -12,45 +12,52 @@ import org.apache.logging.log4j.Logger;
 import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.HeartBeatMessage;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class HeartbeatWorker.
+ * The Thread for heartbeat-messages. While running it sends a heartbeat to all connected sessions
+ * in a defined intervall.
  */
 public class HeartbeatWorker extends Thread{
 	
-	/** The intervall. */
-	public static long intervall = 60000;	
+	/** The interval in which the hearbeat-messages are send. If not set the default is 60 seconds. */
+	public static long interval = 60000;	
 	
 	/** The logger. */
 	final  Logger logger = LogManager.getLogger(HeartbeatWorker.class);
+	
+
+   /** Boolean to determine if the thread is running or stopped. */
+    private volatile boolean running = true;
+    
+    /** The session-handler instance which is used to send the heartbeat-messages. */
+    SessionHandler handler = SessionHandler.getInstance();
 	
 	/**
 	 * Gets the intervall.
 	 *
 	 * @return the intervall
 	 */
-	public static long getIntervall() {
-		return intervall;
+	public static long getInterval() {
+		return interval;
 	}
 
 	/**
-	 * Sets the intervall.
+	 * Sets the interval.
 	 *
-	 * @param intervall the new intervall
+	 * @param interval the new interval
 	 */
-	public void setIntervall(long intervall) {
-		HeartbeatWorker.intervall = intervall;
+	public void setInterval(long interval) {
+		HeartbeatWorker.interval = interval;
 	}
 
-	/** The running. */
-	private volatile boolean running = true;
-	
-	/** The handler. */
-	SessionHandler handler = SessionHandler.getInstance();
 	
 
 	/* (non-Javadoc)
 	 * @see java.lang.Thread#run()
+	 */
+	/**
+	 *  Sends the heartbeat to all confirmed connectors and sleeps for the given interval. 
+	 *  Also calls the check-method of the handler in every cycle.
+	 * 
 	 */
 	@Override
 	public void run() {
@@ -65,7 +72,7 @@ public class HeartbeatWorker extends Thread{
 				}				
 			}
 			try {
-				Thread.sleep(intervall);
+				Thread.sleep(interval);
 			} catch (InterruptedException e) {
 				logger.warn("Interrupted while sleeping", e);
 			}
@@ -74,7 +81,7 @@ public class HeartbeatWorker extends Thread{
 	}
 	
 	/**
-	 * Terminate.
+	 * Stops the running thread.
 	 */
 	public void terminate(){
 		running = false;

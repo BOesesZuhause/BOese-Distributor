@@ -37,9 +37,8 @@ import org.apache.logging.log4j.Logger;
 
 import de.bo.aid.boese.main.Distributor;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class SocketHandler.
+ * THe Sessionhandler manages all connected sessions and additional data.
  */
 public class SessionHandler {
 	
@@ -49,14 +48,14 @@ public class SessionHandler {
 	/** The Constant logger for log4j. */
 	final  Logger logger = LogManager.getLogger(SessionHandler.class);
 	
-	/** Saves the session. We use a threadsafe list because the heartbeat-thread needs to check the sessions.
+	/** Saves the sessions as sessiondata-objects. We use a threadsafe list because the heartbeat-thread needs to check the sessions.
 	 * The performance-drawback is minimal because the sessions are read more often than manipulated. */
 	private final CopyOnWriteArrayList<SessionData> sessions = new CopyOnWriteArrayList<SessionData>();
 	
-	/** The instance. */ 
+	/** The singleton instance. */ 
 	private static SessionHandler instance = new SessionHandler();
 	
-	/** The current id. */
+	/** The current id that is given to temp-connectors. */
 	private static int currentId;
 	
 	/**
@@ -67,7 +66,7 @@ public class SessionHandler {
 	}
 	
 	/**
-	 * Gets the connector id.
+	 * Gets the connector id for a specific session.
 	 *
 	 * @param session the session
 	 * @return the connector id
@@ -83,9 +82,9 @@ public class SessionHandler {
 	}
 	
 	/**
-	 * Reject connection.
+	 * Rejects connection and closes it.
 	 *
-	 * @param connectorId the connector id
+	 * @param connectorId the connector id of the session
 	 */
 	public void rejectConnection(int connectorId) {
 			SessionData data = getDataByConnector(connectorId);
@@ -100,10 +99,10 @@ public class SessionHandler {
 	}
 	
 	/**
-	 * Adds the session.
+	 * Adds the session to the list and sets a tempid for it.
 	 *
-	 * @param session the session
-	 * @return the int
+	 * @param session the session to be added
+	 * @return the id given to the session
 	 */
 	public int addSession(Session session) {
 		SessionData data = new SessionData();
@@ -114,11 +113,11 @@ public class SessionHandler {
 	}
 	
 	/**
-	 * Sets the connector id.
+	 * Replaces the tempId with a new one and adds the connectortype.
 	 *
-	 * @param tmpId the tmp id
+	 * @param tmpId the temp id
 	 * @param newId the new id
-	 * @param isUserConnector the is user connector
+	 * @param isUserConnector Boolean to determine if it is a userconnector
 	 */
 	public void setConnectorId(int tmpId, int newId, boolean isUserConnector) {
 		SessionData data = getDataByConnector(tmpId);
@@ -129,9 +128,9 @@ public class SessionHandler {
 	}
 	
 	/**
-	 * Removes the session.
+	 * Removes the session from the list.
 	 *
-	 * @param session the session
+	 * @param session the session to be removed
 	 */
 	public void removeSession(Session session){
 		SessionData data = getDataBySession(session);
@@ -141,10 +140,10 @@ public class SessionHandler {
 	}
 	
 	/**
-	 * Send to connector.
+	 * Sends a message to a specific connector.
 	 *
 	 * @param connectorId the connector id
-	 * @param message the message
+	 * @param message the message to be sent
 	 */
 	public void sendToConnector(int connectorId, String message) {
 		SessionData data = getDataByConnector(connectorId);
@@ -154,10 +153,10 @@ public class SessionHandler {
     }
 	
 	/**
-	 * Send to session.
+	 * Sends a message to a specific session.
 	 *
 	 * @param session the session
-	 * @param message the message
+	 * @param message the message to be sent
 	 */
 	public void sendToSession(Session session, String message) {
         try {
@@ -170,9 +169,9 @@ public class SessionHandler {
     }
 	
 	 /**
- 	 * Send to all connected sessions.
+ 	 * Sends a message to all connected sessions.
  	 *
- 	 * @param message the message
+ 	 * @param message the message to be send
  	 */
  	public void sendToAllConnectedSessions(String message) {
  		for(SessionData data : sessions){
@@ -191,7 +190,7 @@ public class SessionHandler {
 	
 
 	/**
-	 * Handle heartbeat.
+	 * Sets the timestamp for the last heartbeat and resets the missed answers of a connector.
 	 *
 	 * @param connectorId the connector id
 	 */
@@ -204,10 +203,10 @@ public class SessionHandler {
 	}
 	
 	/**
-	 * Gets the data by session.
+	 * Gets the data by a specific session.
 	 *
 	 * @param session the session
-	 * @return the data by session
+	 * @return the data of the session. Returns null if the session is not found.
 	 */
 	public SessionData getDataBySession(Session session){
 		for(SessionData data : sessions){
@@ -221,10 +220,10 @@ public class SessionHandler {
 	
 	
 	/**
-	 * Gets the data by connector.
+	 * Gets the data by a specific connectorid.
 	 *
 	 * @param connectorId the connector id
-	 * @return the data by connector
+	 * @return the data of the session. Returns null if the session is not found.
 	 */
 	public SessionData getDataByConnector(int connectorId){
 		for(SessionData data : sessions){
@@ -237,7 +236,7 @@ public class SessionHandler {
 	}
 	
 	/**
-	 * Gets true if the connector is a user connector, or false if the connector is no user connector or does not exist.
+	 * Gets the type of the connector.
 	 *
 	 * @param connectorId the connector id
 	 * @return true if the connector is a user connector, or false if the connector is no user connector or does not exist
@@ -253,12 +252,14 @@ public class SessionHandler {
 	}
 
 	/**
-	 * Check heartbeat.
+	 * checks the heartbeat-parameters for each session. IS called by the heartbeat-thread in a given interval.
+	 * If a connector hasn't answered the heartbeat the missed answer count is increased. If the missed answers exceeds the
+	 * missed answer threshold, the connector is disconnectd.
 	 */
 	public void checkHeartbeat(){
 		for(SessionData data : sessions){
 			long now = System.currentTimeMillis();
-			if((now - data.getLastHeartbeat()) > HeartbeatWorker.getIntervall()){
+			if((now - data.getLastHeartbeat()) > HeartbeatWorker.getInterval()){
 				if(data.getMissedAnswers() >= missedAnswerThreshold){
 					try {
 						data.getSession().close();
@@ -297,7 +298,7 @@ public class SessionHandler {
 	}
 
 	/**
-	 * Gets the sessions.
+	 * Gets the list with the manages sessions.
 	 *
 	 * @return the sessions
 	 */
@@ -306,9 +307,9 @@ public class SessionHandler {
 	}
 
 	/**
-	 * Sets the user connector.
+	 * Sets the state of a connector to user connector.
 	 *
-	 * @param coId the new user connector
+	 * @param coId the connectorid
 	 */
 	public void setUserConnector(int coId) {
 		SessionData data = getDataByConnector(coId);
@@ -318,9 +319,9 @@ public class SessionHandler {
 	}
 	
 	/**
-	 * Checks for user connectors.
+	 * Checks if user connectors are connected.
 	 *
-	 * @return true, if successful
+	 * @return true, if at least one user connector is connected.
 	 */
 	public boolean hasUserConnectors(){
 	       for(SessionData data : sessions){
@@ -332,9 +333,9 @@ public class SessionHandler {
 	}
 
 	/**
-	 * Send to user connectors.
+	 * Sends a message to all user connectors.
 	 *
-	 * @param message the message
+	 * @param message the message to be sent
 	 */
 	public void sendToUserConnectors(String message){
 		for(SessionData data : sessions){
