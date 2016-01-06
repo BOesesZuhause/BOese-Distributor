@@ -20,11 +20,11 @@ public class DayCalculator {
 	 * @return the int
 	 */
 	protected static int numberOfDays(int month, int year){
-		if(month == 2){
-			return MONTH_DAY[month-1] + isLeapYear(year);
+		if(month == 1){	//February is second Month (0,1,2,3...) and has in leap years 29 days
+			return MONTH_DAY[month] + isLeapYear(year);
 		}
 		else{
-			return MONTH_DAY[month-1];
+			return MONTH_DAY[month];
 		}
 	}
 	

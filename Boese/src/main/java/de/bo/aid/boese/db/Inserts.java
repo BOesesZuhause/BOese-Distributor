@@ -47,32 +47,33 @@ import de.bo.aid.boese.model.*;
 import de.bo.aid.boese.ruler.TimeFormat;
 import de.bo.aid.boese.ruler.ToDoChecker;
 
-// TODO: Auto-generated Javadoc
-//TODO: Why session.get instead of Session.load
 /**
- * The Class Inserts.
+ * @author Fabio
+ * The Class Inserts offers Methods to Insert Entities in the Database.
  */
 public class Inserts {
 	
-	/** The connection. */
+	/** The connection to the Database. */
 	private static Connection connection = Connection.getConnection();
 	
 	
 	/**
-	 * Instantiates a new inserts.
-	 */
+     * You shouldn't create a instance of this Object
+     */
 	private Inserts(){
 		
 	}
+	
 	/**
-	 * Device.
+	 * Insert a new Device.
 	 *
-	 * @param coid the coid
-	 * @param zoid the zoid
+	 * @param coid the ID of the Connector the device is connected to
+	 * @param zoid the ID of the Zone the device ist belonging to
 	 * @param device the Device Object with alias and Serialnumber
-	 * @throws Exception the exception
+	 * @throws DBObjectNotFoundException when the Connector or the Zone was not Found
+	 * @throws PropertyValueException when a not Null Field is null
 	 */
-	public static void device(int coid, int zoid, Device device) throws Exception{
+	public static void device(int coid, int zoid, Device device) throws DBObjectNotFoundException, PropertyValueException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -102,13 +103,14 @@ public class Inserts {
 	}
 	
 	/**
-	 * Component.
+	 * Insert a new Component.
 	 *
-	 * @param unitId the unit id
-	 * @param comp the Component to insert
-	 * @throws Exception the exception
+	 * @param unitId the ID of the related Unit
+	 * @param comp the Component object with name and actor
+	 * @throws DBObjectNotFoundException when the Unit was not found
+	 * @throws PropertyValueException when a not Null Field is null
 	 */
-	public static void component(int unitId, Component comp) throws Exception{
+	public static void component(int unitId, Component comp) throws DBObjectNotFoundException, PropertyValueException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -137,14 +139,15 @@ public class Inserts {
 	}
 	
 	/**
-	 * Device component.
+	 * Insert a new DeviceComponent.
 	 *
-	 * @param deid the deid
-	 * @param coid the coid
-	 * @param dc the DeviceComponent to Insert
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @param deid the ID of the Device this DeviceComponent is part of
+	 * @param coid the ID of the Component which specifies the DeviceComponent
+	 * @param dc the DeviceComponent object with description
+	 * @throws DBObjectNotFoundException when the Component or the Device was not Found
+	 * @throws PropertyValueException when a not Null Field is null
 	 */
-	public static void deviceComponent(int deid, int coid, DeviceComponent dc) throws DBObjectNotFoundException{
+	public static void deviceComponent(int deid, int coid, DeviceComponent dc) throws DBObjectNotFoundException, PropertyValueException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -175,11 +178,12 @@ public class Inserts {
 	}
 	
 	/**
-	 * Connector.
+	 * Insert a new Connector.
 	 *
-	 * @param con the Connector to Insert
+	 * @param con the Connector object with name and password
+	 * @throws PropertyValueException when a not Null Field is null
 	 */
-	public static void connector(Connector con){
+	public static void connector(Connector con) throws PropertyValueException{
 		Session session = connection.getSession();
 		session.beginTransaction();
  
@@ -197,15 +201,15 @@ public class Inserts {
 	}
 	
 	/**
-	 * Value.
+	 * Insert a new Value.
 	 *
-	 * @param decoid the decoid
-	 * @param timestamp the timestamp
+	 * @param decoid the ID of the DeviceComponent the Value belonging to
+	 * @param timestamp the timestamp when this Value was measured/switched
 	 * @param value the value
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @throws DBObjectNotFoundException when the DeviceComponent was not found
+	 * @throws PropertyValueException when a not Null Field is null
 	 */
-	//TODO Es kommt ein double und kein Date
-	public static void value(int decoid, Date timestamp, double value) throws DBObjectNotFoundException{
+	public static void value(int decoid, Date timestamp, double value) throws DBObjectNotFoundException, PropertyValueException{
 		Session session = connection.getSession();
 		session.beginTransaction();
  
@@ -224,7 +228,7 @@ public class Inserts {
 		catch(PropertyValueException pve){
 			session.getTransaction().rollback();
 			session.close();
-			throw pve; //not null Value is null
+			throw pve;
 		}
 		
 		if(deco.isLoggen()){
@@ -248,11 +252,12 @@ public class Inserts {
 	}
 	
 	/**
-	 * Unit.
+	 * Insert a new Unit.
 	 *
-	 * @param unit the Unit to Insert
+	 * @param unit the Unit Object with name and symbol
+	 * @throws PropertyValueException when a not Null Field is null
 	 */
-	public static void unit(Unit unit){
+	public static void unit(Unit unit) throws PropertyValueException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -270,14 +275,15 @@ public class Inserts {
 	}
 	
 	/**
-	 * Rule.
+	 * Insert a new Rule.
 	 *
-	 * @param deCo the DeviceComponents in the Rule
-	 * @param rule the Rule To Insert
-	 * @param tdc the ToDoChecker of the Distributor
+	 * @param deCo a List of all DeviceComponent IDs in the Condition
+	 * @param rule the Rule Object with permissions, conditions and actions
+	 * @param tdc the ToDoChecker instance of the Distributor
 	 * @throws DBForeignKeyNotFoundException the DB foreign key not found exception
+	 * @throws PropertyValueException when a not Null Field is null
 	 */
-	public static void rule(List<DeviceComponent> deCo, Rule rule, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
+	public static void rule(List<DeviceComponent> deCo, Rule rule, ToDoChecker tdc) throws DBForeignKeyNotFoundException, PropertyValueException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -322,11 +328,12 @@ public class Inserts {
 	}
 	
 	/**
-	 * Service.
+	 * Insert a new Service.
 	 *
-	 * @param service the Service Object
+	 * @param service the Service Object with description
+	 * @throws PropertyValueException when a not Null Field is null
 	 */
-	public static void service(Service service){
+	public static void service(Service service) throws PropertyValueException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -344,11 +351,12 @@ public class Inserts {
 	}
 	
 	/**
-	 * Group.
+	 * Insert a new Group.
 	 *
-	 * @param grp the Group to Insert
+	 * @param grp the Group Object with name
+	 * @throws PropertyValueException when a not Null Field is null
 	 */
-	public static void group(Group grp){
+	public static void group(Group grp) throws PropertyValueException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -366,11 +374,12 @@ public class Inserts {
 	}
 	
 	/**
-	 * User.
+	 * Insert a new User.
 	 *
-	 * @param user the User to Insert
+	 * @param user the User object with surname, firstName, password, gender, birthdate, userName and email
+	 * @throws PropertyValueException when a not Null Field is null
 	 */
-	public static void user(User user){
+	public static void user(User user) throws PropertyValueException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -388,12 +397,13 @@ public class Inserts {
 	}
 	
 	/**
-	 * Zone.
+	 * Inser a new Zone.
 	 *
-	 * @param zone the Zone to Insert
-	 * @param suzone the suzone
+	 * @param zone the Zone object with name
+	 * @param suzone the super zonen Object
+	 * @throws PropertyValueException when a not Null Field is null
 	 */
-	public static void zone(Zone zone, Zone suzone){
+	public static void zone(Zone zone, Zone suzone)throws PropertyValueException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -413,14 +423,15 @@ public class Inserts {
 	}
 	
 	/**
-	 * Device group.
+	 * Insert a new Device group.
 	 *
-	 * @param deid the deid
-	 * @param grid the grid
-	 * @param devgrp the DeviceGroup to Insert
-	 * @throws Exception the exception
+	 * @param deid the ID of the related Device
+	 * @param grid the ID of the related Group
+	 * @param devgrp the DeviceGroup Object with rights
+	 * @throws PropertyValueException when a not Null Field is null
+	 * @throws DBObjectNotFoundException when the Device or the Group was not found
 	 */
-	public static void deviceGroup(int deid, short grid, DeviceGroup devgrp) throws Exception{
+	public static void deviceGroup(int deid, short grid, DeviceGroup devgrp) throws PropertyValueException, DBObjectNotFoundException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -444,15 +455,16 @@ public class Inserts {
 	}
 	
 	/**
-	 * Repeat rule.
+	 * Insert a new Repeat rule.
 	 *
-	 * @param rr the RepeatRule to Insert
-	 * @param ruleId the ID of the Rule
-	 * @param deCoId the id of the DeviceComponent
-	 * @param tdc the ToDoChecker of the Distributor
-	 * @throws DBForeignKeyNotFoundException the DB foreign key not found exception
+	 * @param rr the RepeatRule object with repeat, value and repeatsAfterEnd
+	 * @param ruleId the ID of the Rule the RepeatRule is belonging to
+	 * @param deCoId the ID of the DeviceComponent the RepeatRule switch
+	 * @param tdc the ToDoChecker instance of the Distributor
+	 * @throws DBForeignKeyNotFoundException when the DeviceComponent or the Rule was not found
+	 * @throws PropertyValueException when a not Null Field is null
 	 */
-	public static void repeatRule(RepeatRule rr, int ruleId, int deCoId, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
+	public static void repeatRule(RepeatRule rr, int ruleId, int deCoId, ToDoChecker tdc) throws DBForeignKeyNotFoundException, PropertyValueException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -488,14 +500,15 @@ public class Inserts {
 	}
 	
 	/**
-	 * To do.
+	 * Insert a new To do.
 	 *
-	 * @param todo the ToDo to Insert
-	 * @param rrId the rr id
-	 * @param tdc the ToDoChecker of the Distributor
-	 * @throws DBForeignKeyNotFoundException the DB foreign key not found exception
+	 * @param todo the ToDo object with date
+	 * @param rrId the ID of the belonging RepearRule
+	 * @param tdc the ToDoChecker instance of the Distributor
+	 * @throws DBForeignKeyNotFoundException the RepeatRule was not found
+	 * @throws PropertyValueException when a not Null Field is null
 	 */
-	public static void toDo(ToDo todo, int rrId, ToDoChecker tdc) throws DBForeignKeyNotFoundException{
+	public static void toDo(ToDo todo, int rrId, ToDoChecker tdc) throws DBForeignKeyNotFoundException, PropertyValueException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -525,13 +538,14 @@ public class Inserts {
 	}
 	
 	/**
-	 * To do without change.
+	 * Insert a new ToDo without start the ToDoChecker.
 	 *
-	 * @param todo the ToDo to Insert
-	 * @param rrId the rr id
-	 * @throws DBForeignKeyNotFoundException the DB foreign key not found exception
+	 * @param todo the ToDo object with date
+	 * @param rrId the ID of the belonging RepearRule
+	 * @throws DBForeignKeyNotFoundException the RepeatRule was not found
+	 * @throws PropertyValueException when a not Null Field is null
 	 */
-	public static void toDoWithoutChange(ToDo todo, int rrId) throws DBForeignKeyNotFoundException{
+	public static void toDoWithoutChange(ToDo todo, int rrId) throws DBForeignKeyNotFoundException, PropertyValueException{
 		Session session = connection.getSession();
 		session.beginTransaction();
 		
@@ -560,12 +574,9 @@ public class Inserts {
 	}
 	
 	/**
-	 * Defaults.
+	 * Insert the specified default Entities.
 	 */
 	public static void defaults(){
-//		Session session = connection.getSession();
-//		session.beginTransaction();
-
 		//Default Unit
 		try {
 			Selects.unit(1);
@@ -613,9 +624,6 @@ public class Inserts {
 				e1.printStackTrace();
 			}
 		}
-		
-//		session.getTransaction().commit();
-//		session.close();
 	}
 	
 	/**

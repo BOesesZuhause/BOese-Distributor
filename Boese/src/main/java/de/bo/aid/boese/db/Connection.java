@@ -36,13 +36,13 @@ import org.hibernate.SessionFactory;
 
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class Connection.
+ * @author
+ * The Class Connection build the Hibernate Connection between Java and the Database.
  */
 public class Connection {
 	
-	/** The instance. */
+	/** The instance of the Connection. */
 	private static Connection instance = new Connection();
 
 	/** The session factory. */
@@ -50,7 +50,8 @@ public class Connection {
 	private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
 	/**
-	 * Instantiates a new connection.
+	 * You shouldn't create a instance of this Object
+	 * Singelton
 	 */
 	private Connection(){
 		
@@ -76,7 +77,7 @@ public class Connection {
 	}
 	
 	/**
-	 * Close.
+	 * Close the Session.
 	 */
 	public void close(){
 		sessionFactory = null;

@@ -37,25 +37,26 @@ import de.bo.aid.boese.model.DeviceComponent;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class Checks.
+ * @author Fabio
+ * The Class Checks checks that the Object exist in the Database .
  */
 public class Checks {
 	
-	/** The connection. */
+	/** The connection to the Database. */
 	private static Connection connection = Connection.getConnection();
 	
-	/**
-	 * Instantiates a new checks.
-	 */
+	 /**
+     * You shouldn't create a instance of this Object
+     */
 	private Checks(){
 		
 	}
 	
 	/**
-	 * Device component id.
+	 * Checks that the Device component id exist in the Database.
 	 *
-	 * @param decoid the decoid
-	 * @return true, if successful
+	 * @param decoid the DeviceComponentID
+	 * @return true, if the DeviceComponentID exist
 	 */
 	public static boolean deviceComponentID (int decoid){
 		Session session = connection.getSession();

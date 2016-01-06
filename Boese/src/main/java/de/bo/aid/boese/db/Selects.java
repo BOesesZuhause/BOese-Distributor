@@ -40,26 +40,27 @@ import de.bo.aid.boese.model.*;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class Selects.
+ * @author Fabio
+ * The Class Selects offers Methods to Select a Entity.
  */
 public class Selects {
 	
-	/** The connection. */
+	/** The connection to the Database. */
 	private static Connection connection = Connection.getConnection();
 	
 	/**
-	 * Instantiates a new selects.
-	 */
+     * You shouldn't create a instance of this Object
+     */
 	private Selects(){
 		
 	}
 	
 	/**
-	 * Connector.
+	 * Selects a Connector.
 	 *
-	 * @param coid the coid
-	 * @return the connector
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @param coid the ID of the desired Connector
+	 * @return the connector Entity
+	 * @throws DBObjectNotFoundException when the Connector was not found
 	 */
 	public static Connector connector(int coid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -81,16 +82,16 @@ public class Selects {
 	}
 	
 	/**
-	 * Connector device list.
+	 * Select a List of Devices connected to a specified Connector.
 	 *
-	 * @param coid the coid
-	 * @return the list
+	 * @param coid the ID of the desired Connector
+	 * @return a list of Devices which are connected with the desired Connector
 	 */
 	public static List<Device> connectorDeviceList(int coid){
 		Session session = connection.getSession();
 		session.beginTransaction();
  
-		List erg = session.createQuery("from Device where coid = " + coid).list();
+		List<?> erg = session.createQuery("from Device where coid = " + coid).list();
 		List<Device> device = new ArrayList<Device>();
 		for(Object o: erg){
 			device.add((Device) o);
@@ -103,11 +104,11 @@ public class Selects {
 	}
 	
 	/**
-	 * Current value.
+	 * Selects the Current value of a DeviceComponent.
 	 *
-	 * @param decoid the decoid
-	 * @return the double
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @param decoid the ID of the desired DeviceComponent
+	 * @return the Value
+	 * @throws DBObjectNotFoundException when the DeviceComponent was not found
 	 */
 	public static double currentValue(int decoid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -131,11 +132,11 @@ public class Selects {
 	}
 	
 	/**
-	 * Device.
+	 * Selects a Device.
 	 *
-	 * @param deid the deid
-	 * @return the device
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @param deid the ID of the desired Device
+	 * @return the device Entity
+	 * @throws DBObjectNotFoundException when the Device was not found
 	 */
 	public static Device device (int deid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -157,11 +158,11 @@ public class Selects {
 	}
 	
 	/**
-	 * Device component.
+	 * Selects a DeviceComponent.
 	 *
-	 * @param decoid the decoid
-	 * @return the device component
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @param decoid the ID of the desired DeviceComponent
+	 * @return the deviceComponent Entity
+	 * @throws DBObjectNotFoundException when the DeviceComponent was not found
 	 */
 	public static DeviceComponent deviceComponent(int decoid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -183,16 +184,16 @@ public class Selects {
 	}
 	
 	/**
-	 * Rules by device component.
+	 * Selects Rules by a deviceComponent.
 	 *
-	 * @param decoid the decoid
-	 * @return the list
+	 * @param decoid the ID of a DeviceComponent
+	 * @return a List of Rules belonging to the specified DeviceComponent
 	 */
 	public static List<Rule> rulesByDeviceComponent(int decoid){
 		Session session = connection.getSession();
 		session.beginTransaction();
  
-		List erg = session.createQuery( "from DeviceComponentRule where deCoId = " + decoid).list();
+		List<?> erg = session.createQuery( "from DeviceComponentRule where deCoId = " + decoid).list();
 		List<DeviceComponentRule> decorule = new ArrayList<DeviceComponentRule>();
 		for(Object o: erg){
 			decorule.add((DeviceComponentRule) o);
@@ -212,16 +213,16 @@ public class Selects {
 	}
 	
 	/**
-	 * Rules by device component.
+	 * Selects DeviceComponents by a Rule.
 	 *
-	 * @param ruid the Rule ID
-	 * @return the list
+	 * @param ruid the ID of a Rule
+	 * @return a List of DeviceComponets belonging to the specified Rule
 	 */
 	public static List<DeviceComponent> deviceComponentsByRule(int ruid){
 		Session session = connection.getSession();
 		session.beginTransaction();
  
-		List erg = session.createQuery( "from DeviceComponentRule where ruId = " + ruid).list();
+		List<?> erg = session.createQuery( "from DeviceComponentRule where ruId = " + ruid).list();
 		List<DeviceComponentRule> decorule = new ArrayList<DeviceComponentRule>();
 		for(Object o: erg){
 			decorule.add((DeviceComponentRule) o);
@@ -238,11 +239,11 @@ public class Selects {
 	}
 	
 	/**
-	 * Rule.
+	 * Selects a Rule.
 	 *
-	 * @param ruid the ruid
-	 * @return the rule
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @param ruid the ID of the desired Rule
+	 * @return the rule Entity
+	 * @throws DBObjectNotFoundException when the Rule was not found
 	 */
 	public static Rule rule(int ruid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -264,11 +265,11 @@ public class Selects {
 	}
 	
 	/**
-	 * Unit.
+	 * Selects a Unit.
 	 *
-	 * @param uid the uid
-	 * @return the unit
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @param uid the ID of the desired Unit
+	 * @return the unit Entity
+	 * @throws DBObjectNotFoundException when the Unit was not found
 	 */
 	public static Unit unit(int uid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -289,11 +290,11 @@ public class Selects {
 	}
 
 	/**
-	 * Component.
+	 * Selects a Component.
 	 *
-	 * @param coid the coid
-	 * @return the component
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @param coid the ID of the desired Component
+	 * @return the component Entity
+	 * @throws DBObjectNotFoundException when the Component was not found
 	 */
 	public static Component component(int coid) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
@@ -314,11 +315,11 @@ public class Selects {
 	}
 
 	/**
-	 * Service.
+	 * Selects a Service.
 	 *
-	 * @param seid the seid
-	 * @return the service
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @param seid the ID of the desired Service
+	 * @return the service Entity
+	 * @throws DBObjectNotFoundException when the Service was not found
 	 */
 	public static Service service (int seid) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
@@ -339,11 +340,11 @@ public class Selects {
 	}
 
 	/**
-	 * Group.
+	 * Selects a Group.
 	 *
-	 * @param grid the grid
-	 * @return the group
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @param grid the ID of the desired Group
+	 * @return the group Entity
+	 * @throws DBObjectNotFoundException when the Group was not found
 	 */
 	public static Group group(short grid) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
@@ -364,11 +365,11 @@ public class Selects {
 	}
 
 	/**
-	 * User.
+	 * Selects a User.
 	 *
-	 * @param uid the uid
-	 * @return the user
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @param uid the ID of the desired User
+	 * @return the user Entity
+	 * @throws DBObjectNotFoundException when the User was not found
 	 */
 	public static User user(int uid) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
@@ -389,11 +390,11 @@ public class Selects {
 	}
 
 	/**
-	 * Zone.
+	 * Selects a Zone.
 	 *
-	 * @param zoid the zoid
-	 * @return the zone
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @param zoid the ID of the desired Zone
+	 * @return the zone Entity
+	 * @throws DBObjectNotFoundException when the Zone was not found
 	 */
 	public static Zone zone(int zoid) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
@@ -414,11 +415,11 @@ public class Selects {
 	}
 	
 	/**
-	 * Select status of a deviceComponent.
+	 * Select the status of a deviceComponent.
 	 *
-	 * @param decoId the DeviceComponentID
+	 * @param decoId the ID of the desired DeviceComponent
 	 * @return the status(short)
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @throws DBObjectNotFoundException when the DeviceComponent was not found
 	 */
 	public static int deviceComponentStatus(int decoId) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -440,11 +441,11 @@ public class Selects {
 	}
 	
 	/**
-	 * Select status of a Connector.
+	 * Select the status of a Connector.
 	 *
-	 * @param coId the ConnectorID
+	 * @param coId the ID of the desired Connector
 	 * @return the status(short)
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @throws DBObjectNotFoundException when the Connector was not found
 	 */
 	public static int ConnectorStatus(int coId) throws DBObjectNotFoundException{
 		Session session = connection.getSession();
@@ -466,11 +467,11 @@ public class Selects {
 	}
 
 	/**
-	 * Repeat rule.
+	 * Selects a RepeatRule.
 	 *
-	 * @param rrId the rr id
-	 * @return the repeat rule
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @param rrId the ID of the desired RepeatRule
+	 * @return the repeatRule Entity
+	 * @throws DBObjectNotFoundException when the RepeatRule was not found
 	 */
 	public static RepeatRule repeatRule(int rrId) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
@@ -491,11 +492,11 @@ public class Selects {
 	}
 
 	/**
-	 * To do.
+	 * Selects a ToDo.
 	 *
-	 * @param toDoId the to do id
-	 * @return the to do
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @param toDoId the ID of the desired ToDo
+	 * @return the toDo Entity
+	 * @throws DBObjectNotFoundException when the ToDo was not found
 	 */
 	public static ToDo toDo(int toDoId) throws DBObjectNotFoundException {
 		Session session = connection.getSession();
@@ -516,16 +517,16 @@ public class Selects {
 	}
 	
 	/**
-	 * Rules by device component.
+	 * Selects ToDos by a RepeatRule.
 	 *
-	 * @param rrid the Rule ID
-	 * @return the list
+	 * @param rrid the ID of the desired RepeatRule
+	 * @return a List of ToDos belonging to the specified RepeatRule
 	 */
 	public static List<ToDo> toDoByRepeatRule(int rrid){
 		Session session = connection.getSession();
 		session.beginTransaction();
  
-		List erg = session.createQuery( "from ToDo where rrid = " + rrid).list();
+		List<?> erg = session.createQuery( "from ToDo where rrid = " + rrid).list();
 		List<ToDo> todo = new ArrayList<ToDo>();
 		for(Object o: erg){
 			todo.add((ToDo) o);
@@ -538,12 +539,12 @@ public class Selects {
 	}
 	
 	/**
-	 * deviceGroup.
+	 * Selects a deviceGroup.
 	 *
-	 * @param deid the Device ID
-	 * @param grpid the Group ID
-	 * @return the Device Group
-	 * @throws DBObjectNotFoundException the DB object not found exception
+	 * @param deid the ID of the desired Device
+	 * @param grpid the ID of the desired Group
+	 * @return the Device Group Entity
+	 * @throws DBObjectNotFoundException when the DeviceGroup was not found
 	 */	
 	public static DeviceGroup deviceGroup(int deid, short grpid) throws DBObjectNotFoundException{
 		Session session = connection.getSession();

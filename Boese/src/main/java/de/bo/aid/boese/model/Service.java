@@ -70,7 +70,7 @@ public class Service implements java.io.Serializable {
 	}
 
 	/**
-	 * Instantiates a new service.
+	 * Instantiates a new service for DB-Insert.
 	 *
 	 * @param seId the se id
 	 * @param description the description
