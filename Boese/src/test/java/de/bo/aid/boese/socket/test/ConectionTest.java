@@ -35,7 +35,8 @@ public class ConectionTest {
     @Before
     public void startServer() throws Exception {
         server = SocketServer.getInstance();
-        server.start(8081);
+        server.init(8081);
+        server.start();
     }
 	
 

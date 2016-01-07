@@ -211,10 +211,11 @@ private final String logo =
 		socketServer.setMessageHandler(protocolHandler);
 		
 		if(port == 0){ //For the JUnit-test
-			socketServer.start(websocketPort);
+			socketServer.initTLS(websocketPort);
 		}else{
-			socketServer.start(port);
+			socketServer.init(port);
 		}
+		socketServer.start();
 	}
 	
 	/**
