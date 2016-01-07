@@ -36,6 +36,9 @@ public class DistributorProperties extends Properties{
 	/** The ws port. */
 	private final String WS_PORT = "Websocket_Port";
 	
+	/** the tls. */
+	private final String TLS = "tls_enabled";
+	
 	/** The confirm. */
 	private final String CONFIRM = "autoConfirm";
 	
@@ -135,6 +138,7 @@ public class DistributorProperties extends Properties{
 	public void setDefaults(){
 		this.setPort(8081);
 		this.setAutoConfirm(false);
+		this.setTLS(true);
 		this.setDbUser("postgres");
 		this.setDbPassword("Di0bPWfw");
 		this.setDbName("boese");
@@ -160,6 +164,14 @@ public class DistributorProperties extends Properties{
 	 */
 	public void setDbHost(String dbURL) {
 		this.setProperty(DB_HOST, dbURL);
+	}
+	
+	public boolean getTLS(){
+		return Boolean.parseBoolean(this.getProperty(TLS));
+	}
+	
+	public void setTLS(boolean tls){
+		this.setProperty(TLS, tls + "");
 	}
 	
 	/**

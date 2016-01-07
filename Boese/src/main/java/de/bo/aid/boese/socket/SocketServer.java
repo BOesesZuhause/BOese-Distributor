@@ -112,7 +112,7 @@ public class SocketServer {
 		try {
 			keystore = findResource("keystore");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			logger.error("Could not find keystore in classpath");
 			e.printStackTrace();
 		}
 

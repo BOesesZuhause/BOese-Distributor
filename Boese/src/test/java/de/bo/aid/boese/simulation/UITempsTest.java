@@ -69,7 +69,7 @@ public class UITempsTest {
 		distr.checkArguments(args);
 		distr.loadProperties();
 		distr.initDatabase();
-		distr.startWebsocketServer(0);
+		distr.startWebsocketServer();
 		setTempConnectors();
 		setTempDevices();
 		setTempDeCos();

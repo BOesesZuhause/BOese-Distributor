@@ -6,7 +6,6 @@
 
 package de.bo.aid.boese.simulation;
 
-import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -16,6 +15,7 @@ import de.bo.aid.boese.db.Connection;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.main.Distributor;
+import de.bo.aid.boese.main.DistributorProperties;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -35,10 +35,21 @@ public class SimulationTest {
     @Before
     public void startServer() throws Exception {
     	Distributor distr = Distributor.getInstance();
-    	distr.startWebsocketServer(8081);
+    	DistributorProperties props = new DistributorProperties();
+    	props.setTLS(false);
+//    	props.setDbHost("localhost");
+//    	props.setDbUser("postgres");
+//    	props.setDbPassword("Di0bPWfw");
+//    	props.setDbPort("5432");
+//    	props.setDbName("boeseTest");
+    	props.setPort(8081);
+    	props.setAutoConfirm(true);
+    	distr.setProps(props);
+    	
+    	distr.startWebsocketServer();
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");
-		HibernateUtil.setDBURL("boese", "localhost", "5432");
+		HibernateUtil.setDBURL("boeseTest", "localhost", "5432");
         Connection.getConnection();
         Inserts.defaults();
         userSim = new UserSimulation(distr);

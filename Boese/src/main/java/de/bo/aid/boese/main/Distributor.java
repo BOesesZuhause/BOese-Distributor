@@ -129,8 +129,6 @@ private final String logo =
 	/** The temp comp id. */
 	private int tempCompId = 1;
 	
-	/** The auto confirm. */
-	private boolean autoConfirm;
 	
 	/** The temp id device components. */
 	int tempIdDeviceComponents = 1;
@@ -138,8 +136,6 @@ private final String logo =
 	/** The protocol handler. */
 	private ProtocolHandler protocolHandler;
 	
-	/** The websocket port. */
-	private int websocketPort;
 	
 	/** The config file path. */
 	private String configFilePath;
@@ -153,8 +149,6 @@ private final String logo =
 	/** The props. */
 	DistributorProperties props;
 
-    /** The default_password. */
-    private String default_password = "";
     
     /**
      * Instantiates a new distributor.
@@ -190,7 +184,7 @@ private final String logo =
         distr.initDatabase();
         logger.info("Database initialized successfully");
         logger.info("Starting websocketserver");
-        distr.startWebsocketServer(0);
+        distr.startWebsocketServer();
         logger.info("websocketserver started successfully");
         logger.info("starting heartbeat-thread");
         distr.startHeartbeat();
@@ -203,17 +197,18 @@ private final String logo =
 	/**
 	 * Start websocket server.
 	 *
-	 * @param port the port
 	 */
-	public void startWebsocketServer(int port){
+	public void startWebsocketServer(){
 		socketServer = SocketServer.getInstance();
 		protocolHandler = new ProtocolHandler(this);
 		socketServer.setMessageHandler(protocolHandler);
 		
-		if(port == 0){ //For the JUnit-test
-			socketServer.initTLS(websocketPort);
-		}else{
-			socketServer.init(port);
+			if(props.getTLS()){
+				logger.info("Initalizing websocketserver with TLS");
+				socketServer.initTLS(props.getPort());
+			}else{
+				logger.info("Initalizing websocketserver without TLS");
+				socketServer.init(props.getPort());
 		}
 		socketServer.start();
 	}
@@ -274,9 +269,6 @@ private final String logo =
 		props= new DistributorProperties();
 		props.load(configFilePath);
 		
-		websocketPort = props.getPort();
-		autoConfirm = props.isAutoConfirm();
-		default_password = props.getDefaultPassword();
 	}
 
 	/**
@@ -471,6 +463,10 @@ private final String logo =
 	public void setTempConnectors(HashMap<Integer, TempConnector> tempConnectors) {
 		this.tempConnectors = tempConnectors;
 	}
+	
+	public void setProps(DistributorProperties props){
+		this.props = props;
+	}
 
 	/**
 	 * Sets the temp devices.
@@ -578,7 +574,7 @@ private final String logo =
 		TempConnector tempCon = new TempConnector(name, userConnector);
 		tempConnectors.put(tempId, tempCon);
 		protocolHandler.sendNotificationToAllUserConnectors("New Connector connected", NotificationType.INFO, System.currentTimeMillis());
-		if(autoConfirm){
+		if(props.isAutoConfirm()){
 			try {
 				confirmConnector(tempId);
 			} catch (NotFoundException e) {
@@ -594,7 +590,7 @@ private final String logo =
 	 */
 	public void addTempDevie(TempDevice temp){
 		tempDevices.put(tempDeviceId, temp);
-		if(autoConfirm){
+		if(props.isAutoConfirm()){
 			try {
 				confirmDevice(tempDeviceId, 1, null);
 			} catch (NotFoundException e) {
@@ -611,7 +607,7 @@ private final String logo =
 	 */
 	public void addTempComponent(TempComponent temp){
 		tempDeviceComponents.put(tempCompId, temp);
-		if(autoConfirm){
+		if(props.isAutoConfirm()){
 			try {
 				confirmDeviceComponent(tempCompId, 1, null);
 			} catch (NotFoundException e) {
@@ -648,6 +644,6 @@ private final String logo =
      * @return true, if successful
      */
     public boolean checkDefaultPassword(String pw) {
-        return pw.equals(default_password);
+        return pw.equals(props.getDefaultPassword());
     }
 }
