@@ -37,13 +37,13 @@ package de.bo.aid.boese.model;
  */
 public class DeviceComponentRule {
 
-	/** The id. */
+	/** The DeviceComponentRule id. */
 	private DeviceComponentRuleId id;
 	
-	/** The devicecomponent. */
+	/** The linked devicecomponent. */
 	private DeviceComponent devicecomponent;
 	
-	/** The rule. */
+	/** The linked rule. */
 	private Rule rule;
 
 	/**
@@ -55,9 +55,9 @@ public class DeviceComponentRule {
 	/**
 	 * Instantiates a new device component rule.
 	 *
-	 * @param id the id
-	 * @param devicecomponent the devicecomponent
-	 * @param rule the rule
+	 * @param id the DeviceComponentRule id
+	 * @param devicecomponent the linked devicecomponent
+	 * @param rule the linked rule
 	 */
 	public DeviceComponentRule(DeviceComponentRuleId id, DeviceComponent devicecomponent, Rule rule) {
 		this.id = id;
@@ -66,61 +66,64 @@ public class DeviceComponentRule {
 	}
 
 	/**
-	 * Gets the id.
+	 * Gets the DeviceComponentRule id.
 	 *
-	 * @return the id
+	 * @return the DeviceComponentRule id
 	 */
 	public DeviceComponentRuleId getId() {
 		return this.id;
 	}
 
 	/**
-	 * Sets the id.
+	 * Sets the DeviceComponentRule id.
 	 *
-	 * @param id the new id
+	 * @param id the new DeviceComponentRule id
 	 */
 	public void setId(DeviceComponentRuleId id) {
 		this.id = id;
 	}
 
 	/**
-	 * Gets the devicecomponent.
+	 * Gets the linked devicecomponent.
 	 *
-	 * @return the devicecomponent
+	 * @return the linked devicecomponent
 	 */
 	public DeviceComponent getDevicecomponent() {
 		return this.devicecomponent;
 	}
 
 	/**
-	 * Sets the devicecomponent.
+	 * Sets the linked devicecomponent.
 	 *
-	 * @param devicecomponent the new devicecomponent
+	 * @param devicecomponent the new linked devicecomponent
 	 */
 	public void setDevicecomponent(DeviceComponent devicecomponent) {
 		this.devicecomponent = devicecomponent;
 	}
 
 	/**
-	 * Gets the rule.
+	 * Gets the linked rule.
 	 *
-	 * @return the rule
+	 * @return the linked rule
 	 */
 	public Rule getRule() {
 		return this.rule;
 	}
 
 	/**
-	 * Sets the rule.
+	 * Sets the linked rule.
 	 *
-	 * @param rule the new rule
+	 * @param rule the new linked rule
 	 */
 	public void setRule(Rule rule) {
 		this.rule = rule;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/** 
+	 * To compare two DeviceComponentRules
+	 * 
+	 * @param obj the DeviceComponentRule object to compare
+	 * @return true if both DeviceComponentRules are equal
 	 */
 	@Override
 	public boolean equals(Object obj) {

@@ -42,7 +42,7 @@ public class Component implements java.io.Serializable {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The co id. */
+	/** The Component id. */
 	private int coId;
 	
 	/** The unit. */
@@ -51,10 +51,10 @@ public class Component implements java.io.Serializable {
 	/** The name. */
 	private String name;
 	
-	/** The sensor. */
+	/** Is this a Actor? */
 	private boolean actor;
 	
-	/** The device components. */
+	/** The connected deviceComponents. */
 	private Set<DeviceComponent> deviceComponents = new HashSet<DeviceComponent>(0);
 
 	/**
@@ -68,7 +68,7 @@ public class Component implements java.io.Serializable {
 	 * Instantiates a new component for DB Insert.
 	 *
 	 * @param name the name
-	 * @param actor the actor
+	 * @param actor Is this a Actor
 	 */
 	public Component(String name, boolean actor) {
 		this.name = name;
@@ -78,10 +78,10 @@ public class Component implements java.io.Serializable {
 	/**
 	 * Instantiates a new component.
 	 *
-	 * @param coId the co id
+	 * @param coId the Component id
 	 * @param unit the unit
 	 * @param name the name
-	 * @param actor the actor
+	 * @param actor Is this a Actor
 	 */
 	public Component(int coId, Unit unit, String name, boolean actor) {
 		this.coId = coId;
@@ -93,11 +93,11 @@ public class Component implements java.io.Serializable {
 	/**
 	 * Instantiates a new component.
 	 *
-	 * @param coId the co id
+	 * @param coId the Component id
 	 * @param unit the unit
 	 * @param name the name
-	 * @param actor the actor
-	 * @param deviceComponents the device components
+	 * @param actor Is this a Actor
+	 * @param deviceComponents the connected deviceComponents
 	 */
 	public Component(int coId, Unit unit, String name, boolean actor, Set<DeviceComponent> deviceComponents) {
 		this.coId = coId;
@@ -108,18 +108,18 @@ public class Component implements java.io.Serializable {
 	}
 
 	/**
-	 * Gets the co id.
+	 * Gets the Component id.
 	 *
-	 * @return the co id
+	 * @return the Component id
 	 */
 	public int getCoId() {
 		return this.coId;
 	}
 
 	/**
-	 * Sets the co id.
+	 * Sets the Component id.
 	 *
-	 * @param coId the new co id
+	 * @param coId the new Component id
 	 */
 	public void setCoId(int coId) {
 		this.coId = coId;
@@ -162,43 +162,46 @@ public class Component implements java.io.Serializable {
 	}
 
 	/**
-	 * Checks if is sensor.
+	 * Checks if this is a Actor.
 	 *
-	 * @return true, if is sensor
+	 * @return true, if this is a Actor
 	 */
 	public boolean isActor() {
 		return this.actor;
 	}
 
 	/**
-	 * Sets the sensor.
+	 * Sets if this a Actor.
 	 *
-	 * @param actor the new actor
+	 * @param actor true if this is a Actor
 	 */
 	public void setActor(boolean actor) {
 		this.actor = actor;
 	}
 
 	/**
-	 * Gets the device components.
+	 * Gets the connected deviceComponents.
 	 *
-	 * @return the device components
+	 * @return the connected deviceComponents
 	 */
 	public Set<DeviceComponent> getDeviceComponents() {
 		return this.deviceComponents;
 	}
 
 	/**
-	 * Sets the device components.
+	 * Sets the connected deviceComponents.
 	 *
-	 * @param deviceComponents the new device components
+	 * @param deviceComponents the new connected deviceComponents
 	 */
 	public void setDeviceComponents(Set<DeviceComponent> deviceComponents) {
 		this.deviceComponents = deviceComponents;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/** 
+	 * To compare two Components
+	 * 
+	 * @param obj the Component object to compare
+	 * @return true if both Components are equal
 	 */
 	@Override
 	public boolean equals(Object obj) {

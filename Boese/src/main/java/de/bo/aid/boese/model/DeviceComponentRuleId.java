@@ -40,10 +40,10 @@ public class DeviceComponentRuleId implements java.io.Serializable {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The de co id. */
+	/** The DeviceComponentid. */
 	private int deCoId;
 	
-	/** The ru id. */
+	/** The Rule id. */
 	private int ruId;
 
 	/**
@@ -55,8 +55,8 @@ public class DeviceComponentRuleId implements java.io.Serializable {
 	/**
 	 * Instantiates a new device component rule id.
 	 *
-	 * @param deCoId the de co id
-	 * @param ruId the ru id
+	 * @param deCoId the DeviceComponentid
+	 * @param ruId the Rule id
 	 */
 	public DeviceComponentRuleId(int deCoId, int ruId) {
 		this.deCoId = deCoId;
@@ -64,43 +64,46 @@ public class DeviceComponentRuleId implements java.io.Serializable {
 	}
 
 	/**
-	 * Gets the de co id.
+	 * Gets the DeviceComponentid.
 	 *
-	 * @return the de co id
+	 * @return the DeviceComponentid
 	 */
 	public int getDeCoId() {
 		return this.deCoId;
 	}
 
 	/**
-	 * Sets the de co id.
+	 * Sets the DeviceComponentid.
 	 *
-	 * @param deCoId the new de co id
+	 * @param deCoId the new DeviceComponentid
 	 */
 	public void setDeCoId(int deCoId) {
 		this.deCoId = deCoId;
 	}
 
 	/**
-	 * Gets the ru id.
+	 * Gets the Rule id.
 	 *
-	 * @return the ru id
+	 * @return the Rule id
 	 */
 	public int getRuId() {
 		return this.ruId;
 	}
 
 	/**
-	 * Sets the ru id.
+	 * Sets the Rule id.
 	 *
-	 * @param ruId the new ru id
+	 * @param ruId the new Rule id
 	 */
 	public void setRuId(int ruId) {
 		this.ruId = ruId;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/** 
+	 * To compare two DeviceComponentRuleIds
+	 * 
+	 * @param other the DeviceComponentRuleId object to compare
+	 * @return true if both DeviceComponentRuleIds are equal
 	 */
 	public boolean equals(Object other) {
 		if ((this == other))
@@ -114,8 +117,10 @@ public class DeviceComponentRuleId implements java.io.Serializable {
 		return (this.getDeCoId() == castOther.getDeCoId()) && (this.getRuId() == castOther.getRuId());
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/** 
+	 * To create the hashCode
+	 * 
+	 * @return the hashCode
 	 */
 	public int hashCode() {
 		int result = 17;

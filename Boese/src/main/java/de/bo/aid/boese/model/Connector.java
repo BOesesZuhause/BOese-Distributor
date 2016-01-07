@@ -44,7 +44,7 @@ public class Connector implements java.io.Serializable {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The co id. */
+	/** The Connector id. */
 	private int coId;
 	
 	/** The name. */
@@ -56,16 +56,16 @@ public class Connector implements java.io.Serializable {
 	/** The status. */
 	private int status;
 
-	/** The status. */
+	/** is this a User Connector?. */
 	private boolean userConnector;
 	
-	/** The history log connectors. */
+	/** The history log of this connectors. */
 	private Set<HistoryLogConnector> historyLogConnectors = new HashSet<HistoryLogConnector>(0);
 	
-	/** The devices. */
+	/** The connected devices. */
 	private Set<Device> devices = new HashSet<Device>(0);
 	
-	/** The log connectors. */
+	/** The log of this connectors. */
 	private Set<LogConnector> logConnectors = new HashSet<LogConnector>(0);
 
 	/**
@@ -78,7 +78,7 @@ public class Connector implements java.io.Serializable {
 	/**
 	 * Instantiates a new connector.
 	 *
-	 * @param coId the co id
+	 * @param coId the Connector id
 	 */
 	public Connector(int coId) {
 		this.coId = coId;
@@ -89,7 +89,7 @@ public class Connector implements java.io.Serializable {
 	 *
 	 * @param name the name
 	 * @param password the password
-	 * @param userConnector the userConnector
+	 * @param userConnector the is this a User Connector?
 	 */
 	public Connector(String name, String password, boolean userConnector) {
 		this.name = name;
@@ -101,11 +101,11 @@ public class Connector implements java.io.Serializable {
 	/**
 	 * Instantiates a new connector.
 	 *
-	 * @param coId the connectorid
+	 * @param coId the connector id
 	 * @param name the name
 	 * @param password the password
 	 * @param status the status
-	 * @param userConnector the userConnector
+	 * @param userConnector the is this a User Connector
 	 */
 	public Connector(int coId, String name, String password, int status, boolean userConnector) {
 		this.coId = coId;
@@ -118,14 +118,14 @@ public class Connector implements java.io.Serializable {
 	/**
 	 * Instantiates a new connector.
 	 *
-	 * @param coId the co id
+	 * @param coId the Connector id
 	 * @param name the name
 	 * @param password the password
 	 * @param status the status
-	 * @param userConnector the userConnector
-	 * @param historyLogConnectors the history log connectors
-	 * @param devices the devices
-	 * @param logConnectors the log connectors
+	 * @param userConnector the is this a User Connector
+	 * @param historyLogConnectors the history log of this connector
+	 * @param devices the connected devices
+	 * @param logConnectors the log of this connector
 	 */
 	public Connector(int coId, String name, String password, int status, boolean userConnector,
 			Set<HistoryLogConnector> historyLogConnectors, Set<Device> devices, Set<LogConnector> logConnectors) {
@@ -140,18 +140,18 @@ public class Connector implements java.io.Serializable {
 	}
 
 	/**
-	 * Gets the co id.
+	 * Gets the Connector id.
 	 *
-	 * @return the co id
+	 * @return the Connector id
 	 */
 	public int getCoId() {
 		return this.coId;
 	}
 
 	/**
-	 * Sets the co id.
+	 * Sets the Connector id.
 	 *
-	 * @param coId the new co id
+	 * @param coId the new Connector id
 	 */
 	public void setCoId(int coId) {
 		this.coId = coId;
@@ -213,79 +213,82 @@ public class Connector implements java.io.Serializable {
 	}
 
 	/**
-	 * Checks if is user connector.
+	 * Checks if this is a User Connector.
 	 *
-	 * @return true, if is user connector
+	 * @return true, if this is a user connector
 	 */
 	public boolean isUserConnector() {
 		return userConnector;
 	}
 
 	/**
-	 * Sets the user connector.
+	 * Sets if it is a user connector.
 	 *
-	 * @param userConnector the new user connector
+	 * @param userConnector true for is a UserConnector
 	 */
 	public void setUserConnector(boolean userConnector) {
 		this.userConnector = userConnector;
 	}
 
 	/**
-	 * Gets the history log connectors.
+	 * Gets the history log of this connector.
 	 *
-	 * @return the history log connectors
+	 * @return the history log of this connector
 	 */
 	public Set<HistoryLogConnector> getHistoryLogConnectors() {
 		return this.historyLogConnectors;
 	}
 
 	/**
-	 * Sets the history log connectors.
+	 * Sets the history log of this connector.
 	 *
-	 * @param historyLogConnectors the new history log connectors
+	 * @param historyLogConnectors the new history log of this connector
 	 */
 	public void setHistoryLogConnectors(Set<HistoryLogConnector> historyLogConnectors) {
 		this.historyLogConnectors = historyLogConnectors;
 	}
 
 	/**
-	 * Gets the devices.
+	 * Gets the connected devices.
 	 *
-	 * @return the devices
+	 * @return the connected devices
 	 */
 	public Set<Device> getDevices() {
 		return this.devices;
 	}
 
 	/**
-	 * Sets the devices.
+	 * Sets the connected devices.
 	 *
-	 * @param devices the new devices
+	 * @param devices the new connected devices
 	 */
 	public void setDevices(Set<Device> devices) {
 		this.devices = devices;
 	}
 
 	/**
-	 * Gets the log connectors.
+	 * Gets the log of this connector.
 	 *
-	 * @return the log connectors
+	 * @return the log of this connector
 	 */
 	public Set<LogConnector> getLogConnectors() {
 		return this.logConnectors;
 	}
 
 	/**
-	 * Sets the log connectors.
+	 * Sets the log of this connector.
 	 *
-	 * @param logConnectors the new log connectors
+	 * @param logConnectors the new log of this connector
 	 */
 	public void setLogConnectors(Set<LogConnector> logConnectors) {
 		this.logConnectors = logConnectors;
 	}
-  
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+
+	/** 
+	 * To compare two Connectors
+	 * 
+	 * @param obj the Connector object to compare
+	 * @return true if both Connector are equal
 	 */
 	@Override
 	public boolean equals(Object obj) {

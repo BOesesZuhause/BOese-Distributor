@@ -110,7 +110,6 @@ public class Checker {
 			ergebnis = condition(gate.getComponents().iterator().next());
 		}
 		return ergebnis;
-
 	}
 	
 	/**

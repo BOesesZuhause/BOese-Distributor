@@ -35,7 +35,6 @@ import java.util.Date;
 import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 
-// TODO: Auto-generated Javadoc
 /**
  * ToDo Model for Hibernate.
  */
