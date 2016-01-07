@@ -33,7 +33,7 @@ package de.bo.aid.boese.model;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class DeviceComponentRuleId.
+ * DeviceComponentRuleId Model for Hibernate.
  */
 public class DeviceComponentRuleId implements java.io.Serializable {
 

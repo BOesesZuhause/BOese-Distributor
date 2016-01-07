@@ -35,7 +35,7 @@ import java.util.Set;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class RepeatRule.
+ * RepeatRule Model for Hibernate.
  */
 public class RepeatRule {
 	

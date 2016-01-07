@@ -37,7 +37,7 @@ import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class ToDo.
+ * ToDo Model for Hibernate.
  */
 public class ToDo {
 	
@@ -50,7 +50,7 @@ public class ToDo {
 	/**  Is it active. */
 	private boolean active;
 	
-	/**  The Repeat Rule. */
+	/**  The Repeat Rule this ToDo is belonging to. */
 	private RepeatRule repeatRule;
 
 	/**
@@ -71,7 +71,7 @@ public class ToDo {
 	}
 
 	/**
-	 * Instantiates a new to do.
+	 * Instantiates a new to do with all parameters.
 	 *
 	 * @param toDoId the to do id
 	 * @param date the date
@@ -90,7 +90,7 @@ public class ToDo {
 	}
 
 	/**
-	 * Instantiates a new to do.
+	 * Instantiates a new to do with all parameters and foreign keys.
 	 *
 	 * @param toDoId the to do id
 	 * @param date the date
@@ -105,79 +105,82 @@ public class ToDo {
 	}
 
 	/**
-	 * Gets the to do id.
+	 * Gets the ToDo id.
 	 *
-	 * @return the to do id
+	 * @return the ToDo id
 	 */
 	public int getToDoId() {
 		return toDoId;
 	}
 
 	/**
-	 * Sets the to do id.
+	 * Sets the ToDo id.
 	 *
-	 * @param toDoId the new to do id
+	 * @param toDoId the new ToDo id
 	 */
 	public void setToDoId(int toDoId) {
 		this.toDoId = toDoId;
 	}
 
 	/**
-	 * Gets the date.
+	 * Gets the date when this ToDo will be executed.
 	 *
-	 * @return the date
+	 * @return the date when this ToDo will be executed
 	 */
 	public Date getDate() {
 		return date;
 	}
 
 	/**
-	 * Sets the date.
+	 * Sets the date when this ToDo will be executed.
 	 *
-	 * @param date the new date
+	 * @param date the new date when this ToDo will be executed
 	 */
 	public void setDate(Date date) {
 		this.date = date;
 	}
 
 	/**
-	 * Checks if is active.
+	 * Checks if this ToDo is active.
 	 *
-	 * @return true, if is active
+	 * @return true, if this ToDo is active
 	 */
 	public boolean isActive() {
 		return active;
 	}
 
 	/**
-	 * Sets the active.
+	 * activate or deactivate this ToDo.
 	 *
-	 * @param active the new active
+	 * @param active True for activate and false for deactivate
 	 */
 	public void setActive(boolean active) {
 		this.active = active;
 	}
 
 	/**
-	 * Gets the repeat rule.
+	 * Gets the RepeatRule this ToDo is belonging to.
 	 *
-	 * @return the repeat rule
+	 * @return the RepeatRule this ToDo is belonging to
 	 */
 	public RepeatRule getRepeatRule() {
 		return repeatRule;
 	}
 
 	/**
-	 * Sets the repeat rule.
+	 * Sets the RepeatRule this ToDo is belonging to.
 	 *
-	 * @param repeatRule the new repeat rule
+	 * @param repeatRule the new RepeatRule this ToDo is belonging to
 	 */
 	public void setRepeatRule(RepeatRule repeatRule) {
 		this.repeatRule = repeatRule;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/** 
+	 * To compare two ToDos
+	 * 
+	 * @param obj the ToDo object to compare
+	 * @return true if both ToDos are equal
 	 */
 	@Override
 	public boolean equals(Object obj) {

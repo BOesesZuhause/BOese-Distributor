@@ -33,7 +33,7 @@ package de.bo.aid.boese.model;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class DeviceComponentRule.
+ * DeviceComponentRule Model for Hibernate.
  */
 public class DeviceComponentRule {
 
