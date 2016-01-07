@@ -43,16 +43,16 @@ public class HistoryLogConnector implements java.io.Serializable {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The hi lo co id. */
+	/** The HistoryLogConnectorid. */
 	private int hiLoCoId;
 	
-	/** The connector. */
+	/** The connector which send/get a Message. */
 	private Connector connector;
 	
-	/** The timestap. */
+	/** The timestap when it was switched. */
 	private Date timestap;
 	
-	/** The data. */
+	/** The data which was send. */
 	private Serializable data;
 
 	/**
@@ -64,10 +64,10 @@ public class HistoryLogConnector implements java.io.Serializable {
 	/**
 	 * Instantiates a new history log connector.
 	 *
-	 * @param hiLoCoId the hi lo co id
-	 * @param connector the connector
-	 * @param timestap the timestap
-	 * @param data the data
+	 * @param hiLoCoId the HistoryLogConnectorid
+	 * @param connector the connector which send/get a Message
+	 * @param timestap the timestap when it was switched
+	 * @param data the data which was send
 	 */
 	public HistoryLogConnector(int hiLoCoId, Connector connector, Date timestap, Serializable data) {
 		this.hiLoCoId = hiLoCoId;
@@ -77,79 +77,82 @@ public class HistoryLogConnector implements java.io.Serializable {
 	}
 
 	/**
-	 * Gets the hi lo co id.
+	 * Gets the HistoryLogConnectorid.
 	 *
-	 * @return the hi lo co id
+	 * @return the HistoryLogConnectorid
 	 */
 	public int getHiLoCoId() {
 		return this.hiLoCoId;
 	}
 
 	/**
-	 * Sets the hi lo co id.
+	 * Sets the HistoryLogConnectorid.
 	 *
-	 * @param hiLoCoId the new hi lo co id
+	 * @param hiLoCoId the new HistoryLogConnectorid
 	 */
 	public void setHiLoCoId(int hiLoCoId) {
 		this.hiLoCoId = hiLoCoId;
 	}
 
 	/**
-	 * Gets the connector.
+	 * Gets the connector which send/get a Message.
 	 *
-	 * @return the connector
+	 * @return the connector which send/get a Message
 	 */
 	public Connector getConnector() {
 		return this.connector;
 	}
 
 	/**
-	 * Sets the connector.
+	 * Sets the connector which send/get a Message.
 	 *
-	 * @param connector the new connector
+	 * @param connector the new connector which send/get a Message
 	 */
 	public void setConnector(Connector connector) {
 		this.connector = connector;
 	}
 
 	/**
-	 * Gets the timestap.
+	 * Gets the timestap when it was switched.
 	 *
-	 * @return the timestap
+	 * @return the timestap when it was switched
 	 */
 	public Date getTimestap() {
 		return this.timestap;
 	}
 
 	/**
-	 * Sets the timestap.
+	 * Sets the timestap when it was switched.
 	 *
-	 * @param timestap the new timestap
+	 * @param timestap the new timestap when it was switched
 	 */
 	public void setTimestap(Date timestap) {
 		this.timestap = timestap;
 	}
 
 	/**
-	 * Gets the data.
+	 * Gets the data which was send.
 	 *
-	 * @return the data
+	 * @return the data which was send
 	 */
 	public Serializable getData() {
 		return this.data;
 	}
 
 	/**
-	 * Sets the data.
+	 * Sets the data which was send.
 	 *
-	 * @param data the new data
+	 * @param data the new data which was send
 	 */
 	public void setData(Serializable data) {
 		this.data = data;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/** 
+	 * To compare two HistoryLogConnectors
+	 * 
+	 * @param obj the HistoryLogConnector object to compare
+	 * @return true if both HistoryLogConnector are equal
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -179,5 +182,4 @@ public class HistoryLogConnector implements java.io.Serializable {
 			return false;
 		return true;
 	}
-
 }

@@ -43,13 +43,13 @@ public class HistoryLogRule implements java.io.Serializable {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The hi lo ru id. */
+	/** The HistoryLogRule id. */
 	private int hiLoRuId;
 	
-	/** The timestamp. */
+	/** The timestamp when the rule was executed. */
 	private Date timestamp;
 	
-	/** The rule. */
+	/** The rule which is locked. */
 	private Rule rule;
 
 	/**
@@ -61,7 +61,7 @@ public class HistoryLogRule implements java.io.Serializable {
 	/**
 	 * Instantiates a new history log rule.
 	 *
-	 * @param hiLoRuId the hi lo ru id
+	 * @param hiLoRuId the HistoryLogRule id
 	 * @param rule the rule
 	 */
 	public HistoryLogRule(int hiLoRuId, Rule rule) {
@@ -70,61 +70,64 @@ public class HistoryLogRule implements java.io.Serializable {
 	}
 
 	/**
-	 * Gets the hi lo ru id.
+	 * Gets the HistoryLogRule id.
 	 *
-	 * @return the hi lo ru id
+	 * @return the HistoryLogRule id
 	 */
 	public int getHiLoRuId() {
 		return this.hiLoRuId;
 	}
 
 	/**
-	 * Sets the hi lo ru id.
+	 * Sets the HistoryLogRule id.
 	 *
-	 * @param hiLoRuId the new hi lo ru id
+	 * @param hiLoRuId the new HistoryLogRule id
 	 */
 	public void setHiLoRuId(int hiLoRuId) {
 		this.hiLoRuId = hiLoRuId;
 	}
 
 	/**
-	 * Gets the timestamp.
+	 * Gets the timestamp when the rule was executed.
 	 *
-	 * @return the timestamp
+	 * @return the timestamp when the rule was executed
 	 */
 	public Date getTimestamp() {
 		return this.timestamp;
 	}
 
 	/**
-	 * Sets the timestamp.
+	 * Sets the timestamp when the rule was executed.
 	 *
-	 * @param timestamp the new timestamp
+	 * @param timestamp the new timestamp when the rule was executed
 	 */
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
 
 	/**
-	 * Gets the rule.
+	 * Gets the rule which is locked.
 	 *
-	 * @return the rule
+	 * @return the rule which is locked
 	 */
 	public Rule getRule() {
 		return this.rule;
 	}
 
 	/**
-	 * Sets the rule.
+	 * Sets the rule which is locked.
 	 *
-	 * @param rule the new rule
+	 * @param rule the new rule which is locked
 	 */
 	public void setRule(Rule rule) {
 		this.rule = rule;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/** 
+	 * To compare two HistoryLogRules
+	 * 
+	 * @param obj the HistoryLogRule object to compare
+	 * @return true if both HistoryLogRule are equal
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -149,5 +152,4 @@ public class HistoryLogRule implements java.io.Serializable {
 			return false;
 		return true;
 	}
-
 }

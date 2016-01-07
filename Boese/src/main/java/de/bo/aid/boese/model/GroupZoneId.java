@@ -41,10 +41,10 @@ public class GroupZoneId implements java.io.Serializable {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The gr id. */
+	/** The Group id. */
 	private short grId;
 	
-	/** The zo id. */
+	/** The Zone id. */
 	private int zoId;
 
 	/**
@@ -56,8 +56,8 @@ public class GroupZoneId implements java.io.Serializable {
 	/**
 	 * Instantiates a new group zone id.
 	 *
-	 * @param grId the gr id
-	 * @param zoId the zo id
+	 * @param grId the Group id
+	 * @param zoId the Zone id
 	 */
 	public GroupZoneId(short grId, int zoId) {
 		this.grId = grId;
@@ -65,43 +65,46 @@ public class GroupZoneId implements java.io.Serializable {
 	}
 
 	/**
-	 * Gets the gr id.
+	 * Gets the Group id.
 	 *
-	 * @return the gr id
+	 * @return the Group id
 	 */
 	public short getGrId() {
 		return this.grId;
 	}
 
 	/**
-	 * Sets the gr id.
+	 * Sets the Group id.
 	 *
-	 * @param grId the new gr id
+	 * @param grId the new Group id
 	 */
 	public void setGrId(short grId) {
 		this.grId = grId;
 	}
 
 	/**
-	 * Gets the zo id.
+	 * Gets the Zone id.
 	 *
-	 * @return the zo id
+	 * @return the Zone id
 	 */
 	public int getZoId() {
 		return this.zoId;
 	}
 
 	/**
-	 * Sets the zo id.
+	 * Sets the Zone id.
 	 *
-	 * @param zoId the new zo id
+	 * @param zoId the new Zone id
 	 */
 	public void setZoId(int zoId) {
 		this.zoId = zoId;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/** 
+	 * To compare two GroupZoneIds
+	 * 
+	 * @param other the GroupZoneId object to compare
+	 * @return true if both GroupZoneIds are equal
 	 */
 	public boolean equals(Object other) {
 		if ((this == other))
@@ -115,8 +118,10 @@ public class GroupZoneId implements java.io.Serializable {
 		return (this.getGrId() == castOther.getGrId()) && (this.getZoId() == castOther.getZoId());
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/** 
+	 * To create the hashCode
+	 * 
+	 * @return the hashCode
 	 */
 	public int hashCode() {
 		int result = 17;
@@ -125,5 +130,4 @@ public class GroupZoneId implements java.io.Serializable {
 		result = 37 * result + this.getZoId();
 		return result;
 	}
-
 }

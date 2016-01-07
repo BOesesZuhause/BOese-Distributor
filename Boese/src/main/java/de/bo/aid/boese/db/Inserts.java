@@ -500,7 +500,7 @@ public class Inserts {
 	}
 	
 	/**
-	 * Insert a new To do.
+	 * Insert a new To do and send a Message to the ToDoChecker.
 	 *
 	 * @param todo the ToDo object with date
 	 * @param rrId the ID of the belonging RepearRule

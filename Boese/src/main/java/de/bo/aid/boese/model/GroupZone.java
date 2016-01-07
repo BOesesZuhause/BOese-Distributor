@@ -40,16 +40,16 @@ public class GroupZone implements java.io.Serializable {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The id. */
+	/** The GroupZoneId. */
 	private GroupZoneId id;
 	
-	/** The group. */
+	/** The linked Group. */
 	private Group group;
 	
-	/** The zone. */
+	/** The linked Zone. */
 	private Zone zone;
 	
-	/** The rights. */
+	/** The rights in of the Group in this Zone. */
 	private Short rights;
 
 	/**
@@ -192,5 +192,4 @@ public class GroupZone implements java.io.Serializable {
 			return false;
 		return true;
 	}
-
 }
