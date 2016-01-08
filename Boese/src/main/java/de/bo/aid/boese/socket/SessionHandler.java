@@ -160,7 +160,13 @@ public class SessionHandler {
 	 */
 	public void sendToSession(Session session, String message) {
         try {
-        	logger.info("Message sent: " + message);
+            int conId= getConnectorId(session);
+            if(conId != -1){
+                logger.info("Message sent to connector with id: " + conId +" " + message);
+            }else{
+                logger.info("Message sent to unknown connector: " + message);
+            }
+        	
             session.getBasicRemote().sendText(message);
         } catch (IOException ex) {
             sessions.remove(getDataBySession(session));
