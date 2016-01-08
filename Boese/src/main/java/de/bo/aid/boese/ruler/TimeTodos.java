@@ -35,22 +35,21 @@ import java.util.Date;
 
 import de.bo.aid.boese.model.DeviceComponent;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class TimeTodos.
+ * The Class TimeTodos defines ToDos in the Future.
  */
 public class TimeTodos implements Comparable<TimeTodos> {
 
-	/** The id. */
+	/** The id of the ToDo. */
 	private int id;
 	
-	/** The date. */
+	/** The date when it will be executed. */
 	private TimeFormat date;
 	
-	/** The value. */
+	/** The value which will be executed. */
 	private double value;
 	
-	/** The deco. */
+	/** The affected DeviceComponent. */
 	private DeviceComponent deco;
 
 	/**
@@ -61,12 +60,12 @@ public class TimeTodos implements Comparable<TimeTodos> {
 	}
 
 	/**
-	 * Instantiates a new time todos.
+	 * Instantiates a new time todos with all Attributes.
 	 *
-	 * @param id the id
-	 * @param date the date
-	 * @param value the value
-	 * @param deco the deco
+	 * @param id the id of the ToDo
+	 * @param date the date when it will be executed as TimeFormat
+	 * @param value the value which will be executed
+	 * @param deco the affected DeviceComponent
 	 */
 	public TimeTodos(int id, TimeFormat date, double value, DeviceComponent deco) {
 		this.id = id;
@@ -76,12 +75,12 @@ public class TimeTodos implements Comparable<TimeTodos> {
 	}
 
 	/**
-	 * Instantiates a new time todos.
+	 * Instantiates a new time todos with all Attributes.
 	 *
-	 * @param id the id
-	 * @param cron the cron
-	 * @param value the value
-	 * @param deco the deco
+	 * @param id the id of the ToDo
+	 * @param cron the date when it will be executed as Cron-String
+	 * @param value the value which will be executed
+	 * @param deco the affected DeviceComponent
 	 */
 	public TimeTodos(int id, String cron, double value, DeviceComponent deco) {
 		this.id = id;
@@ -91,16 +90,16 @@ public class TimeTodos implements Comparable<TimeTodos> {
 	}
 
 	/**
-	 * Instantiates a new time todos.
+	 * Instantiates a new time todos with all Attributes.
 	 *
-	 * @param id the id
-	 * @param d the d
-	 * @param value the value
-	 * @param deco the deco
+	 * @param id the id of the ToDo
+	 * @param date the date when it will be executed as Date
+	 * @param value the value which will be executed
+	 * @param deco the affected DeviceComponent
 	 */
-	public TimeTodos(int id, Date d, double value, DeviceComponent deco) {
+	public TimeTodos(int id, Date date, double value, DeviceComponent deco) {
 		this.id = id;
-		this.date = new TimeFormat(d);
+		this.date = new TimeFormat(date);
 		this.value = value;
 		this.deco = deco;
 	}
@@ -177,8 +176,10 @@ public class TimeTodos implements Comparable<TimeTodos> {
 		this.deco = deco;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	/**
+	 * compare which TimeToDo has to be executed earlier.
+	 * 
+	 * @param tt the other TimeToDo wich will be compared
 	 */
 	@Override
 	public int compareTo(TimeTodos tt) {

@@ -48,25 +48,25 @@ import de.bo.aid.boese.xml.ComponentXML;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class ToDoChecker.
+ * The Class ToDoChecker checks every Minute a List of ToDos if a ToDo has to be Executed. This Class runs in a own Thread
  */
 public class ToDoChecker extends Thread{
 	
-	/** The ttl. */
+	/** The List of TimeToDos. */
 	List<TimeTodos> ttl;
 	
-	/** The ph. */
+	/** The instance of the ProtocolHandler to send the ToDos to the Connectors. */
 	ProtocolHandler ph;
 	
 //	Empfänger e;
 	
-	/** The b. */
+	/** A Variable to lock the Thread. */
 	boolean b;
 	
 	/**
 	 * Instantiates a new to do checker.
 	 * 
-	 * @param ph the ProtocolHandler
+	 * @param ph the ProtocolHandler instance of the Distributor
 	 */
 	public ToDoChecker(ProtocolHandler ph){
 		this.ph = ph;
@@ -79,24 +79,9 @@ public class ToDoChecker extends Thread{
 		Collections.sort(ttl);
 	}
 	
-//	/**
-//	 * Instantiates a new to do checker.
-//	 * 
-//	 * @param ph the ProtocolHandler
-//	 */
-//	public ToDoChecker(Empfänger e){
-//		this.e = e;
-//		b = true;
-//		List<ToDo> todos = AllSelects.toDos();
-//		ttl = new ArrayList<TimeTodos>();
-//		for(ToDo todo : todos){
-//			ttl.add(new TimeTodos(todo.getToDoId(), todo.getDate(), todo.getRepeatRule().getValue().doubleValue(), todo.getRepeatRule().getDeviceComponent()));
-//		}
-//		Collections.sort(ttl);
-//	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Thread#run()
+	/**
+	 *  This Thread checks every Minute if a ToDo has to be Executed or is in the Past. Then all ToDos will be sent to The Protocol Handler.
+	 *  After this they will deleted in the Database and if necessary with a new Date created.
 	 */
 	public void run(){
 		while(true){
@@ -185,7 +170,7 @@ public class ToDoChecker extends Thread{
 	}
 	
 	/**
-	 * Change in to do.
+	 * Fills the ToDo List if something has been changed
 	 */
 	public void changeInToDo(){
 		//TODO anders lösen
@@ -206,30 +191,27 @@ public class ToDoChecker extends Thread{
 	}
 	
 	/**
-	 * Same time.
+	 * Checks if the Date is now
 	 *
-	 * @param tf the tf
-	 * @return true, if successful
+	 * @param tf the Date to be checked as TimeFormat
+	 * @return true, if the Date ist now
 	 */
 	private boolean sameTime(TimeFormat tf){
-		System.out.println("SameTime: " + (tf.getDate().getTime() / 60000) + " < " + (new Date().getTime() / 60000));
 		return (tf.getDate().getTime() / 60000) == (new Date().getTime() / 60000);
 	}
 	
 	/**
-	 * Checks if is past.
+	 * Checks if the Date is past.
 	 *
-	 * @param tf the tf
-	 * @return true, if is past
+	 * @param tf the Date to be checked as TimeFormat
+	 * @return true, if the Date is past
 	 */
 	private boolean isPast(TimeFormat tf){
-		System.out.println("isPast: " + (tf.getDate().toString()) + " < " + (new Date().toString()));
-//		System.out.println("isPast: " + (tf.getDate().getTime() / 60000) + " < " + (new Date().getTime() / 60000));
 		return (tf.getDate().getTime() / 60000) < (new Date().getTime() / 60000);
 	}
 	
 	/**
-	 * To dos to string.
+	 * To dos to string only a test Method can be deleted.
 	 *
 	 * @param todos the todos
 	 * @return the string

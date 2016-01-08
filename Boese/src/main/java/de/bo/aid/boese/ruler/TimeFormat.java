@@ -35,48 +35,48 @@ import java.util.GregorianCalendar;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class TimeFormat.
+ * The Class is a own Implementation of the Cron-String for Time Controls.
  */
 public class TimeFormat implements Comparable<TimeFormat>{
 	
-	/** The min. */
+	/** Minute. */
 	private int min;
 
-	/** The hour. */
+	/** Hour. */
 	private int hour;
 	
-	/** The day. */
+	/** Day. */
 	private int day;
 	
-	/** The month. */
+	/** Month. */
 	private int month;
 	
-	/** The year. */
+	/** Year. */
 	private int year;
 	
-	/** The dow. */
+	/** The day of the week. Boolean Array first bool: Monday and last bool: Sunday */
 	private boolean[] dow;
 	
-	/** The calculate. */
+	/** Which Value will be calculated. */
 	private boolean[] calculate;
 	
 	/**
-	 * Instantiates a new time format.
+	 * Instantiates a new TimeFormat.
 	 */
 	public TimeFormat() {
 		
 	}
 
 	/**
-	 * Instantiates a new time format.
+	 * Instantiates a new TimeFormat.
 	 *
-	 * @param min the min
+	 * @param min the minute
 	 * @param hour the hour
 	 * @param day the day
 	 * @param month the month
 	 * @param year the year
-	 * @param dow the dow
-	 * @param calculate the calculate
+	 * @param dow the day of the week
+	 * @param calculate the which value will be calculated (first: minute last:year)
 	 */
 	public TimeFormat(int min, int hour, int day, int month, int year, boolean[] dow, boolean[] calculate) {
 		setMin(min, calculate[0]);
@@ -89,15 +89,15 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}
 	
 	/**
-	 * Instantiates a new time format.
+	 * Instantiates a new TimeFormat.
 	 *
-	 * @param min the min
+	 * @param min the minute
 	 * @param hour the hour
 	 * @param day the day
 	 * @param month the month
 	 * @param year the year
-	 * @param dow the dow
-	 * @param calculate the calculate
+	 * @param dow the day of the week as String: t for true and f for false (tffffff: only on Monday)
+	 * @param calculate the which value will be calculated (first: minute last:year)
 	 */
 	public TimeFormat(int min, int hour, int day, int month, int year, String dow, boolean[] calculate) {
 		setMin(min, calculate[0]);
@@ -110,9 +110,9 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}
 	
 	/**
-	 * Instantiates a new time format.
+	 * Instantiates a new TimeFormat.
 	 *
-	 * @param cron the cron
+	 * @param cron the cron-String
 	 */
 	public TimeFormat(String cron){
 		this.calculate = new boolean[5];
@@ -149,9 +149,9 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}
 	
 	/**
-	 * Instantiates a new time format.
+	 * Instantiates a new TimeFormat.
 	 *
-	 * @param d the d
+	 * @param d the java.date
 	 */
 	public TimeFormat(Date d){
 		this.calculate = new boolean[5]; 
@@ -170,18 +170,18 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}	
 	
 	/**
-	 * Gets the min.
+	 * Gets the minute.
 	 *
-	 * @return the min
+	 * @return the minute
 	 */
 	public int getMin() {
 		return min;
 	}
 	
 	/**
-	 * Gets the min string.
+	 * Gets the minute as string.
 	 *
-	 * @return the min string
+	 * @return the minute string
 	 */
 	public String getMinString(){
 		if(this.calculate[0]){
@@ -201,9 +201,9 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}
 	
 	/**
-	 * Gets the real min.
+	 * Gets the real minute.
 	 *
-	 * @return the real min
+	 * @return the calculated minute and how much hours are skipped
 	 */
 	public int[] getRealMin(){
 		int[] i = new int[2];
@@ -231,10 +231,10 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}
 
 	/**
-	 * Sets the min.
+	 * Sets the minute.
 	 *
-	 * @param min the min
-	 * @param calc the calc
+	 * @param min the new minute
+	 * @param calc will it be calculated?
 	 */
 	public void setMin(int min, boolean calc) {
 		this.min = min;
@@ -242,9 +242,9 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}
 	
 	/**
-	 * Sets the min.
+	 * Sets the minute.
 	 *
-	 * @param min the new min
+	 * @param min the new minute
 	 */
 	public void setMin(String min) {
 		if("*".equals(min)){
@@ -269,7 +269,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}
 	
 	/**
-	 * Gets the hour string.
+	 * Gets the hour as string.
 	 *
 	 * @return the hour string
 	 */
@@ -294,7 +294,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	 * Gets the real hour.
 	 *
 	 * @param plus the plus
-	 * @return the real hour
+	 * @return the calculated Hour and how much days are skipped
 	 */
 	public int[] getRealHour(int plus){
 		int[] i = new int[2];
@@ -324,8 +324,8 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	/**
 	 * Sets the hour.
 	 *
-	 * @param hour the hour
-	 * @param calc the calc
+	 * @param hour the new hour
+	 * @param calc will it be calculated?
 	 */
 	public void setHour(int hour, boolean calc) {
 		this.hour = hour;
@@ -360,7 +360,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}
 	
 	/**
-	 * Gets the day string.
+	 * Gets the day as string.
 	 *
 	 * @return the day string
 	 */
@@ -385,7 +385,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	 * Gets the real day.
 	 *
 	 * @param plus the plus
-	 * @return the real day
+	 * @return the calculated Day and how much Months are skipped
 	 */
 	public int[] getRealDay(int plus){
 		int md = DayCalculator.numberOfDays((calculate[3]) ? new Date().getMonth() + this.month : this.month, (calculate[4]) ? new Date().getYear() + this.year : this.year);
@@ -417,8 +417,8 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	/**
 	 * Sets the day.
 	 *
-	 * @param day the day
-	 * @param calc the calc
+	 * @param day the new day
+	 * @param calc will it be calculated?
 	 */
 	public void setDay(int day, boolean calc) {
 		this.day = day;
@@ -454,7 +454,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}
 	
 	/**
-	 * Gets the month string.
+	 * Gets the month as string.
 	 *
 	 * @return the month string
 	 */
@@ -479,7 +479,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	 * Gets the real month.
 	 *
 	 * @param plus the plus
-	 * @return the real month
+	 * @return the calculated Month and how much years are skipped
 	 */
 	public int[] getRealMonth(int plus){
 		int[] i = new int[2];
@@ -509,8 +509,8 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	/**
 	 * Sets the month.
 	 *
-	 * @param month the month
-	 * @param calc the calc
+	 * @param month the new month
+	 * @param calc will it be calculated?
 	 */
 	public void setMonth(int month, boolean calc) {
 		this.month = month;
@@ -545,7 +545,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}
 	
 	/**
-	 * Gets the year string.
+	 * Gets the year as string.
 	 *
 	 * @return the year string
 	 */
@@ -569,7 +569,7 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	/**
 	 * Gets the real year.
 	 *
-	 * @param plus the plus
+	 * @param plus how much years was skipped
 	 * @return the real year
 	 */
 	public int getRealYear(int plus){
@@ -584,8 +584,8 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	/**
 	 * Sets the year.
 	 *
-	 * @param year the year
-	 * @param calc the calc
+	 * @param year the new year
+	 * @param calc will it be calculated?
 	 */
 	public void setYear(int year, boolean calc) {
 		this.year = year;
@@ -609,18 +609,18 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}
 
 	/**
-	 * Gets the dow.
+	 * Gets the day of the week.
 	 *
-	 * @return the dow
+	 * @return the day of the week
 	 */
 	public boolean[] getDow() {
 		return dow;
 	}
 	
 	/**
-	 * Gets the dow string.
+	 * Gets the day of the week as string.
 	 *
-	 * @return the dow string
+	 * @return the day of the week string
 	 */
 	public String getDowString() {
 		String s = "";
@@ -636,18 +636,18 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}
 
 	/**
-	 * Sets the dow.
+	 * Sets the day of the week.
 	 *
-	 * @param dow the new dow
+	 * @param dow the new day of the week
 	 */
 	public void setDow(boolean[] dow) {
 		this.dow = dow;
 	}
 
 	/**
-	 * Sets the dow.
+	 * Sets the day of the week as String.
 	 *
-	 * @param dow the new dow
+	 * @param dow the day of the week as String: t for true and f for false (tffffff: only on Monday)
 	 */
 	public void setDow(String dow) {
 		if("*".equals(dow)){
@@ -674,9 +674,9 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}
 
 	/**
-	 * Sets the time.
+	 * Sets the the Date.
 	 *
-	 * @param cron the new time
+	 * @param cron the new time as Cron-String
 	 */
 	public void setTime(String cron){
 		this.calculate = new boolean[6]; 
@@ -688,8 +688,8 @@ public class TimeFormat implements Comparable<TimeFormat>{
 		setYear(cronElements[5]);
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * The saved Date as String
 	 */
 	@Override
 	public String toString(){
@@ -698,9 +698,9 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}
 	
 	/**
-	 * Gets the date.
+	 * Gets the saved date.
 	 *
-	 * @return the date
+	 * @return the java.util.date
 	 */
 	public Date getDate(){
 		int[] mi = getRealMin();
@@ -715,8 +715,10 @@ public class TimeFormat implements Comparable<TimeFormat>{
 		return new GregorianCalendar(y, mo[0]-1, d[0], h[0], mi[0]).getTime();
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	/**
+	 * Compares two TimeFormats which Date is more in the future
+	 * 
+	 * @param tf The Timeformat which to compare
 	 */
 	@Override
 	public int compareTo(TimeFormat tf) {
