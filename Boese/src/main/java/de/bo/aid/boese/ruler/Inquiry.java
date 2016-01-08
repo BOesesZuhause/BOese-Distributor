@@ -33,25 +33,25 @@ package de.bo.aid.boese.ruler;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class Inquiry.
+ * The Class discribs the Inquiry for the RuleEngine
  */
 public class Inquiry {
 	
-	/** The device component id. */
+	/** The ID of the affected deviceComponent. */
 	private int deviceComponentId;
 	
-	/** The timestamp. */
+	/** The timestamp when it was effected. */
 	private long timestamp;
 	
-	/** The value. */
+	/** The new value. */
 	private double value;
 
 	/**
 	 * Instantiates a new inquiry.
 	 *
-	 * @param deviceComponentId the device component id
-	 * @param timestamp the timestamp
-	 * @param value the value
+	 * @param deviceComponentId the ID of the affected deviceComponent
+	 * @param timestamp the timestamp when it was effected
+	 * @param value the new value
 	 */
 	public Inquiry(int deviceComponentId, long timestamp, double value) {
 		super();
@@ -61,54 +61,54 @@ public class Inquiry {
 	}
 
 	/**
-	 * Gets the device component id.
+	 * Gets the DeviceComponentID.
 	 *
-	 * @return the device component id
+	 * @return the DeviceComponentID
 	 */
 	public int getDeviceComponentId() {
 		return deviceComponentId;
 	}
 
 	/**
-	 * Sets the device component id.
+	 * Sets the DeviceComponentID.
 	 *
-	 * @param deviceComponentId the new device component id
+	 * @param deviceComponentId the new DeviceComponentID
 	 */
 	public void setDeviceComponentId(int deviceComponentId) {
 		this.deviceComponentId = deviceComponentId;
 	}
 
 	/**
-	 * Gets the timestamp.
+	 * Gets the timestamp when it was effected.
 	 *
-	 * @return the timestamp
+	 * @return the timestamp when it was effected as a long
 	 */
 	public long getTimestamp() {
 		return timestamp;
 	}
 
 	/**
-	 * Sets the timestamp.
+	 * Sets the timestamp when it was effected.
 	 *
-	 * @param timestamp the new timestamp
+	 * @param timestamp the new timestamp when it was effected
 	 */
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
 	}
 
 	/**
-	 * Gets the value.
+	 * Gets the new value.
 	 *
-	 * @return the value
+	 * @return the new value
 	 */
 	public double getValue() {
 		return value;
 	}
 
 	/**
-	 * Sets the value.
+	 * Sets the new value.
 	 *
-	 * @param value the new value
+	 * @param value the new new value
 	 */
 	public void setValue(double value) {
 		this.value = value;

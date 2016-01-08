@@ -55,15 +55,15 @@ import de.bo.aid.boese.xml.Condition;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class Interpretor.
+ * The Class Interpretor is the Controller of the Rule Engine.
  */
 public class Interpreter {
 
-    /** The Constant logger. */
+    /** The instance of the logger. */
     private static final Logger logger = LogManager.getLogger(Interpreter.class);
     
-    /** The check. */
-	Checker check;
+    /** The instance of the Checker. */
+	private Checker check;
 	
 	/**
 	 * Instantiates a new Interpreter.
@@ -73,11 +73,11 @@ public class Interpreter {
 	}
 
 	/**
-	 * Gets the to dos.
+	 * Produce a List with ToDos after checking all Rules of effected DeviceComponents
 	 *
-	 * @param inquirys the inquirys
-	 * @return the to dos
-	 * @throws Exception the exception
+	 * @param inquirys a List with all infected DeviceComponents and their new Values
+	 * @return a List with ToDos
+	 * @throws Exception if something goes wrong
 	 */
 	public List<ComponentXML> getToDos(List<Inquiry> inquirys) throws Exception{
 		List<ComponentXML> toDo = new ArrayList<ComponentXML>();
@@ -112,10 +112,10 @@ public class Interpreter {
 	}
 	
 	/**
-	 * Gets the all de co ids condition.
+	 * Gets the all DeviceComponentIDs of a Condition.
 	 *
-	 * @param conditions the conditions
-	 * @return the all de co ids condition
+	 * @param conditions the condition String
+	 * @return a List with all DeviceComponentIDs
 	 */
 	public List<DeviceComponent> getAllDeCosCondition(BoeseXML conditions){
 		List<DeviceComponent> list = new ArrayList<DeviceComponent>();
@@ -130,18 +130,10 @@ public class Interpreter {
 		return list;
 	}
 	
-//	public List<Integer> getAllDeCoIdsAction(BoeseXML actions){
-//		List<Integer> list = new ArrayList<Integer>();
-//		for (Component comp : ((Action)actions).getRule().getComponents()) {
-//			list.add(new Integer(comp.getId()));
-//		}
-//		return list;
-//	}
-	
 /**
- * Creates the todos.
+ * Creates a List with ToDos in the future if somthing has changed.
  *
- * @param tdc the tdc
+ * @param tdc the ToDoChecker instance of the Distributor
  */
 	public static void createTodos(ToDoChecker tdc){
 		List<ToDo> todos = AllSelects.toDos();

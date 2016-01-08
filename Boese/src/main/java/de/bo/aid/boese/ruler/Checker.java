@@ -48,18 +48,17 @@ import de.bo.aid.boese.xml.ComponentXML;
 import de.bo.aid.boese.xml.GateList;
 import de.bo.aid.boese.xml.GateList.GateType;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class Checker.
+ * The Class Checker checks the XML-Rules.
  */
 public class Checker {
 
 	/**
-	 * De co in condition.
+	 * Checks if the given DeviceCompoent is part of the Condition.
 	 *
-	 * @param decoid the decoid
-	 * @param condition the condition
-	 * @return true, if successful
+	 * @param decoid the id of the to be tested DeviceComponent
+	 * @param condition the condition String
+	 * @return true, if the DeviceComponent is part of the Condition
 	 */
 	public boolean deCoInCondition(int decoid, String condition){
 		if(condition.contains("<ID>" + decoid + "</ID>")){
@@ -71,10 +70,10 @@ public class Checker {
 	}
 	
 	/**
-	 * Condition.
+	 * This Method checks if the Condition is True.
 	 *
-	 * @param gate the gate
-	 * @return the boolean
+	 * @param gate a GateList object. It builds the Condition in the XML-Rules in Java-Objects, parsed by the XML-Parser
+	 * @return true, if the Condition is true
 	 */
 	public Boolean condition(GateList gate){
 		Boolean ergebnis = null;
@@ -113,10 +112,10 @@ public class Checker {
 	}
 	
 	/**
-	 * Condition.
+	 * This Method checks if the Condition is True.
 	 *
-	 * @param comp the comp
-	 * @return the boolean
+	 * @param comp a ComponentXML object. It Defines the Comparison of a Component
+	 * @return true, if the Condition is true
 	 */
 	public Boolean condition(ComponentXML comp){
 		if(comp == null){
@@ -167,11 +166,11 @@ public class Checker {
 	}
 
 	/**
-	 * Action.
+	 * Creates a List of ToDos.
 	 *
-	 * @param action the action
-	 * @return the list
-	 * @throws Exception the exception
+	 * @param action It builds the Action in the XML-Rules in Java-Objects, parsed by the XML-Parser
+	 * @return the a List of ToDos
+	 * @throws Exception when a Value can not be set
 	 */
 	public List<ComponentXML> action(Action action) throws Exception {
 		for(int i : action.getActivateRules()){
@@ -195,13 +194,13 @@ public class Checker {
 	}
 
 	/**
-	 * Calculate.
+	 * Calculates Values for Condition or Actions.
 	 *
-	 * @param cl the cl
-	 * @return the double
-	 * @throws NoCalculationTypeException the No CalculationType exception
-	 * @throws NoFirstCalculationException the No First in Calculation Exception
-	 * @throws OnlyTwoObjectsForModuloException the Only Two Objects For Modulo Exceptionn
+	 * @param cl a CalculationList, which builds the Calculation in the XML-Rules in Java-Objects, parsed by the XML-Parser
+	 * @return the calculation Result as double
+	 * @throws NoCalculationTypeException when no Calculation type was defined
+	 * @throws NoFirstCalculationException when no First Value was defined
+	 * @throws OnlyTwoObjectsForModuloException when more or less Objects was defined in a modulo calculation
 	 */
 	public double calculate(CalculationList cl) throws NoCalculationTypeException, NoFirstCalculationException, OnlyTwoObjectsForModuloException{
 		double erg = 0.0;
