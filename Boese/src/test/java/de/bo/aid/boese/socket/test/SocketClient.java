@@ -26,7 +26,7 @@ public class SocketClient
 	 */
 	@OnMessage
 	 public void onMessage(String message) {
-		System.out.println("Received Message: " + message);
+		System.out.println("Client received Message: " + message);
 	}
 	 
 	/**

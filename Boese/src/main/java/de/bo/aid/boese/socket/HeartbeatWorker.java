@@ -62,6 +62,7 @@ public class HeartbeatWorker extends Thread{
 	@Override
 	public void run() {
 		while(running){
+		    logger.info("Starting Heartbeat cycle");
 			for (SessionData data : handler.getSessions()){
 				int conId = handler.getConnectorId(data.getSession());
 				if(conId != -1){
@@ -72,11 +73,18 @@ public class HeartbeatWorker extends Thread{
 				}				
 			}
 			try {
-				Thread.sleep(interval);
+                Thread.sleep(interval / 10);
+            } catch (InterruptedException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+			handler.checkHeartbeat();
+			try {
+				Thread.sleep((interval / 10) * 9);
 			} catch (InterruptedException e) {
 				logger.warn("Interrupted while sleeping", e);
 			}
-			handler.checkHeartbeat();
+			
 		}				
 	}
 	

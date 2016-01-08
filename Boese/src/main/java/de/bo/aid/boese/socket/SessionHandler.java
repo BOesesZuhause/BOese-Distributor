@@ -95,6 +95,7 @@ public class SessionHandler {
 					logger.error("Could not close connection to connector with id: " + connectorId, e);
 				}
 				sessions.remove(data);
+				logger.warn("Session from connector with id: " + connectorId + " was rejected");
 			}
 	}
 	
@@ -136,6 +137,7 @@ public class SessionHandler {
 		SessionData data = getDataBySession(session);
 		if(data != null){
 			sessions.remove(data);	
+			logger.debug("Removed a session from the SessionList");
 		}
 	}
 	
