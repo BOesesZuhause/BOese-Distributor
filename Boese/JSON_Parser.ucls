@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.8" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" language="java" name="de.bo.aid.boese.json.UserCreateRules" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserCreateRules.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="7001" y="135"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="de.bo.aid.boese.json.UserSendUnits" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserSendUnits.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6407" y="1413"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="de.bo.aid.boese.json.ConfirmDevices" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/ConfirmDevices.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5442" y="1272"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="de.bo.aid.boese.json.SendNotification" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/SendNotification.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5210" y="1453"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="de.bo.aid.boese.json.UserConfirmZones" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserConfirmZones.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6233" y="1636"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="de.bo.aid.boese.json.UserSendTemps" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserSendTemps.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5434" y="1704"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="de.bo.aid.boese.json.ConfirmConnection" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/ConfirmConnection.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5678" y="990"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="de.bo.aid.boese.json.ConfirmValue" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/ConfirmValue.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5176" y="819"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="de.bo.aid.boese.json.RepeatRuleJSON" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/RepeatRuleJSON.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5897" y="1767"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="de.bo.aid.boese.json.SendDevices" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/SendDevices.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6742" y="927"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="de.bo.aid.boese.json.UnitJSON" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UnitJSON.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6515" y="1670"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="de.bo.aid.boese.json.UserRequestDeviceComponents" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserRequestDeviceComponents.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5443" y="206"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="de.bo.aid.boese.json.SendValue" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/SendValue.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5443" y="940"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="de.bo.aid.boese.json.UserCreateRepeatRules" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserCreateRepeatRules.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5723" y="1427"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="de.bo.aid.boese.json.RuleJSON" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/RuleJSON.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="7126" y="-163"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="de.bo.aid.boese.json.UserConfirmRepeatRules" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserConfirmRepeatRules.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5450" y="735"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="de.bo.aid.boese.json.UserSendDevices" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserSendDevices.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5479" y="1133"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="de.bo.aid.boese.json.ZoneJSON" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/ZoneJSON.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6613" y="-242"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="de.bo.aid.boese.json.UserConfirmUnits" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserConfirmUnits.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5455" y="588"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="de.bo.aid.boese.json.UserSendDeviceComponent" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserSendDeviceComponent.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5688" y="-69"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="de.bo.aid.boese.json.RequestDeviceComponents" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/RequestDeviceComponents.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="7208" y="1344"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" name="de.bo.aid.boese.json.HeartBeatMessage" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/HeartBeatMessage.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5478" y="316"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="23" language="java" name="de.bo.aid.boese.json.UserRequestConnectors" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserRequestConnectors.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5454" y="435"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="24" language="java" name="de.bo.aid.boese.json.UserTempComponent" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserTempComponent.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6978" y="2015"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="25" language="java" name="de.bo.aid.boese.json.UserRequestGeneral" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserRequestGeneral.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5467" y="88"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="26" language="java" name="de.bo.aid.boese.json.BoeseJson" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/BoeseJson.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6253" y="811"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="27" language="java" name="de.bo.aid.boese.json.UserConfirmRules" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserConfirmRules.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="7242" y="1583"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="28" language="java" name="de.bo.aid.boese.json.RequestConnection" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/RequestConnection.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="7466" y="369"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="29" language="java" name="de.bo.aid.boese.json.UserSendConnectors" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserSendConnectors.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6264" y="-154"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="30" language="java" name="de.bo.aid.boese.json.UserCreateZones" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserCreateZones.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6447" y="-27"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="31" language="java" name="de.bo.aid.boese.json.ConfirmStatus" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/ConfirmStatus.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6258" y="326"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="32" language="java" name="de.bo.aid.boese.json.SendStatus" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/SendStatus.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5329" y="-101"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="33" language="java" name="de.bo.aid.boese.json.BoeseJson.MessageType" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/BoeseJson.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="7144" y="811"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="34" language="java" name="de.bo.aid.boese.json.RequestValue" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/RequestValue.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="7001" y="1521"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="35" language="java" name="de.bo.aid.boese.json.RequestAllDevices" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/RequestAllDevices.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6885" y="1117"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="36" language="java" name="de.bo.aid.boese.json.UserConfirmTemps" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserConfirmTemps.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6960" y="1761"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="37" language="java" name="de.bo.aid.boese.json.UserDevice" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserDevice.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5179" y="1132"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="38" language="java" name="de.bo.aid.boese.json.UserSendRules" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserSendRules.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="7285" y="135"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="39" language="java" name="de.bo.aid.boese.json.UserCreateUnits" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserCreateUnits.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6686" y="1419"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="40" language="java" name="de.bo.aid.boese.json.UserSendZones" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserSendZones.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6776" y="-7"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="41" language="java" name="de.bo.aid.boese.json.SendDeviceComponents" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/SendDeviceComponents.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6077" y="-13"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="42" language="java" name="de.bo.aid.boese.json.UserSendRepeatRules" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/UserSendRepeatRules.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6077" y="1389"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="43" language="java" name="de.bo.aid.boese.json.ConfirmDeviceComponents" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/ConfirmDeviceComponents.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6797" y="662"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="44" language="java" name="de.bo.aid.boese.json.MultiMessage" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/MultiMessage.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6248" y="509"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="45" language="java" name="de.bo.aid.boese.json.DeviceComponents" project="Boese" 
+    file="/Boese/src/main/java/de/bo/aid/boese/json/DeviceComponents.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5901" y="-435"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <generalization id="46">    
+    <bendpoint x="5609" y="127"/>    
+    <bendpoint x="5649" y="220"/>    
+    <end type="SOURCE" refId="25"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="47">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="48">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="49">    
+    <bendpoint x="6288" y="81"/>    
+    <bendpoint x="6437" y="256"/>    
+    <bendpoint x="6424" y="541"/>    
+    <end type="SOURCE" refId="29"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <association id="50">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="51" name="rules"/>      
+      <multiplicity id="52" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="53">    
+    <bendpoint x="6866" y="1350"/>    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <association id="54">    
+    <end type="SOURCE" refId="42" navigable="false">      
+      <attribute id="55" name="rules"/>      
+      <multiplicity id="56" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="57">    
+    <bendpoint x="5697" y="333"/>    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="58">    
+    <bendpoint x="5490" y="1378"/>    
+    <bendpoint x="5810" y="1257"/>    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="59">    
+    <bendpoint x="7058" y="316"/>    
+    <end type="SOURCE" refId="28"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <association id="60">    
+    <end type="SOURCE" refId="41" navigable="false">      
+      <attribute id="61" name="components"/>      
+      <multiplicity id="62" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="45" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="63">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="64">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="65">    
+    <bendpoint x="6829" y="1370"/>    
+    <end type="SOURCE" refId="36"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="66">    
+    <end type="SOURCE" refId="44"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="67">    
+    <bendpoint x="5645" y="1218"/>    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <association id="68">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="69" name="units"/>      
+      <multiplicity id="70" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="71">    
+    <bendpoint x="6541" y="441"/>    
+    <end type="SOURCE" refId="30"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <association id="72">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="73" name="rules"/>      
+      <multiplicity id="74" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="75">    
+    <bendpoint x="7122" y="1448"/>    
+    <bendpoint x="6954" y="1389"/>    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <association id="76">    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="77" name="rules"/>      
+      <multiplicity id="78" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="79">    
+    <bendpoint x="7032" y="1332"/>    
+    <bendpoint x="6873" y="1268"/>    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="80">    
+    <end type="SOURCE" refId="42"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <association id="81">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="82" name="componentList"/>      
+      <multiplicity id="83" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="45" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="84">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="85">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="86">    
+    <bendpoint x="6044" y="458"/>    
+    <end type="SOURCE" refId="41"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="87">    
+    <bendpoint x="6265" y="1453"/>    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <association id="88">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="89" name="deviceList"/>      
+      <multiplicity id="90" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="37" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="91">    
+    <bendpoint x="5493" y="10"/>    
+    <bendpoint x="5641" y="56"/>    
+    <end type="SOURCE" refId="32"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="92">    
+    <null/>    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="93">    
+    <bendpoint x="6681" y="1044"/>    
+    <end type="SOURCE" refId="35"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="94">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <association id="95">    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="96" name="messageType"/>      
+      <multiplicity id="97" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="33" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="98">    
+    <end type="SOURCE" refId="30" navigable="false">      
+      <attribute id="99" name="zones"/>      
+      <multiplicity id="100" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="101">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="102">    
+    <bendpoint x="5520" y="1388"/>    
+    <bendpoint x="5808" y="1290"/>    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="103">    
+    <end type="SOURCE" refId="39"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <association id="104">    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="105" name="tempDeviceComponents"/>      
+      <multiplicity id="106" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="107">    
+    <bendpoint x="5750" y="1075"/>    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="108">    
+    <bendpoint x="5970" y="1168"/>    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="109">    
+    <end type="SOURCE" refId="38"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="110">    
+    <bendpoint x="5630" y="350"/>    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <nesting id="111">    
+    <end type="SOURCE" refId="26"/>    
+    <end type="TARGET" refId="33"/>  
+  </nesting>  
+  <association id="112">    
+    <end type="SOURCE" refId="40" navigable="false">      
+      <attribute id="113" name="zones"/>      
+      <multiplicity id="114" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="115">    
+    <bendpoint x="6612" y="426"/>    
+    <end type="SOURCE" refId="40"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <association id="116">    
+    <end type="SOURCE" refId="44" navigable="false">      
+      <attribute id="117" name="boeses"/>      
+      <multiplicity id="118" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="26" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="119">    
+    <bendpoint x="6413" y="470"/>    
+    <bendpoint x="6378" y="580"/>    
+    <end type="SOURCE" refId="31"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="120">    
+    <end type="SOURCE" refId="43"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="121">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <association id="122">    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="123" name="units"/>      
+      <multiplicity id="124" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
