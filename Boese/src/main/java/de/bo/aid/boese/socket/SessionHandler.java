@@ -161,19 +161,14 @@ public class SessionHandler {
 	 * @param message the message to be sent
 	 */
 	public void sendToSession(Session session, String message) {
-        try {
-            int conId= getConnectorId(session);
-            if(conId != -1){
-                logger.info("Message sent to connector with id: " + conId +" " + message);
-            }else{
-                logger.info("Message sent to unknown connector: " + message);
-            }
-        	
-            session.getBasicRemote().sendText(message);
-        } catch (IOException ex) {
-            sessions.remove(getDataBySession(session));
-            logger.warn("Could not send the message to session: " + session, ex);
+        int conId= getConnectorId(session);
+        if(conId != -1){
+            logger.info("Message sent to connector with id: " + conId +" " + message);
+        }else{
+            logger.info("Message sent to unknown connector: " + message);
         }
+        
+        session.getAsyncRemote().sendText(message);
     }
 	
 	 /**
