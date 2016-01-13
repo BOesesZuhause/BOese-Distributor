@@ -187,9 +187,7 @@ private final String logo =
         logger.info("Starting websocketserver");
         distr.startWebsocketServer();
         logger.info("websocketserver started successfully");
-        logger.info("starting heartbeat-thread");
         distr.startHeartbeat();
-        logger.info("heartbeat-thread started successfully");
         logger.info("starting todochecker-thread");
         distr.startToDoChecker();
         logger.info("todochecker-thread started successfully");
@@ -200,6 +198,9 @@ private final String logo =
 	 *
 	 */
 	public void startWebsocketServer(){
+	    if(props.getHeartbeat()){
+	        SessionHandler.getInstance().setAsync(true);
+	    }
 		socketServer = SocketServer.getInstance();
 		protocolHandler = new ProtocolHandler(this);
 		socketServer.setMessageHandler(protocolHandler);
@@ -299,9 +300,14 @@ private final String logo =
 	 * Start heartbeat.
 	 */
 	public void startHeartbeat() {
-		HeartbeatWorker worker = new HeartbeatWorker();
-		SessionHandler.getInstance().setMissedAnswerThreshold(1);
-		worker.start();
+	    if(props.getHeartbeat()){
+	        logger.info("starting heartbeat-thread");
+	        HeartbeatWorker worker = new HeartbeatWorker();
+	        worker.interval = props.getHeartbeatIntervall() * 1000;
+	        SessionHandler.getInstance().setMissedAnswerThreshold(props.getHeartBeatThreshold());
+	        worker.start(); 
+	        logger.info("heartbeat-thread started successfully");
+	    }
 	}
 
 	/**
@@ -465,6 +471,11 @@ private final String logo =
 		this.tempConnectors = tempConnectors;
 	}
 	
+	/**
+	 * Sets the props.
+	 *
+	 * @param props the new props
+	 */
 	public void setProps(DistributorProperties props){
 		this.props = props;
 	}

@@ -13,6 +13,9 @@ import de.bo.aid.boese.hibernate.util.HibernateUtil;
  */
 public class MappingTestForTestDB {
 
+	/**
+	 * Test.
+	 */
 	@Test
 	public void test() {
 		HibernateUtil.setDBUser("postgres");

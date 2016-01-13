@@ -48,6 +48,7 @@ import de.bo.aid.boese.xml.ComponentXML;
 import de.bo.aid.boese.xml.GateList;
 import de.bo.aid.boese.xml.GateList.GateType;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class Checker checks the XML-Rules.
  */

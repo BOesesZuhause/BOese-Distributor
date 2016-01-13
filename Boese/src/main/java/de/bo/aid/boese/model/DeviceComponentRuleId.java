@@ -99,9 +99,10 @@ public class DeviceComponentRuleId implements java.io.Serializable {
 		this.ruId = ruId;
 	}
 
-	/** 
-	 * To compare two DeviceComponentRuleIds
-	 * 
+	/**
+	 *  
+	 * To compare two DeviceComponentRuleIds.
+	 *
 	 * @param other the DeviceComponentRuleId object to compare
 	 * @return true if both DeviceComponentRuleIds are equal
 	 */
@@ -117,9 +118,10 @@ public class DeviceComponentRuleId implements java.io.Serializable {
 		return (this.getDeCoId() == castOther.getDeCoId()) && (this.getRuId() == castOther.getRuId());
 	}
 
-	/** 
-	 * To create the hashCode
-	 * 
+	/**
+	 *  
+	 * To create the hashCode.
+	 *
 	 * @return the hashCode
 	 */
 	public int hashCode() {

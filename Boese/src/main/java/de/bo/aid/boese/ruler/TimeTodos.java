@@ -35,6 +35,7 @@ import java.util.Date;
 
 import de.bo.aid.boese.model.DeviceComponent;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class TimeTodos defines ToDos in the Future.
  */
@@ -178,8 +179,9 @@ public class TimeTodos implements Comparable<TimeTodos> {
 
 	/**
 	 * compare which TimeToDo has to be executed earlier.
-	 * 
+	 *
 	 * @param tt the other TimeToDo wich will be compared
+	 * @return the int
 	 */
 	@Override
 	public int compareTo(TimeTodos tt) {

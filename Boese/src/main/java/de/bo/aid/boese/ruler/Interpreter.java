@@ -73,7 +73,7 @@ public class Interpreter {
 	}
 
 	/**
-	 * Produce a List with ToDos after checking all Rules of effected DeviceComponents
+	 * Produce a List with ToDos after checking all Rules of effected DeviceComponents.
 	 *
 	 * @param inquirys a List with all infected DeviceComponents and their new Values
 	 * @return a List with ToDos

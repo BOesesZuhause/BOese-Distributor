@@ -170,7 +170,7 @@ public class ToDoChecker extends Thread{
 	}
 	
 	/**
-	 * Fills the ToDo List if something has been changed
+	 * Fills the ToDo List if something has been changed.
 	 */
 	public void changeInToDo(){
 		//TODO anders lösen
@@ -191,7 +191,7 @@ public class ToDoChecker extends Thread{
 	}
 	
 	/**
-	 * Checks if the Date is now
+	 * Checks if the Date is now.
 	 *
 	 * @param tf the Date to be checked as TimeFormat
 	 * @return true, if the Date ist now

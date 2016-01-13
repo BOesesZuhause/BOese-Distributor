@@ -37,6 +37,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.bo.aid.boese.main.Distributor;
 
+// TODO: Auto-generated Javadoc
 /**
  * THe Sessionhandler manages all connected sessions and additional data.
  */
@@ -51,6 +52,9 @@ public class SessionHandler {
 	/** Saves the sessions as sessiondata-objects. We use a threadsafe list because the heartbeat-thread needs to check the sessions.
 	 * The performance-drawback is minimal because the sessions are read more often than manipulated. */
 	private final CopyOnWriteArrayList<SessionData> sessions = new CopyOnWriteArrayList<SessionData>();
+
+    /** The async. */
+    private boolean async;
 	
 	/** The singleton instance. */ 
 	private static SessionHandler instance = new SessionHandler();
@@ -168,10 +172,46 @@ public class SessionHandler {
             logger.info("Message sent to unknown connector: " + message);
         }
         
-        session.getAsyncRemote().sendText(message);
+        if(async){
+            session.getAsyncRemote().sendText(message); 
+        }else{
+            try {
+                session.getBasicRemote().sendText(message);
+            } catch (IOException e) {
+                logger.error(e);
+            }
+        }
+
     }
 	
 	 /**
+ 	 * Checks if is async.
+ 	 *
+ 	 * @return the async
+ 	 */
+    public boolean isAsync() {
+        return async;
+    }
+
+    /**
+     * Sets the async.
+     *
+     * @param async the async to set
+     */
+    public void setAsync(boolean async) {
+        this.async = async;
+    }
+
+    /**
+     * Gets the logger.
+     *
+     * @return the logger
+     */
+    public Logger getLogger() {
+        return logger;
+    }
+
+    /**
  	 * Sends a message to all connected sessions.
  	 *
  	 * @param message the message to be send

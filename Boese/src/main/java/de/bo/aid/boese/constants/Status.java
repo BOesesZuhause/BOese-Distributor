@@ -30,6 +30,7 @@
 
 package de.bo.aid.boese.constants;
 
+// TODO: Auto-generated Javadoc
 /**
  * This Class displays the possible Status of DeviceComponents or Connectors.
  * @author Fabio
@@ -92,7 +93,7 @@ public class Status {
 	public static final int ACTOR_DOES_NOT_REACT = 110;  //Normal Reaktion
 	   
     /**
-     * You shouldn't create a instance of this Object
+     * You shouldn't create a instance of this Object.
      */
     private Status(){
         

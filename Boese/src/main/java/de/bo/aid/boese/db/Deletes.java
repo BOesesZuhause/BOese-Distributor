@@ -35,15 +35,18 @@ import org.hibernate.Session;
 
 import de.bo.aid.boese.model.ToDo;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class Deletes.
+ *
  * @author Fabio
  * The Class Deletes offers Methods to delete Enetities in the Database.
  */
 public class Deletes {
 	
 	/**
-     * You shouldn't create a instance of this Object
-     */
+	 * You shouldn't create a instance of this Object.
+	 */
 	private Deletes(){
 		
 	}

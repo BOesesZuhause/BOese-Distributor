@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.HeartBeatMessage;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Thread for heartbeat-messages. While running it sends a heartbeat to all connected sessions
  * in a defined intervall.
@@ -31,6 +32,7 @@ public class HeartbeatWorker extends Thread{
     /** The session-handler instance which is used to send the heartbeat-messages. */
     SessionHandler handler = SessionHandler.getInstance();
 	
+    
 	/**
 	 * Gets the intervall.
 	 *

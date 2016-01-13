@@ -119,9 +119,10 @@ public class DeviceComponentRule {
 		this.rule = rule;
 	}
 
-	/** 
-	 * To compare two DeviceComponentRules
-	 * 
+	/**
+	 *  
+	 * To compare two DeviceComponentRules.
+	 *
 	 * @param obj the DeviceComponentRule object to compare
 	 * @return true if both DeviceComponentRules are equal
 	 */

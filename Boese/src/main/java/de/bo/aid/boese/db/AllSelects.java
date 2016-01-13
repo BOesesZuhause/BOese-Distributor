@@ -36,7 +36,10 @@ import org.hibernate.Session;
 
 import de.bo.aid.boese.model.*;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class AllSelects.
+ *
  * @author Fabio
  * The Class AllSelects offers methods to get all Entities of a Table.
  */
@@ -46,7 +49,7 @@ public class AllSelects {
     private static Connection connection = Connection.getConnection();
 
     /**
-     * You shouldn't create a instance of this Object
+     * You shouldn't create a instance of this Object.
      */
     private AllSelects() {
 

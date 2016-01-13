@@ -37,6 +37,8 @@ import de.bo.aid.boese.model.DeviceComponent;
 
 // TODO: Auto-generated Javadoc
 /**
+ * The Class Checks.
+ *
  * @author Fabio
  * The Class Checks checks that the Object exist in the Database .
  */
@@ -46,8 +48,8 @@ public class Checks {
 	private static Connection connection = Connection.getConnection();
 	
 	 /**
-     * You shouldn't create a instance of this Object
-     */
+ 	 * You shouldn't create a instance of this Object.
+ 	 */
 	private Checks(){
 		
 	}

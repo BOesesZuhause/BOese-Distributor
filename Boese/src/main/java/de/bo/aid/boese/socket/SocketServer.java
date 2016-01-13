@@ -57,6 +57,7 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * This class wraps the jetty-websocket-server and embedds it.
  */
@@ -101,7 +102,7 @@ public class SocketServer {
 	}
 	
 	/**
-	 * Inits the websocketserver for unsecure connection with a given port
+	 * Inits the websocketserver for unsecure connection with a given port.
 	 *
 	 * @param port the port
 	 */
@@ -133,7 +134,7 @@ public class SocketServer {
 	}
 	
 	/**
-	 * Inits the websocketserver for TLS with a given port
+	 * Inits the websocketserver for TLS with a given port.
 	 *
 	 * @param port the port
 	 */

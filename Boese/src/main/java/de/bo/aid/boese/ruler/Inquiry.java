@@ -33,7 +33,7 @@ package de.bo.aid.boese.ruler;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class discribs the Inquiry for the RuleEngine
+ * The Class discribs the Inquiry for the RuleEngine.
  */
 public class Inquiry {
 	

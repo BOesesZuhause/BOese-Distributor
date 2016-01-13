@@ -689,7 +689,9 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}
 	
 	/**
-	 * The saved Date as String
+	 * The saved Date as String.
+	 *
+	 * @return the string
 	 */
 	@Override
 	public String toString(){
@@ -716,9 +718,10 @@ public class TimeFormat implements Comparable<TimeFormat>{
 	}
 
 	/**
-	 * Compares two TimeFormats which Date is more in the future
-	 * 
+	 * Compares two TimeFormats which Date is more in the future.
+	 *
 	 * @param tf The Timeformat which to compare
+	 * @return the int
 	 */
 	@Override
 	public int compareTo(TimeFormat tf) {

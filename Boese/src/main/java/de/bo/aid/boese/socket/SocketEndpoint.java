@@ -44,6 +44,7 @@ import de.bo.aid.boese.main.Distributor;
 
 
 
+// TODO: Auto-generated Javadoc
 /**
  * The Endpoint-class for Jetty. Here are all websocket-endpoints defined.
  * every connection has its own socketendpoint object. 

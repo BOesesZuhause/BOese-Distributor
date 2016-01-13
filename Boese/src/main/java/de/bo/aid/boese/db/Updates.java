@@ -41,7 +41,10 @@ import de.bo.aid.boese.model.*;
 import de.bo.aid.boese.ruler.Interpreter;
 import de.bo.aid.boese.ruler.ToDoChecker;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class Updates.
+ *
  * @author Fabio
  * The Class Updates offers Methods to update Database Entities.
  */
@@ -52,8 +55,8 @@ public class Updates {
 	
 	
 	/**
-     * You shouldn't create a instance of this Object
-     */
+	 * You shouldn't create a instance of this Object.
+	 */
 	private Updates(){
 		
 	}

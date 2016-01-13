@@ -35,6 +35,7 @@ import java.util.Date;
 import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 
+// TODO: Auto-generated Javadoc
 /**
  * ToDo Model for Hibernate.
  */
@@ -175,9 +176,10 @@ public class ToDo {
 		this.repeatRule = repeatRule;
 	}
 
-	/** 
-	 * To compare two ToDos
-	 * 
+	/**
+	 *  
+	 * To compare two ToDos.
+	 *
 	 * @param obj the ToDo object to compare
 	 * @return true if both ToDos are equal
 	 */

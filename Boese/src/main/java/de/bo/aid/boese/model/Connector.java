@@ -284,9 +284,10 @@ public class Connector implements java.io.Serializable {
 		this.logConnectors = logConnectors;
 	}
 
-	/** 
-	 * To compare two Connectors
-	 * 
+	/**
+	 *  
+	 * To compare two Connectors.
+	 *
 	 * @param obj the Connector object to compare
 	 * @return true if both Connector are equal
 	 */

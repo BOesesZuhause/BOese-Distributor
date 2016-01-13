@@ -36,9 +36,11 @@ import org.hibernate.SessionFactory;
 
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author
- * The Class Connection build the Hibernate Connection between Java and the Database.
+ * The Class Connection.
+ *
+ * @author The Class Connection build the Hibernate Connection between Java and the Database.
  */
 public class Connection {
 	
@@ -51,7 +53,7 @@ public class Connection {
 
 	/**
 	 * You shouldn't create a instance of this Object
-	 * Singelton
+	 * Singelton.
 	 */
 	private Connection(){
 		

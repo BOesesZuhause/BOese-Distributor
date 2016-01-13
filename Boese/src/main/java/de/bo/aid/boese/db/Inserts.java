@@ -47,7 +47,10 @@ import de.bo.aid.boese.model.*;
 import de.bo.aid.boese.ruler.TimeFormat;
 import de.bo.aid.boese.ruler.ToDoChecker;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class Inserts.
+ *
  * @author Fabio
  * The Class Inserts offers Methods to Insert Entities in the Database.
  */
@@ -58,8 +61,8 @@ public class Inserts {
 	
 	
 	/**
-     * You shouldn't create a instance of this Object
-     */
+	 * You shouldn't create a instance of this Object.
+	 */
 	private Inserts(){
 		
 	}

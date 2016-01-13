@@ -40,6 +40,8 @@ import de.bo.aid.boese.model.*;
 
 // TODO: Auto-generated Javadoc
 /**
+ * The Class Selects.
+ *
  * @author Fabio
  * The Class Selects offers Methods to Select a Entity.
  */
@@ -49,8 +51,8 @@ public class Selects {
 	private static Connection connection = Connection.getConnection();
 	
 	/**
-     * You shouldn't create a instance of this Object
-     */
+	 * You shouldn't create a instance of this Object.
+	 */
 	private Selects(){
 		
 	}

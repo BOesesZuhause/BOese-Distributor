@@ -39,6 +39,15 @@ public class DistributorProperties extends Properties{
 	/** the tls. */
 	private final String TLS = "tls_enabled";
 	
+	/** The heartbeat. */
+	private final String HEARTBEAT = "heartbeat_enabled";
+	
+	/** The hb intervall. */
+	private final String HB_INTERVALL = "heartbeat_intervall";
+	
+	/** The hb threshold. */
+	private final String HB_THRESHOLD = "heartbeat_threshold";
+	
 	/** The confirm. */
 	private final String CONFIRM = "autoConfirm";
 	
@@ -53,6 +62,7 @@ public class DistributorProperties extends Properties{
 	
 	/** The default password. */
 	private final String DEFAULT_PASSWORD = "DEFAULT_CONNECTOR_PASSWORD";
+
 	
 	
 	/** The logger. */
@@ -78,7 +88,6 @@ public class DistributorProperties extends Properties{
 	 *
 	 * @param path the path
 	 */
-	//TODO validate properties
 	public void load(String path){
 		FileInputStream file = null;
 		try {
@@ -139,6 +148,9 @@ public class DistributorProperties extends Properties{
 		this.setPort(8081);
 		this.setAutoConfirm(false);
 		this.setTLS(true);
+		this.setHeartbeat(true);
+		this.setHeartBetIntervall(60);
+		this.setHeartBeatThreshold(3);
 		this.setDbUser("postgres");
 		this.setDbPassword("Di0bPWfw");
 		this.setDbName("boese");
@@ -166,13 +178,97 @@ public class DistributorProperties extends Properties{
 		this.setProperty(DB_HOST, dbURL);
 	}
 	
+	/**
+	 * Gets the tls.
+	 *
+	 * @return the tls
+	 */
 	public boolean getTLS(){
 		return Boolean.parseBoolean(this.getProperty(TLS));
 	}
 	
+	/**
+	 * Sets the tls.
+	 *
+	 * @param tls the new tls
+	 */
 	public void setTLS(boolean tls){
 		this.setProperty(TLS, tls + "");
 	}
+	
+	/**
+	 * Sets the heartbeat.
+	 *
+	 * @param heartbeat the new heartbeat
+	 */
+	public void setHeartbeat(boolean heartbeat){
+	    this.setProperty(HEARTBEAT, heartbeat + "");
+	}
+	
+	/**
+	 * Gets the heartbeat.
+	 *
+	 * @return the heartbeat
+	 */
+	public boolean getHeartbeat(){
+	    return Boolean.parseBoolean(this.getProperty(HEARTBEAT));
+	}
+	
+	
+	
+	/**
+	 * Gets the heartbeat intervall.
+	 *
+	 * @return the heartbeat intervall
+	 */
+	public int getHeartbeatIntervall(){
+	       int intervall;
+	        try{
+	        intervall = Integer.parseInt(this.getProperty(HB_INTERVALL));
+	        }catch (NumberFormatException e){
+	            logger.error("Unable to load HB_Interval from properties", e);
+	            logger.info("Using default intervall 60");
+	            intervall = 60;
+	        }
+	        return intervall;
+	}
+	
+    /**
+     * Sets the heart bet intervall.
+     *
+     * @param intervall the new heart bet intervall
+     */
+    public void setHeartBetIntervall(int intervall){
+        this.setProperty(HB_INTERVALL, intervall + "");
+    }
+	
+	/**
+	 * Sets the heart beat threshold.
+	 *
+	 * @param threshold the new heart beat threshold
+	 */
+	public void setHeartBeatThreshold(int threshold){
+	    this.setProperty(HB_THRESHOLD, threshold + "");
+	}
+	
+	   /**
+   	 * Gets the heart beat threshold.
+   	 *
+   	 * @return the heart beat threshold
+   	 */
+   	public int getHeartBeatThreshold(){
+           int threshold;
+            try{
+            threshold = Integer.parseInt(this.getProperty(HB_THRESHOLD));
+            }catch (NumberFormatException e){
+                logger.error("Unable to load HB_threshold from properties", e);
+                logger.info("Using default threshold 3");
+                threshold = 3;
+            }
+            return threshold;
+    }
+    
+
 	
 	/**
 	 * Gets the db name.

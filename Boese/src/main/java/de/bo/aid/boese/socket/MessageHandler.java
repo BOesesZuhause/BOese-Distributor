@@ -30,6 +30,7 @@
 
 package de.bo.aid.boese.socket;
 
+// TODO: Auto-generated Javadoc
 /**
  * A general interface for message-handlers.
  */

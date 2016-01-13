@@ -5,6 +5,7 @@ package de.bo.aid.boese.socket;
 
 import javax.websocket.Session;
 
+// TODO: Auto-generated Javadoc
 /**
  * This class is used to store the session-information of a connected session.
  */

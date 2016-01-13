@@ -33,6 +33,7 @@ package de.bo.aid.boese.model;
 import java.math.BigDecimal;
 import java.util.Set;
 
+// TODO: Auto-generated Javadoc
 /**
  * RepeatRule Model for Hibernate.
  */
@@ -243,9 +244,10 @@ public class RepeatRule {
 		this.deviceComponent = deviceComponent;
 	}
 
-	/** 
-	 * To compare two RepeatRules
-	 * 
+	/**
+	 *  
+	 * To compare two RepeatRules.
+	 *
 	 * @param obj the RepeatRule object to compare
 	 * @return true if both RepeatRules are equal
 	 */
