@@ -28,13 +28,13 @@ import org.apache.logging.log4j.Logger;
 public class DistributorProperties extends Properties{
 	
 	/** The db host. */
-	private final String DB_HOST = "DB_HOST";
+	private final String DB_HOST = "database_host";
 	
 	/** The user. */
-	private final String USER = "DB_USER";
+	private final String USER = "database_user";
 	
 	/** The ws port. */
-	private final String WS_PORT = "Websocket_Port";
+	private final String WS_PORT = "websocket_Port";
 	
 	/** the tls. */
 	private final String TLS = "tls_enabled";
@@ -52,16 +52,16 @@ public class DistributorProperties extends Properties{
 	private final String CONFIRM = "autoConfirm";
 	
 	/** The password. */
-	private final String PASSWORD = "DB_PASSWORD";
+	private final String PASSWORD = "database_password";
 	
 	/** The database. */
-	private final String DATABASE = "DB_NAME";
+	private final String DATABASE = "database_name";
 	
 	/** The db port. */
-	private final String DB_PORT = "DB_PORT";
+	private final String DB_PORT = "database_port";
 	
 	/** The default password. */
-	private final String DEFAULT_PASSWORD = "DEFAULT_CONNECTOR_PASSWORD";
+	private final String DEFAULT_PASSWORD = "default_connector_password";
 
 	
 	
@@ -94,6 +94,9 @@ public class DistributorProperties extends Properties{
 			file = new FileInputStream(path);
 		} catch (FileNotFoundException e) {
 			logger.error("config File not found at: " + path, e);
+			logger.info("Generating default properties file");
+			this.setDefaults();
+			this.save(path);
 			System.exit(0);
 		}
 

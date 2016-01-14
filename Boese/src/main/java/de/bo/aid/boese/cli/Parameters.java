@@ -39,8 +39,8 @@ import com.beust.jcommander.Parameter;
 public class Parameters {
 	
 	/**  Describes the path to the config file. */
-	@Parameter(names = "-config", description = "Path to the config-file", required=true)
-	private String config;
+	@Parameter(names = "-config",  description = "Path to the config-file", required=false)
+	private String config = "settings.properties";
 
 
 	/**  If set a default config is generated. */
