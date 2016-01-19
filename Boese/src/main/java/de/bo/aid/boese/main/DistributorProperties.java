@@ -34,7 +34,7 @@ public class DistributorProperties extends Properties{
 	private final String USER = "database_user";
 	
 	/** The ws port. */
-	private final String WS_PORT = "websocket_Port";
+	private final String WS_PORT = "websocket_port";
 	
 	/** the tls. */
 	private final String TLS = "tls_enabled";
@@ -49,7 +49,7 @@ public class DistributorProperties extends Properties{
 	private final String HB_THRESHOLD = "heartbeat_threshold";
 	
 	/** The confirm. */
-	private final String CONFIRM = "autoConfirm";
+	private final String CONFIRM = "auto_confirm";
 	
 	/** The password. */
 	private final String PASSWORD = "database_password";
