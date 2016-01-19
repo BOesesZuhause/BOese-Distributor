@@ -514,24 +514,26 @@ public class ProtocolHandler implements MessageHandler {
 			Set<DeviceComponent> decoSet = null;
 			try {
 				decoSet = Selects.device(devId.intValue()).getDeviceComponents();
+				
+	            HashSet<DeviceComponents> decos = new HashSet<>();
+	            for (DeviceComponent deco : decoSet) {
+	                decos.add(new DeviceComponents(deco.getDeCoId(),
+	                        deco.getComponent().getName(),
+	                        deco.getCurrentValue().doubleValue(),
+	                        System.currentTimeMillis(),
+	                        deco.getComponent().getUnit().getName(),
+	                        deco.getDescription(),
+	                        deco.getComponent().isActor(),
+	                        deco.getStatus()));
+	            }
+	            sendUserSendDeviceComponent(devId, decos, connectorId);
 			} 
 			catch (DBObjectNotFoundException onfe){ 
 				logger.error(onfe.getMessage(), onfe);
-				sendNotificationToAllUserConnectors("requested deviceComponent with id: " + devId.intValue() + " is unknown.",
+				sendNotificationToAllUserConnectors("No deviceComponent found for device with id: " + devId.intValue() + " .",
 				        NotificationType.ERROR, System.currentTimeMillis());
 			}
-			HashSet<DeviceComponents> decos = new HashSet<>();
-			for (DeviceComponent deco : decoSet) {
-				decos.add(new DeviceComponents(deco.getDeCoId(),
-						deco.getComponent().getName(),
-						deco.getCurrentValue().doubleValue(),
-						System.currentTimeMillis(),
-						deco.getComponent().getUnit().getName(),
-						deco.getDescription(),
-						deco.getComponent().isActor(),
-						deco.getStatus()));
-			}
-			sendUserSendDeviceComponent(devId, decos, connectorId);
+
 		}
 	}
 
