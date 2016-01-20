@@ -39,6 +39,10 @@ public class DistributorProperties extends Properties{
 	/** the tls. */
 	private final String TLS = "tls_enabled";
 	
+	private final String KEYSTORE = "keystore_path";
+	
+	private final String KEYSTOR_PW = "keystore_password";
+	
 	/** The heartbeat. */
 	private final String HEARTBEAT = "heartbeat_enabled";
 	
@@ -151,6 +155,8 @@ public class DistributorProperties extends Properties{
 		this.setPort(8081);
 		this.setAutoConfirm(false);
 		this.setTLS(true);
+		this.setKeyStore("keystore");
+		this.setKeystorePassword("GZAMNNA");
 		this.setHeartbeat(true);
 		this.setHeartBetIntervall(60);
 		this.setHeartBeatThreshold(3);
@@ -199,6 +205,14 @@ public class DistributorProperties extends Properties{
 		this.setProperty(TLS, tls + "");
 	}
 	
+	public String getKeystorePassword(){
+	    return this.getProperty(KEYSTOR_PW);
+	}
+	
+	public void setKeystorePassword(String password){
+	    this.setProperty(KEYSTOR_PW, password);
+	}
+	
 	/**
 	 * Sets the heartbeat.
 	 *
@@ -217,6 +231,13 @@ public class DistributorProperties extends Properties{
 	    return Boolean.parseBoolean(this.getProperty(HEARTBEAT));
 	}
 	
+	public String getKeyStore(){
+	    return this.getProperty(KEYSTORE);
+	}
+	
+	public void setKeyStore(String store){
+	    this.setProperty(KEYSTORE, store);
+	}
 	
 	
 	/**

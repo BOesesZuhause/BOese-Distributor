@@ -207,7 +207,7 @@ private final String logo =
 		
 			if(props.getTLS()){
 				logger.info("Initalizing websocketserver with TLS");
-				socketServer.initTLS(props.getPort());
+				socketServer.initTLS(props.getPort(), props.getKeyStore(), props.getKeystorePassword());
 			}else{
 				logger.info("Initalizing websocketserver without TLS");
 				socketServer.init(props.getPort());

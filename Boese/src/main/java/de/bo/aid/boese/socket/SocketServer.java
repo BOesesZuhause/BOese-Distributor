@@ -138,20 +138,22 @@ public class SocketServer {
 	 *
 	 * @param port the port
 	 */
-	public void initTLS(int port){
+	public void initTLS(int port, String path, String password){
 		server = new Server(); 
 		 // Setup SSL
-        URL keystore = null;
-		try {
-			keystore = findResource("keystore");
-		} catch (FileNotFoundException e) {
-			logger.error("Could not find keystore in classpath");
-			e.printStackTrace();
-		}
+//        URL keystore = null;
+//		try {
+//			keystore = findResource(path);
+//		} catch (FileNotFoundException e) {
+//			logger.error("Could not find keystore in classpath");
+//			e.printStackTrace();
+//			System.exit(0);
+//		}
 
         SslContextFactory sslContextFactory = new SslContextFactory();
-        sslContextFactory.setKeyStorePath(keystore.toExternalForm());
-        sslContextFactory.setKeyStorePassword("GZAMNNA");
+        sslContextFactory.setKeyStorePath(path);
+       // sslContextFactory.setKeyStorePath(keystore.toExternalForm());
+        sslContextFactory.setKeyStorePassword(password);
         sslContextFactory.setKeyManagerPassword("GZAMNNA");
         sslContextFactory.addExcludeProtocols("SSLv3"); // a good thing to do
         sslContextFactory.addExcludeCipherSuites(".*_GCM_.*"); // geez these ciphers are slow
@@ -210,9 +212,11 @@ public class SocketServer {
 				server.start();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error("Failed to start Websocket-Server", e);
+		           // logger.debug(server.dump());
+				System.exit(0);
 			}
-            logger.debug(server.dump());
+
 
     }
 	
