@@ -95,7 +95,7 @@ public class NoGate {
 				+ 			"<CONSTANT>" + value1 + "</CONSTANT>"
 				+ 		"</VALUE>"
 				+ 		"<RESET_VALUE>10</RESET_VALUE>"
-				+ 		"<COMPERATOR>==</COMPERATOR>"
+				+ 		"<COMPARATOR>==</COMPARATOR>"
 				+ 	"</COMPONENT>"
 				+ "</CONDITION>";
 		

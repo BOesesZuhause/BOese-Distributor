@@ -88,7 +88,7 @@ public class Condition extends BoeseXML {
 						compID = new Integer(nComponent.getTextContent()).intValue();
 						componentIds.add(compID);
 						break;
-					case "COMPERATOR":
+					case "COMPARATOR":
 						switch (nComponent.getTextContent()) {
 						case "==":
 							compComperator = Comperator.EQUAL;

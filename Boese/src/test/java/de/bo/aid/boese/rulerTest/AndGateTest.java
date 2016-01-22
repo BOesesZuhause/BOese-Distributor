@@ -105,7 +105,7 @@ public class AndGateTest {
 				+ 				"<CONSTANT>" + value1 + "</CONSTANT>"
 				+ 			"</VALUE>"
 				+ 			"<RESET_VALUE>10</RESET_VALUE>"
-				+ 			"<COMPERATOR>==</COMPERATOR>"
+				+ 			"<COMPARATOR>==</COMPARATOR>"
 				+ 		"</COMPONENT>"
 				+ 		"<COMPONENT>"
 				+ 			"<ID>" + deco2.getDeCoId() + "</ID>"
@@ -113,7 +113,7 @@ public class AndGateTest {
 				+ 				"<CONSTANT>" + value2 + "</CONSTANT>"
 				+ 			"</VALUE>"
 				+ 			"<RESET_VALUE>20</RESET_VALUE>"
-				+ 			"<COMPERATOR>!=</COMPERATOR>"
+				+ 			"<COMPARATOR>!=</COMPARATOR>"
 				+ 		"</COMPONENT>"
 				+ 	"</AND>"
 				+ "</CONDITION>";

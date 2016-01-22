@@ -144,7 +144,7 @@ public class XMLParserTest {
 				+ "<RESET_VALUE>10</RESET_VALUE>"
 				+ "<START_TIME>*;*;*;*;*;*</START_TIME>"
 				+ "<DURATION>15</DURATION>"
-				+ "<COMPERATOR>==</COMPERATOR>"
+				+ "<COMPARATOR>==</COMPARATOR>"
 				+ "</COMPONENT>"
 				+ "<COMPONENT>"
 				+ "<ID>100</ID>"
@@ -152,7 +152,7 @@ public class XMLParserTest {
 				+ "<RESET_VALUE>20</RESET_VALUE>"
 				+ "<START_TIME>*;*;*;*;*;*</START_TIME>"
 				+ "<DURATION>25</DURATION>"
-				+ "<COMPERATOR>!=</COMPERATOR>"
+				+ "<COMPARATOR>!=</COMPARATOR>"
 				+ "</COMPONENT>"
 				+ "</CONDITION>";
 		
@@ -197,7 +197,7 @@ public class XMLParserTest {
 				+ 		"<RESET_VALUE>10</RESET_VALUE>"
 				+ "<START_TIME>*;*;*;*;*;*</START_TIME>"
 				+ 		"<DURATION>15</DURATION>"
-				+ 		"<COMPERATOR>==</COMPERATOR>"
+				+ 		"<COMPARATOR>==</COMPARATOR>"
 				+ 	"</COMPONENT>"
 				+ 	"<COMPONENT>"
 				+ 		"<ID>100</ID>"
@@ -205,7 +205,7 @@ public class XMLParserTest {
 				+ 		"<RESET_VALUE>20</RESET_VALUE>"
 				+ "<START_TIME>*;*;*;*;*;*</START_TIME>"
 				+ 		"<DURATION>25</DURATION>"
-				+ 		"<COMPERATOR>!=</COMPERATOR>"
+				+ 		"<COMPARATOR>!=</COMPARATOR>"
 				+ 	"</COMPONENT>"
 				+ "</AND>"
 				+ "</CONDITION>";
@@ -257,7 +257,7 @@ public class XMLParserTest {
 				+ 		"<RESET_VALUE>10</RESET_VALUE>"
 				+ "<START_TIME>*;*;*;*;*;*</START_TIME>"
 				+ 		"<DURATION>15</DURATION>"
-				+ 		"<COMPERATOR>==</COMPERATOR>"
+				+ 		"<COMPARATOR>==</COMPARATOR>"
 				+ 	"</COMPONENT>"
 				+ "</AND>"
 				+ "</CONDITION>";
