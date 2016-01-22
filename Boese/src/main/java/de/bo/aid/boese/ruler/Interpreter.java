@@ -119,9 +119,9 @@ public class Interpreter {
 	 */
 	public List<DeviceComponent> getAllDeCosCondition(BoeseXML conditions){
 		List<DeviceComponent> list = new ArrayList<DeviceComponent>();
-		for (ComponentXML comp : ((Condition)conditions).getRule().getComponents()) {
+		for (int comp : ((Condition)conditions).getComponentIds()) {
 			try {
-				list.add(Selects.deviceComponent(comp.getId()));
+				list.add(Selects.deviceComponent(comp));
 			} catch (DBObjectNotFoundException e) {
 			    logger.error(e);
 				e.printStackTrace();
