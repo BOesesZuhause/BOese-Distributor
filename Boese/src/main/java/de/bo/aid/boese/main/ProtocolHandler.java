@@ -890,20 +890,21 @@ public class ProtocolHandler implements MessageHandler {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
-		try {
-			Updates.deviceComponentStatus(ss.getStatusCode(), ss.getDeviceComponentId());
-		} catch (DBObjectNotFoundException e) {
-			logger.error(e.getMessage(), e);
-		}
-
-		// TODO Shouldn't this be ConfirmStatus?
-//		BoeseJson cs = new SendStatus(ss.getDeviceComponentId(), ss.getStatusCode(), ss.getStatusTimestamp(), false,
-//				connectorId, 0, new Date().getTime());
-		OutputStream os = new ByteArrayOutputStream();
-		BoeseJson.parseMessage(ss, os);
-		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
-		//send status to all userConnectors
-		SessionHandler.getInstance().sendToUserConnectors(os.toString());
+		
+//		try {
+//			Updates.deviceComponentStatus(ss.getStatusCode(), ss.getDeviceComponentId());
+//		} catch (DBObjectNotFoundException e) {
+//			logger.error(e.getMessage(), e);
+//		}
+//
+//		// TODO Shouldn't this be ConfirmStatus? Confirm zurücksenden
+////		BoeseJson cs = new SendStatus(ss.getDeviceComponentId(), ss.getStatusCode(), ss.getStatusTimestamp(), false,
+////				connectorId, 0, new Date().getTime());
+//		OutputStream os = new ByteArrayOutputStream();
+//		BoeseJson.parseMessage(ss, os);
+//		//SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
+//		//send status to all userConnectors
+//		SessionHandler.getInstance().sendToUserConnectors(os.toString());
 	}
 
 	/**
