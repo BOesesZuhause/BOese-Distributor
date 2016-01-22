@@ -143,7 +143,7 @@ public class Interpreter {
 		}
 		for(RepeatRule rr : rule){
 			try {
-				ToDo todo = new ToDo(new TimeFormat(rr.getRepeat()).getDate());
+				ToDo todo = new ToDo(new TimeFormat(rr.getRepeat()).getDateForRepeatRule());
 				Inserts.toDoWithoutChange(todo, rr.getRrId());
 			} catch (DBForeignKeyNotFoundException e) {
 				logger.error(e);
