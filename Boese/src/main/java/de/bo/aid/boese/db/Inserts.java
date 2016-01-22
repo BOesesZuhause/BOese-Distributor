@@ -495,7 +495,7 @@ public class Inserts {
 		
 		session.close();
 		
-		ToDo todo = new ToDo(new TimeFormat(rr.getRepeat()).getDate());
+		ToDo todo = new ToDo(new TimeFormat(rr.getRepeat()).getDateForRepeatRule());
 		System.out.println(todo.getDate().toString());
 		if(tdc != null){
 			Inserts.toDo(todo, rr.getRrId(), tdc);
