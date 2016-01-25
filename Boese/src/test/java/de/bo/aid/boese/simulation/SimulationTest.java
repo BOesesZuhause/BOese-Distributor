@@ -3,7 +3,6 @@
  */
 
 
-
 package de.bo.aid.boese.simulation;
 
 
@@ -36,12 +35,8 @@ public class SimulationTest {
     public void startServer() throws Exception {
     	Distributor distr = Distributor.getInstance();
     	DistributorProperties props = new DistributorProperties();
+    	props.setHeartbeat(false);
     	props.setTLS(false);
-//    	props.setDbHost("localhost");
-//    	props.setDbUser("postgres");
-//    	props.setDbPassword("Di0bPWfw");
-//    	props.setDbPort("5432");
-//    	props.setDbName("boeseTest");
     	props.setPort(8081);
     	props.setAutoConfirm(true);
     	distr.setProps(props);
@@ -49,7 +44,7 @@ public class SimulationTest {
     	distr.startWebsocketServer();
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");
-		HibernateUtil.setDBURL("boeseTest", "localhost", "5432");
+		HibernateUtil.setDBURL("boeseTest", "localhost", 5432);
         Connection.getConnection();
         Inserts.defaults();
         userSim = new UserSimulation(distr);

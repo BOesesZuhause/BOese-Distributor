@@ -68,7 +68,7 @@ public class AndGateTest {
 	public void setUp(){
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");
-		HibernateUtil.setDBURL("boeseTest", "localhost", "5432");
+		HibernateUtil.setDBURL("boeseTest", "localhost", 5432);
 		HibernateUtil.setDBAuto("create");
 		
 		con = new Connector("test", "123", false);

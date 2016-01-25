@@ -78,7 +78,7 @@ public class CalculationTest {
 	public void setUp() throws Exception {
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");
-		HibernateUtil.setDBURL("boeseTest", "localhost", "5432");
+		HibernateUtil.setDBURL("boeseTest", "localhost", 5432);
 		HibernateUtil.setDBAuto("create");
 		
 		Inserts.defaults();

@@ -20,7 +20,7 @@ public class MappingTestForTestDB {
 	public void test() {
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");
-		HibernateUtil.setDBURL("boeseTest", "localhost", "5432");
+		HibernateUtil.setDBURL("boeseTest", "localhost", 5432);
 		HibernateUtil.setDBAuto("create");
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();

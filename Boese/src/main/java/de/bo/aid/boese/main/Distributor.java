@@ -29,6 +29,7 @@
 package de.bo.aid.boese.main;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.OutputStream;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -138,9 +139,6 @@ private final String logo =
 	private ProtocolHandler protocolHandler;
 	
 	
-	/** The config file path. */
-	private String configFilePath;
-	
 	/** The Constant logger for log4j. */
 	private static final  Logger logger = LogManager.getLogger(Distributor.class);
 	
@@ -149,6 +147,8 @@ private final String logo =
 	
 	/** The props. */
 	DistributorProperties props;
+	
+	Parameters params;
 
     
     /**
@@ -241,7 +241,7 @@ private final String logo =
 	 * @param args the args
 	 */
 	public void checkArguments(String[] args){
-		Parameters params = new Parameters();
+		params = new Parameters();
 		JCommander cmd = new JCommander(params);
 
 		try {
@@ -253,13 +253,11 @@ private final String logo =
 			System.exit(0);
 		}
 		
-		configFilePath = params.getConfig();
+	      if(params.isHelp()){
+	            cmd.usage();
+	            System.exit(0);
+	        }
 		
-		if (params.isGenConfig()) {
-			createDefaultProperties();
-			logger.info("created default properties-file at: " + configFilePath);
-			System.exit(0);
-		}
 		
 	}
 	
@@ -268,19 +266,19 @@ private final String logo =
 	 * Load the properties-file.
 	 */
 	public void loadProperties() {
-		props= new DistributorProperties();
-		props.load(configFilePath);
-		
-	}
+	    props = new DistributorProperties();
 
-	/**
-	 * Creates the default properties-file.
-	 */
-	//TODO test
-	private void createDefaultProperties() {
-		DistributorProperties props = new DistributorProperties();
-		props.setDefaults();
-		props.save(configFilePath);
+        try {
+            //Load settings-file
+            props.load(params.getConfig());
+        } catch (FileNotFoundException e) {
+            logger.warn("Could not find settings-file at: " + params.getConfig());
+            logger.info("Generating new settings-file at: " + params.getConfig());
+        }
+        
+        props.setDefaultsIfNotExist(params.getConfig()); //set default value if a value is not set
+        props.addParams(params); //overwrite values with cli-values
+		
 	}
 	
 	/**
@@ -303,7 +301,7 @@ private final String logo =
 	    if(props.getHeartbeat()){
 	        logger.info("starting heartbeat-thread");
 	        HeartbeatWorker worker = new HeartbeatWorker();
-	        worker.interval = props.getHeartbeatIntervall() * 1000;
+	        HeartbeatWorker.interval = props.getHeartbeatIntervall() * 1000;
 	        SessionHandler.getInstance().setMissedAnswerThreshold(props.getHeartBeatThreshold());
 	        worker.start(); 
 	        logger.info("heartbeat-thread started successfully");

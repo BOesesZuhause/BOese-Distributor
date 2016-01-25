@@ -20,6 +20,9 @@ import javax.validation.ConstraintViolation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.bo.aid.boese.cli.Parameters;
+
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class DistributorProperties.
@@ -56,7 +59,7 @@ public class DistributorProperties extends Properties{
 	private final String CONFIRM = "auto_confirm";
 	
 	/** The password. */
-	private final String PASSWORD = "database_password";
+	private final String DB_PASSWORD = "database_password";
 	
 	/** The database. */
 	private final String DATABASE = "database_name";
@@ -91,37 +94,32 @@ public class DistributorProperties extends Properties{
 	 * Load.
 	 *
 	 * @param path the path
+	 * @throws FileNotFoundException 
 	 */
-	public void load(String path){
-		FileInputStream file = null;
-		try {
-			file = new FileInputStream(path);
-		} catch (FileNotFoundException e) {
-			logger.error("config File not found at: " + path, e);
-			logger.info("Generating default properties file");
-			this.setDefaults();
-			this.save(path);
-			System.exit(0);
-		}
+	public void load(String path) throws FileNotFoundException{
+        FileInputStream file = null;
+        
+        file = new FileInputStream(path);
+    
 
-		// load all the properties from the file
-		try {
-			this.load(file);
-		} catch (IOException e) {
-			logger.error("IO-Exception while loading config-file", e);
-			System.exit(0);
-		}
+    // load all the properties from the file
+    try {
+        this.load(file);
+    } catch (IOException e) {
+        logger.error("IO-Exception while loading config-file", e);
+        System.exit(0);
+    }
 
-		// close the file handle
-		try {
-			file.close();
-		} catch (IOException e) {
-			logger.error("IO-Exception while closing config-file", e);
-			System.exit(0);
-		}
-		if(!validate()){
-			System.exit(0);
-		}
+    // close the file handle
+    try {
+        file.close();
+    } catch (IOException e) {
+        logger.error("IO-Exception while closing config-file", e);
+        System.exit(0);
+    }
+//    if(!validate()){
+//        System.exit(0);
+//    }
 	}
 	
 	/**
@@ -164,9 +162,154 @@ public class DistributorProperties extends Properties{
 		this.setDbPassword("Di0bPWfw");
 		this.setDbName("boese");
 		this.setDbHost("localhost");
-		this.setDbPort("5432");
+		this.setDbPort(5432);
 		this.setDefaultPassword("Boese");
 	}
+	
+    public void setDefaultsIfNotExist(String path){
+        boolean change = false;
+        
+        if(this.getHeartbeat() == null){
+            this.setHeartbeat(Parameters.DEFAULT_HEARTBEAT);
+            logger.warn(HEARTBEAT + " was not set. Using default value");
+            change = true;
+        }
+        if(this.getTLS() == null){
+            this.setTLS(Parameters.DEFAULT_TLS);
+            logger.warn(TLS + " was not set. Using default value");
+            change = true;
+        }
+        if(this.getDbHost() == null){
+            this.setDbHost(Parameters.DEFAULT_DB_HOST);
+            logger.warn(DB_HOST + " was not set. Using default value");
+            change = true;
+        }
+        if(this.getDbName() == null){
+            this.setDbName(Parameters.DEFAULT_DB_NAME); 
+            logger.warn(DATABASE + " was not set. Using default value");
+            change = true;
+        }
+        if(this.getDbPassword() == null){
+            this.setDbPassword(Parameters.DEFAULT_DB_PASSWORD);
+            logger.warn( DB_PASSWORD + " was not set. Using default value");
+            change = true;
+        }
+        if(this.getDbPort() == null){
+            this.setDbPort(Parameters.DEFAULT_DB_PORT);
+            logger.warn(DB_PORT + " was not set. Using default value");
+            change = true;
+        }
+        if(this.getDbUser() == null){
+            this.setDbUser(Parameters.DEFAULT_DB_USER);
+            logger.warn(USER + " was not set. Using default value");
+            change = true;
+        }
+        
+        if(this.getDefaultPassword() == null){
+            this.setDefaultPassword(Parameters.DEFAULT_PASSWORD);
+            logger.warn(DEFAULT_PASSWORD + " was not set. Using default value");
+            change = true;
+        }
+        if(this.getHeartbeatIntervall() == null){
+            this.setHeartBetIntervall(Parameters.DEFAULT_HEARTBEAT_INTERVAL);
+            logger.warn(HB_INTERVALL + " was not set. Using default value");
+            change = true;
+        }
+        if(this.getHeartBeatThreshold() == null){
+            this.setHeartBeatThreshold(Parameters.DEFAULT_HEARTBEAT_THRESHOLD);
+            logger.warn(HB_THRESHOLD + " was not set. Using default value");
+            change = true;
+        }
+        if(this.getKeyStore() == null){
+            this.setKeyStore(Parameters.DEFAULT_KEYSTORE);
+            logger.warn(KEYSTORE + " was not set. Using default value");
+            change = true;
+        }
+        if(this.getKeystorePassword() == null){
+            this.setKeystorePassword(Parameters.DEFAULT_KEYSTORE_PW);
+            logger.warn(KEYSTOR_PW + " was not set. Using default value");
+            change = true;
+        }
+        if(this.getPort() == null){
+            this.setPort(Parameters.DEFAULT_PORT);
+            logger.warn(WS_PORT + " was not set. Using default value");
+            change = true;
+        }
+        
+        if(!validate()){
+            System.exit(0);
+        }
+        
+        if(change){
+            this.save(path);
+        }
+    }
+    
+    public void addParams(Parameters params){
+        boolean change = false;
+       
+        if(params.isHeartbeat() != Parameters.DEFAULT_HEARTBEAT){
+            this.setHeartbeat(params.isHeartbeat());
+            change = true;
+        }
+        if(params.isTls() != Parameters.DEFAULT_TLS){
+            this.setTLS(params.isTls());
+            change = true;
+        }
+        if(!params.getDbHost().equals(Parameters.DEFAULT_DB_HOST)){
+            this.setDbHost(params.getDbHost());
+            change = true;
+        }
+        if(!params.getDbName().equals(Parameters.DEFAULT_DB_NAME)){
+            this.setDbName(params.getDbName());
+            change = true;
+        }
+        if(!params.getDbPassword().equals(Parameters.DEFAULT_DB_PASSWORD)){
+            this.setDbPassword(params.getDbPassword());
+            change = true;
+        }
+        if(params.getDbPort() != Parameters.DEFAULT_DB_PORT){
+            this.setDbPort(params.getDbPort());
+            change = true;
+        }
+        if(!params.getDbUser().equals(Parameters.DEFAULT_DB_USER)){
+            this.setDbUser(params.getDbUser());
+            change = true;
+        }
+        if(!params.getPassword().equals(Parameters.DEFAULT_PASSWORD)){
+            this.setDefaultPassword(params.getPassword());
+            change = true;
+        }
+        if(params.getHeartbeatInterval() != Parameters.DEFAULT_HEARTBEAT_INTERVAL){
+            this.setHeartBetIntervall(params.getHeartbeatInterval());
+            change = true;
+        }
+        if(params.getHeartbeatTreshold() != Parameters.DEFAULT_HEARTBEAT_THRESHOLD){
+            this.setHeartBeatThreshold(params.getHeartbeatTreshold());
+            change = true;
+        }
+        if(!params.getKeystore().equals(Parameters.DEFAULT_KEYSTORE)){
+            this.setKeyStore(params.getKeystore());
+            change = true;
+        }
+        if(!params.getKeystore_password().equals(Parameters.DEFAULT_KEYSTORE_PW)){
+            this.setKeystorePassword(params.getKeystore_password());
+            change = true;
+        }
+        if(params.getPort() != Parameters.DEFAULT_PORT){
+            this.setPort(params.getPort());
+            change = true;
+        }
+
+        if(!validate()){
+            System.exit(0);
+        }
+        
+        if(change){
+            this.save(params.getConfig());
+            logger.info("Saved new values from parameters to settings-file");
+        }
+    }
 	
 	/**
 	 * Gets the db host.
@@ -192,8 +335,12 @@ public class DistributorProperties extends Properties{
 	 *
 	 * @return the tls
 	 */
-	public boolean getTLS(){
-		return Boolean.parseBoolean(this.getProperty(TLS));
+	public Boolean getTLS(){
+	    if(this.getProperty(TLS) == null){
+	        return null;
+	    }else{
+	        return Boolean.parseBoolean(this.getProperty(TLS)); 
+	    }
 	}
 	
 	/**
@@ -227,8 +374,12 @@ public class DistributorProperties extends Properties{
 	 *
 	 * @return the heartbeat
 	 */
-	public boolean getHeartbeat(){
-	    return Boolean.parseBoolean(this.getProperty(HEARTBEAT));
+	public Boolean getHeartbeat(){
+	    if(this.getProperty(HEARTBEAT) == null){
+	        return null;
+	    }else{
+	        return Boolean.parseBoolean(this.getProperty(HEARTBEAT));   
+	    }
 	}
 	
 	public String getKeyStore(){
@@ -245,16 +396,19 @@ public class DistributorProperties extends Properties{
 	 *
 	 * @return the heartbeat intervall
 	 */
-	public int getHeartbeatIntervall(){
-	       int intervall;
-	        try{
-	        intervall = Integer.parseInt(this.getProperty(HB_INTERVALL));
-	        }catch (NumberFormatException e){
-	            logger.error("Unable to load HB_Interval from properties", e);
-	            logger.info("Using default intervall 60");
-	            intervall = 60;
+	public Integer getHeartbeatIntervall(){
+	        if(this.getProperty(HB_INTERVALL) == null){
+	            return null;
+	        }else{
+	            int intervall;
+	            try{
+	            intervall = Integer.parseInt(this.getProperty(HB_INTERVALL));
+	            }catch (NumberFormatException e){
+	                logger.error("Unable to load HB_Interval from properties", e);
+	                return null;
+	            }
+	            return intervall; 
 	        }
-	        return intervall;
 	}
 	
     /**
@@ -280,16 +434,20 @@ public class DistributorProperties extends Properties{
    	 *
    	 * @return the heart beat threshold
    	 */
-   	public int getHeartBeatThreshold(){
-           int threshold;
-            try{
-            threshold = Integer.parseInt(this.getProperty(HB_THRESHOLD));
-            }catch (NumberFormatException e){
-                logger.error("Unable to load HB_threshold from properties", e);
-                logger.info("Using default threshold 3");
-                threshold = 3;
-            }
-            return threshold;
+   	public Integer getHeartBeatThreshold(){
+   	    if(this.getProperty(HB_THRESHOLD) == null){
+   	        return null;
+   	    }else{
+   	     int threshold;
+         try{
+             threshold = Integer.parseInt(this.getProperty(HB_THRESHOLD));
+         }catch (NumberFormatException e){
+             logger.error("Unable to load HB_threshold from properties", e);
+             return null;
+         }
+         return threshold;  
+   	    }
+          
     }
     
 
@@ -339,7 +497,7 @@ public class DistributorProperties extends Properties{
 	 */
 	@NotNull
 	public String getDbPassword() {
-		return this.getProperty(PASSWORD);
+		return this.getProperty(DB_PASSWORD);
 	}
 	
 	/**
@@ -348,7 +506,7 @@ public class DistributorProperties extends Properties{
 	 * @param dbPassword the new db password
 	 */
 	public void setDbPassword(String dbPassword) {
-		this.setProperty(PASSWORD, dbPassword);
+		this.setProperty(DB_PASSWORD, dbPassword);
 	}
 	
 	/**
@@ -357,16 +515,20 @@ public class DistributorProperties extends Properties{
 	 * @return the port
 	 */
 	@NotNull
-	public int getPort() {
-		int port;
-		try{
-		port = Integer.parseInt(this.getProperty(WS_PORT));
-		}catch (NumberFormatException e){
-			logger.error("Unable to load Port from properties", e);
-			logger.info("Trying to use default port 8081");
-			port = 8081;
-		}
-		return port;
+	public Integer getPort() {
+	    if(this.getProperty(WS_PORT) == null){
+	        return null;
+	    }else{
+	        int port;
+	        try{
+	        port = Integer.parseInt(this.getProperty(WS_PORT));
+	        }catch (NumberFormatException e){
+	            logger.error("Unable to load Port from properties", e);
+	            return null;
+	        }
+	        return port;  
+	    }
+
 	}
 	
 	/**
@@ -384,8 +546,12 @@ public class DistributorProperties extends Properties{
 	 * @return true, if is auto confirm
 	 */
 	@NotNull
-	public boolean isAutoConfirm() {
-		return Boolean.parseBoolean(this.getProperty(CONFIRM));
+	public Boolean isAutoConfirm() {
+	    if(this.getProperty(CONFIRM) == null){
+	        return null;
+	    }else{
+	        return Boolean.parseBoolean(this.getProperty(CONFIRM));   
+	    }
 	}
 	
 	/**
@@ -402,8 +568,8 @@ public class DistributorProperties extends Properties{
 	 *
 	 * @param port the new db port
 	 */
-	public void setDbPort(String port){
-		this.setProperty(DB_PORT, port);
+	public void setDbPort(int port){
+		this.setProperty(DB_PORT, port + "");
 	}
 
 	/**
@@ -412,8 +578,20 @@ public class DistributorProperties extends Properties{
 	 * @return the db port
 	 */
 	@NotNull
-	public String getDbPort() {
-		return this.getProperty(DB_PORT);
+	public Integer getDbPort() {
+	    if(this.getProperty(DB_PORT) == null){
+	        return null;
+	    }else{
+	        int port;
+	         try{
+	             port = Integer.parseInt(this.getProperty(DB_PORT));
+	         }catch (NumberFormatException e){
+	             logger.error("Unable to load databas_port from properties", e);
+	             return null;
+	         }
+	         return port;  
+	    }
+
 	}
 	
 	/**

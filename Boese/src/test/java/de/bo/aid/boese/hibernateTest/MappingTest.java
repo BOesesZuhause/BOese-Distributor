@@ -23,7 +23,7 @@ public class MappingTest {
 //				.buildSessionFactory(); 
 		HibernateUtil.setDBUser("postgres");
 		HibernateUtil.setDBPassword("Di0bPWfw");
-		HibernateUtil.setDBURL("boese", "localhost", "5432");
+		HibernateUtil.setDBURL("boese", "localhost", 5432);
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.close();

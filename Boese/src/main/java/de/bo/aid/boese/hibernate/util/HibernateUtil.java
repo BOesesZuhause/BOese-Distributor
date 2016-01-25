@@ -116,7 +116,7 @@ public class HibernateUtil {
 	     * @param host the host
 	     * @param port the port
 	     */
-	    public static void setDBURL(String name, String host, String port){
+	    public static void setDBURL(String name, String host, int port){
     		String url = "jdbc:postgresql://" + host+ ":" +port+"/"+name;
     		configuration.setProperty("hibernate.connection.url", url); 
       	}
