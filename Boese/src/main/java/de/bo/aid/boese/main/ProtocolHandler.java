@@ -942,10 +942,6 @@ public class ProtocolHandler implements MessageHandler {
 		try {
 			DeviceComponent deco = Selects.deviceComponent(deCoId);
 			Component comp = deco.getComponent();
-			if(!comp.isActor()){
-				logger.warn("Can not send a value to a sensor");
-				sendNotificationToAllUserConnectors("Can not send a value to the sensor: " + comp.getName() , NotificationType.WARNING, System.currentTimeMillis());
-			}
 		} catch (DBObjectNotFoundException e) {
 			logger.error(e);
 		}
