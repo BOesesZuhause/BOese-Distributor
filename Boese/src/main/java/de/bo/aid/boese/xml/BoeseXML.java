@@ -120,7 +120,7 @@ public class BoeseXML {
 				break;
 			}
 		} catch (Exception e) {
-			System.out.println();
+		    System.err.println(e.getStackTrace());
 		}
 		
 		return returnXML;
