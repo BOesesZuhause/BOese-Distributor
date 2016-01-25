@@ -726,7 +726,9 @@ public class TimeFormat implements Comparable<TimeFormat>{
         int[] mi = getRealMin();
         int[] h = getRealHour(mi[1]);
         int[] d = getRealDay(h[1]);
-        this.setMonth(this.getMonth()-1, false);
+        if(!calculate[3]){
+        	this.setMonth(this.getMonth()-1, false);
+        }
         int[] mo = getRealMonth(d[1]);
         int y = getRealYear(mo[1]);
         if(y < 2000){
