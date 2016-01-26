@@ -86,7 +86,7 @@ public class Interpreter {
 			int id = inquiry.getDeviceComponentId();
 			List<Rule> rules = Selects.rulesByDeviceComponent(id);
 			for(Rule rule : rules){
-				if(check.deCoInCondition(id, rule.getConditions())){
+				if(rule.getActive() && check.deCoInCondition(id, rule.getConditions())){
 					InputStream is = new ByteArrayInputStream(rule.getConditions().getBytes());
 					BoeseXML conBXML = BoeseXML.readXML(is);
 //					is = new ByteArrayInputStream(rule.getPermissions().getBytes());
