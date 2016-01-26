@@ -169,6 +169,12 @@ public class DistributorProperties extends Properties{
     public void setDefaultsIfNotExist(String path){
         boolean change = false;
         
+        if(this.isAutoConfirm() == null){
+            this.setAutoConfirm(Parameters.DEFAULT_AUTOCONFIRM);
+            logger.warn(CONFIRM + " was not set. Using default value");
+            change = true;
+        }
+        
         if(this.getHeartbeat() == null){
             this.setHeartbeat(Parameters.DEFAULT_HEARTBEAT);
             logger.warn(HEARTBEAT + " was not set. Using default value");
@@ -248,6 +254,11 @@ public class DistributorProperties extends Properties{
     public void addParams(Parameters params){
         boolean change = false;
        
+        if(params.isAutoconfirm() != Parameters.DEFAULT_AUTOCONFIRM){
+            this.setAutoConfirm(params.isAutoconfirm());
+            change = true;
+        }
+        
         if(params.isHeartbeat() != Parameters.DEFAULT_HEARTBEAT){
             this.setHeartbeat(params.isHeartbeat());
             change = true;
