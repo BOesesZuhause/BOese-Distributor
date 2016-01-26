@@ -40,6 +40,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXParseException;
 
 import de.bo.aid.boese.xml.CalculationList.CalculationTypes;
 
@@ -120,6 +121,8 @@ public class BoeseXML {
 				break;
 			}
 		} catch (Exception e) {
+		    //TODO Notification senden
+		    //e enthaelt den XML-Parser Fehler wenn e SAXParseException ist.
 		    System.err.println(e.getStackTrace());
 		}
 		

@@ -9,9 +9,9 @@
     <!-- <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/> -->
             <PatternLayout pattern="${PATTERN}"/>
         </Console>
-        <File name="Log_File" filename="debug.txt">
-            <PatternLayout pattern="${PATTERN}"/>
-        </File>
+<!--         <File name="Log_File" filename="debug.txt"> -->
+<!--             <PatternLayout pattern="${PATTERN}"/> -->
+<!--         </File> -->
     </Appenders>
     <Loggers>
         <Root level="INFO">
