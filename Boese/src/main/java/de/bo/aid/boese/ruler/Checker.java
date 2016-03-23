@@ -35,6 +35,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.bo.aid.boese.constants.Status;
 import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.db.Updates;
@@ -42,17 +45,21 @@ import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.exceptions.NoCalculationTypeException;
 import de.bo.aid.boese.exceptions.NoFirstCalculationException;
 import de.bo.aid.boese.exceptions.OnlyTwoObjectsForModuloException;
+import de.bo.aid.boese.main.Distributor;
 import de.bo.aid.boese.xml.Action;
 import de.bo.aid.boese.xml.CalculationList;
 import de.bo.aid.boese.xml.ComponentXML;
 import de.bo.aid.boese.xml.GateList;
 import de.bo.aid.boese.xml.GateList.GateType;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Checker checks the XML-Rules.
  */
 public class Checker {
+	
+
+	/** The Constant logger for log4j. */
+	private static final  Logger logger = LogManager.getLogger(Distributor.class);
 
 	/**
 	 * Checks if the given DeviceCompoent is part of the Condition.
@@ -126,7 +133,7 @@ public class Checker {
 		try {
 			status = Selects.deviceComponent(comp.getId()).getStatus();
 		} catch (DBObjectNotFoundException e1) {
-			// TODO Logger
+			logger.error("Status der Komponente mit der ID " + comp.getId() + " kann nicht geladen werden.");
 			e1.printStackTrace();
 		}
 		if(status == Status.NO_STATUS || status == Status.INACTIVE || status == Status.DEFECT || status == Status.UNAVAILABLE || status == Status.COMMUNICATION_FAILURE || status == Status.UNKNOWN || status == Status.DELETED ){
@@ -137,13 +144,27 @@ public class Checker {
 			try {
 				isValue = Selects.currentValue(comp.getId());
 			} catch (DBObjectNotFoundException e1) {
-				// TODO logger
+				logger.error("Der Wert der Komponente mit der ID: " + comp.getId() + " kann nicht in der Datenbank gefunden werden.");
 				e1.printStackTrace();
 			}
 			double comparativeValue = 0.0;
 			try {
 				comparativeValue = calculate(comp.getCalculation());
-			} catch (Exception e) {
+			}
+			catch (NoCalculationTypeException ncte){
+				logger.error("Es wurde kein Calculationtype angegeben");
+				ncte.printStackTrace();
+			}
+			catch (NoFirstCalculationException nfce){
+				logger.error("Es wurde kein erster Rechenwert(FIRST) angegeben");
+				nfce.printStackTrace();
+			}
+			catch (OnlyTwoObjectsForModuloException otofme){
+				logger.error("Es wurden mehr als zwei Werte bei einer Moduloberechnung");
+				otofme.printStackTrace();
+			} 
+			catch (Exception e) {
+				logger.error("Ein unerklicher Fehler in Calculate ist aufgetreten");
 				System.err.println("Bad XML: " + e.getMessage());
 				return false;
 			}
@@ -161,6 +182,7 @@ public class Checker {
 			case LOWERTHEN:
 				return isValue < comparativeValue;
 			default:
+				logger.info("Kein Comperator angegeben");
 				return false;
 			}
 		}
@@ -184,9 +206,21 @@ public class Checker {
 		for(ComponentXML actor : action.getActors()){
 			try {
 				actor.setValue(calculate(actor.getCalculation()));
-			} catch (Exception e) {
+			} catch (NoCalculationTypeException ncte){
+				logger.error("Es wurde kein Calculationtype angegeben");
+				ncte.printStackTrace();
+			}
+			catch (NoFirstCalculationException nfce){
+				logger.error("Es wurde kein erster Rechenwert(FIRST) angegeben");
+				nfce.printStackTrace();
+			}
+			catch (OnlyTwoObjectsForModuloException otofme){
+				logger.error("Es wurden mehr als zwei Werte bei einer Moduloberechnung");
+				otofme.printStackTrace();
+			} 
+			catch (Exception e) {
+				logger.error("Ein unerklicher Fehler in Calculate ist aufgetreten");
 				System.err.println("Bad XML: " + e.getMessage());
-				e.printStackTrace();
 				throw new Exception(e.getMessage());
 			}
 			toDos.add(actor);
@@ -213,12 +247,31 @@ public class Checker {
 			try {
 				values.add(Selects.currentValue(i));
 			} catch (DBObjectNotFoundException e) {
-				// TODO Logger
+				logger.error("Der Wert der Komponente mit der ID: " + i + " konnte nicht in der Datenbank gefunden werden.");
 				e.printStackTrace();
 			}
 		}
 		for(CalculationList next : cl.getCalculations()){
-			values.add(calculate(next));
+			try{
+				values.add(calculate(next));
+			}
+			catch (NoCalculationTypeException ncte){
+				logger.error("Es wurde kein Calculationtype angegeben");
+				ncte.printStackTrace();
+			}
+			catch (NoFirstCalculationException nfce){
+				logger.error("Es wurde kein erster Rechenwert(FIRST) angegeben");
+				nfce.printStackTrace();
+			}
+			catch (OnlyTwoObjectsForModuloException otofme){
+				logger.error("Es wurden mehr als zwei Werte bei einer Moduloberechnung");
+				otofme.printStackTrace();
+			} 
+			catch (Exception e) {
+				logger.error("Ein unerklicher Fehler in Calculate ist aufgetreten");
+				System.err.println("Bad XML: " + e.getMessage());
+				e.printStackTrace();
+			}
 		}
 		if(cl.getCalculationType() == null && values.size() == 1){
 			for(double d : values){
