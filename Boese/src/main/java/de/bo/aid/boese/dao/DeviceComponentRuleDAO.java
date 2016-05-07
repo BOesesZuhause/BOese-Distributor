@@ -7,21 +7,21 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-public class DeviceComponentRule implements StandardDAO<DeviceComponentRule>{
+public class DeviceComponentRuleDAO implements StandardDAO<DeviceComponentRuleDAO>{
 
 	@Override
-	public DeviceComponentRule get(EntityManager em, int id) {
-		DeviceComponentRule entity = (DeviceComponentRule) em.find(DeviceComponentRule.class, id);
+	public DeviceComponentRuleDAO get(EntityManager em, int id) {
+		DeviceComponentRuleDAO entity = (DeviceComponentRuleDAO) em.find(DeviceComponentRuleDAO.class, id);
 		return entity;
 	}
 
 	@Override
-	public Set<DeviceComponentRule> getAll(EntityManager em, int id) {
+	public Set<DeviceComponentRuleDAO> getAll(EntityManager em, int id) {
 		Query q = em.createQuery("SELECT d FROM DeviceComponentRule d");
 		List<?> erg = q.getResultList();
-		Set<DeviceComponentRule> entities = new HashSet<DeviceComponentRule>();
+		Set<DeviceComponentRuleDAO> entities = new HashSet<DeviceComponentRuleDAO>();
 		for(Object o : erg){
-			entities.add((DeviceComponentRule)o);
+			entities.add((DeviceComponentRuleDAO)o);
 		}
 		return entities;
 	}

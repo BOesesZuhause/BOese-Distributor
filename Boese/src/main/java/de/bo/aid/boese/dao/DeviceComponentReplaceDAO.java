@@ -9,21 +9,21 @@ import javax.persistence.Query;
 
 import de.bo.aid.boese.model.DeviceComponent;
 
-public class DeviceComponentReplace implements StandardDAO<DeviceComponentReplace> {
+public class DeviceComponentReplaceDAO implements StandardDAO<DeviceComponentReplaceDAO> {
 
 	@Override
-	public DeviceComponentReplace get(EntityManager em, int id) {
-		DeviceComponentReplace entity = (DeviceComponentReplace) em.find(DeviceComponentReplace.class, id);
+	public DeviceComponentReplaceDAO get(EntityManager em, int id) {
+		DeviceComponentReplaceDAO entity = (DeviceComponentReplaceDAO) em.find(DeviceComponentReplaceDAO.class, id);
 		return entity;
 	}
 
 	@Override
-	public Set<DeviceComponentReplace> getAll(EntityManager em, int id) {
+	public Set<DeviceComponentReplaceDAO> getAll(EntityManager em, int id) {
 		Query q = em.createQuery("SELECT d FROM DeviceComponentReplace d");
 		List<?> erg = q.getResultList();
-		Set<DeviceComponentReplace> entities = new HashSet<DeviceComponentReplace>();
+		Set<DeviceComponentReplaceDAO> entities = new HashSet<DeviceComponentReplaceDAO>();
 		for(Object o : erg){
-			entities.add((DeviceComponentReplace)o);
+			entities.add((DeviceComponentReplaceDAO)o);
 		}
 		return entities;
 	}
