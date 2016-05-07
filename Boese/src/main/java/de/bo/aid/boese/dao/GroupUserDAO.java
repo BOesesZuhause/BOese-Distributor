@@ -1,0 +1,41 @@
+package de.bo.aid.boese.dao;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import de.bo.aid.boese.model.GroupUser;
+
+public class GroupUserDAO implements StandardDAO<GroupUser>{
+
+	@Override
+	public GroupUser get(EntityManager em, int id) {
+		GroupUser entity = (GroupUser) em.find(GroupUser.class, id);
+		return entity;
+	}
+
+	@Override
+	public Set<GroupUser> getAll(EntityManager em, int id) {
+		Query q = em.createQuery("SELECT g FROM GroupUser g");
+		List<?> erg = q.getResultList();
+		Set<GroupUser> entities = new HashSet<GroupUser>();
+		for(Object o : erg){
+			entities.add((GroupUser)o);
+		}
+		return entities;
+	}
+
+	@Override
+	public long count(EntityManager em) {
+		String query = "select count(g) from GroupUser g";
+		Object first = em.createQuery(query).getResultList().get(0);
+		if (first instanceof Long) {
+			return ((Long) first).longValue();
+		}
+		throw new RuntimeException("Unexpected result for count query: " + first);
+	}
+	
+}
