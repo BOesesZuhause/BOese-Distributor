@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.junit.Test;
 
 import de.bo.aid.boese.hibernate.util.HibernateUtil;
+import de.bo.aid.boese.hibernate.util.JPAUtil;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -21,12 +22,20 @@ public class MappingTest {
 		//DEPRECATED
 //		SessionFactory sessionFactory = new Configuration().configure()
 //				.buildSessionFactory(); 
-		HibernateUtil.setDBUser("postgres");
-		HibernateUtil.setDBPassword("Di0bPWfw");
-		HibernateUtil.setDBURL("boese", "localhost", 5432);
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		session.close();
+//		HibernateUtil.setDBUser("postgres");
+//		HibernateUtil.setDBPassword("Di0bPWfw");
+//		HibernateUtil.setDBURL("boese", "localhost", 5432);
+//		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+//		Session session = sessionFactory.openSession();
+//		session.close();
+		try{
+		JPAUtil.setDBUser("postgres");
+		JPAUtil.setDBPassword("Di0bPWfw");
+		JPAUtil.setDBURL("boese", "localhost", 5432);
+		JPAUtil.init();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 }
