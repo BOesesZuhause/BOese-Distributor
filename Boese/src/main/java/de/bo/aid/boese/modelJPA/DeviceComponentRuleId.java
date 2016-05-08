@@ -31,6 +31,9 @@
 
 package de.bo.aid.boese.modelJPA;
 
+import javax.persistence.Column;
+import javax.persistence.Transient;
+
 // TODO: Auto-generated Javadoc
 /**
  * DeviceComponentRuleId Model for Hibernate.
@@ -38,12 +41,15 @@ package de.bo.aid.boese.modelJPA;
 public class DeviceComponentRuleId implements java.io.Serializable {
 
 	/** The Constant serialVersionUID. */
+	@Transient
 	private static final long serialVersionUID = 1L;
 
 	/** The DeviceComponentid. */
+	@Column(name = "deCoId", nullable = false)
 	private int deCoId;
 	
 	/** The Rule id. */
+	@Column(name = "ruId", nullable = false)
 	private int ruId;
 
 	/**

@@ -32,8 +32,13 @@ package de.bo.aid.boese.modelJPA;
 
 import java.util.Date;
 
-import de.bo.aid.boese.db.Selects;
-import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -42,15 +47,20 @@ import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 public class ToDo {
 	
 	/** The ToDoid. */
+	@Id
+	@GeneratedValue
 	private int toDoId;
 	
 	/**  The time when it will be executed. */
 	private Date date;
 	
 	/**  Is it active. */
+	@Column(columnDefinition="boolean default true")
 	private boolean active;
 	
 	/**  The Repeat Rule this ToDo is belonging to. */
+	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+	@JoinColumn(name = "repeatRule", nullable = false, unique=true)
 	private RepeatRule repeatRule;
 
 	/**

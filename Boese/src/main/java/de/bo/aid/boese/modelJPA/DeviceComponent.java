@@ -35,6 +35,16 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
 import de.bo.aid.boese.constants.Status;
 
 // TODO: Auto-generated Javadoc
@@ -44,15 +54,22 @@ import de.bo.aid.boese.constants.Status;
 public class DeviceComponent implements java.io.Serializable {
 
 	/** The Constant serialVersionUID. */
+	@Transient
 	private static final long serialVersionUID = 1L;
 
 	/** The DeviceComponent id. */
+	@Id
+	@GeneratedValue
 	private int deCoId;
 	
 	/** The linked component. */
+	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+	@JoinColumn(name = "component", nullable = false)
 	private Component component;
 	
 	/** The linked device. */
+	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+	@JoinColumn(name = "device", nullable = false)
 	private Device device;
 	
 	/** The status of the DeviceComponent. */
@@ -61,34 +78,44 @@ public class DeviceComponent implements java.io.Serializable {
 	/** The description. */
 	private String description;
 	
-	/** The rule how this DeviceComponent will be Logged. */
-	private BigDecimal logRule;
-	
 	/** The current value. */
+	@Column(precision = 25, scale = 10)
 	private BigDecimal currentValue;
 	
 	/** The min value. */
+	@Column(precision = 25, scale = 10)
 	private BigDecimal minValue;
 	
 	/** The max value. */
+	@Column(precision = 25, scale = 10)
 	private BigDecimal maxValue;
 	
+	/** The min difference between new and old value when it will be logged . */
+	@Column(precision = 25, scale = 10)
+	private BigDecimal logDiffernce;
+	
 	/**  will this DeviceComponent logged. */
+	@Column(nullable = false)
 	private boolean loggen;
 	
 	/** The earlier DeviceComponents. */
-	private Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoId = new HashSet<DeviceComponenteReplace>(0);
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "deviceComponent")
+	private Set<DeviceComponentReplace> deviceComponenteReplacesForDeCoId = new HashSet<DeviceComponentReplace>(0);
 	
 	/** The history log of this device components. */
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "deviceComponent")
 	private Set<HistoryLogDeviceComponent> historyLogDeviceComponents = new HashSet<HistoryLogDeviceComponent>(0);
 	
 	/** The earlier DeviceComponents. */
-	private Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoIdreplaced = new HashSet<DeviceComponenteReplace>(0);
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "deviceComponent")
+	private Set<DeviceComponentReplace> deviceComponenteReplacesForDeCoIdreplaced = new HashSet<DeviceComponentReplace>(0);
 	
 	/** The log of this device components. */
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "deviceComponent")
 	private Set<LogDeviceComponent> logDeviceComponents = new HashSet<LogDeviceComponent>(0);
 	
-	/** The ToDos. */
+	/** The RepeatRules. */
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "deviceComponent")
 	private Set<RepeatRule> repeatRule = new HashSet<RepeatRule>(0);
 
 	/**
@@ -114,13 +141,15 @@ public class DeviceComponent implements java.io.Serializable {
 	 * @param minValue the min Value
 	 * @param maxValue the max Value
 	 * @param loggen should it be logged
+	 * @param logDifference the difference between new and old value
 	 */
-	public DeviceComponent(String description, double minValue, double maxValue, boolean loggen) {
+	public DeviceComponent(String description, double minValue, double maxValue, double logDifference, boolean loggen) {
 		this.description = description;
 		this.status = Status.ACTIVE;
 		this.minValue = BigDecimal.valueOf(minValue);
 		this.maxValue = BigDecimal.valueOf(maxValue);
 		this.loggen = loggen;
+		this.logDiffernce = BigDecimal.valueOf(logDifference);
 	}
 
 	/**
@@ -156,16 +185,15 @@ public class DeviceComponent implements java.io.Serializable {
 	 * @param repeatRule the repeatRule
 	 */
 	public DeviceComponent(int deCoId, Component component, Device device, Integer status, String description,
-			BigDecimal logRule, BigDecimal currentValue, double minValue, double maxValue, 
-			boolean loggen, Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoId,
-			Set<HistoryLogDeviceComponent> historyLogDeviceComponents, Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoIdreplaced,
+			BigDecimal currentValue, double minValue, double maxValue, BigDecimal logDiffernce,
+			boolean loggen, Set<DeviceComponentReplace> deviceComponenteReplacesForDeCoId,
+			Set<HistoryLogDeviceComponent> historyLogDeviceComponents, Set<DeviceComponentReplace> deviceComponenteReplacesForDeCoIdreplaced,
 			Set<LogDeviceComponent> logDeviceComponents, Set<RepeatRule> repeatRule) {
 		this.deCoId = deCoId;
 		this.component = component;
 		this.device = device;
 		this.status = status;
 		this.description = description;
-		this.logRule = logRule;
 		this.currentValue = currentValue;
 		this.minValue = BigDecimal.valueOf(minValue);
 		this.maxValue = BigDecimal.valueOf(maxValue);
@@ -175,6 +203,7 @@ public class DeviceComponent implements java.io.Serializable {
 		this.deviceComponenteReplacesForDeCoIdreplaced = deviceComponenteReplacesForDeCoIdreplaced;
 		this.logDeviceComponents = logDeviceComponents;
 		this.repeatRule = repeatRule;
+		this.logDiffernce = logDiffernce;
 	}
 
 	/**
@@ -268,24 +297,6 @@ public class DeviceComponent implements java.io.Serializable {
 	}
 
 	/**
-	 * Gets the rule how it will be logged.
-	 *
-	 * @return a BigDecimal Code of the Logrule
-	 */
-	public BigDecimal getLogRule() {
-		return this.logRule;
-	}
-
-	/**
-	 * Sets the rule how it will be logged.
-	 *
-	 * @param logRule the new log rule
-	 */
-	public void setLogRule(BigDecimal logRule) {
-		this.logRule = logRule;
-	}
-
-	/**
 	 * Gets the current value.
 	 *
 	 * @return the current value
@@ -362,7 +373,7 @@ public class DeviceComponent implements java.io.Serializable {
 	 *
 	 * @return the device componente replaces for DeviceComponent id
 	 */
-	public Set<DeviceComponenteReplace> getDeviceComponenteReplacesForDeCoId() {
+	public Set<DeviceComponentReplace> getDeviceComponenteReplacesForDeCoId() {
 		return this.deviceComponenteReplacesForDeCoId;
 	}
 
@@ -371,7 +382,7 @@ public class DeviceComponent implements java.io.Serializable {
 	 *
 	 * @param deviceComponenteReplacesForDeCoId the new device componente replaces for DeviceComponent id
 	 */
-	public void setDeviceComponenteReplacesForDeCoId(Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoId) {
+	public void setDeviceComponenteReplacesForDeCoId(Set<DeviceComponentReplace> deviceComponenteReplacesForDeCoId) {
 		this.deviceComponenteReplacesForDeCoId = deviceComponenteReplacesForDeCoId;
 	}
 
@@ -398,7 +409,7 @@ public class DeviceComponent implements java.io.Serializable {
 	 *
 	 * @return the device componente replaces for DeviceComponent idreplaced
 	 */
-	public Set<DeviceComponenteReplace> getDeviceComponenteReplacesForDeCoIdreplaced() {
+	public Set<DeviceComponentReplace> getDeviceComponenteReplacesForDeCoIdreplaced() {
 		return this.deviceComponenteReplacesForDeCoIdreplaced;
 	}
 
@@ -407,7 +418,7 @@ public class DeviceComponent implements java.io.Serializable {
 	 *
 	 * @param deviceComponenteReplacesForDeCoIdreplaced the new device componente replaces for DeviceComponent idreplaced
 	 */
-	public void setDeviceComponenteReplacesForDeCoIdreplaced(Set<DeviceComponenteReplace> deviceComponenteReplacesForDeCoIdreplaced) {
+	public void setDeviceComponenteReplacesForDeCoIdreplaced(Set<DeviceComponentReplace> deviceComponenteReplacesForDeCoIdreplaced) {
 		this.deviceComponenteReplacesForDeCoIdreplaced = deviceComponenteReplacesForDeCoIdreplaced;
 	}
 
@@ -505,11 +516,6 @@ public class DeviceComponent implements java.io.Serializable {
 				return false;
 		} else if (!logDeviceComponents.equals(other.logDeviceComponents))
 			return false;
-		if (logRule == null) {
-			if (other.logRule != null)
-				return false;
-		} else if (!logRule.equals(other.logRule))
-			return false;
 		if (repeatRule == null) {
 			if (other.repeatRule != null)
 				return false;
@@ -521,6 +527,14 @@ public class DeviceComponent implements java.io.Serializable {
 		} else if (!status.equals(other.status))
 			return false;
 		return true;
+	}
+
+	public BigDecimal getLogDiffernce() {
+		return logDiffernce;
+	}
+
+	public void setLogDiffernce(BigDecimal logDiffernce) {
+		this.logDiffernce = logDiffernce;
 	}
 
 }

@@ -42,8 +42,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -88,15 +86,11 @@ public class Device implements java.io.Serializable {
 	private Set<DeviceGroup> deviceGroups = new HashSet<DeviceGroup>(0);
 	
 	/** The services which this Device offers. */
-	@ManyToMany()
-	private Set<Service> services = new HashSet<Service>(0);
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "device")
+	private Set<DeviceService> deviceServices = new HashSet<DeviceService>(0);
 	
 	/** The connected DeviceComponents. */
 	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "device")
-	  @JoinTable(
-		      name="service_device",
-		      joinColumns=@JoinColumn(name="EMP_ID", referencedColumnName="ID"),
-		      inverseJoinColumns=@JoinColumn(name="PROJ_ID", referencedColumnName="ID"))
 	private Set<DeviceComponent> deviceComponents = new HashSet<DeviceComponent>(0);
 
 	/**
@@ -157,7 +151,7 @@ public class Device implements java.io.Serializable {
 	 * @param deviceComponents the device components
 	 */
 	public Device(int deId, Connector connector, Zone zone, String alias, String serialNumber, Date purchaseDate,
-			Set<DeviceGroup> deviceGroups, Set<Service> services, Set<DeviceComponent> deviceComponents) {
+			Set<DeviceGroup> deviceGroups, Set<DeviceService> deviceServices, Set<DeviceComponent> deviceComponents) {
 		this.deId = deId;
 		this.connector = connector;
 		this.zone = zone;
@@ -165,7 +159,7 @@ public class Device implements java.io.Serializable {
 		this.serialNumber = serialNumber;
 		this.purchaseDate = purchaseDate;
 		this.deviceGroups = deviceGroups;
-		this.services = services;
+		this.deviceServices = deviceServices;
 		this.deviceComponents = deviceComponents;
 	}
 
@@ -300,8 +294,8 @@ public class Device implements java.io.Serializable {
 	 *
 	 * @return the services which this Device offers
 	 */
-	public Set<Service> getServices() {
-		return this.services;
+	public Set<DeviceService> getServices() {
+		return this.deviceServices;
 	}
 
 	/**
@@ -309,8 +303,8 @@ public class Device implements java.io.Serializable {
 	 *
 	 * @param services the new services which this Device offers
 	 */
-	public void setServices(Set<Service> services) {
-		this.services = services;
+	public void setDeviceServices(Set<DeviceService> deviceServices) {
+		this.deviceServices = deviceServices;
 	}
 
 	/**
@@ -369,6 +363,11 @@ public class Device implements java.io.Serializable {
 				return false;
 		} else if (!deviceGroups.equals(other.deviceGroups))
 			return false;
+		if (deviceServices == null) {
+			if (other.deviceServices != null)
+				return false;
+		} else if (!deviceServices.equals(other.deviceServices))
+			return false;
 		if (purchaseDate == null) {
 			if (other.purchaseDate != null)
 				return false;
@@ -379,17 +378,12 @@ public class Device implements java.io.Serializable {
 				return false;
 		} else if (!serialNumber.equals(other.serialNumber))
 			return false;
-		if (services == null) {
-			if (other.services != null)
-				return false;
-		} else if (!services.equals(other.services))
-			return false;
 		if (zone == null) {
 			if (other.zone != null)
 				return false;
 		} else if (!zone.equals(other.zone))
 			return false;
 		return true;
-	}
+	}	
 
 }

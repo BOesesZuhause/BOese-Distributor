@@ -31,6 +31,12 @@
 
 package de.bo.aid.boese.modelJPA;
 
+import javax.persistence.CascadeType;
+import javax.persistence.EmbeddedId;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 // TODO: Auto-generated Javadoc
 /**
  * DeviceComponentRule Model for Hibernate.
@@ -38,12 +44,17 @@ package de.bo.aid.boese.modelJPA;
 public class DeviceComponentRule {
 
 	/** The DeviceComponentRule id. */
+	@EmbeddedId
 	private DeviceComponentRuleId id;
 	
 	/** The linked devicecomponent. */
+	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+	@JoinColumn(name = "devicecomponent", nullable = false)
 	private DeviceComponent devicecomponent;
 	
 	/** The linked rule. */
+	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+	@JoinColumn(name = "rule", nullable = false)
 	private Rule rule;
 
 	/**

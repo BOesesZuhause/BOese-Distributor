@@ -33,6 +33,15 @@ package de.bo.aid.boese.modelJPA;
 import java.math.BigDecimal;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 // TODO: Auto-generated Javadoc
 /**
  * RepeatRule Model for Hibernate.
@@ -40,24 +49,34 @@ import java.util.Set;
 public class RepeatRule {
 	
 	/** The RepeatRule id. */
+	@Id
+	@GeneratedValue
 	private int rrId;
 	
 	/** The repeat Cron String. */
+	@Column(nullable = true)
 	private String repeat;
 	
 	/**  The Value, which will be executed. */
+	@Column(precision = 25, scale = 10)
 	private BigDecimal value;
 	
 	/** The number of repeats after end. */
+	@Column(nullable = true)
 	private int repeatsAfterEnd;
 	
 	/** The Rule belonging to this object. */
+	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+	@JoinColumn(name = "rule", nullable = false)
 	private Rule rule;
 	
 	/** The ToDos  which were created. */
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "repeatRule")
 	private Set<ToDo> toDo;
 	
 	/** The DeviceComponent which will be switched. */
+	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+	@JoinColumn(name = "deviceComponent", nullable = false)
 	private DeviceComponent deviceComponent;
 
 	/**

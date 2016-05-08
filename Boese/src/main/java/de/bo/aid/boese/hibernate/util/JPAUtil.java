@@ -8,7 +8,7 @@ public class JPAUtil {
 
 	 	private static final EntityManagerFactory emFactory;
 		static {
-			   emFactory = Persistence.createEntityManagerFactory("Service");
+			   emFactory = Persistence.createEntityManagerFactory("BOese");
 		}
 		public static EntityManager getEntityManager(){
 			return emFactory.createEntityManager();

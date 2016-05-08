@@ -34,6 +34,16 @@ package de.bo.aid.boese.modelJPA;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class Zone.
@@ -44,24 +54,33 @@ import java.util.Set;
 public class Zone implements java.io.Serializable {
 
 	/** The Constant serialVersionUID. */
+	@Transient
 	private static final long serialVersionUID = 1L;
 
 	/** The Zone id. */
+	@Id
+	@GeneratedValue
 	private int zoId;
 	
 	/** The Super Zone. */
+	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+	@JoinColumn(name = "zone", nullable = true)
 	private Zone zone;
 	
 	/** The name of the Zone. */
+	@Column(nullable = false)
 	private String name;
 	
 	/** The Groups linked with this Zone. */
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "zone")
 	private Set<GroupZone> groupZones = new HashSet<GroupZone>(0);
 	
 	/** The Sub Zones. */
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "zone")
 	private Set<Zone> zones = new HashSet<Zone>(0);
 	
 	/** The Devices in this Zone. */
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "zone")
 	private Set<Device> devices = new HashSet<Device>(0);
 
 	/**
