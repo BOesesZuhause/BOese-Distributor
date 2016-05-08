@@ -73,11 +73,15 @@ public class RepeatRule {
 	 * @param repeat the repeat Cron String
 	 * @param value The Value, which will be executed
 	 * @param repeatsAfterEnd the number of repeats after end
+	 * @param rule the rule
+	 * @param deco the deviceComponent
 	 */
-	public RepeatRule(String repeat, BigDecimal value, int repeatsAfterEnd) {
+	public RepeatRule(String repeat, BigDecimal value, int repeatsAfterEnd, Rule rule, DeviceComponent deco) {
 		this.repeat = repeat;
 		this.value = value;
 		this.repeatsAfterEnd = repeatsAfterEnd;
+		this.rule = rule;
+		this.deviceComponent = deco;
 	}
 
 	/**

@@ -32,8 +32,6 @@ package de.bo.aid.boese.model;
 
 import java.util.Date;
 
-import de.bo.aid.boese.db.Selects;
-import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -71,22 +69,16 @@ public class ToDo {
 	}
 
 	/**
-	 * Instantiates a new to do with all parameters.
+	 * Instantiates a new to do with all parameters and foreign keys for DB insert.
 	 *
-	 * @param toDoId the to do id
 	 * @param date the date
 	 * @param active the active
+	 * @param repeatRule the repeat rule
 	 */
-	public ToDo(int toDoId, Date date, boolean active){
-		this.toDoId = toDoId;
+	public ToDo(Date date, boolean active, RepeatRule repeatRule) {
 		this.date = date;
 		this.active = active;
-		try {
-			this.repeatRule = Selects.repeatRule(0);
-		} catch (DBObjectNotFoundException e) {
-			// TODO default RepeatRule 0
-			e.printStackTrace();
-		}
+		this.repeatRule = repeatRule;
 	}
 
 	/**

@@ -110,11 +110,11 @@ public class ToDoTest {
 		decolist.add(testDeco);
 		Inserts.rule(decolist, testRule, null);
 		
-		testRr1 = new RepeatRule("*;*;*;*;*;*", new BigDecimal(10.0), 1);
-		Inserts.repeatRule(testRr1, testRule.getRuId(), testDeco.getDeCoId(), null);
+		testRr1 = new RepeatRule("*;*;*;*;*;*", new BigDecimal(10.0), 1, testRule, testDeco);
+		Inserts.repeatRule(testRr1, null);
 		
-		testRr2 = new RepeatRule("*;*;*;*;*;*", new BigDecimal(20.0), 1);
-		Inserts.repeatRule(testRr2, testRule.getRuId(), testDeco.getDeCoId(), null);
+		testRr2 = new RepeatRule("*;*;*;*;*;*", new BigDecimal(20.0), 1, testRule, testDeco);
+		Inserts.repeatRule(testRr2, null);
 		
 		todo1 = new ToDo(new Date());
 		todo2 = new ToDo(new Date());

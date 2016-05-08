@@ -1,5 +1,6 @@
 package de.bo.aid.boese.dao;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,6 +11,12 @@ import javax.persistence.Query;
 import de.bo.aid.boese.model.User;
 
 public class UserDAO implements StandardDAO<User>{
+	
+	public User create(EntityManager em, String surname, String firstName, String password, boolean gender, Date birthdate, String userName, String email){
+		User entity = new User(surname, firstName, password, gender, birthdate, userName, email);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public User get(EntityManager em, int id) {

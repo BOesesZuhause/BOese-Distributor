@@ -58,6 +58,17 @@ public class HistoryLogRule implements java.io.Serializable {
 	}
 
 	/**
+	 * Instantiates a new history log rule for DB insert.
+	 *
+	 * @param rule the rule
+	 * @param timestamp the timestamp when the rule was called
+	 */
+	public HistoryLogRule(Rule rule, Date timestamp) {
+		this.rule = rule;
+		this.timestamp = timestamp;
+	}
+
+	/**
 	 * Instantiates a new history log rule.
 	 *
 	 * @param hiLoRuId the HistoryLogRule id

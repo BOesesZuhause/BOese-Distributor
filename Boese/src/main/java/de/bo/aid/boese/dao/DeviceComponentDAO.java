@@ -7,10 +7,15 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceComponent;
 
 public class DeviceComponentDAO implements StandardDAO<DeviceComponent>{
+	
+	public DeviceComponent create(EntityManager em, String description, double minValue, double maxValue, boolean loggen){
+		DeviceComponent entity = new DeviceComponent(description, minValue, maxValue, loggen);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public DeviceComponent get(EntityManager em, int id) {

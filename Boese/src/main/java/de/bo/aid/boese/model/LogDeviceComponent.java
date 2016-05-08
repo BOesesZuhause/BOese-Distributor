@@ -64,6 +64,19 @@ public class LogDeviceComponent implements java.io.Serializable {
 	/**
 	 * Instantiates a new log device component.
 	 *
+	 * @param deviceComponent the device component
+	 * @param value the value
+	 * @param timestamp the timestamp when the Value was changed
+	 */
+	public LogDeviceComponent(DeviceComponent deviceComponent, BigDecimal value, Date timestamp) {
+		this.timestamp = timestamp;
+		this.deviceComponent = deviceComponent;
+		this.value = value;
+	}
+
+	/**
+	 * Instantiates a new log device component.
+	 *
 	 * @param loCoId the LogDeviceComponent id
 	 * @param deviceComponent the device component
 	 * @param value the value

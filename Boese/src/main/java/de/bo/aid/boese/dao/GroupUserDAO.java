@@ -7,9 +7,17 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import de.bo.aid.boese.model.Group;
 import de.bo.aid.boese.model.GroupUser;
+import de.bo.aid.boese.model.User;
 
 public class GroupUserDAO implements StandardDAO<GroupUser>{
+	
+	public GroupUser create(EntityManager em, Group group, User user, short position){
+		GroupUser entity = new GroupUser(group, user, position);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public GroupUser get(EntityManager em, int id) {

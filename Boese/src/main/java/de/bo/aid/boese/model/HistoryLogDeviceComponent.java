@@ -62,6 +62,19 @@ public class HistoryLogDeviceComponent implements java.io.Serializable {
 	}
 
 	/**
+	 * Instantiates a new history log device component for DB insert.
+	 *
+	 * @param deviceComponent the deviceComponent which is locked
+	 * @param value the value which was executed
+	 * @param timestamp the timestamp when it was changed
+	 */
+	public HistoryLogDeviceComponent(DeviceComponent deviceComponent, BigDecimal value, Date timestamp) {
+		this.deviceComponent = deviceComponent;
+		this.value = value;
+		this.timestamp = timestamp;
+	}
+
+	/**
 	 * Instantiates a new history log device component.
 	 *
 	 * @param hiLoCoId the HistoryLogDeviceComponent id

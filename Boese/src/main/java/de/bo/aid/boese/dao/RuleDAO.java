@@ -10,6 +10,12 @@ import javax.persistence.Query;
 import de.bo.aid.boese.model.Rule;
 
 public class RuleDAO implements StandardDAO<Rule>{
+	
+	public Rule create(EntityManager em, String permissions, String conditions, String actions){
+		Rule entity = new Rule(permissions, conditions, actions);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public Rule get(EntityManager em, int id) {

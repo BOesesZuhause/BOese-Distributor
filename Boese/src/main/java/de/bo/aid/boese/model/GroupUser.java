@@ -72,6 +72,19 @@ public class GroupUser implements java.io.Serializable {
 	}
 
 	/**
+	 * Instantiates a new group user for DB insert.
+	 *
+	 * @param group the linked Group
+	 * @param user the linked User
+	 * @param position the position of the User in the Group
+	 */
+	public GroupUser(Group group, User user, Short position) {
+		this.group = group;
+		this.user = user;
+		this.position = position;
+	}
+
+	/**
 	 * Instantiates a new group user.
 	 *
 	 * @param id the GroupUser id

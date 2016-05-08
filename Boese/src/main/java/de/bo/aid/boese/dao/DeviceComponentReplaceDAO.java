@@ -8,8 +8,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import de.bo.aid.boese.model.DeviceComponent;
+import de.bo.aid.boese.model.DeviceComponenteReplace;
+
 
 public class DeviceComponentReplaceDAO implements StandardDAO<DeviceComponentReplaceDAO> {
+	
+	public DeviceComponenteReplace create(EntityManager em, DeviceComponent fresh, DeviceComponent old){
+		DeviceComponenteReplace entity = new DeviceComponenteReplace(fresh, old);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public DeviceComponentReplaceDAO get(EntityManager em, int id) {

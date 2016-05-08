@@ -102,10 +102,10 @@ public class RepeatRuleTest {
 		decolist.add(testDeco);
 		Inserts.rule(decolist, testRule, null);
 		
-		rr1 = new RepeatRule("*;*;*;*;*;*", BigDecimal.valueOf(10.1), 1);
-		rr2 = new RepeatRule("*;*;*;*;*;*", BigDecimal.valueOf(20.0), 2);
-		rr1Update = new RepeatRule("1;1;1;1;2070;ttttttt", new BigDecimal(15.0), 3);
-		rr2Update = new RepeatRule("1;2;3;4;2075;fffffff", new BigDecimal(25.0), 4);
+		rr1 = new RepeatRule("*;*;*;*;*;*", BigDecimal.valueOf(10.1), 1, testRule, testDeco);
+		rr2 = new RepeatRule("*;*;*;*;*;*", BigDecimal.valueOf(20.0), 2, testRule, testDeco);
+		rr1Update = new RepeatRule("1;1;1;1;2070;ttttttt", new BigDecimal(15.0), 3, testRule, testDeco);
+		rr2Update = new RepeatRule("1;2;3;4;2075;fffffff", new BigDecimal(25.0), 4, testRule, testDeco);
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class RepeatRuleTest {
 	 */
 	private void insert(RepeatRule rr){
 		try {
-			Inserts.repeatRule(rr, testRule.getRuId(), testDeco.getDeCoId(), null);
+			Inserts.repeatRule(rr, null);
 		} catch (DBForeignKeyNotFoundException e) {
 			e.printStackTrace();
 			fail(e.getMessage());

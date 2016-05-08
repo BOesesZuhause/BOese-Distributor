@@ -10,6 +10,12 @@ import javax.persistence.Query;
 import de.bo.aid.boese.model.Component;
 
 public class ComponentDAO implements StandardDAO<Component> {
+	
+	public Component create(EntityManager em, String name, boolean actor){
+		Component entity = new Component(name, actor);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public Component get(EntityManager em, int id) {

@@ -48,8 +48,8 @@ public class HistoryLogConnector implements java.io.Serializable {
 	/** The connector which send/get a Message. */
 	private Connector connector;
 	
-	/** The timestap when it was switched. */
-	private Date timestap;
+	/** The  when it was switched. */
+	private Date timestamp;
 	
 	/** The data which was send. */
 	private Serializable data;
@@ -63,15 +63,28 @@ public class HistoryLogConnector implements java.io.Serializable {
 	/**
 	 * Instantiates a new history log connector.
 	 *
-	 * @param hiLoCoId the HistoryLogConnectorid
 	 * @param connector the connector which send/get a Message
-	 * @param timestap the timestap when it was switched
+	 * @param  the timestamp when it was switched
 	 * @param data the data which was send
 	 */
-	public HistoryLogConnector(int hiLoCoId, Connector connector, Date timestap, Serializable data) {
+	public HistoryLogConnector(Connector connector, Date timestamp, Serializable data) {
+		this.connector = connector;
+		this.timestamp = timestamp;
+		this.data = data;
+	}
+
+	/**
+	 * Instantiates a new history log connector.
+	 *
+	 * @param hiLoCoId the HistoryLogConnectorid
+	 * @param connector the connector which send/get a Message
+	 * @param  the timestamp when it was switched
+	 * @param data the data which was send
+	 */
+	public HistoryLogConnector(int hiLoCoId, Connector connector, Date timestamp, Serializable data) {
 		this.hiLoCoId = hiLoCoId;
 		this.connector = connector;
-		this.timestap = timestap;
+		this.timestamp = timestamp;
 		this.data = data;
 	}
 
@@ -112,21 +125,22 @@ public class HistoryLogConnector implements java.io.Serializable {
 	}
 
 	/**
-	 * Gets the timestap when it was switched.
+	 * Gets the  when it was switched.
 	 *
-	 * @return the timestap when it was switched
+	 * @return the  when it was switched
 	 */
-	public Date getTimestap() {
-		return this.timestap;
+	public Date getTimestamp() {
+		return timestamp;
 	}
 
+
 	/**
-	 * Sets the timestap when it was switched.
+	 * Sets the  when it was switched.
 	 *
-	 * @param timestap the new timestap when it was switched
+	 * @param  the new  when it was switched
 	 */
-	public void setTimestap(Date timestap) {
-		this.timestap = timestap;
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
 	}
 
 	/**
@@ -175,10 +189,10 @@ public class HistoryLogConnector implements java.io.Serializable {
 			return false;
 		if (hiLoCoId != other.hiLoCoId)
 			return false;
-		if (timestap == null) {
-			if (other.timestap != null)
+		if (timestamp == null) {
+			if (other.timestamp != null)
 				return false;
-		} else if (!timestap.equals(other.timestap))
+		} else if (!timestamp.equals(other.timestamp))
 			return false;
 		return true;
 	}

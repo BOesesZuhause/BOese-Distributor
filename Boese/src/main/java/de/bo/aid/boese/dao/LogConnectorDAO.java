@@ -1,5 +1,7 @@
 package de.bo.aid.boese.dao;
 
+import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -7,9 +9,16 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import de.bo.aid.boese.model.Connector;
 import de.bo.aid.boese.model.LogConnector;
 
 public class LogConnectorDAO implements StandardDAO<LogConnector>{
+	
+	public LogConnector create(EntityManager em, Connector connector, Date timestamp, Serializable data){
+		LogConnector entity = new LogConnector(connector, timestamp, data);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public LogConnector get(EntityManager em, int id) {

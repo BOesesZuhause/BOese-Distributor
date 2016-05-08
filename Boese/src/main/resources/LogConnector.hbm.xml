@@ -13,8 +13,8 @@
         <many-to-one name="connector" class="de.bo.aid.boese.model.Connector" fetch="select" lazy="false">
             <column name="CoID" not-null="true" />
         </many-to-one>
-        <property name="timestap" type="timestamp">
-            <column name="Timestap" length="29" not-null="true" />
+        <property name="timestamp" type="timestamp">
+            <column name="Timestamp" length="29" not-null="true" />
         </property>
         <property name="data" type="serializable">
             <column name="Data" not-null="true" />

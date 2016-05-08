@@ -7,9 +7,17 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import de.bo.aid.boese.model.Device;
 import de.bo.aid.boese.model.DeviceGroup;
+import de.bo.aid.boese.model.Group;
 
 public class DeviceGroupDAO implements StandardDAO<DeviceGroup>{
+	
+	public DeviceGroup create(EntityManager em, Device device, Group group, short rights){
+		DeviceGroup entity = new DeviceGroup(device, group, rights);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public DeviceGroup get(EntityManager em, int id) {

@@ -10,6 +10,12 @@ import javax.persistence.Query;
 import de.bo.aid.boese.model.Unit;
 
 public class UnitDAO implements StandardDAO<Unit>{
+	
+	public Unit create(EntityManager em, String name, String symbol){
+		Unit entity = new Unit(name, symbol);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public Unit get(EntityManager em, int id) {

@@ -10,6 +10,12 @@ import javax.persistence.Query;
 import de.bo.aid.boese.model.Device;
 
 public class DeviceDAO implements StandardDAO<Device> {
+	
+	public Device create(EntityManager em, String alias, String serialNumber){
+		Device entity = new Device(alias, serialNumber);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public Device get(EntityManager em, int id) {

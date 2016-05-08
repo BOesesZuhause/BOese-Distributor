@@ -1,5 +1,6 @@
 package de.bo.aid.boese.dao;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -7,23 +8,30 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.HistoryLogDeviceComponent;
+import de.bo.aid.boese.model.HistoryLogRule;
+import de.bo.aid.boese.model.Rule;
 
-public class HistoryLogRuleDAO implements StandardDAO<HistoryLogRuleDAO>{
-
-	@Override
-	public HistoryLogRuleDAO get(EntityManager em, int id) {
-		HistoryLogRuleDAO entity = (HistoryLogRuleDAO) em.find(HistoryLogRuleDAO.class, id);
+public class HistoryLogRuleDAO implements StandardDAO<HistoryLogRule>{
+	
+	public HistoryLogRule create(EntityManager em, Rule rule, Date timestamp){
+		HistoryLogRule entity = new HistoryLogRule(rule, timestamp);
+		em.persist(entity);
 		return entity;
 	}
 
 	@Override
-	public Set<HistoryLogRuleDAO> getAll(EntityManager em, int id) {
+	public HistoryLogRule get(EntityManager em, int id) {
+		HistoryLogRule entity = (HistoryLogRule) em.find(HistoryLogRule.class, id);
+		return entity;
+	}
+
+	@Override
+	public Set<HistoryLogRule> getAll(EntityManager em, int id) {
 		Query q = em.createQuery("SELECT h FROM HistoryLogRuleDAO h");
 		List<?> erg = q.getResultList();
-		Set<HistoryLogRuleDAO> entities = new HashSet<HistoryLogRuleDAO>();
+		Set<HistoryLogRule> entities = new HashSet<HistoryLogRule>();
 		for(Object o : erg){
-			entities.add((HistoryLogRuleDAO)o);
+			entities.add((HistoryLogRule)o);
 		}
 		return entities;
 	}

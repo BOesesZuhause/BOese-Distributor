@@ -7,7 +7,17 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import de.bo.aid.boese.model.DeviceComponent;
+import de.bo.aid.boese.model.DeviceComponentRule;
+import de.bo.aid.boese.model.Rule;
+
 public class DeviceComponentRuleDAO implements StandardDAO<DeviceComponentRuleDAO>{
+	
+	public DeviceComponentRule create(EntityManager em, DeviceComponent devicecomponent, Rule rule){
+		DeviceComponentRule entity = new DeviceComponentRule(devicecomponent, rule);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public DeviceComponentRuleDAO get(EntityManager em, int id) {

@@ -10,6 +10,12 @@ import javax.persistence.Query;
 import de.bo.aid.boese.model.Zone;
 
 public class ZoneDAO implements StandardDAO<Zone>{
+	
+	public Zone create(EntityManager em, String name){
+		Zone entity = new Zone(name);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public Zone get(EntityManager em, int id) {

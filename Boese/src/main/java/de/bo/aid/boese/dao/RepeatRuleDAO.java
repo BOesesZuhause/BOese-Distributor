@@ -1,5 +1,6 @@
 package de.bo.aid.boese.dao;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -7,9 +8,17 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import de.bo.aid.boese.model.DeviceComponent;
 import de.bo.aid.boese.model.RepeatRule;
+import de.bo.aid.boese.model.Rule;
 
 public class RepeatRuleDAO implements StandardDAO<RepeatRule>{
+	
+	public RepeatRule create(EntityManager em, String repeat, BigDecimal value, int repeatsAfterEnd, Rule rule, DeviceComponent deco){
+		RepeatRule entity = new RepeatRule(repeat, value, repeatsAfterEnd, rule, deco);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public RepeatRule get(EntityManager em, int id) {

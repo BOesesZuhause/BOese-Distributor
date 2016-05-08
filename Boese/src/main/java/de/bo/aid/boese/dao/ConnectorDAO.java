@@ -7,10 +7,15 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.Component;
 import de.bo.aid.boese.model.Connector;
 
 public class ConnectorDAO implements StandardDAO<Connector> {
+	
+	public Connector create(EntityManager em, String name, String password, boolean userConnector){
+		Connector entity = new Connector(name, password, userConnector);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public Connector get(EntityManager em, int id) {

@@ -467,21 +467,9 @@ public class Inserts {
 	 * @throws DBForeignKeyNotFoundException when the DeviceComponent or the Rule was not found
 	 * @throws PropertyValueException when a not Null Field is null
 	 */
-	public static void repeatRule(RepeatRule rr, int ruleId, int deCoId, ToDoChecker tdc) throws DBForeignKeyNotFoundException, PropertyValueException{
+	public static void repeatRule(RepeatRule rr, ToDoChecker tdc) throws DBForeignKeyNotFoundException, PropertyValueException{
 		Session session = connection.getSession();
-		session.beginTransaction();
-		
-		try{
-			rr.setRule(Selects.rule(ruleId));
-			rr.setDeviceComponent(Selects.deviceComponent(deCoId));
-		}
-		catch(Exception e){
-			session.getTransaction().rollback();
-			session.close();
-			DBForeignKeyNotFoundException dfknfe = new DBForeignKeyNotFoundException("DeviceComponent-FK or Rule-FK not found");
-			dfknfe.initCause(e.getCause());
-			throw dfknfe;
-		}		
+		session.beginTransaction();	
 		
 		try{
 			session.save(rr);

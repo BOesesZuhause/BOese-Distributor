@@ -8,8 +8,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import de.bo.aid.boese.model.LogRule;
+import de.bo.aid.boese.model.Rule;
 
 public class LogRuleDAO implements StandardDAO<LogRule>{
+	
+	public LogRule create(EntityManager em, Rule r){
+		LogRule entity = new LogRule(r);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public LogRule get(EntityManager em, int id) {

@@ -51,8 +51,8 @@ public class DeviceComponenteReplace implements java.io.Serializable {
 	/** The replaced DeviceComponent. */
 	private DeviceComponent deviceComponentByDeCoIdreplaced;
 	
-	/** The timestap when it was replaced. */
-	private Date timestap;
+	/** The timestamp when it was replaced. */
+	private Date timestamp;
 
 	/**
 	 * Instantiates a new deviceComponenteReplace.
@@ -61,19 +61,31 @@ public class DeviceComponenteReplace implements java.io.Serializable {
 	}
 
 	/**
+	 * Instantiates a new deviceComponenteReplace for DB insert.
+	 *
+	 * @param deviceComponentByDeCoId the new DeviceComponent
+	 * @param deviceComponentByDeCoIdreplaced replaced DeviceComponent
+	 */
+	public DeviceComponenteReplace(DeviceComponent deviceComponentByDeCoId, DeviceComponent deviceComponentByDeCoIdreplaced) {
+		this.deviceComponentByDeCoId = deviceComponentByDeCoId;
+		this.deviceComponentByDeCoIdreplaced = deviceComponentByDeCoIdreplaced;
+		this.timestamp = new Date();
+	}
+
+	/**
 	 * Instantiates a new deviceComponenteReplace.
 	 *
 	 * @param id the DeviceComponenteReplaceId
 	 * @param deviceComponentByDeCoId the new DeviceComponent
 	 * @param deviceComponentByDeCoIdreplaced replaced DeviceComponent
-	 * @param timestap the timestap when it was replaces
+	 * @param timestamp the timestamp when it was replaces
 	 */
 	public DeviceComponenteReplace(DeviceComponenteReplaceId id, DeviceComponent deviceComponentByDeCoId,
-			DeviceComponent deviceComponentByDeCoIdreplaced, Date timestap) {
+			DeviceComponent deviceComponentByDeCoIdreplaced, Date timestamp) {
 		this.id = id;
 		this.deviceComponentByDeCoId = deviceComponentByDeCoId;
 		this.deviceComponentByDeCoIdreplaced = deviceComponentByDeCoIdreplaced;
-		this.timestap = timestap;
+		this.timestamp = timestamp;
 	}
 
 	/**
@@ -131,21 +143,21 @@ public class DeviceComponenteReplace implements java.io.Serializable {
 	}
 
 	/**
-	 * Gets the timestap when it was replaces.
+	 * Gets the timestamp when it was replaces.
 	 *
-	 * @return the timestap when it was replaces
+	 * @return the timestamp when it was replaces
 	 */
-	public Date getTimestap() {
-		return this.timestap;
+	public Date getTimestamp() {
+		return this.timestamp;
 	}
 
 	/**
-	 * Sets the timestap when it was replaces.
+	 * Sets the timestamp when it was replaces.
 	 *
-	 * @param timestap the new timestap when it was replaces
+	 * @param timestamp the new timestamp when it was replaces
 	 */
-	public void setTimestap(Date timestap) {
-		this.timestap = timestap;
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
 	}
 
 	/**
@@ -179,10 +191,10 @@ public class DeviceComponenteReplace implements java.io.Serializable {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (timestap == null) {
-			if (other.timestap != null)
+		if (timestamp == null) {
+			if (other.timestamp != null)
 				return false;
-		} else if (!timestap.equals(other.timestap))
+		} else if (!timestamp.equals(other.timestamp))
 			return false;
 		return true;
 	}

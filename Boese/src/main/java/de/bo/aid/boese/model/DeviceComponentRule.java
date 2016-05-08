@@ -53,6 +53,17 @@ public class DeviceComponentRule {
 	}
 
 	/**
+	 * Instantiates a new device component rule for DB inser.
+	 *
+	 * @param devicecomponent the linked devicecomponent
+	 * @param rule the linked rule
+	 */
+	public DeviceComponentRule(DeviceComponent devicecomponent, Rule rule) {
+		this.devicecomponent = devicecomponent;
+		this.rule = rule;
+	}
+
+	/**
 	 * Instantiates a new device component rule.
 	 *
 	 * @param id the DeviceComponentRule id

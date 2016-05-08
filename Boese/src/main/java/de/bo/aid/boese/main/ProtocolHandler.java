@@ -787,9 +787,17 @@ public class ProtocolHandler implements MessageHandler {
 			RepeatRule r = null;
 			//TODO validate rules
 			try {
-				r = new RepeatRule(rule.getCron(), BigDecimal.valueOf(rule.getValue()), rule.getRepeatsAfterEnd());
-				Inserts.repeatRule(r, rule.getRuleId(), rule.getDecoId(), distributor.getTdc());
-			} catch (DBForeignKeyNotFoundException e) {
+				r = new RepeatRule(rule.getCron(), BigDecimal.valueOf(rule.getValue()), rule.getRepeatsAfterEnd(), Selects.rule(rule.getRuleId()), Selects.deviceComponent(rule.getDecoId()));
+				Inserts.repeatRule(r, distributor.getTdc());
+			}
+			catch (DBObjectNotFoundException e) {
+				sendNotificationToAllUserConnectors("Error while saving repeaterule with id: " + rule.getRuleId() +
+                        ". The referenced devicecomponents are unknown.", 
+                        NotificationType.ERROR, System.currentTimeMillis());
+				logger.error(e.getMessage(), e);
+				e.printStackTrace();
+			}
+			catch (DBForeignKeyNotFoundException e) {
 			    sendNotificationToAllUserConnectors("Error while saving repeaterule with id: " + rule.getRuleId() +
                         ". The referenced devicecomponents are unknown.", 
                         NotificationType.ERROR, System.currentTimeMillis());

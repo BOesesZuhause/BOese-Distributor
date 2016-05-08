@@ -71,6 +71,19 @@ public class GroupZone implements java.io.Serializable {
 	}
 
 	/**
+	 * Instantiates a new group zone for DB insert.
+	 *
+	 * @param group the group
+	 * @param zone the zone
+	 * @param rights the rights
+	 */
+	public GroupZone(Group group, Zone zone, Short rights) {
+		this.group = group;
+		this.zone = zone;
+		this.rights = rights;
+	}
+
+	/**
 	 * Instantiates a new group zone.
 	 *
 	 * @param id the id

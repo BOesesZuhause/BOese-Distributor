@@ -7,9 +7,17 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import de.bo.aid.boese.model.Group;
 import de.bo.aid.boese.model.GroupZone;
+import de.bo.aid.boese.model.Zone;
 
 public class GroupZoneDAO implements StandardDAO<GroupZone>{
+	
+	public GroupZone create(EntityManager em, Group group, Zone zone, short rights){
+		GroupZone entity = new GroupZone(group, zone, rights);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public GroupZone get(EntityManager em, int id) {

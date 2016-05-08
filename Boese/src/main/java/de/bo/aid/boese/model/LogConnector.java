@@ -49,8 +49,8 @@ public class LogConnector implements java.io.Serializable {
 	/** The connector. */
 	private Connector connector;
 	
-	/** The timestap. */
-	private Date timestap;
+	/** The timestamp. */
+	private Date timestamp;
 	
 	/** The data. */
 	private Serializable data;
@@ -64,15 +64,28 @@ public class LogConnector implements java.io.Serializable {
 	/**
 	 * Instantiates a new log connector.
 	 *
-	 * @param loCoId the LogConnector id
 	 * @param connector the connector
-	 * @param timestap the timestap
+	 * @param timestamp the timestamp
 	 * @param data the data
 	 */
-	public LogConnector(int loCoId, Connector connector, Date timestap, Serializable data) {
+	public LogConnector(Connector connector, Date timestamp, Serializable data) {
+		this.connector = connector;
+		this.timestamp = timestamp;
+		this.data = data;
+	}
+
+	/**
+	 * Instantiates a new log connector.
+	 *
+	 * @param loCoId the LogConnector id
+	 * @param connector the connector
+	 * @param timestamp the timestamp
+	 * @param data the data
+	 */
+	public LogConnector(int loCoId, Connector connector, Date timestamp, Serializable data) {
 		this.loCoId = loCoId;
 		this.connector = connector;
-		this.timestap = timestap;
+		this.timestamp = timestamp;
 		this.data = data;
 	}
 
@@ -113,21 +126,21 @@ public class LogConnector implements java.io.Serializable {
 	}
 
 	/**
-	 * Gets the timestap.
+	 * Gets the timestamp.
 	 *
-	 * @return the timestap
+	 * @return the timestamp
 	 */
-	public Date getTimestap() {
-		return this.timestap;
+	public Date getTimestamp() {
+		return this.timestamp;
 	}
 
 	/**
-	 * Sets the timestap.
+	 * Sets the timestamp.
 	 *
-	 * @param timestap the new timestap
+	 * @param timestamp the new timestamp
 	 */
-	public void setTimestap(Date timestap) {
-		this.timestap = timestap;
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
 	}
 
 	/**
@@ -176,10 +189,10 @@ public class LogConnector implements java.io.Serializable {
 			return false;
 		if (loCoId != other.loCoId)
 			return false;
-		if (timestap == null) {
-			if (other.timestap != null)
+		if (timestamp == null) {
+			if (other.timestamp != null)
 				return false;
-		} else if (!timestap.equals(other.timestap))
+		} else if (!timestamp.equals(other.timestamp))
 			return false;
 		return true;
 	}

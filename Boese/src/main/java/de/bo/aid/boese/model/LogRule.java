@@ -58,6 +58,15 @@ public class LogRule implements java.io.Serializable {
 	}
 
 	/**
+	 * Instantiates a new log rule for DB insert.
+	 *
+	 * @param rule the belonging rule
+	 */
+	public LogRule(Rule rule) {
+		this.rule = rule;
+	}
+
+	/**
 	 * Instantiates a new log rule.
 	 *
 	 * @param loRuId the LogRule id

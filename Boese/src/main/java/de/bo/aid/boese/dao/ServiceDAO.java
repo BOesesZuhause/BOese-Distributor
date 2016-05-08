@@ -10,6 +10,12 @@ import javax.persistence.Query;
 import de.bo.aid.boese.model.Service;
 
 public class ServiceDAO implements StandardDAO<Service>{
+	
+	public Service create(EntityManager em, String description){
+		Service entity = new Service(description);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public Service get(EntityManager em, int id) {

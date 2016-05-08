@@ -10,6 +10,12 @@ import javax.persistence.Query;
 import de.bo.aid.boese.model.Group;
 
 public class GroupDAO implements StandardDAO<Group>{
+	
+	public Group create(EntityManager em, String name){
+		Group entity = new Group(name);
+		em.persist(entity);
+		return entity;
+	}
 
 	@Override
 	public Group get(EntityManager em, int id) {
