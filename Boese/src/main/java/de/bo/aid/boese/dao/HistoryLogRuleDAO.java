@@ -8,8 +8,8 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.HistoryLogRule;
-import de.bo.aid.boese.model.Rule;
+import de.bo.aid.boese.modelJPA.HistoryLogRule;
+import de.bo.aid.boese.modelJPA.Rule;
 
 public class HistoryLogRuleDAO implements StandardDAO<HistoryLogRule>{
 	

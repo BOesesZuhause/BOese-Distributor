@@ -7,9 +7,9 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.Group;
-import de.bo.aid.boese.model.GroupZone;
-import de.bo.aid.boese.model.Zone;
+import de.bo.aid.boese.modelJPA.Group;
+import de.bo.aid.boese.modelJPA.GroupZone;
+import de.bo.aid.boese.modelJPA.Zone;
 
 public class GroupZoneDAO implements StandardDAO<GroupZone>{
 	

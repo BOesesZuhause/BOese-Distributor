@@ -7,12 +7,13 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.DeviceComponent;
+import de.bo.aid.boese.modelJPA.DeviceComponent;
 
 public class DeviceComponentDAO implements StandardDAO<DeviceComponent>{
 	
-	public DeviceComponent create(EntityManager em, String description, double minValue, double maxValue, boolean loggen){
-		DeviceComponent entity = new DeviceComponent(description, minValue, maxValue, loggen);
+	public DeviceComponent create(EntityManager em, String description, double minValue, double maxValue, double logDifference, boolean loggen){
+//		DeviceComponent entity = new DeviceComponent(description, minValue, maxValue, logDifference, loggen);
+		DeviceComponent entity = new DeviceComponent(description, minValue, maxValue, 0.0, loggen);
 		em.persist(entity);
 		return entity;
 	}

@@ -54,7 +54,7 @@ public class DAOHandler {
 		zone = new ZoneDAO();
 	}
 	
-	public static DAOHandler getDAOH(){
+	public static DAOHandler getInstance(){
 		if(daoh == null){
 			daoh = new DAOHandler();
 		}

@@ -36,14 +36,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import de.bo.aid.boese.db.AllSelects;
-import de.bo.aid.boese.db.Deletes;
-//import de.bo.aid.boese.db.Empfänger;
-import de.bo.aid.boese.db.Inserts;
-import de.bo.aid.boese.db.Selects;
+
 import de.bo.aid.boese.main.ProtocolHandler;
-import de.bo.aid.boese.model.RepeatRule;
-import de.bo.aid.boese.model.ToDo;
+import de.bo.aid.boese.modelJPA.RepeatRule;
+import de.bo.aid.boese.modelJPA.ToDo;
 import de.bo.aid.boese.xml.ComponentXML;
 
 // TODO: Auto-generated Javadoc

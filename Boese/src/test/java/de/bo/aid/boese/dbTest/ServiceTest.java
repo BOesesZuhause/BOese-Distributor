@@ -8,11 +8,11 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.bo.aid.boese.DB.util.HibernateUtil;
 import de.bo.aid.boese.db.Inserts;
 import de.bo.aid.boese.db.Selects;
 import de.bo.aid.boese.db.Updates;
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
-import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.model.Service;
 
 // TODO: Auto-generated Javadoc

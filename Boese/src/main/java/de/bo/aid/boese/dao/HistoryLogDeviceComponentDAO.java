@@ -9,8 +9,8 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.DeviceComponent;
-import de.bo.aid.boese.model.HistoryLogDeviceComponent;
+import de.bo.aid.boese.modelJPA.DeviceComponent;
+import de.bo.aid.boese.modelJPA.HistoryLogDeviceComponent;
 
 public class HistoryLogDeviceComponentDAO implements StandardDAO<HistoryLogDeviceComponent> {
 	

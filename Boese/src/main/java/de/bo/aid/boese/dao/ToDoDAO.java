@@ -8,8 +8,8 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.RepeatRule;
-import de.bo.aid.boese.model.ToDo;
+import de.bo.aid.boese.modelJPA.RepeatRule;
+import de.bo.aid.boese.modelJPA.ToDo;
 
 public class ToDoDAO implements StandardDAO<ToDo>{
 	

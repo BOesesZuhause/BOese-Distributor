@@ -7,7 +7,7 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.Connector;
+import de.bo.aid.boese.modelJPA.Connector;
 
 public class ConnectorDAO implements StandardDAO<Connector> {
 	

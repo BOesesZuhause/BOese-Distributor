@@ -8,8 +8,8 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.bo.aid.boese.DB.util.HibernateUtil;
 import de.bo.aid.boese.db.Inserts;
-import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.model.Component;
 import de.bo.aid.boese.model.Connector;
 import de.bo.aid.boese.model.Device;

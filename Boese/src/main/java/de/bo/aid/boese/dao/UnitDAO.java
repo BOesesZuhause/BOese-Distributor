@@ -7,7 +7,7 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.Unit;
+import de.bo.aid.boese.modelJPA.Unit;
 
 public class UnitDAO implements StandardDAO<Unit>{
 	

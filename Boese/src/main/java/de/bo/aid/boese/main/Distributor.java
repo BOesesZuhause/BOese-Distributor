@@ -31,6 +31,7 @@ package de.bo.aid.boese.main;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,15 +41,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.persistence.EntityManager;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
+
+import de.bo.aid.boese.DB.util.DBDefaults;
+import de.bo.aid.boese.DB.util.JPAUtil;
 import de.bo.aid.boese.cli.Parameters;
 import de.bo.aid.boese.constants.NotificationType;
-import de.bo.aid.boese.db.Inserts;
-import de.bo.aid.boese.hibernate.util.HibernateUtil;
+import de.bo.aid.boese.dao.DAOHandler;
+import de.bo.aid.boese.dao.ServiceDAO;
+import de.bo.aid.boese.dao.UnitDAO;
+import de.bo.aid.boese.dao.ZoneDAO;
 import de.bo.aid.boese.json.BoeseJson;
 import de.bo.aid.boese.json.ConfirmConnection;
 import de.bo.aid.boese.json.RequestAllDevices;
@@ -56,16 +64,19 @@ import de.bo.aid.boese.json.UserSendTemps;
 import de.bo.aid.boese.main.model.TempComponent;
 import de.bo.aid.boese.main.model.TempConnector;
 import de.bo.aid.boese.main.model.TempDevice;
-import de.bo.aid.boese.model.Component;
-import de.bo.aid.boese.model.Connector;
-import de.bo.aid.boese.model.Device;
-import de.bo.aid.boese.model.DeviceComponent;
-import de.bo.aid.boese.ruler.Interpreter;
+import de.bo.aid.boese.modelJPA.Component;
+import de.bo.aid.boese.modelJPA.Connector;
+import de.bo.aid.boese.modelJPA.Device;
+import de.bo.aid.boese.modelJPA.DeviceComponent;
+import de.bo.aid.boese.modelJPA.Service;
+import de.bo.aid.boese.modelJPA.Unit;
+import de.bo.aid.boese.modelJPA.Zone;
 import de.bo.aid.boese.ruler.Inquiry;
+import de.bo.aid.boese.ruler.Interpreter;
 import de.bo.aid.boese.ruler.ToDoChecker;
-import de.bo.aid.boese.socket.SocketServer;
 import de.bo.aid.boese.socket.HeartbeatWorker;
 import de.bo.aid.boese.socket.SessionHandler;
+import de.bo.aid.boese.socket.SocketServer;
 import de.bo.aid.boese.xml.ComponentXML;
 import javassist.NotFoundException;
 
@@ -110,6 +121,8 @@ private final String logo =
 	
 	/** The instance. */
 	private static Distributor instance;
+	
+	private DAOHandler daoHandler;
 	
 	/** The temp connectors. */
 	//hashmaps for unconfirmed Objects with a temporary Id as key
@@ -181,6 +194,7 @@ private final String logo =
         logger.info("Loading properties");
         distr.loadProperties();
         logger.info("Properties loades successfully");
+        
         logger.info("Beginning database initialization");
         distr.initDatabase();
         logger.info("Database initialized successfully");
@@ -227,12 +241,16 @@ private final String logo =
 	 * Inits the database.
 	 */
 	public void initDatabase(){
-		HibernateUtil.setDBUser(props.getDbUser());
-		HibernateUtil.setDBPassword(props.getDbPassword());
-		HibernateUtil.setDBURL(props.getDbName(), props.getDbHost(), props.getDbPort());
+		JPAUtil.setDBUser(props.getDbUser());
+		JPAUtil.setDBPassword(props.getDbPassword());
+		JPAUtil.setDBURL(props.getDbName(), props.getDbHost(), props.getDbPort());
+		daoHandler = DAOHandler.getInstance();
+		DBDefaults dbdef = new DBDefaults();
+		dbdef.defaults();
+		//TODO
+//		Inserts.defaultUnits();
 		
-		Inserts.defaults();	
-		Inserts.defaultUnits();
+		
 	}
 	
 	/**
@@ -372,8 +390,11 @@ private final String logo =
 		SecureRandom sr = new SecureRandom();
 		String pw = String.valueOf(sr.nextLong());
 
-		Connector con = new Connector(name, pw, isUserConnector);
-		Inserts.connector(con);
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
+		Connector con = daoHandler.getCon().create(em, name, pw, isUserConnector);
+		em.getTransaction().commit();
+		em.close();
 		SessionHandler.getInstance().setConnectorId(tempId, con.getCoId(), con.isUserConnector());
 
 		// Send ConfirmConnection
@@ -420,13 +441,12 @@ private final String logo =
 		int connectorId = temp.getConnectorID();
 		
 		HashMap<String, Integer> devices = new HashMap<String, Integer>();
-		try {
-			Device dev = new Device(name, "serial");
-			Inserts.device(connectorId, zoneId, dev);
-			devices.put(temp.getName(), dev.getDeId());
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-		}		
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
+		Device dev = daoHandler.getDev().create(em, name, "serial");
+		em.getTransaction().commit();
+		em.close();
+		devices.put(temp.getName(), dev.getDeId());	
 		protocolHandler.sendConfirmDevices(devices, connectorId);		
 		logger.info("User confirmed Device with name: " + name );
 		tempDevices.remove(tempId);
@@ -509,19 +529,16 @@ private final String logo =
 		int deCoId = 0;
 		// TODO Was ist wenn Inserts.component() funktioniert aber Inserts.deviceComponent nicht (=>Transactions)
 		// TODO jedesmal wird eine Komponente erstellt
-		try{
-			Component comp = new Component(name, temp.isActor());
-			Inserts.component(unitId, comp); 
-			//TODO min und max value mitgeben und ob geloggt werden soll
-			DeviceComponent deco = new DeviceComponent(temp.getDescription(), -1000.0, 1000.0, true);
-			Inserts.deviceComponent(deviceId, comp.getCoId(), deco);
-			deCoId = deco.getDeCoId();
-		}
-		catch(Exception e){
-			logger.error(e.getMessage(), e);
-			//User hat DeviceComponent bestätigt, aber es gab einen Fehler
-			return;
-		}
+		
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
+		Component comp = daoHandler.getComp().create(em, name, temp.isActor());
+		DeviceComponent deco = daoHandler.getDeco().create(em, temp.getDescription(), -1000.0, 1000.0, 0.0, true);
+		em.getTransaction().commit();
+		em.close();
+		
+		
+		deCoId = deco.getDeCoId();
 		HashMap<String, Integer> confirmComponents = new HashMap<String, Integer>();
 		confirmComponents.put(temp.getName(), deCoId);
 		ArrayList<Inquiry> inquiryList = new ArrayList<>();
@@ -553,12 +570,16 @@ private final String logo =
 	 */
 	public List<ComponentXML> insertValues(List<Inquiry> inquirys) {
 		for (Inquiry inq : inquirys) {
-			try{
-				Inserts.value(inq.getDeviceComponentId(), new Date(inq.getTimestamp()), inq.getValue());
+			EntityManager em = JPAUtil.getEntityManager();
+			em.getTransaction().begin();
+			DeviceComponent deco = daoHandler.getDeco().get(em, inq.getDeviceComponentId());
+			//ist die DeviceComponet auf loggen gestellt und die Differenz zwischen neuen und alten groß genug?
+			if(deco.isLoggen() && Math.abs(deco.getCurrentValue().doubleValue() - inq.getValue()) > deco.getLogDiffernce().doubleValue()){
+				daoHandler.getLodeco().create(em, deco, new Date(inq.getTimestamp()), deco.getCurrentValue());
 			}
-			catch(Exception e){
-				logger.error(e.getMessage(), e);
-			}
+			deco.setCurrentValue(BigDecimal.valueOf(inq.getValue()));
+			em.getTransaction().commit();
+			em.close();
 		}
 		Interpreter interpreter = new Interpreter();
 		List<ComponentXML> todos;

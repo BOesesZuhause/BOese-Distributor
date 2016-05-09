@@ -5,8 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 
-import de.bo.aid.boese.hibernate.util.HibernateUtil;
-import de.bo.aid.boese.hibernate.util.JPAUtil;
+import de.bo.aid.boese.DB.util.JPAUtil;
 
 // TODO: Auto-generated Javadoc
 /**

@@ -7,14 +7,14 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.DeviceComponent;
-import de.bo.aid.boese.model.DeviceComponenteReplace;
+import de.bo.aid.boese.modelJPA.DeviceComponent;
+import de.bo.aid.boese.modelJPA.DeviceComponentReplace;
 
 
 public class DeviceComponentReplaceDAO implements StandardDAO<DeviceComponentReplaceDAO> {
 	
-	public DeviceComponenteReplace create(EntityManager em, DeviceComponent fresh, DeviceComponent old){
-		DeviceComponenteReplace entity = new DeviceComponenteReplace(fresh, old);
+	public DeviceComponentReplace create(EntityManager em, DeviceComponent fresh, DeviceComponent old){
+		DeviceComponentReplace entity = new DeviceComponentReplace(fresh, old);
 		em.persist(entity);
 		return entity;
 	}

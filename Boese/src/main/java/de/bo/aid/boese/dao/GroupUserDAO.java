@@ -7,9 +7,9 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.Group;
-import de.bo.aid.boese.model.GroupUser;
-import de.bo.aid.boese.model.User;
+import de.bo.aid.boese.modelJPA.Group;
+import de.bo.aid.boese.modelJPA.GroupUser;
+import de.bo.aid.boese.modelJPA.User;
 
 public class GroupUserDAO implements StandardDAO<GroupUser>{
 	

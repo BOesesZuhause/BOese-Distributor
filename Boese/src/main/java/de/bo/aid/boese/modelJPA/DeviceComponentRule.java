@@ -32,20 +32,27 @@
 package de.bo.aid.boese.modelJPA;
 
 import javax.persistence.CascadeType;
-import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 // TODO: Auto-generated Javadoc
 /**
  * DeviceComponentRule Model for Hibernate.
  */
+@Entity
+@Table(name="\"DeviceComponentRule\"")
 public class DeviceComponentRule {
 
 	/** The DeviceComponentRule id. */
-	@EmbeddedId
-	private DeviceComponentRuleId id;
+	@Id
+	@GeneratedValue(strategy=GenerationType.TABLE)
+	private int id;
 	
 	/** The linked devicecomponent. */
 	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
@@ -66,11 +73,22 @@ public class DeviceComponentRule {
 	/**
 	 * Instantiates a new device component rule.
 	 *
+	 * @param devicecomponent the linked devicecomponent
+	 * @param rule the linked rule
+	 */
+	public DeviceComponentRule(DeviceComponent devicecomponent, Rule rule) {
+		this.devicecomponent = devicecomponent;
+		this.rule = rule;
+	}
+
+	/**
+	 * Instantiates a new device component rule.
+	 *
 	 * @param id the DeviceComponentRule id
 	 * @param devicecomponent the linked devicecomponent
 	 * @param rule the linked rule
 	 */
-	public DeviceComponentRule(DeviceComponentRuleId id, DeviceComponent devicecomponent, Rule rule) {
+	public DeviceComponentRule(int id, DeviceComponent devicecomponent, Rule rule) {
 		this.id = id;
 		this.devicecomponent = devicecomponent;
 		this.rule = rule;
@@ -81,7 +99,7 @@ public class DeviceComponentRule {
 	 *
 	 * @return the DeviceComponentRule id
 	 */
-	public DeviceComponentRuleId getId() {
+	public int getId() {
 		return this.id;
 	}
 
@@ -90,7 +108,7 @@ public class DeviceComponentRule {
 	 *
 	 * @param id the new DeviceComponentRule id
 	 */
-	public void setId(DeviceComponentRuleId id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -151,11 +169,9 @@ public class DeviceComponentRule {
 				return false;
 		} else if (!devicecomponent.equals(other.devicecomponent))
 			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
+		if (id != other.id) {
 			return false;
+		}
 		if (rule == null) {
 			if (other.rule != null)
 				return false;

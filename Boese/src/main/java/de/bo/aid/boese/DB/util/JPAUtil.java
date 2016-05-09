@@ -1,4 +1,4 @@
-package de.bo.aid.boese.hibernate.util;
+package de.bo.aid.boese.DB.util;
 
 import java.util.Properties;
 

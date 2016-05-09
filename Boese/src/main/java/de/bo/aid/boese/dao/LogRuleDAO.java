@@ -1,5 +1,6 @@
 package de.bo.aid.boese.dao;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -7,13 +8,13 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.LogRule;
-import de.bo.aid.boese.model.Rule;
+import de.bo.aid.boese.modelJPA.LogRule;
+import de.bo.aid.boese.modelJPA.Rule;
 
 public class LogRuleDAO implements StandardDAO<LogRule>{
 	
-	public LogRule create(EntityManager em, Rule r){
-		LogRule entity = new LogRule(r);
+	public LogRule create(EntityManager em, Rule r, Date timestamp){
+		LogRule entity = new LogRule(r, timestamp);
 		em.persist(entity);
 		return entity;
 	}

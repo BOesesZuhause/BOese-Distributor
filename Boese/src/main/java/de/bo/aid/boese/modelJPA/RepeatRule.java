@@ -35,22 +35,27 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 // TODO: Auto-generated Javadoc
 /**
  * RepeatRule Model for Hibernate.
  */
+@Entity
+@Table(name="\"RepeatRule\"")
 public class RepeatRule {
 	
 	/** The RepeatRule id. */
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	private int rrId;
 	
 	/** The repeat Cron String. */
@@ -92,11 +97,15 @@ public class RepeatRule {
 	 * @param repeat the repeat Cron String
 	 * @param value The Value, which will be executed
 	 * @param repeatsAfterEnd the number of repeats after end
+	 * @param rule the linked Rule
+	 * @param deco the linked DeviceComponent
 	 */
-	public RepeatRule(String repeat, BigDecimal value, int repeatsAfterEnd) {
+	public RepeatRule(String repeat, BigDecimal value, int repeatsAfterEnd, Rule rule, DeviceComponent deco) {
 		this.repeat = repeat;
 		this.value = value;
 		this.repeatsAfterEnd = repeatsAfterEnd;
+		this.rule = rule;
+		this.deviceComponent = deco;
 	}
 
 	/**

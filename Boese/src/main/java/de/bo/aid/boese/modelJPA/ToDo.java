@@ -34,21 +34,26 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 // TODO: Auto-generated Javadoc
 /**
  * ToDo Model for Hibernate.
  */
+@Entity
+@Table(name="\"ToDo\"")
 public class ToDo {
 	
 	/** The ToDoid. */
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	private int toDoId;
 	
 	/**  The time when it will be executed. */
@@ -78,6 +83,16 @@ public class ToDo {
 	public ToDo(Date date){
 		this.date = date;
 		this.active = true;
+	}
+	/**
+	 * Instantiates a new todo for DB Insert.
+	 *
+	 * @param date the date
+	 */
+	public ToDo(Date date, boolean active, RepeatRule rr){
+		this.date = date;
+		this.active = active;
+		this.repeatRule = rr;
 	}
 
 	/**

@@ -8,9 +8,9 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.DeviceComponent;
-import de.bo.aid.boese.model.RepeatRule;
-import de.bo.aid.boese.model.Rule;
+import de.bo.aid.boese.modelJPA.DeviceComponent;
+import de.bo.aid.boese.modelJPA.RepeatRule;
+import de.bo.aid.boese.modelJPA.Rule;
 
 public class RepeatRuleDAO implements StandardDAO<RepeatRule>{
 	

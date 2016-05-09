@@ -7,7 +7,7 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.Device;
+import de.bo.aid.boese.modelJPA.Device;
 
 public class DeviceDAO implements StandardDAO<Device> {
 	

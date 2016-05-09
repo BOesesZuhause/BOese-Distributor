@@ -9,8 +9,8 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.Connector;
-import de.bo.aid.boese.model.HistoryLogConnector;
+import de.bo.aid.boese.modelJPA.Connector;
+import de.bo.aid.boese.modelJPA.HistoryLogConnector;
 
 public class HistoryLogConnectorDAO implements StandardDAO<HistoryLogConnector>{
 	

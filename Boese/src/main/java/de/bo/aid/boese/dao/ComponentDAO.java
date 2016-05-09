@@ -7,7 +7,7 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.Component;
+import de.bo.aid.boese.modelJPA.Component;
 
 public class ComponentDAO implements StandardDAO<Component> {
 	

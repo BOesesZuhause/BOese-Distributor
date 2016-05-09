@@ -7,7 +7,7 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.Service;
+import de.bo.aid.boese.modelJPA.Service;
 
 public class ServiceDAO implements StandardDAO<Service>{
 	

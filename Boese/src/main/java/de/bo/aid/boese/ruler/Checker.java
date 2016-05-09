@@ -39,8 +39,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.bo.aid.boese.constants.Status;
-import de.bo.aid.boese.db.Selects;
-import de.bo.aid.boese.db.Updates;
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.exceptions.NoCalculationTypeException;
 import de.bo.aid.boese.exceptions.NoFirstCalculationException;

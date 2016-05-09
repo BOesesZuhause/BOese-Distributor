@@ -7,9 +7,9 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.bo.aid.boese.model.DeviceComponent;
-import de.bo.aid.boese.model.DeviceComponentRule;
-import de.bo.aid.boese.model.Rule;
+import de.bo.aid.boese.modelJPA.DeviceComponent;
+import de.bo.aid.boese.modelJPA.DeviceComponentRule;
+import de.bo.aid.boese.modelJPA.Rule;
 
 public class DeviceComponentRuleDAO implements StandardDAO<DeviceComponentRuleDAO>{
 	

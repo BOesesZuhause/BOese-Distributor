@@ -33,7 +33,7 @@ package de.bo.aid.boese.ruler;
 
 import java.util.Date;
 
-import de.bo.aid.boese.model.DeviceComponent;
+import de.bo.aid.boese.modelJPA.DeviceComponent;
 
 // TODO: Auto-generated Javadoc
 /**

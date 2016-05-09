@@ -10,9 +10,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.bo.aid.boese.DB.util.HibernateUtil;
 import de.bo.aid.boese.db.Connection;
 import de.bo.aid.boese.db.Inserts;
-import de.bo.aid.boese.hibernate.util.HibernateUtil;
 import de.bo.aid.boese.main.Distributor;
 import de.bo.aid.boese.main.DistributorProperties;
 
