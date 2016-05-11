@@ -284,7 +284,7 @@ public class ProtocolHandler implements MessageHandler {
             }
         }  
 	    
-		if (rc.getPassword() == null && rc.getConnectorId() == -1) { //connector without id
+		if (rc.getConnectorId() == -1) { //connector without id
 			
 			// Add requesting Connector to tempConnectors with tempId from SocketHandler
 			if(rc.isUserConnector()){
@@ -292,7 +292,7 @@ public class ProtocolHandler implements MessageHandler {
 			}else{
 				distributor.addTempConnector(rc.getConnectorName(), tempId, false);
 			}
-		} else { //connector with id
+		} else if(rc.getPassword() != null) { //connector with id and password
     			String pw = rc.getPassword();
     			int conId = rc.getConnectorId();
     			String conName = rc.getConnectorName();
@@ -312,6 +312,9 @@ public class ProtocolHandler implements MessageHandler {
     				SessionHandler.getInstance().rejectConnection(tempId);
     				logger.error(onfe.getMessage(), onfe);
     			}
+		}else{ //Connector with id but withou password
+			SessionHandler.getInstance().rejectConnection(tempId);
+			logger.warn("Rejected connector because no password was sent");
 		}
 	}
 
