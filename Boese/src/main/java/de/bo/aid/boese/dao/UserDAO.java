@@ -25,7 +25,7 @@ public class UserDAO implements StandardDAO<User>{
 	}
 
 	@Override
-	public Set<User> getAll(EntityManager em, int id) {
+	public Set<User> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT u FROM User u");
 		List<?> erg = q.getResultList();
 		Set<User> entities = new HashSet<User>();

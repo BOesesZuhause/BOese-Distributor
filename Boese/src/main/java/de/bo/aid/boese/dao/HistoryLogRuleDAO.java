@@ -26,7 +26,7 @@ public class HistoryLogRuleDAO implements StandardDAO<HistoryLogRule>{
 	}
 
 	@Override
-	public Set<HistoryLogRule> getAll(EntityManager em, int id) {
+	public Set<HistoryLogRule> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT h FROM HistoryLogRuleDAO h");
 		List<?> erg = q.getResultList();
 		Set<HistoryLogRule> entities = new HashSet<HistoryLogRule>();

@@ -26,7 +26,7 @@ public class DeviceComponentReplaceDAO implements StandardDAO<DeviceComponentRep
 	}
 
 	@Override
-	public Set<DeviceComponentReplaceDAO> getAll(EntityManager em, int id) {
+	public Set<DeviceComponentReplaceDAO> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT d FROM DeviceComponentReplace d");
 		List<?> erg = q.getResultList();
 		Set<DeviceComponentReplaceDAO> entities = new HashSet<DeviceComponentReplaceDAO>();

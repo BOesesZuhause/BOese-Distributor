@@ -33,17 +33,25 @@ package de.bo.aid.boese.ruler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import javax.persistence.EntityManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.bo.aid.boese.DB.util.JPAUtil;
 import de.bo.aid.boese.constants.Status;
+import de.bo.aid.boese.dao.DAOHandler;
+import de.bo.aid.boese.dao.DeviceComponentDAO;
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.exceptions.NoCalculationTypeException;
 import de.bo.aid.boese.exceptions.NoFirstCalculationException;
 import de.bo.aid.boese.exceptions.OnlyTwoObjectsForModuloException;
 import de.bo.aid.boese.main.Distributor;
+import de.bo.aid.boese.modelJPA.DeviceComponent;
+import de.bo.aid.boese.modelJPA.Rule;
 import de.bo.aid.boese.xml.Action;
 import de.bo.aid.boese.xml.CalculationList;
 import de.bo.aid.boese.xml.ComponentXML;
@@ -55,6 +63,12 @@ import de.bo.aid.boese.xml.GateList.GateType;
  */
 public class Checker {
 	
+
+	private DAOHandler daoHandler;
+	
+	public Checker(){
+		daoHandler = DAOHandler.getInstance();
+	}
 
 	/** The Constant logger for log4j. */
 	private static final  Logger logger = LogManager.getLogger(Distributor.class);
@@ -127,24 +141,22 @@ public class Checker {
 		if(comp == null){
 			return false;
 		}
-		int status = Status.NO_STATUS;
-		try {
-			status = Selects.deviceComponent(comp.getId()).getStatus();
-		} catch (DBObjectNotFoundException e1) {
-			logger.error("Status der Komponente mit der ID " + comp.getId() + " kann nicht geladen werden.");
-			e1.printStackTrace();
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
+		DeviceComponent deco = daoHandler.getDeviceComponentDAO().get(em, comp.getId());
+		em.getTransaction().commit();
+		em.close();
+		if (deco == null){
+			logger.error("DeviceComponte mit der ID " + comp.getId() + " wurde nicht in der DB gefunden");
+			return false;
 		}
+		int status = deco.getStatus();
+		em.getTransaction().commit();
 		if(status == Status.NO_STATUS || status == Status.INACTIVE || status == Status.DEFECT || status == Status.UNAVAILABLE || status == Status.COMMUNICATION_FAILURE || status == Status.UNKNOWN || status == Status.DELETED ){
 			return false;
 		}
 		else{
-			double isValue = 0.0;
-			try {
-				isValue = Selects.currentValue(comp.getId());
-			} catch (DBObjectNotFoundException e1) {
-				logger.error("Der Wert der Komponente mit der ID: " + comp.getId() + " kann nicht in der Datenbank gefunden werden.");
-				e1.printStackTrace();
-			}
+			double isValue = deco.getCurrentValue().doubleValue();
 			double comparativeValue = 0.0;
 			try {
 				comparativeValue = calculate(comp.getCalculation());
@@ -194,12 +206,24 @@ public class Checker {
 	 * @throws Exception when a Value can not be set
 	 */
 	public List<ComponentXML> action(Action action) throws Exception {
+		//TODO Queries angucken ober erst Select schlau ist
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
+		Map<Integer, Rule> rules = daoHandler.getRuleDAO().getAllAsMap(em);
 		for(int i : action.getActivateRules()){
-			Updates.activateRule(i);
+			Rule rule = rules.get(i);
+			if(rule != null){
+				rule.setActive(true);
+			}
 		}
 		for(int i : action.getDeactivateRules()){
-			Updates.deactivateRule(i);
+			Rule rule = rules.get(i);
+			if(rule != null){
+				rule.setActive(false);
+			}
 		}
+		em.getTransaction().commit();
+		em.close();
 		List<ComponentXML> toDos = new ArrayList<ComponentXML>();
 		for(ComponentXML actor : action.getActors()){
 			try {
@@ -241,14 +265,20 @@ public class Checker {
 		for (double d : cl.getConstants()){
 			values.add(d);
 		}
+		EntityManager em = JPAUtil.getEntityManager();
 		for(int i : cl.getVariables()){
-			try {
-				values.add(Selects.currentValue(i));
-			} catch (DBObjectNotFoundException e) {
-				logger.error("Der Wert der Komponente mit der ID: " + i + " konnte nicht in der Datenbank gefunden werden.");
-				e.printStackTrace();
+			em.getTransaction().begin();
+			DeviceComponent deco = daoHandler.getDeviceComponentDAO().get(em, i);
+			if(deco != null){
+				values.add(deco.getCurrentValue().doubleValue());
 			}
+			else{
+				//TODO Exception!!!
+				logger.error("Der Wert der Komponente mit der ID: " + i + " konnte nicht in der Datenbank gefunden werden.");
+			}
+			em.getTransaction().commit();
 		}
+		em.close();
 		for(CalculationList next : cl.getCalculations()){
 			try{
 				values.add(calculate(next));

@@ -27,7 +27,7 @@ public class LogConnectorDAO implements StandardDAO<LogConnector>{
 	}
 
 	@Override
-	public Set<LogConnector> getAll(EntityManager em, int id) {
+	public Set<LogConnector> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT l FROM LogConnector l");
 		List<?> erg = q.getResultList();
 		Set<LogConnector> entities = new HashSet<LogConnector>();

@@ -24,7 +24,7 @@ public class GroupDAO implements StandardDAO<Group>{
 	}
 
 	@Override
-	public Set<Group> getAll(EntityManager em, int id) {
+	public Set<Group> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT g FROM Group g");
 		List<?> erg = q.getResultList();
 		Set<Group> entities = new HashSet<Group>();

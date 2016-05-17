@@ -35,8 +35,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.EntityManager;
 
+import de.bo.aid.boese.DB.util.JPAUtil;
+import de.bo.aid.boese.dao.DAOHandler;
+import de.bo.aid.boese.dao.ToDoDAO;
 import de.bo.aid.boese.main.ProtocolHandler;
 import de.bo.aid.boese.modelJPA.RepeatRule;
 import de.bo.aid.boese.modelJPA.ToDo;
@@ -54,6 +59,8 @@ public class ToDoChecker extends Thread{
 	/** The instance of the ProtocolHandler to send the ToDos to the Connectors. */
 	ProtocolHandler ph;
 	
+	private DAOHandler daohandler;
+	
 //	Empfänger e;
 	
 	/** A Variable to lock the Thread. */
@@ -65,9 +72,14 @@ public class ToDoChecker extends Thread{
 	 * @param ph the ProtocolHandler instance of the Distributor
 	 */
 	public ToDoChecker(ProtocolHandler ph){
+		daohandler = DAOHandler.getInstance();
 		this.ph = ph;
 		b = true;
-		List<ToDo> todos = AllSelects.toDos();
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
+		Set<ToDo> todos = daohandler.getToDoDAO().getAll(em);
+		em.getTransaction().commit();
+		em.close();
 		ttl = new ArrayList<TimeTodos>();
 		for(ToDo t : todos){
 			ttl.add(new TimeTodos(t.getToDoId(), t.getDate(), t.getRepeatRule().getValue().doubleValue(), t.getRepeatRule().getDeviceComponent()));
@@ -80,6 +92,7 @@ public class ToDoChecker extends Thread{
 	 *  After this they will deleted in the Database and if necessary with a new Date created.
 	 */
 	public void run(){
+		EntityManager em;
 		while(true){
 			if(ttl.isEmpty()){
 				try {
@@ -103,16 +116,20 @@ public class ToDoChecker extends Thread{
 						System.exit(0);
 					}
 					List<ComponentXML> todos = new ArrayList<ComponentXML>();
-					while(tt != null && isPast(tt.getDate())){					
-						ToDo todo = Selects.toDo(tt.getId());
+					ToDoDAO tododao = daohandler.getToDoDAO();
+					em = JPAUtil.getEntityManager();
+					while(tt != null && isPast(tt.getDate())){
+						em.getTransaction().begin();
+						ToDo todo = tododao.get(em, tt.getId());
 						RepeatRule rr = todo.getRepeatRule();
-						Deletes.toDo(todo);
+						tododao.delete(em, todo);
 						if(rr.getRrId() == 0){
 							todo = null;
 						}
 						else{
 							todo.setDate(new TimeFormat(rr.getRepeat()).getDateForRepeatRule());
-							Inserts.toDoWithoutChange(todo, rr.getRrId());
+							todo.setRepeatRule(rr);
+							tododao.create(em, todo);
 							ttlnew.add(new TimeTodos(todo.getToDoId(), todo.getDate(), todo.getRepeatRule().getValue().doubleValue(), todo.getRepeatRule().getDeviceComponent()));
 						}
 						ttl.remove(tt);
@@ -122,18 +139,21 @@ public class ToDoChecker extends Thread{
 						else{
 							tt = null;
 						}
+						em.getTransaction().commit();
 					}
 					while(tt != null && sameTime(tt.getDate())){
+						em.getTransaction().begin();
 						todos.add(new ComponentXML(tt.getDeco().getDeCoId(), tt.getValue()));
-						ToDo todo = Selects.toDo(tt.getId());
+						ToDo todo = tododao.get(em, tt.getId());
 						RepeatRule rr = todo.getRepeatRule();
-						Deletes.toDo(todo);
+						tododao.delete(em, todo);
 						if(rr.getRrId() == 0){
 							todo = null;
 						}
 						else{
 							todo.setDate(new TimeFormat(rr.getRepeat()).getDateForRepeatRule());
-							Inserts.toDoWithoutChange(todo, rr.getRrId());
+							todo.setRepeatRule(rr);
+							tododao.create(em, todo);
 							ttlnew.add(new TimeTodos(todo.getToDoId(), todo.getDate(), todo.getRepeatRule().getValue().doubleValue(), todo.getRepeatRule().getDeviceComponent()));
 						}
 						ttl.remove(tt);
@@ -143,7 +163,9 @@ public class ToDoChecker extends Thread{
 						else{
 							tt = null;
 						}
+						em.getTransaction().commit();
 					}
+					em.close();
 					Collections.sort(this.ttl);
 					System.out.println(toDosToString(todos) + "Todos werden gesendet");
 //					if(ph != null){
@@ -176,7 +198,12 @@ public class ToDoChecker extends Thread{
 				e.printStackTrace();
 			}
 		}
-		List<ToDo> todos = AllSelects.toDos();
+
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
+		Set<ToDo> todos = daohandler.getToDoDAO().getAll(em);
+		em.getTransaction().commit();
+		em.close();
 		this.ttl = new ArrayList<TimeTodos>();
 		for(ToDo t : todos){
 			this.ttl.add(new TimeTodos(t.getToDoId(), t.getDate(), t.getRepeatRule().getValue().doubleValue(), t.getRepeatRule().getDeviceComponent()));

@@ -1,7 +1,9 @@
 package de.bo.aid.boese.dao;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -24,12 +26,23 @@ public class RuleDAO implements StandardDAO<Rule>{
 	}
 
 	@Override
-	public Set<Rule> getAll(EntityManager em, int id) {
+	public Set<Rule> getAll(EntityManager em) {
 		Query q = em.createQuery("select r from Rule r");
 		List<?> erg = q.getResultList();
 		Set<Rule> entities = new HashSet<Rule>();
 		for(Object o : erg){
 			entities.add((Rule)o);
+		}
+		return entities;
+	}
+	
+	public Map<Integer, Rule> getAllAsMap(EntityManager em) {
+		Query q = em.createQuery("select r from Rule r");
+		List<?> erg = q.getResultList();
+		Map<Integer, Rule> entities = new HashMap<Integer, Rule>();
+		for(Object o : erg){
+			Rule r = (Rule)o;
+			entities.put(r.getRuId(), r);
 		}
 		return entities;
 	}

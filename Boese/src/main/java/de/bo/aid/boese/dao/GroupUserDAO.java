@@ -26,7 +26,7 @@ public class GroupUserDAO implements StandardDAO<GroupUser>{
 	}
 
 	@Override
-	public Set<GroupUser> getAll(EntityManager em, int id) {
+	public Set<GroupUser> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT g FROM GroupUser g");
 		List<?> erg = q.getResultList();
 		Set<GroupUser> entities = new HashSet<GroupUser>();

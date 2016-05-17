@@ -24,7 +24,7 @@ public class UnitDAO implements StandardDAO<Unit>{
 	}
 
 	@Override
-	public Set<Unit> getAll(EntityManager em, int id) {
+	public Set<Unit> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT u FROM  Unit u");
 		List<?> erg = q.getResultList();
 		Set<Unit> entities = new HashSet<Unit>();

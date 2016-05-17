@@ -26,7 +26,7 @@ public class GroupZoneDAO implements StandardDAO<GroupZone>{
 	}
 
 	@Override
-	public Set<GroupZone> getAll(EntityManager em, int id) {
+	public Set<GroupZone> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT g FROM GroupZone g");
 		List<?> erg = q.getResultList();
 		Set<GroupZone> entities = new HashSet<GroupZone>();

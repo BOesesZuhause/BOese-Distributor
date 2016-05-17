@@ -24,7 +24,7 @@ public class DeviceDAO implements StandardDAO<Device> {
 	}
 
 	@Override
-	public Set<Device> getAll(EntityManager em, int id) {
+	public Set<Device> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT d FROM Device d");
 		List<?> erg = q.getResultList();
 		Set<Device> entities = new HashSet<Device>();

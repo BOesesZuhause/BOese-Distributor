@@ -19,9 +19,9 @@ public interface StandardDAO<model>{
 		return entity;
 	}
 
-	public Set<model> getAll(EntityManager em, int id);
+	public Set<model> getAll(EntityManager em);
 
-	public default Set<model> getAll(EntityManager em, int id, String tabName){
+	public default Set<model> getAll(EntityManager em, String tabName){
 		Query q = em.createQuery("SELECT a FROM " + tabName + " a");
 		List<?> erg = q.getResultList();
 		Set<model> entities = new HashSet<model>();

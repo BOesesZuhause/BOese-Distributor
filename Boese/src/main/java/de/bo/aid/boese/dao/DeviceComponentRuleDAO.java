@@ -26,7 +26,7 @@ public class DeviceComponentRuleDAO implements StandardDAO<DeviceComponentRuleDA
 	}
 
 	@Override
-	public Set<DeviceComponentRuleDAO> getAll(EntityManager em, int id) {
+	public Set<DeviceComponentRuleDAO> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT d FROM DeviceComponentRule d");
 		List<?> erg = q.getResultList();
 		Set<DeviceComponentRuleDAO> entities = new HashSet<DeviceComponentRuleDAO>();

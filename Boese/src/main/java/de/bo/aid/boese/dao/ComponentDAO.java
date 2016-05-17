@@ -24,7 +24,7 @@ public class ComponentDAO implements StandardDAO<Component> {
 	}
 
 	@Override
-	public Set<Component> getAll(EntityManager em, int id) {
+	public Set<Component> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT c FROM Component c");
 		List<?> erg = q.getResultList();
 		Set<Component> entities = new HashSet<Component>();

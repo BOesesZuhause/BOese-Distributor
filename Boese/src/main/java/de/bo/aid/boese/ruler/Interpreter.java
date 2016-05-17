@@ -35,10 +35,17 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.persistence.EntityManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.bo.aid.boese.DB.util.JPAUtil;
+import de.bo.aid.boese.dao.DAOHandler;
+import de.bo.aid.boese.dao.ToDoDAO;
 import de.bo.aid.boese.exceptions.DBForeignKeyNotFoundException;
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.modelJPA.DeviceComponent;
@@ -62,11 +69,14 @@ public class Interpreter {
     /** The instance of the Checker. */
 	private Checker check;
 	
+	private DAOHandler daoHandler;
+	
 	/**
 	 * Instantiates a new Interpreter.
 	 */
 	public Interpreter(){
 		check = new Checker();
+		daoHandler = DAOHandler.getInstance();
 	}
 
 	/**
@@ -81,7 +91,11 @@ public class Interpreter {
 		
 		for(Inquiry inquiry : inquirys){
 			int id = inquiry.getDeviceComponentId();
-			List<Rule> rules = Selects.rulesByDeviceComponent(id);
+			EntityManager em = JPAUtil.getEntityManager();
+			em.getTransaction().begin();
+			Set<Rule> rules = daoHandler.getRuleDAO().getAll(em);
+			em.getTransaction().commit();
+			em.close();
 			for(Rule rule : rules){
 				if(rule.getActive() && check.deCoInCondition(id, rule.getConditions())){
 					InputStream is = new ByteArrayInputStream(rule.getConditions().getBytes());
@@ -116,12 +130,19 @@ public class Interpreter {
 	 */
 	public List<DeviceComponent> getAllDeCosCondition(BoeseXML conditions){
 		List<DeviceComponent> list = new ArrayList<DeviceComponent>();
-		for (int comp : ((Condition)conditions).getComponentIds()) {
-			try {
-				list.add(Selects.deviceComponent(comp));
-			} catch (DBObjectNotFoundException e) {
-			    logger.error(e);
-				e.printStackTrace();
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
+		Map<Integer, DeviceComponent> deviceComponents = daoHandler.getDeviceComponentDAO().getAllAsMap(em);
+		em.getTransaction().commit();
+		em.close();
+		for (int decoID : ((Condition)conditions).getComponentIds()) {
+			DeviceComponent deco = deviceComponents.get(decoID);
+			if(deco != null) {
+				list.add(deco);
+			}
+			else{
+			    logger.error("DeviceCompent mit der ID " + decoID + " konnte in der DB nicht gefunden werden");
+				//TODO Exception
 			}
 		}
 		return list;
@@ -133,21 +154,23 @@ public class Interpreter {
  * @param tdc the ToDoChecker instance of the Distributor
  */
 	public static void createTodos(ToDoChecker tdc){
-		List<ToDo> todos = AllSelects.toDos();
-		List<RepeatRule> rule = AllSelects.repeatRules();
+		DAOHandler daoh = DAOHandler.getInstance();
+		ToDoDAO tododao = daoh.getToDoDAO();
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
+		Set<ToDo> todos = tododao.getAll(em);
+		Set<RepeatRule> repeatrule = daoh.getRepeatRuleDAO().getAll(em);
+		em.getTransaction().commit();
 		for(ToDo todo : todos){
-			rule.remove(todo.getRepeatRule());
+			repeatrule.remove(todo.getRepeatRule());
 		}
-		for(RepeatRule rr : rule){
-			try {
-				ToDo todo = new ToDo(new TimeFormat(rr.getRepeat()).getDateForRepeatRule());
-				Inserts.toDoWithoutChange(todo, rr.getRrId());
-			} catch (DBForeignKeyNotFoundException e) {
-				logger.error(e);
-				e.printStackTrace();
-			}
+		for(RepeatRule rr : repeatrule){
+			ToDo todo = new ToDo(new TimeFormat(rr.getRepeat()).getDateForRepeatRule());
+			todo.setRepeatRule(rr);
+			tododao.create(em, todo);
 		}
 		tdc.changeInToDo();
+		em.close();
 	}
 
 }

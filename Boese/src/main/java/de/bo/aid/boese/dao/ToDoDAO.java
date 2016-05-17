@@ -32,7 +32,7 @@ public class ToDoDAO implements StandardDAO<ToDo>{
 	}
 
 	@Override
-	public Set<ToDo> getAll(EntityManager em, int id) {
+	public Set<ToDo> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT t FROM ToDo t");
 		List<?> erg = q.getResultList();
 		Set<ToDo> entities = new HashSet<ToDo>();

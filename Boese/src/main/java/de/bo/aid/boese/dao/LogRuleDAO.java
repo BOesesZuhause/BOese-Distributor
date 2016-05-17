@@ -26,7 +26,7 @@ public class LogRuleDAO implements StandardDAO<LogRule>{
 	}
 
 	@Override
-	public Set<LogRule> getAll(EntityManager em, int id) {
+	public Set<LogRule> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT l FROM LogRule l");
 		List<?> erg = q.getResultList();
 		Set<LogRule> entities = new HashSet<LogRule>();

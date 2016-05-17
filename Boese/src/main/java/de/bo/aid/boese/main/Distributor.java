@@ -392,7 +392,7 @@ private final String logo =
 
 		EntityManager em = JPAUtil.getEntityManager();
 		em.getTransaction().begin();
-		Connector con = daoHandler.getCon().create(em, name, pw, isUserConnector);
+		Connector con = daoHandler.getConnectorDAO().create(em, name, pw, isUserConnector);
 		em.getTransaction().commit();
 		em.close();
 		SessionHandler.getInstance().setConnectorId(tempId, con.getCoId(), con.isUserConnector());
@@ -443,7 +443,7 @@ private final String logo =
 		HashMap<String, Integer> devices = new HashMap<String, Integer>();
 		EntityManager em = JPAUtil.getEntityManager();
 		em.getTransaction().begin();
-		Device dev = daoHandler.getDev().create(em, name, "serial");
+		Device dev = daoHandler.getDeviceDAO().create(em, name, "serial");
 		em.getTransaction().commit();
 		em.close();
 		devices.put(temp.getName(), dev.getDeId());	
@@ -532,8 +532,8 @@ private final String logo =
 		
 		EntityManager em = JPAUtil.getEntityManager();
 		em.getTransaction().begin();
-		Component comp = daoHandler.getComp().create(em, name, temp.isActor());
-		DeviceComponent deco = daoHandler.getDeco().create(em, temp.getDescription(), -1000.0, 1000.0, 0.0, true);
+		Component comp = daoHandler.getComponentDAO().create(em, name, temp.isActor());
+		DeviceComponent deco = daoHandler.getDeviceComponentDAO().create(em, temp.getDescription(), -1000.0, 1000.0, 0.0, true);
 		em.getTransaction().commit();
 		em.close();
 		
@@ -572,10 +572,10 @@ private final String logo =
 		for (Inquiry inq : inquirys) {
 			EntityManager em = JPAUtil.getEntityManager();
 			em.getTransaction().begin();
-			DeviceComponent deco = daoHandler.getDeco().get(em, inq.getDeviceComponentId());
+			DeviceComponent deco = daoHandler.getDeviceComponentDAO().get(em, inq.getDeviceComponentId());
 			//ist die DeviceComponet auf loggen gestellt und die Differenz zwischen neuen und alten groß genug?
 			if(deco.isLoggen() && Math.abs(deco.getCurrentValue().doubleValue() - inq.getValue()) > deco.getLogDiffernce().doubleValue()){
-				daoHandler.getLodeco().create(em, deco, new Date(inq.getTimestamp()), deco.getCurrentValue());
+				daoHandler.getLogDeviceComponentDAO().create(em, deco, new Date(inq.getTimestamp()), deco.getCurrentValue());
 			}
 			deco.setCurrentValue(BigDecimal.valueOf(inq.getValue()));
 			em.getTransaction().commit();

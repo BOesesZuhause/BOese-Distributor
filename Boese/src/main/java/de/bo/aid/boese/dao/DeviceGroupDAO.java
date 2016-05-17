@@ -26,7 +26,7 @@ public class DeviceGroupDAO implements StandardDAO<DeviceGroup>{
 	}
 
 	@Override
-	public Set<DeviceGroup> getAll(EntityManager em, int id) {
+	public Set<DeviceGroup> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT d FROM DeviceGroup d");
 		List<?> erg = q.getResultList();
 		Set<DeviceGroup> entities = new HashSet<DeviceGroup>();

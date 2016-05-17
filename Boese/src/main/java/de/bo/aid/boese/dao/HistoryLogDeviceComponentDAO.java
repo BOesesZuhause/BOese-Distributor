@@ -27,7 +27,7 @@ public class HistoryLogDeviceComponentDAO implements StandardDAO<HistoryLogDevic
 	}
 
 	@Override
-	public Set<HistoryLogDeviceComponent> getAll(EntityManager em, int id) {
+	public Set<HistoryLogDeviceComponent> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT h FROM HistoryLogDeviceComponent h");
 		List<?> erg = q.getResultList();
 		Set<HistoryLogDeviceComponent> entities = new HashSet<HistoryLogDeviceComponent>();

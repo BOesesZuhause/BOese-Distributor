@@ -27,7 +27,7 @@ public class RepeatRuleDAO implements StandardDAO<RepeatRule>{
 	}
 
 	@Override
-	public Set<RepeatRule> getAll(EntityManager em, int id) {
+	public Set<RepeatRule> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT r FROM RepeatRule r");
 		List<?> erg = q.getResultList();
 		Set<RepeatRule> entities = new HashSet<RepeatRule>();

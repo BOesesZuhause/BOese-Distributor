@@ -2,56 +2,56 @@ package de.bo.aid.boese.dao;
 
 public class DAOHandler {
 	
-	private ComponentDAO comp;
-	private ConnectorDAO con;
-	private DeviceComponentDAO deco;
-	private DeviceComponentReplaceDAO decore;
-	private DeviceComponentRuleDAO decoru;
-	private DeviceDAO dev;
-	private DeviceGroupDAO devgrp;
-	private GroupDAO grp;
-	private GroupUserDAO grpuser;
-	private GroupZoneDAO grpzo;
-	private HistoryLogConnectorDAO hilocon;
-	private HistoryLogDeviceComponentDAO hilodeco;
-	private HistoryLogRuleDAO hiloru;
-	private LogConnectorDAO locon;
-	private LogDeviceComponentDAO lodeco;
-	private LogRuleDAO loru;
-	private RepeatRuleDAO rr;
-	private RuleDAO ru;
-	private ServiceDAO ser;
-	private ToDoDAO todo;
-	private UnitDAO unit;
-	private UserDAO user;
-	private ZoneDAO zone;
+	private ComponentDAO componentDAO;
+	private ConnectorDAO connectorDAO;
+	private DeviceComponentDAO deviceComponentDAO;
+	private DeviceComponentReplaceDAO deviceComponentReplaceDAO;
+	private DeviceComponentRuleDAO deviceComponentRuleDAO;
+	private DeviceDAO deviceDAO;
+	private DeviceGroupDAO deviceGroupDAO;
+	private GroupDAO groupDAO;
+	private GroupUserDAO groupUserDAO;
+	private GroupZoneDAO groupZoneDAO;
+	private HistoryLogConnectorDAO historyLogConnectorDAO;
+	private HistoryLogDeviceComponentDAO historyLogDeviceComponentDAO;
+	private HistoryLogRuleDAO historyLogRuleDAO;
+	private LogConnectorDAO logConnectorDAO;
+	private LogDeviceComponentDAO logDeviceComponentDAO;
+	private LogRuleDAO logRuleDAO;
+	private RepeatRuleDAO repeatRuleDAO;
+	private RuleDAO ruleDAO;
+	private ServiceDAO serviceDAO;
+	private ToDoDAO toDoDAO;
+	private UnitDAO unitDAO;
+	private UserDAO userDAO;
+	private ZoneDAO zoneDAO;
 	
 	private static DAOHandler daoh;
 
 	private DAOHandler(){
-		comp = new ComponentDAO();
-		con = new ConnectorDAO();
-		deco = new DeviceComponentDAO();
-		decore = new DeviceComponentReplaceDAO();
-		decoru = new DeviceComponentRuleDAO();
-		dev = new DeviceDAO();
-		devgrp = new DeviceGroupDAO();
-		grp = new GroupDAO();
-		grpuser = new GroupUserDAO();
-		grpzo = new GroupZoneDAO();
-		hilocon = new HistoryLogConnectorDAO();
-		hilodeco =  new HistoryLogDeviceComponentDAO();
-		hiloru = new HistoryLogRuleDAO();
-		locon = new LogConnectorDAO();
-		lodeco = new LogDeviceComponentDAO();
-		loru = new LogRuleDAO();
-		rr = new RepeatRuleDAO();
-		ru = new RuleDAO();
-		ser = new ServiceDAO();
-		todo = new ToDoDAO();
-		unit = new UnitDAO();
-		user = new UserDAO();
-		zone = new ZoneDAO();
+		componentDAO = new ComponentDAO();
+		connectorDAO = new ConnectorDAO();
+		deviceComponentDAO = new DeviceComponentDAO();
+		deviceComponentReplaceDAO = new DeviceComponentReplaceDAO();
+		deviceComponentRuleDAO = new DeviceComponentRuleDAO();
+		deviceDAO = new DeviceDAO();
+		deviceGroupDAO = new DeviceGroupDAO();
+		groupDAO = new GroupDAO();
+		groupUserDAO = new GroupUserDAO();
+		groupZoneDAO = new GroupZoneDAO();
+		historyLogConnectorDAO = new HistoryLogConnectorDAO();
+		historyLogDeviceComponentDAO =  new HistoryLogDeviceComponentDAO();
+		historyLogRuleDAO = new HistoryLogRuleDAO();
+		logConnectorDAO = new LogConnectorDAO();
+		logDeviceComponentDAO = new LogDeviceComponentDAO();
+		logRuleDAO = new LogRuleDAO();
+		repeatRuleDAO = new RepeatRuleDAO();
+		ruleDAO = new RuleDAO();
+		serviceDAO = new ServiceDAO();
+		toDoDAO = new ToDoDAO();
+		unitDAO = new UnitDAO();
+		userDAO = new UserDAO();
+		zoneDAO = new ZoneDAO();
 	}
 	
 	public static DAOHandler getInstance(){
@@ -61,188 +61,96 @@ public class DAOHandler {
 		return daoh;
 	}
 
-	public ComponentDAO getComp() {
-		return comp;
+	public ComponentDAO getComponentDAO() {
+		return componentDAO;
 	}
 
-	public void setComp(ComponentDAO comp) {
-		this.comp = comp;
+	public ConnectorDAO getConnectorDAO() {
+		return connectorDAO;
 	}
 
-	public ConnectorDAO getCon() {
-		return con;
+	public DeviceComponentDAO getDeviceComponentDAO() {
+		return deviceComponentDAO;
 	}
 
-	public void setCon(ConnectorDAO con) {
-		this.con = con;
+	public DeviceComponentReplaceDAO getDeviceComponentReplaceDAO() {
+		return deviceComponentReplaceDAO;
+	}
+	
+	public DeviceComponentRuleDAO getDeviceComponentRuleDAO() {
+		return deviceComponentRuleDAO;
+	}
+	
+	public DeviceDAO getDeviceDAO() {
+		return deviceDAO;
 	}
 
-	public DeviceComponentDAO getDeco() {
-		return deco;
+	public DeviceGroupDAO getDeviceGroupDAO() {
+		return deviceGroupDAO;
 	}
 
-	public void setDeco(DeviceComponentDAO deco) {
-		this.deco = deco;
+	public GroupDAO getGroupDAO() {
+		return groupDAO;
+	}
+	
+	public GroupUserDAO getGroupUserDAO() {
+		return groupUserDAO;
 	}
 
-	public DeviceComponentReplaceDAO getDecore() {
-		return decore;
+	public GroupZoneDAO getGroupZoneDAO() {
+		return groupZoneDAO;
 	}
 
-	public void setDecore(DeviceComponentReplaceDAO decore) {
-		this.decore = decore;
+	public HistoryLogConnectorDAO getHistoryLogConnectorDAO() {
+		return historyLogConnectorDAO;
 	}
 
-	public DeviceComponentRuleDAO getDecoru() {
-		return decoru;
+	public HistoryLogDeviceComponentDAO getHistoryLogDeviceComponentDAO() {
+		return historyLogDeviceComponentDAO;
 	}
 
-	public void setDecoru(DeviceComponentRuleDAO decoru) {
-		this.decoru = decoru;
+	public HistoryLogRuleDAO getHistoryLogRuleDAO() {
+		return historyLogRuleDAO;
 	}
 
-	public DeviceDAO getDev() {
-		return dev;
+	public LogConnectorDAO getLogConnectorDAO() {
+		return logConnectorDAO;
 	}
 
-	public void setDev(DeviceDAO dev) {
-		this.dev = dev;
+	public LogDeviceComponentDAO getLogDeviceComponentDAO() {
+		return logDeviceComponentDAO;
 	}
 
-	public DeviceGroupDAO getDevgrp() {
-		return devgrp;
+	public LogRuleDAO getLogRuleDAO() {
+		return logRuleDAO;
 	}
 
-	public void setDevgrp(DeviceGroupDAO devgrp) {
-		this.devgrp = devgrp;
+	public RepeatRuleDAO getRepeatRuleDAO() {
+		return repeatRuleDAO;
 	}
 
-	public GroupDAO getGrp() {
-		return grp;
+	public RuleDAO getRuleDAO() {
+		return ruleDAO;
 	}
 
-	public void setGrp(GroupDAO grp) {
-		this.grp = grp;
+	public ServiceDAO getServiceDAO() {
+		return serviceDAO;
 	}
 
-	public GroupUserDAO getGrpuser() {
-		return grpuser;
+	public ToDoDAO getToDoDAO() {
+		return toDoDAO;
 	}
 
-	public void setGrpuser(GroupUserDAO grpuser) {
-		this.grpuser = grpuser;
+	public UnitDAO getUnitDAO() {
+		return unitDAO;
 	}
 
-	public GroupZoneDAO getGrpzo() {
-		return grpzo;
+	public UserDAO getUserDAO() {
+		return userDAO;
 	}
 
-	public void setGrpzo(GroupZoneDAO grpzo) {
-		this.grpzo = grpzo;
-	}
-
-	public HistoryLogConnectorDAO getHilocon() {
-		return hilocon;
-	}
-
-	public void setHilocon(HistoryLogConnectorDAO hilocon) {
-		this.hilocon = hilocon;
-	}
-
-	public HistoryLogDeviceComponentDAO getHilodeco() {
-		return hilodeco;
-	}
-
-	public void setHilodeco(HistoryLogDeviceComponentDAO hilodeco) {
-		this.hilodeco = hilodeco;
-	}
-
-	public HistoryLogRuleDAO getHiloru() {
-		return hiloru;
-	}
-
-	public void setHiloru(HistoryLogRuleDAO hiloru) {
-		this.hiloru = hiloru;
-	}
-
-	public LogConnectorDAO getLocon() {
-		return locon;
-	}
-
-	public void setLocon(LogConnectorDAO locon) {
-		this.locon = locon;
-	}
-
-	public LogDeviceComponentDAO getLodeco() {
-		return lodeco;
-	}
-
-	public void setLodeco(LogDeviceComponentDAO lodeco) {
-		this.lodeco = lodeco;
-	}
-
-	public LogRuleDAO getLoru() {
-		return loru;
-	}
-
-	public void setLoru(LogRuleDAO loru) {
-		this.loru = loru;
-	}
-
-	public RepeatRuleDAO getRr() {
-		return rr;
-	}
-
-	public void setRr(RepeatRuleDAO rr) {
-		this.rr = rr;
-	}
-
-	public RuleDAO getRu() {
-		return ru;
-	}
-
-	public void setRu(RuleDAO ru) {
-		this.ru = ru;
-	}
-
-	public ServiceDAO getSer() {
-		return ser;
-	}
-
-	public void setSer(ServiceDAO ser) {
-		this.ser = ser;
-	}
-
-	public ToDoDAO getTodo() {
-		return todo;
-	}
-
-	public void setTodo(ToDoDAO todo) {
-		this.todo = todo;
-	}
-
-	public UnitDAO getUnit() {
-		return unit;
-	}
-
-	public void setUnit(UnitDAO unit) {
-		this.unit = unit;
-	}
-
-	public UserDAO getUser() {
-		return user;
-	}
-
-	public void setUser(UserDAO user) {
-		this.user = user;
-	}
-
-	public ZoneDAO getZone() {
-		return zone;
-	}
-
-	public void setZone(ZoneDAO zone) {
-		this.zone = zone;
+	public ZoneDAO getZoneDAO() {
+		return zoneDAO;
 	}
 
 }

@@ -24,7 +24,7 @@ public class ServiceDAO implements StandardDAO<Service>{
 	}
 
 	@Override
-	public Set<Service> getAll(EntityManager em, int id) {
+	public Set<Service> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT s FROM Service s");
 		List<?> erg = q.getResultList();
 		Set<Service> entities = new HashSet<Service>();

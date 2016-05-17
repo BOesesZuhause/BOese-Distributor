@@ -24,7 +24,7 @@ public class ZoneDAO implements StandardDAO<Zone>{
 	}
 
 	@Override
-	public Set<Zone> getAll(EntityManager em, int id) {
+	public Set<Zone> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT z FROM Zone z");
 		List<?> erg = q.getResultList();
 		Set<Zone> entities = new HashSet<Zone>();

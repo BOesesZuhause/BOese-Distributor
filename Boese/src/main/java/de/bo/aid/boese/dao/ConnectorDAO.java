@@ -24,7 +24,7 @@ public class ConnectorDAO implements StandardDAO<Connector> {
 	}
 
 	@Override
-	public Set<Connector> getAll(EntityManager em, int id) {
+	public Set<Connector> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT c FROM Connector c");
 		List<?> erg = q.getResultList();
 		Set<Connector> entities = new HashSet<Connector>();

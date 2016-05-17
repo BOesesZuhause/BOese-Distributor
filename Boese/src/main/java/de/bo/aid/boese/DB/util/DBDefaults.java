@@ -38,7 +38,7 @@ public class DBDefaults {
 	}
 	
 	private void defaultUnit(EntityManager em){
-		UnitDAO dao = daoHandler.getUnit();
+		UnitDAO dao = daoHandler.getUnitDAO();
 		Unit unew = new Unit("Undefined", "ud");
 		Unit db = dao.get(em, 1);
 		if(db == null){
@@ -51,7 +51,7 @@ public class DBDefaults {
 	}
 	
 	private void defaultZone(EntityManager em){
-		ZoneDAO dao = daoHandler.getZone();
+		ZoneDAO dao = daoHandler.getZoneDAO();
 		Zone znew = new Zone("Global");
 		znew.setZone(znew);
 		Zone db = dao.get(em, 1);
@@ -65,7 +65,7 @@ public class DBDefaults {
 	}
 	
 	private void defaultService(EntityManager em){
-		ServiceDAO dao = daoHandler.getSer();
+		ServiceDAO dao = daoHandler.getServiceDAO();
 		Service snew = new Service("Default");
 		Service db = dao.get(em, 1);
 		if(db == null){
@@ -78,7 +78,7 @@ public class DBDefaults {
 	}
 	
 	private void defaultUser(EntityManager em){
-		UserDAO dao = daoHandler.getUser();
+		UserDAO dao = daoHandler.getUserDAO();
 		User unew = new User("User", "Super", "MasterPassword", true, null, "root", null);
 		User db = dao.get(em, 1);
 		if(db == null){
@@ -91,7 +91,7 @@ public class DBDefaults {
 	}
 	
 	private void defaultGroup(EntityManager em){
-		GroupDAO dao = daoHandler.getGrp();
+		GroupDAO dao = daoHandler.getGroupDAO();
 		Group gnew = new Group("Users");
 		Group db = dao.get(em, 1);
 		if(db == null){
@@ -104,7 +104,7 @@ public class DBDefaults {
 	}
 	
 	private void defaultRule(EntityManager em){
-		RuleDAO dao = daoHandler.getRu();
+		RuleDAO dao = daoHandler.getRuleDAO();
 		Rule rnew = new Rule("<PERMISSION></PERMISSION>", "<CONDITION></CONDITION>", "<ACTION></ACTION>");
 		Rule db = dao.get(em, 1);
 		if(db == null){

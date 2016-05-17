@@ -26,7 +26,7 @@ public class LogDeviceComponentDAO implements StandardDAO<LogDeviceComponent>{
 	}
 
 	@Override
-	public Set<LogDeviceComponent> getAll(EntityManager em, int id) {
+	public Set<LogDeviceComponent> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT l FROM LogDeviceComponent l");
 		List<?> erg = q.getResultList();
 		Set<LogDeviceComponent> entities = new HashSet<LogDeviceComponent>();

@@ -27,7 +27,7 @@ public class HistoryLogConnectorDAO implements StandardDAO<HistoryLogConnector>{
 	}
 
 	@Override
-	public Set<HistoryLogConnector> getAll(EntityManager em, int id) {
+	public Set<HistoryLogConnector> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT h FROM HistoryLogConnector h");
 		List<?> erg = q.getResultList();
 		Set<HistoryLogConnector> entities = new HashSet<HistoryLogConnector>();
