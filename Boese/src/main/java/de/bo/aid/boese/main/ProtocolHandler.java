@@ -534,11 +534,11 @@ public class ProtocolHandler implements MessageHandler {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
-		HashSet<Integer> deIDList = urdc.getDeviceIds();
-		for (Integer devId : deIDList) {
-			Set<DeviceComponent> decoSet = null;
-			try {
-				decoSet = Selects.device(devId.intValue()).getDeviceComponents();
+		//TODO
+		for (int deviceId : urdc.getDeviceIds()) {
+			Device device = daoHandler.getDeviceDAO().getWithDeviceComponents(em, deviceId);
+			if(device != null){
+				Set<DeviceComponent> decoSet = device.getDeviceComponents();
 				
 	            HashSet<DeviceComponents> decos = new HashSet<>();
 	            for (DeviceComponent deco : decoSet) {
@@ -551,11 +551,12 @@ public class ProtocolHandler implements MessageHandler {
 	                        deco.getComponent().isActor(),
 	                        deco.getStatus()));
 	            }
-	            sendUserSendDeviceComponent(devId, decos, connectorId);
+	            
+	            sendUserSendDeviceComponent(deviceId, decos, connectorId);
 			} 
-			catch (DBObjectNotFoundException onfe){ 
-				logger.error(onfe.getMessage(), onfe);
-				sendNotificationToAllUserConnectors("No deviceComponent found for device with id: " + devId.intValue() + " .",
+			else{ 
+				logger.error("Device with ID " + deviceId + " not found in DB");
+				sendNotificationToAllUserConnectors("No deviceComponent found for device with id: " + deviceId + " .",
 				        NotificationType.ERROR, System.currentTimeMillis());
 			}
 
@@ -580,23 +581,20 @@ public class ProtocolHandler implements MessageHandler {
 			return;
 		}
 		HashMap<Integer, String> connectors = new HashMap<>();
+		Map<Integer, Connector> connectorsDB= daoHandler.getConnectorDAO().getAllAsMap(em);
 		if (urc.getType() == MessageType.USERREQUESTCONNECTORS) {
 			HashSet<Integer> conIdList = urc.getConnectorIds();
 			for (Integer conId : conIdList) {
-				Connector con = null;
-				try {
-					con = Selects.connector(conId.intValue());
-				} 
-				catch (DBObjectNotFoundException onfe){ 
-					logger.error(onfe.getMessage(), onfe);
+				Connector con = connectorsDB.get(conId);
+				if(con == null){ 
+					logger.error("Connector with ID " + conId + " not found in DB");
 					sendNotificationToAllUserConnectors("requested connecter with id: " + conId.intValue() + " is unknown.",
 					        NotificationType.ERROR, System.currentTimeMillis());
 				}
 				connectors.put(conId, con.getName());
 			}
 		} else if (urc.getType() == MessageType.USERREQUESTALLCONNECTORS) {
-			List<Connector> connectorList = AllSelects.connector();
-			for (Connector connector : connectorList) {
+			for (Connector connector : connectorsDB.values()) {
 				connectors.put(connector.getCoId(), connector.getName());
 			}
 		}
@@ -621,7 +619,7 @@ public class ProtocolHandler implements MessageHandler {
 			return;
 		}
 		HashSet<ZoneJSON> zones = new HashSet<>();
-		List<Zone> zoneList = AllSelects.zones();
+		Set<Zone> zoneList = daoHandler.getZoneDAO().getAll(em);
 		for (Zone zone : zoneList) {
 			zones.add(new ZoneJSON(zone.getZoId(), zone.getZone().getZoId(), zone.getName()));
 		}
@@ -649,7 +647,7 @@ public class ProtocolHandler implements MessageHandler {
 			return;
 		}
 		HashSet<RuleJSON> rules = new HashSet<>();
-		List<Rule> ruleList = AllSelects.rules();
+		Set<Rule> ruleList = daoHandler.getRuleDAO().getAll(em);
 		for (Rule rule : ruleList) {
 			rules.add(new RuleJSON(rule.getRuId(), rule.getActive().booleanValue(), rule.getInsertDate().getTime(),
 					rule.getModifyDate().getTime(), rule.getPermissions(), rule.getConditions(), rule.getActions()));
@@ -676,7 +674,7 @@ public class ProtocolHandler implements MessageHandler {
 			return;
 		}
 		HashSet<RepeatRuleJSON> rules = new HashSet<>();
-		List<RepeatRule> ruleList = AllSelects.repeatRules();
+		Set<RepeatRule> ruleList = daoHandler.getRepeatRuleDAO().getAll(em);
 		for (RepeatRule rule : ruleList) {
 			rules.add(new RepeatRuleJSON(rule.getRrId(), rule.getRepeatsAfterEnd(), rule.getValue().doubleValue(), 
 					rule.getRule().getRuId(), rule.getDeviceComponent().getDeCoId(), rule.getRepeat()));
@@ -703,7 +701,7 @@ public class ProtocolHandler implements MessageHandler {
 			return;
 		}
 		HashSet<UnitJSON> units = new HashSet<>();
-		List<Unit> unitList = AllSelects.units();
+		Set<Unit> unitList = daoHandler.getUnitDAO().getAll(em);
 		for (Unit unit : unitList) {
 			units.add(new UnitJSON(unit.getUnId(), unit.getName(), unit.getSymbol()));
 		}
@@ -837,26 +835,21 @@ public class ProtocolHandler implements MessageHandler {
 		}
 		HashMap<Integer, Integer> tempRules = new HashMap<>();
 		for (RepeatRuleJSON rule : ucrr.getRules()) {
-			RepeatRule r = null;
-			//TODO validate rules
-			try {
-				r = new RepeatRule(rule.getCron(), BigDecimal.valueOf(rule.getValue()), rule.getRepeatsAfterEnd(), Selects.rule(rule.getRuleId()), Selects.deviceComponent(rule.getDecoId()));
-				Inserts.repeatRule(r, distributor.getTdc());
+			//TODO überlegen ob es sein muss die Rule und die DeviceComponete erst zu holen
+			Rule ru = daoHandler.getRuleDAO().get(em, rule.getRuleId());
+			DeviceComponent deco = daoHandler.getDeviceComponentDAO().get(em, rule.getDecoId());
+			if(ru != null && deco != null){
+				RepeatRule r = new RepeatRule(rule.getCron(), BigDecimal.valueOf(rule.getValue()), rule.getRepeatsAfterEnd(), ru, deco);
+				daoHandler.getRepeatRuleDAO().create(em, r);
+				tempRules.put(rule.getTempId(), r.getRrId());
 			}
-			catch (DBObjectNotFoundException e) {
-				sendNotificationToAllUserConnectors("Error while saving repeaterule with id: " + rule.getRuleId() +
-                        ". The referenced devicecomponents are unknown.", 
-                        NotificationType.ERROR, System.currentTimeMillis());
-				logger.error(e.getMessage(), e);
-				e.printStackTrace();
-			}
-			catch (DBForeignKeyNotFoundException e) {
+			else {
 			    sendNotificationToAllUserConnectors("Error while saving repeaterule with id: " + rule.getRuleId() +
                         ". The referenced devicecomponents are unknown.", 
                         NotificationType.ERROR, System.currentTimeMillis());
-				logger.error(e.getMessage(), e);
+				logger.error("Rule with ID " + rule.getRuleId() + " not found in DB or\n"
+							+ "DeviceComponent with ID " + rule.getDecoId() + " not found in DB");
 			}
-			tempRules.put(rule.getTempId(), r.getRrId());
 		}
 		sendConfirmRepeatRules(tempRules, connectorId);
 		em.getTransaction().commit();
@@ -877,19 +870,19 @@ public class ProtocolHandler implements MessageHandler {
 			return;
 		}
 		HashMap<Integer, Integer> tempZones = new HashMap<>();
+		Map<Integer, Zone> zonesDB = daoHandler.getZoneDAO().getAllAsMap(em);
 		for (ZoneJSON zone : ucz.getZones()) {
 			Zone z = null;
 			z = new Zone(zone.getZoneName());
-			Zone superZone = null;
-			try {
-				superZone = Selects.zone(zone.getSuperZoneId());
-			} catch (DBObjectNotFoundException e) {
+			Zone superZone = zonesDB.get(zone.getSuperZoneId());
+			if(superZone == null) {
 			    sendNotificationToAllUserConnectors("Error while saving zone with id: " + zone.getZoneId() +
                         ". The referenced superzone is unknown.", 
                         NotificationType.ERROR, System.currentTimeMillis());
-				logger.error(e.getMessage(), e);
+				logger.error("Zone as SuperZone with ID " + zone.getSuperZoneId() + " not found in DB");
 			}
-			Inserts.zone(z, superZone);
+			z.setZone(superZone);
+			daoHandler.getZoneDAO().create(em, z);
 			tempZones.put(zone.getTempZoneId(), z.getZoId());
 			
 		}
@@ -917,7 +910,7 @@ public class ProtocolHandler implements MessageHandler {
 		for (UnitJSON unit : ucu.getUnits()) {
 			Unit u = null;
 			u = new Unit(unit.getUnitName(), unit.getUnitSymbol());
-			Inserts.unit(u);
+			daoHandler.getUnitDAO().create(em, u);
 			tempUnits.put(unit.getTempUnitId(), u.getUnId());			
 		}
 		if (!tempUnits.isEmpty()) {
@@ -1012,11 +1005,13 @@ public class ProtocolHandler implements MessageHandler {
 	public void sendValue(int deId, int deCoId, double value, long valueTimestamp, int connectorId) {
 		EntityManager em = JPAUtil.getEntityManager();
 		em.getTransaction().begin();
-		try {
-			DeviceComponent deco = Selects.deviceComponent(deCoId);
+		//TODO Sinn überlegen
+		DeviceComponent deco = daoHandler.getDeviceComponentDAO().get(em, deCoId);
+		if(deco != null){
 			Component comp = deco.getComponent();
-		} catch (DBObjectNotFoundException e) {
-			logger.error(e);
+		}
+		else{
+			logger.error("DeviceComponent with ID " + deCoId + " not found in DB");
 		}
 		OutputStream os = new ByteArrayOutputStream();
 		BoeseJson sv = new SendValue(deId, deCoId, value, valueTimestamp, distributor.getConnectorID(), 0, new Date().getTime());
@@ -1082,15 +1077,16 @@ public class ProtocolHandler implements MessageHandler {
 		em.getTransaction().begin();
 		for (ComponentXML component : todos) {
 			int deCoId = component.getId();
-			int deviceId = -1;
-			int idConnector = -1;
-			try {
-				deviceId = Selects.deviceComponent(deCoId).getDevice().getDeId();
-				idConnector = Selects.device(deviceId).getConnector().getCoId();
-			} catch (DBObjectNotFoundException e) {
-				logger.error(e.getMessage(), e);
+			//TODO 3 Selects in For-Schleife?
+			DeviceComponent deco = daoHandler.getDeviceComponentDAO().get(em, deCoId);
+			if(deco != null){
+				Device device = deco.getDevice();
+				Connector connector = device.getConnector();
+				sendValue(device.getDeId(), deCoId, component.getValue(), new Date().getTime(), connector.getCoId());
 			}
-			sendValue(deviceId, deCoId, component.getValue(), new Date().getTime(), idConnector);
+			else{
+				logger.error("DeviceComponent with ID " + deCoId + " not found in DB");
+			}
 		}
 		em.getTransaction().commit();
 		em.close();

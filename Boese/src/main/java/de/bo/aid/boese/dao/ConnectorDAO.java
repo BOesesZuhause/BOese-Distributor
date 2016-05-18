@@ -1,13 +1,16 @@
 package de.bo.aid.boese.dao;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import de.bo.aid.boese.modelJPA.Connector;
+import de.bo.aid.boese.modelJPA.DeviceComponent;
 
 public class ConnectorDAO implements StandardDAO<Connector> {
 	
@@ -30,6 +33,17 @@ public class ConnectorDAO implements StandardDAO<Connector> {
 		Set<Connector> entities = new HashSet<Connector>();
 		for(Object o : erg){
 			entities.add((Connector)o);
+		}
+		return entities;
+	}
+	
+	public Map<Integer, Connector> getAllAsMap(EntityManager em) {
+		Query q = em.createQuery("SELECT c FROM Connector c");
+		List<?> erg = q.getResultList();
+		Map<Integer, Connector> entities = new HashMap<Integer, Connector>();
+		for(Object o : erg){
+			Connector con = (Connector)o; 
+			entities.put(con.getCoId(), con);
 		}
 		return entities;
 	}
