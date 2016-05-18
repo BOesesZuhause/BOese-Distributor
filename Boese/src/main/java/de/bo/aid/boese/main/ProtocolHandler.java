@@ -464,15 +464,16 @@ public class ProtocolHandler implements MessageHandler {
 		if (SessionHandler.getInstance().getIsUserConnectorByConnector(connectorId)) {
 			// SendValue came from a user connector
 			// if deco is actor, send SendValue to the actor
-			int deviceComponet_ConnectorId = daoHandler.getDeviceComponentDAO().get(em, deviceComponentId).getDevice().getConnector().getCoId();
-			try {
-				int deviceComponet_ConnectorId = Selects.deviceComponent(deviceComponentId).getDevice().getConnector().getCoId();
-				SessionHandler.getInstance().sendToConnector(deviceComponet_ConnectorId, os.toString());
-			} catch (DBObjectNotFoundException e) {
+			Connector deviceComponet_Connector = daoHandler.getDeviceComponentDAO().getBelongingConnector(em, deviceComponentId);
+			if(deviceComponet_Connector != null) {
+				SessionHandler.getInstance().sendToConnector(deviceComponet_Connector.getCoId(), os.toString());
+			} 
+			else{
 				// The deco, device, or connector does not exist -> db inconsistent?
-				logger.error(e.getMessage(), e);
+				logger.error("DeviceComponent with ID " + deviceComponentId + " not found in DB");
 				sendNotificationToAllUserConnectors("Unable to switch component with id: " + deviceComponentId +
 				        "The component, device or connector is unknown.", NotificationType.ERROR, System.currentTimeMillis());
+				em.getTransaction().rollback();
 			}
 			
 		}
@@ -503,9 +504,10 @@ public class ProtocolHandler implements MessageHandler {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
 		}
-		List<Device> devList = AllSelects.devices();
+		Set<Device> devList = daoHandler.getDeviceDAO().getAll(em);
 		HashSet<UserDevice> deviceList = new HashSet<>();
 		for (Device dev : devList) {
+			//TODO n+1 Problem
 			deviceList.add(new UserDevice(dev.getAlias(), dev.getDeId(), dev.getZone().getZoId(),
 					dev.getConnector().getCoId()));
 		}

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -22,6 +23,15 @@ public class DeviceDAO implements StandardDAO<Device> {
 	@Override
 	public Device get(EntityManager em, int id) {
 		Device entity = (Device) em.find(Device.class, id);
+		return entity;
+	}
+	
+	public Device getWithDeviceComponents(EntityManager em, int id) {
+		EntityGraph<Device> eg = em.createEntityGraph(Device.class);
+		eg.addAttributeNodes("deviceComponents");
+		Map<String, Object> hints = new HashMap<String, Object>();
+		hints.put("javax.persistence.fetchgraph", eg);
+		Device entity = (Device) em.find(Device.class, id,hints);
 		return entity;
 	}
 
