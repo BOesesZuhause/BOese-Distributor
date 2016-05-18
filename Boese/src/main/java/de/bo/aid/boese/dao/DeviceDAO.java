@@ -1,7 +1,9 @@
 package de.bo.aid.boese.dao;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -30,6 +32,17 @@ public class DeviceDAO implements StandardDAO<Device> {
 		Set<Device> entities = new HashSet<Device>();
 		for(Object o : erg){
 			entities.add((Device)o);
+		}
+		return entities;
+	}
+
+	public Map<Integer, Device> getAllAsMap(EntityManager em) {
+		Query q = em.createQuery("SELECT d FROM Device d");
+		List<?> erg = q.getResultList();
+		Map<Integer, Device> entities = new HashMap<Integer, Device>();
+		for(Object o : erg){
+			Device d = (Device)o;
+			entities.put(d.getDeId(), d);
 		}
 		return entities;
 	}

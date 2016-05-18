@@ -38,14 +38,19 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
+
+import javax.persistence.EntityManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.LazyInitializationException;
 
+import de.bo.aid.boese.DB.util.JPAUtil;
 import de.bo.aid.boese.constants.NotificationType;
+import de.bo.aid.boese.dao.DAOHandler;
 import de.bo.aid.boese.exceptions.DBForeignKeyNotFoundException;
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.json.BoeseJson;
@@ -120,6 +125,8 @@ public class ProtocolHandler implements MessageHandler {
 
 	/** The Constant logger for log4j. */
 	final Logger logger = LogManager.getLogger(ProtocolHandler.class);
+	
+	private DAOHandler daoHandler;
 
 	/**
 	 * Instantiates a new protocol handler.
@@ -129,6 +136,7 @@ public class ProtocolHandler implements MessageHandler {
 	 */
 	public ProtocolHandler(Distributor distributor) {
 		this.distributor = distributor;
+		this.daoHandler = DAOHandler.getInstance();
 	}
 
 	/*
@@ -259,6 +267,8 @@ public class ProtocolHandler implements MessageHandler {
 	 *            the temp id
 	 */
 	private void handleRequestConnection(RequestConnection rc, int tempId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 
 	    //Gui-connector without id but with password
         if(rc.isUserConnector() && rc.getPassword() != null && rc.getConnectorId() == -1){
@@ -293,9 +303,8 @@ public class ProtocolHandler implements MessageHandler {
     			int conId = rc.getConnectorId();
     			String conName = rc.getConnectorName();
     
-    			Connector con = null;
-    			try{
-    				con = Selects.connector(conId);
+    			Connector con = daoHandler.getConnectorDAO().get(em, conId);
+    			if(con != null){
     				if (con.getName().compareTo(conName) == 0 && con.getPassword().compareTo(pw) == 0) {
     					SessionHandler.getInstance().setConnectorId(tempId, conId, rc.isUserConnector());
     					sendConfirmConnection(pw, conId);
@@ -304,10 +313,13 @@ public class ProtocolHandler implements MessageHandler {
     					SessionHandler.getInstance().rejectConnection(tempId);
     				}
     			}
-    			catch (DBObjectNotFoundException onfe){ //connector not found
+    			else{
+    				em.getTransaction().rollback();
     				SessionHandler.getInstance().rejectConnection(tempId);
-    				logger.error(onfe.getMessage(), onfe);
+    				logger.error("Connector with ID " + conId + " not found in DB");
     			}
+    			em.getTransaction().commit();
+    			em.close();
 		}
 	}
 
@@ -320,6 +332,8 @@ public class ProtocolHandler implements MessageHandler {
 	 *            the connector id
 	 */
 	private void handleSendDevices(SendDevices sd, int connectorId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 		if (connectorId != sd.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
@@ -327,28 +341,30 @@ public class ProtocolHandler implements MessageHandler {
 
 		HashMap<String, Integer> devices = sd.getDevices();
 		HashMap<String, Integer> confirmDevices = new HashMap<>();
-
+		Map<Integer, Device> devicesDB = daoHandler.getDeviceDAO().getAllAsMap(em);
 		for (String deviceName : devices.keySet()) {
 			if (devices.get(deviceName) == -1) { // device not in db
 				TempDevice temp = new TempDevice(connectorId, deviceName);
 				distributor.addTempDevie(temp);
 			} else { // device already in db
-				Device dev = null;
-				try{
-					dev = Selects.device(devices.get(deviceName)); //get Device from Hashset
-					//TODO check name?
+				Device dev = devicesDB.get(devices.get(deviceName));
+				if(dev != null){
 					confirmDevices.put(deviceName, dev.getDeId());
-				}catch (DBObjectNotFoundException onfe){ 
-					logger.error(onfe.getMessage(), onfe);
+				}
+				else{
+					logger.error("Device with ID " + devices.get(deviceName) + " not found in DB");
 					logger.warn("Received device with unknown id. DeviceName: " + deviceName);
 					TempDevice temp = new TempDevice(connectorId, deviceName);
 					distributor.addTempDevie(temp);
+					em.getTransaction().rollback();
 				}
 			}
 		}
 		if (!confirmDevices.isEmpty()) {
 			sendConfirmDevices(confirmDevices, connectorId);
 		}
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	/**
@@ -360,6 +376,8 @@ public class ProtocolHandler implements MessageHandler {
 	 *            the connector id
 	 */
 	private void handleSendDeviceComponents(SendDeviceComponents sdc, int connectorId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 		if (connectorId != sdc.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
@@ -369,13 +387,9 @@ public class ProtocolHandler implements MessageHandler {
 		HashMap<String, Integer> confirmComponents = new HashMap<>();
 		ArrayList<Inquiry> inquiryList = new ArrayList<>();
 		
-		Device device = null;
-		try{
-			device = Selects.device(deviceId);
-		}
-		catch (DBObjectNotFoundException onfe){ 
-			logger.error(onfe.getMessage(), onfe);
-			logger.warn("Device with id: " + deviceId + " not found.");
+		Device device = daoHandler.getDeviceDAO().get(em, deviceId);
+		if(device == null){
+			logger.error("Device with ID " + deviceId + " not found in DB");
 			return;
 		}
 		for (DeviceComponents component : components) { //iterate over sendComponents from connector
@@ -424,6 +438,8 @@ public class ProtocolHandler implements MessageHandler {
 			sendToDos(getToDos(inquiryList));
 			sendConfirmComponent(deviceId, confirmComponents, connectorId);
 		}
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	/**
@@ -435,6 +451,8 @@ public class ProtocolHandler implements MessageHandler {
 	 *            the connector id
 	 */
 	private void handleSendValue(SendValue sv, int connectorId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 		if (connectorId != sv.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
@@ -446,9 +464,10 @@ public class ProtocolHandler implements MessageHandler {
 		if (SessionHandler.getInstance().getIsUserConnectorByConnector(connectorId)) {
 			// SendValue came from a user connector
 			// if deco is actor, send SendValue to the actor
+			int deviceComponet_ConnectorId = daoHandler.getDeviceComponentDAO().get(em, deviceComponentId).getDevice().getConnector().getCoId();
 			try {
-				int deviceConnectorId = Selects.deviceComponent(deviceComponentId).getDevice().getConnector().getCoId();
-				SessionHandler.getInstance().sendToConnector(deviceConnectorId, os.toString());
+				int deviceComponet_ConnectorId = Selects.deviceComponent(deviceComponentId).getDevice().getConnector().getCoId();
+				SessionHandler.getInstance().sendToConnector(deviceComponet_ConnectorId, os.toString());
 			} catch (DBObjectNotFoundException e) {
 				// The deco, device, or connector does not exist -> db inconsistent?
 				logger.error(e.getMessage(), e);
@@ -465,6 +484,8 @@ public class ProtocolHandler implements MessageHandler {
 		
 		//sendValue to all userConnectors
 		SessionHandler.getInstance().sendToUserConnectors(os.toString());
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	/**
@@ -476,6 +497,8 @@ public class ProtocolHandler implements MessageHandler {
 	 *            the connector id
 	 */
 	private void handleUserRequestAllDevices(RequestAllDevices urad, int connectorId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 		if (connectorId != urad.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
@@ -490,6 +513,8 @@ public class ProtocolHandler implements MessageHandler {
 		    sendNotificationToAllUserConnectors("The distributor has no known devices", NotificationType.WARNING, System.currentTimeMillis());
 		}
 		sendUserSendDevices(deviceList, connectorId);
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	/**
@@ -501,6 +526,8 @@ public class ProtocolHandler implements MessageHandler {
 	 *            the connector id
 	 */
 	private void handleUserRequestDeviceComponents(UserRequestDeviceComponents urdc, int connectorId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 		if (connectorId != urdc.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
@@ -531,6 +558,8 @@ public class ProtocolHandler implements MessageHandler {
 			}
 
 		}
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	/**
@@ -542,6 +571,8 @@ public class ProtocolHandler implements MessageHandler {
 	 *            the connector id
 	 */
 	private void handleUserRequestConnectors(UserRequestConnectors urc, int connectorId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 		if (connectorId != urc.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
@@ -568,6 +599,8 @@ public class ProtocolHandler implements MessageHandler {
 			}
 		}
 		sendUserSendConnectors(connectors, connectorId);
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	/**
@@ -579,6 +612,8 @@ public class ProtocolHandler implements MessageHandler {
 	 *            the connector id
 	 */
 	private void handleUserRequestAllZones(UserRequestGeneral urg, int connectorId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 		if (connectorId != urg.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
@@ -592,6 +627,8 @@ public class ProtocolHandler implements MessageHandler {
 		    sendNotificationToAllUserConnectors("The distributor has no known zones", NotificationType.WARNING, System.currentTimeMillis());
 		}
 		sendUserSendZone(zones, connectorId);
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	/**
@@ -603,6 +640,8 @@ public class ProtocolHandler implements MessageHandler {
 	 *            the connector id
 	 */
 	private void handleUserRequestAllRules(UserRequestGeneral urg, int connectorId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 		if (connectorId != urg.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
@@ -617,6 +656,8 @@ public class ProtocolHandler implements MessageHandler {
 		    sendNotificationToAllUserConnectors("The distributor has no known rules", NotificationType.WARNING, System.currentTimeMillis());
 		}
 		sendUserSendRules(rules, connectorId);
+		em.getTransaction().commit();
+		em.close();
 	}
 	
 	/**
@@ -626,6 +667,8 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param connectorId the connector id
 	 */
 	private void handleUserRequestAllRepeatRules(UserRequestGeneral urg, int connectorId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 		if (connectorId != urg.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
@@ -640,6 +683,8 @@ public class ProtocolHandler implements MessageHandler {
 		    sendNotificationToAllUserConnectors("The distributor has no known repeatRules", NotificationType.WARNING, System.currentTimeMillis());
 		}
 		sendUserSendRepeatRules(rules, connectorId);
+		em.getTransaction().commit();
+		em.close();
 	}
 	
 	/**
@@ -649,6 +694,8 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param connectorId the connector id
 	 */
 	private void handleUserRequestAllUnits(UserRequestGeneral urg, int connectorId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 		if (connectorId != urg.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
@@ -660,6 +707,8 @@ public class ProtocolHandler implements MessageHandler {
 		}
 		sendNotificationToAllUserConnectors("The distributor has no known units", NotificationType.WARNING, System.currentTimeMillis());
 		sendUserSendUnits(units, connectorId);
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	/**
@@ -733,6 +782,8 @@ public class ProtocolHandler implements MessageHandler {
 	 *            the connector id
 	 */
 	private void handleUserCreateRules(UserCreateRules ucr, int connectorId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 		if (connectorId != ucr.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
@@ -765,6 +816,8 @@ public class ProtocolHandler implements MessageHandler {
 			}
 		}
 		sendConfirmRules(tempRules, connectorId);
+		em.getTransaction().commit();
+		em.close();
 	}
 	
 	/**
@@ -774,6 +827,8 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param connectorId the connector id
 	 */
 	private void handleUserCreateRepeatRules(UserCreateRepeatRules ucrr, int connectorId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 		if (connectorId != ucrr.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
@@ -802,6 +857,8 @@ public class ProtocolHandler implements MessageHandler {
 			tempRules.put(rule.getTempId(), r.getRrId());
 		}
 		sendConfirmRepeatRules(tempRules, connectorId);
+		em.getTransaction().commit();
+		em.close();
 	}
 	
 	/**
@@ -811,6 +868,8 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param connectorId the connector id
 	 */
 	private void handleUserCreateZones(UserCreateZones ucz, int connectorId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 		if (connectorId != ucz.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
@@ -835,6 +894,8 @@ public class ProtocolHandler implements MessageHandler {
 		if (!tempZones.isEmpty()) {
 			sendConfirmZones(tempZones, connectorId);
 		}
+		em.getTransaction().commit();
+		em.close();
 	}
 	
 	/**
@@ -844,6 +905,8 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param connectorId the connector id
 	 */
 	private void handleUserCreateUnits(UserCreateUnits ucu, int connectorId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 		if (connectorId != ucu.getConnectorId()) {
 			SessionHandler.getInstance().rejectConnection(connectorId);
 			return;
@@ -858,6 +921,8 @@ public class ProtocolHandler implements MessageHandler {
 		if (!tempUnits.isEmpty()) {
 			sendConfirmUnits(tempUnits, connectorId);
 		}
+		em.getTransaction().commit();
+		em.close();
 	}
 	
 	/**
@@ -943,6 +1008,8 @@ public class ProtocolHandler implements MessageHandler {
 	 *            the connector id
 	 */
 	public void sendValue(int deId, int deCoId, double value, long valueTimestamp, int connectorId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 		try {
 			DeviceComponent deco = Selects.deviceComponent(deCoId);
 			Component comp = deco.getComponent();
@@ -954,6 +1021,8 @@ public class ProtocolHandler implements MessageHandler {
 		os = new ByteArrayOutputStream();
 		BoeseJson.parseMessage(sv, os);
 		SessionHandler.getInstance().sendToConnector(connectorId, os.toString());
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	/**
@@ -1007,6 +1076,8 @@ public class ProtocolHandler implements MessageHandler {
 	 * @param todos a ComponentXML Liste
 	 */
 	public void sendToDos(List<ComponentXML> todos) {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
 		for (ComponentXML component : todos) {
 			int deCoId = component.getId();
 			int deviceId = -1;
@@ -1019,6 +1090,8 @@ public class ProtocolHandler implements MessageHandler {
 			}
 			sendValue(deviceId, deCoId, component.getValue(), new Date().getTime(), idConnector);
 		}
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	/**

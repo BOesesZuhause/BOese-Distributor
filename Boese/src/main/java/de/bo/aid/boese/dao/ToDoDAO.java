@@ -10,6 +10,7 @@ import javax.persistence.Query;
 
 import de.bo.aid.boese.modelJPA.RepeatRule;
 import de.bo.aid.boese.modelJPA.ToDo;
+import de.bo.aid.boese.ruler.ToDoChecker;
 
 public class ToDoDAO implements StandardDAO<ToDo>{
 	
@@ -23,6 +24,12 @@ public class ToDoDAO implements StandardDAO<ToDo>{
 		ToDo entity = new ToDo(date, active, rr);
 		em.persist(entity);
 		return entity;
+	}
+
+	public ToDo create(EntityManager em, ToDo entity, ToDoChecker tdc) {
+		em.persist(entity);
+		tdc.changeInToDo();
+		return entity;		
 	}
 
 	@Override

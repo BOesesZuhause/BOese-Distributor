@@ -11,12 +11,30 @@ import javax.persistence.Query;
 import de.bo.aid.boese.modelJPA.DeviceComponent;
 import de.bo.aid.boese.modelJPA.RepeatRule;
 import de.bo.aid.boese.modelJPA.Rule;
+import de.bo.aid.boese.modelJPA.ToDo;
+import de.bo.aid.boese.ruler.TimeFormat;
+import de.bo.aid.boese.ruler.ToDoChecker;
 
 public class RepeatRuleDAO implements StandardDAO<RepeatRule>{
 	
 	public RepeatRule create(EntityManager em, String repeat, BigDecimal value, int repeatsAfterEnd, Rule rule, DeviceComponent deco){
 		RepeatRule entity = new RepeatRule(repeat, value, repeatsAfterEnd, rule, deco);
 		em.persist(entity);
+		return entity;
+	}
+	
+	public RepeatRule createWithToDo(EntityManager em, String repeat, BigDecimal value, int repeatsAfterEnd, Rule rule, DeviceComponent deco, ToDoChecker tdc){
+		RepeatRule entity = new RepeatRule(repeat, value, repeatsAfterEnd, rule, deco);
+		em.persist(entity);
+		DAOHandler daoHandler = DAOHandler.getInstance();
+		ToDo todo = new ToDo(new TimeFormat(entity.getRepeat()).getDateForRepeatRule());
+		todo.setRepeatRule(entity);
+		if(tdc != null){
+			daoHandler.getToDoDAO().create(em, todo, tdc);
+		}
+		else{
+			daoHandler.getToDoDAO().create(em, todo);
+		}
 		return entity;
 	}
 

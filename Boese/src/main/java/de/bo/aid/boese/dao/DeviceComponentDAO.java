@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import de.bo.aid.boese.modelJPA.Connector;
 import de.bo.aid.boese.modelJPA.DeviceComponent;
 
 public class DeviceComponentDAO implements StandardDAO<DeviceComponent>{
@@ -23,6 +24,15 @@ public class DeviceComponentDAO implements StandardDAO<DeviceComponent>{
 	@Override
 	public DeviceComponent get(EntityManager em, int id) {
 		DeviceComponent entity = (DeviceComponent) em.find(DeviceComponent.class, id);
+		return entity;
+	}
+	
+	public Connector getBelongingConnector(EntityManager em, int id){
+		Query q = em.createQuery( "SELECT c FROM Connector c"
+								+ "join Device d on c.coId = d.deId"
+								+ "join DeviceComponent dc on d.deId = dc.deCoId"
+								+ "where dc.deCoId = " + id);
+		Connector entity = ((Connector)q.getSingleResult());
 		return entity;
 	}
 
