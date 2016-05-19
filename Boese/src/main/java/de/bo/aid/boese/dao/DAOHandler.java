@@ -21,6 +21,7 @@ public class DAOHandler {
 	private RepeatRuleDAO repeatRuleDAO;
 	private RuleDAO ruleDAO;
 	private ServiceDAO serviceDAO;
+	private StandardDAO<?> standardDAO;
 	private ToDoDAO toDoDAO;
 	private UnitDAO unitDAO;
 	private UserDAO userDAO;

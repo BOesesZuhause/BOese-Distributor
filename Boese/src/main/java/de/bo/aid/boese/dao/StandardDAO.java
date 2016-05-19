@@ -15,6 +15,12 @@ public interface StandardDAO<model>{
 			em.persist(insert);
 		}
 	}
+	
+	public default void createMore(EntityManager em, model[] entity){
+		for(model insert : entity){
+			em.persist(insert);
+		}
+	}
 
 	public model get(EntityManager em, int id);
 

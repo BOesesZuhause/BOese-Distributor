@@ -26,13 +26,8 @@ import de.bo.aid.boese.modelJPA.Zone;
 
 public class DBDefaults {
 	
-	private static DAOHandler daoHandler;
-	private static Logger logger = null;
-	
-	public DBDefaults(){
-		daoHandler = DAOHandler.getInstance();
-		logger = LogManager.getLogger(ProtocolHandler.class);
-	}
+	private static DAOHandler daoHandler = DAOHandler.getInstance();
+	private static Logger logger = LogManager.getLogger(ProtocolHandler.class);
 	
 	public static void defaults(){
 		EntityManager em = JPAUtil.getEntityManager();
@@ -51,6 +46,7 @@ public class DBDefaults {
 	}
 	
 	private static void defaultUnit(EntityManager em){
+//		System.out.println(daoHandler);
 		UnitDAO dao = daoHandler.getUnitDAO();
 		Unit unew = new Unit("Undefined", "ud");
 		Unit db = dao.get(em, 1);

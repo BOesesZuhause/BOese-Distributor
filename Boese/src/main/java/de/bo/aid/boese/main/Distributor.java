@@ -244,6 +244,7 @@ private final String logo =
 		JPAUtil.setDBUser(props.getDbUser());
 		JPAUtil.setDBPassword(props.getDbPassword());
 		JPAUtil.setDBURL(props.getDbName(), props.getDbHost(), props.getDbPort());
+		JPAUtil.init();
 		daoHandler = DAOHandler.getInstance();
 		DBDefaults.defaults();
 		//TODO
