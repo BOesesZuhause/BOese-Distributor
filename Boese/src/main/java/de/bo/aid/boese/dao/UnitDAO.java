@@ -1,7 +1,9 @@
 package de.bo.aid.boese.dao;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -30,6 +32,17 @@ public class UnitDAO implements StandardDAO<Unit>{
 		Set<Unit> entities = new HashSet<Unit>();
 		for(Object o : erg){
 			entities.add((Unit)o);
+		}
+		return entities;
+	}
+	
+	public Map<Integer, Unit> getAllAsMap(EntityManager em) {
+		Query q = em.createQuery("select u from Unit u");
+		List<?> erg = q.getResultList();
+		Map<Integer, Unit> entities = new HashMap<Integer, Unit>();
+		for(Object o : erg){
+			Unit unit = (Unit)o;
+			entities.put(unit.getUnId(), unit);
 		}
 		return entities;
 	}

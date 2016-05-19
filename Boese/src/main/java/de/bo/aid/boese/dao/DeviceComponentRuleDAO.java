@@ -11,33 +11,27 @@ import de.bo.aid.boese.modelJPA.DeviceComponent;
 import de.bo.aid.boese.modelJPA.DeviceComponentRule;
 import de.bo.aid.boese.modelJPA.Rule;
 
-public class DeviceComponentRuleDAO implements StandardDAO<DeviceComponentRuleDAO>{
+public class DeviceComponentRuleDAO implements StandardDAO<DeviceComponentRule>{
 	
 	public DeviceComponentRule create(EntityManager em, DeviceComponent devicecomponent, Rule rule){
 		DeviceComponentRule entity = new DeviceComponentRule(devicecomponent, rule);
 		em.persist(entity);
 		return entity;
 	}
-	
-	public void createMore(EntityManager em, Set<DeviceComponentRule> entity){
-		for(DeviceComponentRule decorule : entity){
-			em.persist(decorule);
-		}
-	}
 
 	@Override
-	public DeviceComponentRuleDAO get(EntityManager em, int id) {
-		DeviceComponentRuleDAO entity = (DeviceComponentRuleDAO) em.find(DeviceComponentRuleDAO.class, id);
+	public DeviceComponentRule get(EntityManager em, int id) {
+		DeviceComponentRule entity = (DeviceComponentRule) em.find(DeviceComponentRule.class, id);
 		return entity;
 	}
 
 	@Override
-	public Set<DeviceComponentRuleDAO> getAll(EntityManager em) {
+	public Set<DeviceComponentRule> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT d FROM DeviceComponentRule d");
 		List<?> erg = q.getResultList();
-		Set<DeviceComponentRuleDAO> entities = new HashSet<DeviceComponentRuleDAO>();
+		Set<DeviceComponentRule> entities = new HashSet<DeviceComponentRule>();
 		for(Object o : erg){
-			entities.add((DeviceComponentRuleDAO)o);
+			entities.add((DeviceComponentRule)o);
 		}
 		return entities;
 	}

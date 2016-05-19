@@ -2,6 +2,7 @@ package de.bo.aid.boese.db.util;
 
 import javax.persistence.EntityManager;
 
+import de.bo.aid.boese.DB.util.DBDefaults;
 import de.bo.aid.boese.DB.util.JPAUtil;
 import de.bo.aid.boese.dao.DAOHandler;
 import de.bo.aid.boese.modelJPA.Component;
@@ -19,19 +20,7 @@ public class TestdataHelper {
 		em = JPAUtil.getEntityManager();
 		em.getTransaction().begin();
 		
-		Unit[] units = {
-				new Unit("Volt", "V"),
-				new Unit("milliAmpere", "mA"),
-				new Unit("Percent", "%"),
-				new Unit("OnOff", ""),
-				new Unit("Temperature", "°C"),
-				new Unit("Distance", "m"),	
-				new Unit("ColorRGB", "rgb"),	
-				new Unit("Watt", "W"),	
-				new Unit("Time", "ms"),	
-				new Unit("Velocity", "m/s"),	
-				new Unit("Weight", "g")
-		};
+		DBDefaults.defaults();
 		
 		Connector connectors[] = {
 				new Connector("HomeMatic Connector", "secret", false),

@@ -11,7 +11,7 @@ import de.bo.aid.boese.modelJPA.DeviceComponent;
 import de.bo.aid.boese.modelJPA.DeviceComponentReplace;
 
 
-public class DeviceComponentReplaceDAO implements StandardDAO<DeviceComponentReplaceDAO> {
+public class DeviceComponentReplaceDAO implements StandardDAO<DeviceComponentReplace> {
 	
 	public DeviceComponentReplace create(EntityManager em, DeviceComponent fresh, DeviceComponent old){
 		DeviceComponentReplace entity = new DeviceComponentReplace(fresh, old);
@@ -20,18 +20,18 @@ public class DeviceComponentReplaceDAO implements StandardDAO<DeviceComponentRep
 	}
 
 	@Override
-	public DeviceComponentReplaceDAO get(EntityManager em, int id) {
-		DeviceComponentReplaceDAO entity = (DeviceComponentReplaceDAO) em.find(DeviceComponentReplaceDAO.class, id);
+	public DeviceComponentReplace get(EntityManager em, int id) {
+		DeviceComponentReplace entity = (DeviceComponentReplace) em.find(DeviceComponentReplace.class, id);
 		return entity;
 	}
 
 	@Override
-	public Set<DeviceComponentReplaceDAO> getAll(EntityManager em) {
+	public Set<DeviceComponentReplace> getAll(EntityManager em) {
 		Query q = em.createQuery("SELECT d FROM DeviceComponentReplace d");
 		List<?> erg = q.getResultList();
-		Set<DeviceComponentReplaceDAO> entities = new HashSet<DeviceComponentReplaceDAO>();
+		Set<DeviceComponentReplace> entities = new HashSet<DeviceComponentReplace>();
 		for(Object o : erg){
-			entities.add((DeviceComponentReplaceDAO)o);
+			entities.add((DeviceComponentReplace)o);
 		}
 		return entities;
 	}
