@@ -122,6 +122,10 @@ public class DeviceComponent implements java.io.Serializable {
 	/** The RepeatRules. */
 	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "deviceComponent")
 	private Set<RepeatRule> repeatRule = new HashSet<RepeatRule>(0);
+	
+	/** The DeviceComponentRules. */
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "deviceComponent")
+	private Set<DeviceComponentRule> deviceComponentRules = new HashSet<DeviceComponentRule>(0);
 
 	/**
 	 * Instantiates a new device component.
@@ -178,7 +182,6 @@ public class DeviceComponent implements java.io.Serializable {
 	 * @param device the linked device
 	 * @param status the status of the DeviceComponent
 	 * @param description the description
-	 * @param logRule the rule how this DeviceComponent will be logged
 	 * @param currentValue the current value
 	 * @param minValue the min Value
 	 * @param maxValue the max Value
@@ -188,12 +191,13 @@ public class DeviceComponent implements java.io.Serializable {
 	 * @param deviceComponenteReplacesForDeCoIdreplaced the device componente replaces for DeviceComponent idreplaced
 	 * @param logDeviceComponents the log of the deviceComponent
 	 * @param repeatRule the repeatRule
+	 * @param deviceComponentRules the deviceComponentRules
 	 */
 	public DeviceComponent(int deCoId, Component component, Device device, Integer status, String description,
 			BigDecimal currentValue, double minValue, double maxValue, BigDecimal logDiffernce,
 			boolean loggen, Set<DeviceComponentReplace> deviceComponenteReplacesForDeCoId,
 			Set<HistoryLogDeviceComponent> historyLogDeviceComponents, Set<DeviceComponentReplace> deviceComponenteReplacesForDeCoIdreplaced,
-			Set<LogDeviceComponent> logDeviceComponents, Set<RepeatRule> repeatRule) {
+			Set<LogDeviceComponent> logDeviceComponents, Set<RepeatRule> repeatRule, Set<DeviceComponentRule> deviceComponentRules) {
 		this.deCoId = deCoId;
 		this.component = component;
 		this.device = device;
@@ -209,6 +213,7 @@ public class DeviceComponent implements java.io.Serializable {
 		this.logDeviceComponents = logDeviceComponents;
 		this.repeatRule = repeatRule;
 		this.logDiffernce = logDiffernce;
+		this.deviceComponentRules = deviceComponentRules;
 	}
 
 	/**
@@ -540,6 +545,14 @@ public class DeviceComponent implements java.io.Serializable {
 
 	public void setLogDiffernce(BigDecimal logDiffernce) {
 		this.logDiffernce = logDiffernce;
+	}
+
+	public Set<DeviceComponentRule> getDeviceComponentRules() {
+		return deviceComponentRules;
+	}
+
+	public void setDeviceComponentRules(Set<DeviceComponentRule> deviceComponentRules) {
+		this.deviceComponentRules = deviceComponentRules;
 	}
 
 }

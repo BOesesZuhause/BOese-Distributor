@@ -142,6 +142,7 @@ public class Interpreter {
 			}
 			else{
 			    logger.error("DeviceCompent mit der ID " + decoID + " konnte in der DB nicht gefunden werden");
+			    em.getTransaction().rollback();
 				//TODO Exception
 			}
 		}
