@@ -102,6 +102,7 @@ import de.bo.aid.boese.modelJPA.Component;
 import de.bo.aid.boese.modelJPA.Connector;
 import de.bo.aid.boese.modelJPA.Device;
 import de.bo.aid.boese.modelJPA.DeviceComponent;
+import de.bo.aid.boese.modelJPA.DeviceComponentRule;
 import de.bo.aid.boese.modelJPA.RepeatRule;
 import de.bo.aid.boese.modelJPA.Rule;
 import de.bo.aid.boese.modelJPA.Unit;
@@ -799,19 +800,17 @@ public class ProtocolHandler implements MessageHandler {
 				logger.warn("Invalid XML in new Rule");
 				sendNotificationToAllUserConnectors("Syntax error in rule with id: " + rule.getRuleId(),
 				        NotificationType.ERROR, System.currentTimeMillis());
-			} else {
-				ruleDeCos = interpretor.getAllDeCosCondition(
-						BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())));
-				try {
-					r = new Rule(rule.getPermissions(), rule.getConditions(), rule.getActions());
-					r.setActive(rule.isActive()); // TODO constructor mit active erstellen
-					Inserts.rule(ruleDeCos, r, distributor.getTdc());
-				} catch (DBForeignKeyNotFoundException e) {
-					sendNotificationToAllUserConnectors("Error while saving rule with id: " + rule.getRuleId() +
-					        ". The referenced devicecomponents are unknown.", 
-					        NotificationType.ERROR, System.currentTimeMillis());
-				    logger.error(e.getMessage(), e);
+			}
+			else {
+				r = new Rule(rule.getPermissions(), rule.getConditions(), rule.getActions(), rule.isActive());
+				ruleDeCos = interpretor.getAllDeCosCondition(BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())));
+				Set<DeviceComponentRule> decorule = new HashSet<DeviceComponentRule>();
+				for(DeviceComponent deco : ruleDeCos){
+					decorule.add(new DeviceComponentRule(deco, r));
 				}
+				daoHandler.getRuleDAO().create(em, r);
+				daoHandler.getDeviceComponentRuleDAO().createMore(em, decorule);
+				r.setDeviceComponentRules(decorule);
 				tempRules.put(rule.getTempRuleId(), r.getRuId());
 			}
 		}

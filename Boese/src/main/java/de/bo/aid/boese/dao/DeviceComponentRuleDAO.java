@@ -18,6 +18,12 @@ public class DeviceComponentRuleDAO implements StandardDAO<DeviceComponentRuleDA
 		em.persist(entity);
 		return entity;
 	}
+	
+	public void createMore(EntityManager em, Set<DeviceComponentRule> entity){
+		for(DeviceComponentRule decorule : entity){
+			em.persist(decorule);
+		}
+	}
 
 	@Override
 	public DeviceComponentRuleDAO get(EntityManager em, int id) {

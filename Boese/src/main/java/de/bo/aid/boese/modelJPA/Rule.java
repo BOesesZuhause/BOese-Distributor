@@ -36,7 +36,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -95,6 +94,10 @@ public class Rule implements java.io.Serializable {
 	/** The RepeatRules belonging to this Rule. */ 
 	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "rule")
 	private Set<RepeatRule> repeatRule = new HashSet<RepeatRule>(0);
+	
+	/** The DeviceComponents belonging to this Rule. */ 
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "rule")
+	private Set<DeviceComponentRule> deviceComponentRules = new HashSet<DeviceComponentRule>(0);
 
 	/**
 	 * Instantiates a new rule.
@@ -112,7 +115,7 @@ public class Rule implements java.io.Serializable {
 	}
 
 	/**
-	 * Instantiates a new rule for DB insert.
+	 * Instantiates a new rule for DB insert with active = true.
 	 *
 	 * @param permissions the permissions
 	 * @param conditions the conditions
@@ -123,6 +126,23 @@ public class Rule implements java.io.Serializable {
 		this.conditions = conditions;
 		this.actions = actions;
 		this.active = true;
+		this.insertDate = new Date();
+		this.modifyDate = new Date();
+	}
+
+	/**
+	 * Instantiates a new rule for DB insert with active.
+	 *
+	 * @param permissions the permissions
+	 * @param conditions the conditions
+	 * @param actions the actions
+	 * @param active the active
+	 */
+	public Rule(String permissions, String conditions, String actions, boolean active) {
+		this.permissions = permissions;
+		this.conditions = conditions;
+		this.actions = actions;
+		this.active = active;
 		this.insertDate = new Date();
 		this.modifyDate = new Date();
 	}
@@ -140,9 +160,10 @@ public class Rule implements java.io.Serializable {
 	 * @param logRules the log rules
 	 * @param historyLogRules the history log rules
 	 * @param repeatRule the Repeat Rule
+	 * @param deviceComponentRules the deviceComponentRules
 	 */
 	public Rule(int ruId, Boolean active, Date insertDate, Date modifyDate, String permissions,
-			String conditions, String actions, Set<LogRule> logRules, Set<HistoryLogRule> historyLogRules, Set<RepeatRule> repeatRule) {
+			String conditions, String actions, Set<LogRule> logRules, Set<HistoryLogRule> historyLogRules, Set<RepeatRule> repeatRule, Set<DeviceComponentRule> deviceComponentRules) {
 		this.ruId = ruId;
 		this.active = active;
 		this.insertDate = insertDate;
@@ -153,6 +174,7 @@ public class Rule implements java.io.Serializable {
 		this.logRules = logRules;
 		this.historyLogRules = historyLogRules;
 		this.repeatRule = repeatRule;
+		this.deviceComponentRules = deviceComponentRules;
 	}
 
 	/**
@@ -462,6 +484,14 @@ public class Rule implements java.io.Serializable {
 		} else if (!repeatRule.equals(other.repeatRule))
 			return false;
 		return true;
+	}
+
+	public Set<DeviceComponentRule> getDeviceComponentRules() {
+		return deviceComponentRules;
+	}
+
+	public void setDeviceComponentRules(Set<DeviceComponentRule> deviceComponentRules) {
+		this.deviceComponentRules = deviceComponentRules;
 	}
 
 }

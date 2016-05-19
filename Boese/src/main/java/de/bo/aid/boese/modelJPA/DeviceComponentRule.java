@@ -56,8 +56,8 @@ public class DeviceComponentRule {
 	
 	/** The linked devicecomponent. */
 	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-	@JoinColumn(name = "devicecomponent", nullable = false)
-	private DeviceComponent devicecomponent;
+	@JoinColumn(name = "deviceComponent", nullable = false)
+	private DeviceComponent deviceComponent;
 	
 	/** The linked rule. */
 	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
@@ -77,7 +77,7 @@ public class DeviceComponentRule {
 	 * @param rule the linked rule
 	 */
 	public DeviceComponentRule(DeviceComponent devicecomponent, Rule rule) {
-		this.devicecomponent = devicecomponent;
+		this.deviceComponent = devicecomponent;
 		this.rule = rule;
 	}
 
@@ -90,7 +90,7 @@ public class DeviceComponentRule {
 	 */
 	public DeviceComponentRule(int id, DeviceComponent devicecomponent, Rule rule) {
 		this.id = id;
-		this.devicecomponent = devicecomponent;
+		this.deviceComponent = devicecomponent;
 		this.rule = rule;
 	}
 
@@ -118,7 +118,7 @@ public class DeviceComponentRule {
 	 * @return the linked devicecomponent
 	 */
 	public DeviceComponent getDevicecomponent() {
-		return this.devicecomponent;
+		return this.deviceComponent;
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class DeviceComponentRule {
 	 * @param devicecomponent the new linked devicecomponent
 	 */
 	public void setDevicecomponent(DeviceComponent devicecomponent) {
-		this.devicecomponent = devicecomponent;
+		this.deviceComponent = devicecomponent;
 	}
 
 	/**
@@ -164,10 +164,10 @@ public class DeviceComponentRule {
 		if (getClass() != obj.getClass())
 			return false;
 		DeviceComponentRule other = (DeviceComponentRule) obj;
-		if (devicecomponent == null) {
-			if (other.devicecomponent != null)
+		if (deviceComponent == null) {
+			if (other.deviceComponent != null)
 				return false;
-		} else if (!devicecomponent.equals(other.devicecomponent))
+		} else if (!deviceComponent.equals(other.deviceComponent))
 			return false;
 		if (id != other.id) {
 			return false;
