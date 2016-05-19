@@ -61,10 +61,10 @@ public class TestdataHelper {
 		};
 		zones[0].setZone(global);
 		zones[1].setZone(global);
-		zones[2].setZone(zones[1]);
-		zones[3].setZone(zones[2]);
-		zones[4].setZone(zones[1]);
-		zones[5].setZone(zones[2]);
+		zones[2].setZone(zones[0]);
+		zones[3].setZone(zones[1]);
+		zones[4].setZone(zones[0]);
+		zones[5].setZone(zones[1]);
 		objects.add(zones);
 		
 		User[] users={
