@@ -70,7 +70,7 @@ public class Zone implements java.io.Serializable {
 	/** The Super Zone. */
 	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
 	@JoinColumn(name = "zone", nullable = false)
-	private Zone zone;
+	private Zone superZone;
 	
 	/** The name of the Zone. */
 	@Column(nullable = false)
@@ -99,9 +99,11 @@ public class Zone implements java.io.Serializable {
 	 * Instantiates a new zone for DB Insert.
 	 *
 	 * @param name the name
+	 * @param superZone The zone to which this zone belongs
 	 */
-	public Zone(String name) {
+	public Zone(String name, Zone superZone) {
 		this.name = name;
+		this.superZone = superZone;
 	}
 
 	/**
@@ -113,7 +115,7 @@ public class Zone implements java.io.Serializable {
 	 */
 	public Zone(int zoId, Zone zone, String name) {
 		this.zoId = zoId;
-		this.zone = zone;
+		this.superZone = zone;
 		this.name = name;
 	}
 
@@ -129,11 +131,15 @@ public class Zone implements java.io.Serializable {
 	 */
 	public Zone(int zoId, Zone zone, String name, Set<GroupZone> groupZones, Set<Zone> zones, Set<Device> devices) {
 		this.zoId = zoId;
-		this.zone = zone;
+		this.superZone = zone;
 		this.name = name;
 		this.groupZones = groupZones;
 		this.zones = zones;
 		this.devices = devices;
+	}
+
+	public Zone(String name) {
+		this.name = name;
 	}
 
 	/**
@@ -160,7 +166,7 @@ public class Zone implements java.io.Serializable {
 	 * @return the Super Zone
 	 */
 	public Zone getZone() {
-		return this.zone;
+		return this.superZone;
 	}
 
 	/**
@@ -169,7 +175,7 @@ public class Zone implements java.io.Serializable {
 	 * @param zone the new Super Zone
 	 */
 	public void setZone(Zone zone) {
-		this.zone = zone;
+		this.superZone = zone;
 	}
 
 	/**
@@ -277,10 +283,10 @@ public class Zone implements java.io.Serializable {
 			return false;
 		if (zoId != other.zoId)
 			return false;
-		if (zone == null) {
-			if (other.zone != null)
+		if (superZone == null) {
+			if (other.superZone != null)
 				return false;
-		} else if (!zone.equals(other.zone))
+		} else if (!superZone.equals(other.superZone))
 			return false;
 		if (zones == null) {
 			if (other.zones != null)
@@ -320,10 +326,10 @@ public class Zone implements java.io.Serializable {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (zone == null) {
-			if (other.zone != null)
+		if (superZone == null) {
+			if (other.superZone != null)
 				return false;
-		} else if (!zone.equals(other.zone))
+		} else if (!superZone.equals(other.superZone))
 			return false;
 		if (zones == null) {
 			if (other.zones != null)

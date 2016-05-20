@@ -13,8 +13,8 @@ import de.bo.aid.boese.modelJPA.Zone;
 
 public class ZoneDAO implements StandardDAO<Zone>{
 	
-	public Zone create(EntityManager em, String name){
-		Zone entity = new Zone(name);
+	public Zone create(EntityManager em, String name, Zone superZone){
+		Zone entity = new Zone(name, superZone);
 		em.persist(entity);
 		return entity;
 	}
