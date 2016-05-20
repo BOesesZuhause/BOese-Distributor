@@ -151,14 +151,18 @@ public class DeviceComponent implements java.io.Serializable {
 	 * @param maxValue the max Value
 	 * @param loggen should it be logged
 	 * @param logDifference the difference between new and old value
+	 * @param component the belonging component
 	 */
-	public DeviceComponent(String description, double minValue, double maxValue, double logDifference, boolean loggen) {
+	public DeviceComponent(String description, double minValue, double maxValue, double logDifference, boolean loggen,
+							Component component, Device device) {
 		this.description = description;
 		this.status = Status.ACTIVE;
 		this.minValue = BigDecimal.valueOf(minValue);
 		this.maxValue = BigDecimal.valueOf(maxValue);
 		this.loggen = loggen;
 		this.logDiffernce = BigDecimal.valueOf(logDifference);
+		this.component = component;
+		this.device = device;
 	}
 
 	/**

@@ -71,7 +71,7 @@ public class DeviceComponentRule {
 	}
 
 	/**
-	 * Instantiates a new device component rule.
+	 * Instantiates a new device component rule for DB Insert.
 	 *
 	 * @param devicecomponent the linked devicecomponent
 	 * @param rule the linked rule

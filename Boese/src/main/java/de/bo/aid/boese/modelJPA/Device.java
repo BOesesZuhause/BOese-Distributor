@@ -117,10 +117,14 @@ public class Device implements java.io.Serializable {
 	 *
 	 * @param alias the alias
 	 * @param serialNumber the serial number
+	 * @param connector the belonging connector
+	 * @param zone the belonging zone
 	 */
-	public Device(String alias, String serialNumber) {
+	public Device(String alias, String serialNumber, Connector connector, Zone zone) {
 		this.alias = alias;
 		this.serialNumber = serialNumber;
+		this.connector = connector;
+		this.zone = zone;
 	}
 
 	/**

@@ -91,10 +91,12 @@ public class Component implements java.io.Serializable {
 	 *
 	 * @param name the name
 	 * @param actor Is this a Actor
+	 * @param unit the belonging Unit
 	 */
-	public Component(String name, boolean actor) {
+	public Component(String name, boolean actor, Unit unit) {
 		this.name = name;
 		this.actor = actor;
+		this.unit = unit;
 	}
 
 	/**

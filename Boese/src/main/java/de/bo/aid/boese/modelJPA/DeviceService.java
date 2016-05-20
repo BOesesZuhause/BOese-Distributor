@@ -77,6 +77,17 @@ public class DeviceService implements java.io.Serializable {
 	}
 
 	/**
+	 * Instantiates a new device group for DB insert.
+	 *
+	 * @param device the device
+	 * @param service the service
+	 */
+	public DeviceService(Device device, Service service) {
+		this.device = device;
+		this.service = service;
+	}
+
+	/**
 	 * Instantiates a new device group.
 	 *
 	 * @param id the id

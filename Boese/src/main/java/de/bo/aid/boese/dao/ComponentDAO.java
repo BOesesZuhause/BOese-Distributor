@@ -8,11 +8,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import de.bo.aid.boese.modelJPA.Component;
+import de.bo.aid.boese.modelJPA.Unit;
 
 public class ComponentDAO implements StandardDAO<Component> {
 	
-	public Component create(EntityManager em, String name, boolean actor){
-		Component entity = new Component(name, actor);
+	public Component create(EntityManager em, String name, boolean actor, Unit unit){
+		Component entity = new Component(name, actor, unit);
 		em.persist(entity);
 		return entity;
 	}

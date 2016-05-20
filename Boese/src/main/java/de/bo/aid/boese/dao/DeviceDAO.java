@@ -10,12 +10,14 @@ import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import de.bo.aid.boese.modelJPA.Connector;
 import de.bo.aid.boese.modelJPA.Device;
+import de.bo.aid.boese.modelJPA.Zone;
 
 public class DeviceDAO implements StandardDAO<Device> {
 	
-	public Device create(EntityManager em, String alias, String serialNumber){
-		Device entity = new Device(alias, serialNumber);
+	public Device create(EntityManager em, String alias, String serialNumber, Connector con, Zone zone){
+		Device entity = new Device(alias, serialNumber, con, zone);
 		em.persist(entity);
 		return entity;
 	}
