@@ -163,6 +163,7 @@ private final String logo =
 	
 	Parameters params;
 
+	Zone global;
     
     /**
      * Instantiates a new distributor.
@@ -247,9 +248,11 @@ private final String logo =
 		JPAUtil.init();
 		daoHandler = DAOHandler.getInstance();
 		DBDefaults.defaults();
-		//TODO
-//		Inserts.defaultUnits();
-		
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
+		global = daoHandler.getZoneDAO().get(em, 1);
+		em.getTransaction().commit();
+		em.close();
 		
 	}
 	
@@ -443,7 +446,9 @@ private final String logo =
 		HashMap<String, Integer> devices = new HashMap<String, Integer>();
 		EntityManager em = JPAUtil.getEntityManager();
 		em.getTransaction().begin();
-		Device dev = daoHandler.getDeviceDAO().create(em, name, "serial");
+		Connector connector = daoHandler.getConnectorDAO().get(em, temp.getConnectorID());
+		Zone zone = daoHandler.getZoneDAO().get(em, zoneId);
+		Device dev = daoHandler.getDeviceDAO().create(em, name, "serial", connector, zone);
 		em.getTransaction().commit();
 		em.close();
 		devices.put(temp.getName(), dev.getDeId());	
@@ -532,8 +537,11 @@ private final String logo =
 		
 		EntityManager em = JPAUtil.getEntityManager();
 		em.getTransaction().begin();
-		Component comp = daoHandler.getComponentDAO().create(em, name, temp.isActor());
-		DeviceComponent deco = daoHandler.getDeviceComponentDAO().create(em, temp.getDescription(), -1000.0, 1000.0, 0.0, true);
+		//TODO müssen Device und Unit wirklich geholt werden?
+		Unit unit = daoHandler.getUnitDAO().get(em, unitId);
+		Component comp = daoHandler.getComponentDAO().create(em, name, temp.isActor(), unit);
+		Device device = daoHandler.getDeviceDAO().get(em, deviceId);
+		DeviceComponent deco = daoHandler.getDeviceComponentDAO().create(em, temp.getDescription(), -1000.0, 1000.0, 0.0, true, comp, device);
 		em.getTransaction().commit();
 		em.close();
 		
