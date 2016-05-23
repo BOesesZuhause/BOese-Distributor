@@ -58,7 +58,7 @@ public class DBDefaultTest {
 	 */
 	@Test
 	public void service() {
-		ServiceDAO dao = daoHandler.getSer();
+		ServiceDAO dao = daoHandler.getServiceDAO();
 		Service service = dao.get(em, 1);
 		if(service == null){
 			fail("DefaultService nicht erstellt");
@@ -74,7 +74,7 @@ public class DBDefaultTest {
 	 */
 	@Test
 	public void unit(){
-		UnitDAO dao = daoHandler.getUnit();
+		UnitDAO dao = daoHandler.getUnitDAO();
 		Unit unit = dao.get(em, 1);
 		if(unit == null){
 			fail("DefaultUnit nicht erstellt");
@@ -91,7 +91,7 @@ public class DBDefaultTest {
 	 */
 	@Test
 	public void zone(){
-		ZoneDAO dao = daoHandler.getZone();
+		ZoneDAO dao = daoHandler.getZoneDAO();
 		Zone zone = dao.get(em, 1);
 		if(zone == null){
 			fail("DefaultZone nicht erstellt");
@@ -107,7 +107,7 @@ public class DBDefaultTest {
 	 */
 	@Test
 	public void user(){
-		UserDAO dao = daoHandler.getUser();
+		UserDAO dao = daoHandler.getUserDAO();
 		User user = dao.get(em, 1);
 		if(user == null){
 			fail("DefaultUser nicht erstellt");
@@ -126,7 +126,7 @@ public class DBDefaultTest {
 	 */
 	@Test
 	public void group(){
-		GroupDAO dao = daoHandler.getGrp();
+		GroupDAO dao = daoHandler.getGroupDAO();
 		Group grp = dao.get(em, 1);
 		if(grp == null){
 			fail("DefaultGroup nicht erstellt");
@@ -142,7 +142,7 @@ public class DBDefaultTest {
 	 */
 	@Test
 	public void rule(){
-		RuleDAO dao = daoHandler.getRu();
+		RuleDAO dao = daoHandler.getRuleDAO();
 		Rule rule = dao.get(em, 1);
 		if(rule == null){
 			fail("DefaultRule nicht erstellt");

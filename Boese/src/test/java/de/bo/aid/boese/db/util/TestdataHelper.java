@@ -3,6 +3,7 @@ package de.bo.aid.boese.db.util;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -11,13 +12,7 @@ import de.bo.aid.boese.DB.util.DBDefaults;
 import de.bo.aid.boese.DB.util.JPAUtil;
 import de.bo.aid.boese.dao.DAOHandler;
 import de.bo.aid.boese.dao.StandardDAO;
-import de.bo.aid.boese.modelJPA.Component;
-import de.bo.aid.boese.modelJPA.Connector;
-import de.bo.aid.boese.modelJPA.Device;
-import de.bo.aid.boese.modelJPA.ToDo;
-import de.bo.aid.boese.modelJPA.Unit;
-import de.bo.aid.boese.modelJPA.User;
-import de.bo.aid.boese.modelJPA.Zone;
+import de.bo.aid.boese.modelJPA.*;
 
 public class TestdataHelper {
 	
@@ -31,64 +26,229 @@ public class TestdataHelper {
 		@Override
 		public long count(EntityManager em) {return 0;}
 	};
+
+	private static List<Object[]> objects = new ArrayList<Object[]>();
+	
+	private static Zone defaultZone;
+	private static Service defaultService;
+	private static User defaultUser;
+	private static Group defaultGroup;
+	private static Rule defaultRule;
+	
+	private static Connector[] connectors;
+	private static Map<Integer, Unit> units;
+	private static Zone[] zones;
+	private static User[] users;
+	private static Component[] components;
+	private static Device[] devices;
+	private static DeviceComponent[] deviceComponents;
+	private static DeviceComponentReplace[] deviceComponentReplaces;
+	private static Group[] groups;
+	private static GroupUser[] groupUsers;
+	private static GroupZone[] groupZones;
+	private static DeviceGroup[] deviceGroups;
+	private static Service[] services;
+	private static DeviceService[] deviceServices;
 	
 	public static void insertTestData(){
 		em = JPAUtil.getEntityManager();
 		
 		DBDefaults.defaults();
 		
-		List<Object[]> objects = new ArrayList<Object[]>();
+		getDefaults();
 		
-		Connector connectors[] = {
-				new Connector("HomeMatic Connector", "secret", false),
-				new Connector("Philips Hue Connector", "12345", false),
-				new Connector("GUI Connector", "qwertz", true)		
-		};
+		createConnectors(); 
 		objects.add(connectors);
 		
-		Set<Unit> unitSet = daoHandler.getUnitDAO().getAll(em);
-		Unit[] units = unitSet.toArray(new Unit[unitSet.size()]);
-		objects.add(units);
+		units = daoHandler.getUnitDAO().getAllAsMap(em);
 		
-		Zone global = daoHandler.getZoneDAO().get(em, 1);
-		Zone zones[] = {
-				new Zone("First Floor"),
-				new Zone("Second Floor"),
-				new Zone("Kitchen"),
-				new Zone("Bathroom"),
-				new Zone("Livingroom"),
-				new Zone("Bedroom")		
-		};
-		zones[0].setZone(global);
-		zones[1].setZone(global);
+		createZones();
+		objects.add(zones);
+		
+		createUsers();
+		objects.add(users);
+		
+		createComponents();
+		objects.add(components);
+		
+		createDevices();
+		objects.add(devices);
+		
+		createDeviceComponents();
+		objects.add(deviceComponents);
+		
+		createDeviceComponentReplaces();
+		objects.add(deviceComponentReplaces);
+		
+		createGroups();
+		objects.add(groups);
+		
+		createGroupUsers();
+		objects.add(groupUsers);
+		
+		createGroupZones();
+		objects.add(groupZones);
+		
+		createDeviceGroups();
+		objects.add(deviceGroups);
+		
+		createServices();
+		objects.add(services);
+		
+		createDeviceServices();
+		objects.add(deviceServices);
+		
+		insert();
+		em.close();
+		killAll();
+	}
+
+	private static void createConnectors(){
+		connectors = new Connector[3];
+		connectors[0] =	new Connector("HomeMatic Connector", "secret", false);
+		connectors[1] =	new Connector("Philips Hue Connector", "12345", false);
+		connectors[2] =	new Connector("GUI Connector", "qwertz", true);
+	}
+	
+	private static void createZones(){
+		zones = new Zone[6];
+		zones[0] = new Zone("First Floor");
+		zones[1] = new Zone("Second Floor");
+		zones[2] = new Zone("Kitchen");
+		zones[3] = new Zone("Bathroom");
+		zones[4] = new Zone("Livingroom");
+		zones[5] = new Zone("Bedroom");
+		
+		zones[0].setZone(defaultZone);
+		zones[1].setZone(defaultZone);
 		zones[2].setZone(zones[0]);
 		zones[3].setZone(zones[1]);
 		zones[4].setZone(zones[0]);
 		zones[5].setZone(zones[1]);
-		objects.add(zones);
-		
-		User[] users={
-				new User("Pe", "erste", "123", true, new Date(), "first", "erste.person@first.de"),
-				new User("rs", "zweite", "456", false, new Date(), "second", "zweite.person@second.de"),
-				new User("on", "dritte", "789", false, new Date(), "third", "erste.person@third.de"),
-				new User("Person", "vierte", "klo", true, new Date(), "fourth", "zweite.person@fourth.de"),
-		};
-		objects.add(users);
-		
-		ToDo todos[] = {
-			new ToDo(),	
-			new ToDo(),
-			new ToDo(),
-			new ToDo(),
-			new ToDo()		
-		};
-//		objects.add(todos);
-		
+	}
+	
+	private static void createUsers() {
+		users = new User[4];
+		users[0] = new User("Pe", "erste", "123", true, new Date(), "first", "erste.person@first.de");
+		users[0] = new User("rs", "zweite", "456", false, new Date(), "second", "zweite.person@second.de");
+		users[0] = new User("on", "dritte", "789", false, new Date(), "third", "erste.person@third.de");
+		users[0] = new User("Person", "vierte", "klo", true, new Date(), "fourth", "zweite.person@fourth.de");
+	}
+	
+	private static void createComponents(){
+		components = new Component[4];
+		components[0] = new Component("Leuchte", true, units.get(1));
+		components[1] = new Component("Taster", true, units.get(2));
+		components[2] = new Component("TuerOffen", false, units.get(3));
+		components[3] = new Component("Helligkeit", false, units.get(4));
+	}
+	
+	private static void createDevices(){
+		devices = new Device[3];
+		devices[0] = new Device("Fernbedinung", "123-456-789", connectors[0], defaultZone);
+		devices[1] = new Device("Lampe", "456-789-123", connectors[1], zones[3]);
+		devices[2] = new Device("Tuer", "789-123-456", connectors[0], zones[4]);
+	}
+	
+	private static void createDeviceComponents(){
+		deviceComponents = new DeviceComponent[9];
+		deviceComponents[0] = new DeviceComponent("Taste 1", 0, 1, 0.0, true, components[1], devices[0]);
+		deviceComponents[1] = new DeviceComponent("Taste 2", 0, 1, 0.0, true, components[1], devices[0]);
+		deviceComponents[2] = new DeviceComponent("Bestaetigungs Leuchte", 0, 1, 0.0, true, components[0], devices[0]);
+		deviceComponents[3] = new DeviceComponent("Leuchten?", 0, 1, 0.0, true, components[0], devices[1]);
+		deviceComponents[4] = new DeviceComponent("UmgebungsHelligkeit", 0, 1, 0.0, true, components[3], devices[1]);
+		deviceComponents[5] = new DeviceComponent("Offen?", 0, 1, 0.0, true, components[2], devices[3]);deviceComponents[1] = new DeviceComponent("Taste 2", 0, 1, 0.0, true, components[1], devices[0]);
+		//For Replace
+		deviceComponents[6] = new DeviceComponent("Taste 3(replace)", 0, 1, 0.0, true, components[1], devices[0]);
+		deviceComponents[7] = new DeviceComponent("UmgebungsDunkelheit(replace)", 0, 1, 0.0, true, components[3], devices[1]);
+		deviceComponents[8] = new DeviceComponent("Zu?(replace)", 0, 1, 0.0, true, components[2], devices[3]);deviceComponents[1] = new DeviceComponent("Taste 2", 0, 1, 0.0, true, components[1], devices[0]);
+	}
+	
+	private static void createDeviceComponentReplaces(){
+		deviceComponentReplaces = new DeviceComponentReplace[3];
+		deviceComponentReplaces[0] = new DeviceComponentReplace(deviceComponents[6], deviceComponents[1]);
+		deviceComponentReplaces[1] = new DeviceComponentReplace(deviceComponents[7], deviceComponents[4]);
+		deviceComponentReplaces[2] = new DeviceComponentReplace(deviceComponents[8], deviceComponents[5]);
+	}
+	
+	private static void createGroups(){
+		groups = new Group[2];
+		groups[0] = new Group("Admin");
+		groups[1] = new Group("Kinder");
+	}
+	
+	private static void createGroupUsers(){
+		groupUsers = new GroupUser[7];
+		groupUsers[0] = new GroupUser(groups[1], users[0], (short)1);
+		groupUsers[1] = new GroupUser(defaultGroup, users[1], (short)1);
+		groupUsers[2] = new GroupUser(defaultGroup, users[2], (short)1);
+		groupUsers[3] = new GroupUser(groups[1], users[3], (short)1);
+		groupUsers[4] = new GroupUser(groups[0], users[1], (short)1);
+		groupUsers[5] = new GroupUser(groups[0], users[3], (short)1);
+		groupUsers[6] = new GroupUser(defaultGroup, defaultUser, (short)1);
+	}
+	
+	private static void createGroupZones(){
+		groupZones = new GroupZone[7];
+		groupZones[0] = new GroupZone(groups[0], zones[0], (short)0);
+		groupZones[1] = new GroupZone(groups[0], zones[1], (short)0);
+		groupZones[2] = new GroupZone(groups[1], zones[3], (short)0);
+		groupZones[3] = new GroupZone(groups[1], zones[5], (short)0);
+		groupZones[4] = new GroupZone(defaultGroup, zones[2], (short)0);
+		groupZones[5] = new GroupZone(defaultGroup, zones[4], (short)0);
+		groupZones[6] = new GroupZone(defaultGroup, defaultZone, (short)0);
+	}
+	
+	private static void createDeviceGroups(){
+		deviceGroups = new DeviceGroup[3];
+		deviceGroups[0] = new DeviceGroup(devices[0], groups[0], (short)0);
+		deviceGroups[1] = new DeviceGroup(devices[1], groups[1], (short)0);
+		deviceGroups[2] = new DeviceGroup(devices[2], defaultGroup, (short)0);
+	}
+	
+	private static void createServices(){
+		services = new Service[3];
+		services[0] = new Service("Licht");
+		services[1] = new Service("Sensor");
+		services[2] = new Service("Schalten");
+	}
+	
+	private static void createDeviceServices(){
+		deviceServices = new DeviceService[3];
+		deviceServices[0] = new DeviceService(devices[0], services[2]);
+		deviceServices[0] = new DeviceService(devices[1], services[0]);
+		deviceServices[0] = new DeviceService(devices[2], services[1]);
+	}
+	
+	private static void getDefaults(){
+		em.getTransaction().begin();
+		defaultZone = daoHandler.getZoneDAO().get(em, 1);
+		defaultService = daoHandler.getServiceDAO().get(em, 1);
+		defaultUser = daoHandler.getUserDAO().get(em, 1);
+		defaultGroup = daoHandler.getGroupDAO().get(em, 1);
+		defaultRule = daoHandler.getRuleDAO().get(em, 1);
+		em.getTransaction().commit();
+	}
+	
+	private static void insert(){
 		for(Object[] o : objects){
 			em.getTransaction().begin();
 			std.createMore(em, o);
 			em.getTransaction().commit();
 		}
-		em.close();
+	}
+	
+	private static void killAll(){
+		connectors = null;
+		units = null;
+		defaultZone = null;
+		zones = null;
+		users = null;
+		components = null;
+		devices = null;
+		deviceComponents = null;
+		deviceComponentReplaces = null;
+		groups = null;
+		groupUsers = null;
 	}
 }
