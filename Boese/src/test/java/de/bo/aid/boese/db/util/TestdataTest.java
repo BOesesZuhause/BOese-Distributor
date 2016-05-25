@@ -15,7 +15,10 @@ public class TestdataTest {
 
 	@Before
 	public void setUp() throws Exception {
-		JPAUtil.initForTesting();
+		JPAUtil.setDBUser("postgres");
+		JPAUtil.setDBPassword("Di0bPWfw");
+		JPAUtil.setDBURL("boeseTest", "localhost", 5432);
+		JPAUtil.init(); 
 	}
 
 	@Test
