@@ -80,8 +80,8 @@ public class Zone implements java.io.Serializable {
 	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "zone")
 	private Set<GroupZone> groupZones = new HashSet<GroupZone>(0);
 	
-	/** The Sub Zones. */
-	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "zone")
+	/** The SuperZones. */
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "superZone")
 	private Set<Zone> zones = new HashSet<Zone>(0);
 	
 	/** The Devices in this Zone. */

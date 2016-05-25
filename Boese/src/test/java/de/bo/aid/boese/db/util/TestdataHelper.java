@@ -1,5 +1,6 @@
 package de.bo.aid.boese.db.util;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,6 +50,14 @@ public class TestdataHelper {
 	private static DeviceGroup[] deviceGroups;
 	private static Service[] services;
 	private static DeviceService[] deviceServices;
+	private static LogConnector[] logConnectors;
+	private static HistoryLogConnector[] historyLogConnectors;
+	private static LogDeviceComponent[] logDeviceComponents;
+	private static HistoryLogDeviceComponent[] historyLogDeviceComponents;
+	private static LogRule[] logRules;
+	private static HistoryLogRule[] historyLogRules;
+	
+	private static Date actTime = new Date();
 	
 	public static void insertTestData(){
 		em = JPAUtil.getEntityManager();
@@ -98,6 +107,24 @@ public class TestdataHelper {
 		createDeviceServices();
 		objects.add(deviceServices);
 		
+		createLogConnectors();
+		objects.add(logConnectors);
+		
+		createHistoryLogConnectors();
+		objects.add(historyLogConnectors);
+		
+		createLogDeviceComponents();
+		objects.add(logDeviceComponents);
+		
+		createHistoryLogDeviceComponents();
+		objects.add(historyLogDeviceComponents);
+		
+		createLogRules();
+		objects.add(logRules);
+		
+		createHistoryLogRules();
+		objects.add(historyLogRules);
+		
 		insert();
 		em.close();
 		killAll();
@@ -129,10 +156,10 @@ public class TestdataHelper {
 	
 	private static void createUsers() {
 		users = new User[4];
-		users[0] = new User("Pe", "erste", "123", true, new Date(), "first", "erste.person@first.de");
-		users[0] = new User("rs", "zweite", "456", false, new Date(), "second", "zweite.person@second.de");
-		users[0] = new User("on", "dritte", "789", false, new Date(), "third", "erste.person@third.de");
-		users[0] = new User("Person", "vierte", "klo", true, new Date(), "fourth", "zweite.person@fourth.de");
+		users[0] = new User("Pe", "erste", "123", true, actTime, "first", "erste.person@first.de");
+		users[1] = new User("rs", "zweite", "456", false, actTime, "second", "zweite.person@second.de");
+		users[2] = new User("on", "dritte", "789", false, actTime, "third", "erste.person@third.de");
+		users[3] = new User("Person", "vierte", "klo", true, actTime, "fourth", "zweite.person@fourth.de");
 	}
 	
 	private static void createComponents(){
@@ -157,11 +184,11 @@ public class TestdataHelper {
 		deviceComponents[2] = new DeviceComponent("Bestaetigungs Leuchte", 0, 1, 0.0, true, components[0], devices[0]);
 		deviceComponents[3] = new DeviceComponent("Leuchten?", 0, 1, 0.0, true, components[0], devices[1]);
 		deviceComponents[4] = new DeviceComponent("UmgebungsHelligkeit", 0, 1, 0.0, true, components[3], devices[1]);
-		deviceComponents[5] = new DeviceComponent("Offen?", 0, 1, 0.0, true, components[2], devices[3]);deviceComponents[1] = new DeviceComponent("Taste 2", 0, 1, 0.0, true, components[1], devices[0]);
+		deviceComponents[5] = new DeviceComponent("Offen?", 0, 1, 0.0, true, components[2], devices[2]);deviceComponents[1] = new DeviceComponent("Taste 2", 0, 1, 0.0, true, components[1], devices[0]);
 		//For Replace
 		deviceComponents[6] = new DeviceComponent("Taste 3(replace)", 0, 1, 0.0, true, components[1], devices[0]);
 		deviceComponents[7] = new DeviceComponent("UmgebungsDunkelheit(replace)", 0, 1, 0.0, true, components[3], devices[1]);
-		deviceComponents[8] = new DeviceComponent("Zu?(replace)", 0, 1, 0.0, true, components[2], devices[3]);deviceComponents[1] = new DeviceComponent("Taste 2", 0, 1, 0.0, true, components[1], devices[0]);
+		deviceComponents[8] = new DeviceComponent("Zu?(replace)", 0, 1, 0.0, true, components[2], devices[2]);deviceComponents[1] = new DeviceComponent("Taste 2", 0, 1, 0.0, true, components[1], devices[0]);
 	}
 	
 	private static void createDeviceComponentReplaces(){
@@ -216,8 +243,50 @@ public class TestdataHelper {
 	private static void createDeviceServices(){
 		deviceServices = new DeviceService[3];
 		deviceServices[0] = new DeviceService(devices[0], services[2]);
-		deviceServices[0] = new DeviceService(devices[1], services[0]);
-		deviceServices[0] = new DeviceService(devices[2], services[1]);
+		deviceServices[1] = new DeviceService(devices[1], services[0]);
+		deviceServices[2] = new DeviceService(devices[2], services[1]);
+	}
+	
+	private static void createLogConnectors(){
+		logConnectors = new LogConnector[3];
+		logConnectors[0] = new LogConnector(connectors[0], new Date(actTime.getTime() - (86400000*1)), "");
+		logConnectors[1] = new LogConnector(connectors[1], new Date(actTime.getTime() - (86400000*2)), "");
+		logConnectors[2] = new LogConnector(connectors[2], new Date(actTime.getTime() - (86400000*3)), "");
+	}
+	
+	private static void createHistoryLogConnectors(){
+		historyLogConnectors = new HistoryLogConnector[3];
+		historyLogConnectors[0] = new HistoryLogConnector(connectors[0], new Date(actTime.getTime() - (31536000000L + 86400000*1)), "");
+		historyLogConnectors[1] = new HistoryLogConnector(connectors[1], new Date(actTime.getTime() - (31536000000L + 86400000*2)), "");
+		historyLogConnectors[2] = new HistoryLogConnector(connectors[2], new Date(actTime.getTime() - (31536000000L + 86400000*3)), "");
+	}
+	
+	private static void createLogDeviceComponents(){
+		logDeviceComponents = new LogDeviceComponent[3];
+		logDeviceComponents[0] = new LogDeviceComponent(deviceComponents[0], new BigDecimal(10.0), new Date(actTime.getTime() - (86400000*1)));
+		logDeviceComponents[1] = new LogDeviceComponent(deviceComponents[1], new BigDecimal(20.0), new Date(actTime.getTime() - (86400000*2)));
+		logDeviceComponents[2] = new LogDeviceComponent(deviceComponents[2], new BigDecimal(30.0), new Date(actTime.getTime() - (86400000*3)));
+	}
+	
+	private static void createHistoryLogDeviceComponents(){
+		historyLogDeviceComponents = new HistoryLogDeviceComponent[3];
+		historyLogDeviceComponents[0] = new HistoryLogDeviceComponent(deviceComponents[0], new BigDecimal(10.0), new Date(actTime.getTime() - (31536000000L + 86400000*1)));
+		historyLogDeviceComponents[1] = new HistoryLogDeviceComponent(deviceComponents[1], new BigDecimal(20.0), new Date(actTime.getTime() - (31536000000L + 86400000*2)));
+		historyLogDeviceComponents[2] = new HistoryLogDeviceComponent(deviceComponents[2], new BigDecimal(30.0), new Date(actTime.getTime() - (31536000000L + 86400000*3)));
+	}
+	
+	private static void createLogRules(){
+		logRules = new LogRule[3];
+		logRules[0] = new LogRule(rules[0], new Date(actTime.getTime() - (86400000*1)));
+		logRules[1] = new LogRule(rules[1], new Date(actTime.getTime() - (86400000*2)));
+		logRules[2] = new LogRule(rules[2], new Date(actTime.getTime() - (86400000*3)));
+	}
+	
+	private static void createHistoryLogRules(){
+		historyLogRules = new HistoryLogRule[3];
+		historyLogRules[0] = new HistoryLogRule(rules[0], new Date(actTime.getTime() - (31536000000L + 86400000*1)));
+		historyLogRules[1] = new HistoryLogRule(rules[1], new Date(actTime.getTime() - (31536000000L + 86400000*2)));
+		historyLogRules[2] = new HistoryLogRule(rules[2], new Date(actTime.getTime() - (31536000000L + 86400000*3)));
 	}
 	
 	private static void getDefaults(){
