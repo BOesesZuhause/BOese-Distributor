@@ -65,7 +65,7 @@ public class ToDo {
 	
 	/**  The Repeat Rule this ToDo is belonging to. */
 	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-	@JoinColumn(name = "repeatRule", nullable = false, unique=true)
+	@JoinColumn(name = "repeatRule", nullable = true, unique=true)
 	private RepeatRule repeatRule;
 
 	/**

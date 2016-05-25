@@ -10,10 +10,12 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 
 import de.bo.aid.boese.DB.util.DBDefaults;
+import de.bo.aid.boese.DB.util.DefaultRuleConstants;
 import de.bo.aid.boese.DB.util.JPAUtil;
 import de.bo.aid.boese.dao.DAOHandler;
 import de.bo.aid.boese.dao.StandardDAO;
 import de.bo.aid.boese.modelJPA.*;
+import de.bo.aid.boese.ruler.TimeFormat;
 
 public class TestdataHelper {
 	
@@ -50,6 +52,10 @@ public class TestdataHelper {
 	private static DeviceGroup[] deviceGroups;
 	private static Service[] services;
 	private static DeviceService[] deviceServices;
+	private static Rule[] rules;
+	private static DeviceComponentRule[] deviceComponentRules;
+	private static RepeatRule[] repeatrules;
+	private static ToDo[] todos;
 	private static LogConnector[] logConnectors;
 	private static HistoryLogConnector[] historyLogConnectors;
 	private static LogDeviceComponent[] logDeviceComponents;
@@ -106,6 +112,18 @@ public class TestdataHelper {
 		
 		createDeviceServices();
 		objects.add(deviceServices);
+		
+		createRules();
+		objects.add(rules);
+		
+		createDeviceComponentRules();
+		objects.add(deviceComponentRules);
+		
+		createRepeatRules();
+		objects.add(repeatrules);
+		
+		createToDos();
+		objects.add(todos);
 		
 		createLogConnectors();
 		objects.add(logConnectors);
@@ -245,6 +263,39 @@ public class TestdataHelper {
 		deviceServices[0] = new DeviceService(devices[0], services[2]);
 		deviceServices[1] = new DeviceService(devices[1], services[0]);
 		deviceServices[2] = new DeviceService(devices[2], services[1]);
+	}
+	
+	private static void createRules(){
+		rules = new Rule[3];
+		rules[0] = new Rule(DefaultRuleConstants.permission1, DefaultRuleConstants.condition1, DefaultRuleConstants.action1);
+		rules[1] = new Rule(DefaultRuleConstants.permission2, DefaultRuleConstants.condition2, DefaultRuleConstants.action2);
+		rules[2] = new Rule(DefaultRuleConstants.permission3, DefaultRuleConstants.condition3, DefaultRuleConstants.action3);
+	}
+	
+	private static void createDeviceComponentRules(){
+		deviceComponentRules = new DeviceComponentRule[6];
+		deviceComponentRules[0] = new DeviceComponentRule(deviceComponents[0], rules[1]);
+		deviceComponentRules[1] = new DeviceComponentRule(deviceComponents[1], rules[1]);
+		deviceComponentRules[2] = new DeviceComponentRule(deviceComponents[0], rules[2]);
+		deviceComponentRules[3] = new DeviceComponentRule(deviceComponents[1], rules[2]);
+		deviceComponentRules[4] = new DeviceComponentRule(deviceComponents[2], rules[2]);
+		deviceComponentRules[5] = new DeviceComponentRule(deviceComponents[3], rules[2]);
+	}
+	
+	private static void createRepeatRules(){
+		repeatrules = new RepeatRule[3];
+		repeatrules[0] = new RepeatRule("*;*;*;*;*;*", BigDecimal.valueOf(10.1), 1, rules[0], deviceComponents[1]);
+		repeatrules[1] = new RepeatRule("*;*;*;*;*;*", BigDecimal.valueOf(20.0), 2, rules[1], deviceComponents[2]);
+		repeatrules[2] = new RepeatRule("1;1;1;1;2070;ttttttt", BigDecimal.valueOf(15.5), 3, rules[2], deviceComponents[3]);
+	}
+	
+	private static void createToDos(){
+		todos = new ToDo[3];
+		todos[0] = new ToDo(new Date());
+		todos[1] = new ToDo(new Date(1464048000000L));
+		boolean[] wd = {true, true, true, true, true, true, true};
+		boolean[] calc = {false, false, false, false, true};
+		todos[2] = new ToDo(new TimeFormat(15, 15, 31, 12, +1, wd, calc).getDate());
 	}
 	
 	private static void createLogConnectors(){
