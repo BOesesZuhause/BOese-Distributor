@@ -136,12 +136,11 @@
    <version>2.2.4</version>
 </dependency>
 
+<!-- http://mvnrepository.com/artifact/com.h2database/h2 -->
 <dependency>
-            <groupId>hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>1.8.0.10</version>
-            <type>jar</type>
-            <scope>test</scope>
+    <groupId>com.h2database</groupId>
+    <artifactId>h2</artifactId>
+    <version>1.4.191</version>
 </dependency>
 
 <dependency>
