@@ -31,11 +31,14 @@
 
 package de.bo.aid.boese.modelJPA;
 
+import java.sql.Types;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -44,6 +47,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import de.bo.aid.boese.DB.util.SQLXMLUserType;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -72,15 +77,15 @@ public class Rule implements java.io.Serializable {
 	private Date modifyDate;
 	
 	/** The permissions. */
-//	@Column(columnDefinition = "type = 'de.bo.aid.boese.hibernate.util.SQLXMLUserType'")
+	@Column(length = Types.LONGVARCHAR)
 	private String permissions;
 	
 	/** The conditions. */
-//	@Column(columnDefinition = "type = 'de.bo.aid.boese.hibernate.util.SQLXMLUserType'")
+	@Column(length = Types.LONGVARCHAR)
 	private String conditions;
 	
 	/** The actions. */
-//	@Column(columnDefinition = "type = 'de.bo.aid.boese.hibernate.util.SQLXMLUserType'")
+	@Column(length = Types.LONGVARCHAR)
 	private String actions;
 	
 	/** The Logs of this Rule. */

@@ -293,9 +293,7 @@ public class TestdataHelper {
 		todos = new ToDo[3];
 		todos[0] = new ToDo(new Date());
 		todos[1] = new ToDo(new Date(1464048000000L));
-		boolean[] wd = {true, true, true, true, true, true, true};
-		boolean[] calc = {false, false, false, false, true};
-		todos[2] = new ToDo(new TimeFormat(15, 15, 31, 12, +1, wd, calc).getDate());
+		todos[2] = new ToDo(new TimeFormat("15;15;31;11;*;*").getDate());
 	}
 	
 	private static void createLogConnectors(){
