@@ -28,10 +28,7 @@ public class MappingTest {
 //		Session session = sessionFactory.openSession();
 //		session.close();
 		try{
-		JPAUtil.setDBUser("postgres");
-		JPAUtil.setDBPassword("Di0bPWfw");
-		JPAUtil.setDBURL("boese", "localhost", 5432);
-		JPAUtil.init();
+		JPAUtil.initForTesting();
 		}catch(Exception e){
 			e.printStackTrace();
 		}

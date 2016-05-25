@@ -16,6 +16,10 @@ public class JPAUtil {
 	 		emFactory = Persistence.createEntityManagerFactory("BOese", jpaProps);
 	 	}
 	 	
+	 	public static void initForTesting(){
+	 		emFactory = Persistence.createEntityManagerFactory("testing");
+	 	}
+	 	
 
 		public static EntityManager getEntityManager(){
 			return emFactory.createEntityManager();

@@ -38,16 +38,60 @@
 		<properties>
 
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-  
-  <!-- For debugging -->          
-<!--        <property name="javax.persistence.jdbc.driver" value="net.sf.log4jdbc.DriverSpy" /> -->
-<!--        <property name="javax.persistence.jdbc.url" value="jdbc:log4jdbc:h2:./data/db" /> -->
-            	
-
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
             <property name="hibernate.hbm2ddl.auto" value="create" />
             <property name="hibernate.show_sql" value="true"/>
 		</properties>
 
 	</persistence-unit>
+	
+	
+	<persistence-unit name="testing">
+	
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		
+		<class>de.bo.aid.boese.modelJPA.Component</class>
+		<class>de.bo.aid.boese.modelJPA.Connector</class>
+		<class>de.bo.aid.boese.modelJPA.Device</class>
+		<class>de.bo.aid.boese.modelJPA.DeviceComponent</class>
+		<class>de.bo.aid.boese.modelJPA.DeviceComponentReplace</class>
+		<class>de.bo.aid.boese.modelJPA.DeviceComponentReplaceIdt</class>
+		<class>de.bo.aid.boese.modelJPA.DeviceComponentRuleId</class>
+		<class>de.bo.aid.boese.modelJPA.DeviceGroup</class>
+		<class>de.bo.aid.boese.modelJPA.DeviceService</class>
+		<class>de.bo.aid.boese.modelJPA.DeviceServiceId</class>
+		<class>de.bo.aid.boese.modelJPA.Group</class>
+		<class>de.bo.aid.boese.modelJPA.GroupUser</class>
+		<class>de.bo.aid.boese.modelJPA.GroupUserId</class>
+		<class>de.bo.aid.boese.modelJPA.GroupZone</class>
+		<class>de.bo.aid.boese.modelJPA.GroupZoneId</class>
+		<class>de.bo.aid.boese.modelJPA.HistoryLogConnector</class>
+		<class>de.bo.aid.boese.modelJPA.HistoryLogDeviceComponent</class>
+		<class>de.bo.aid.boese.modelJPA.HistoryLogRule</class>
+		<class>de.bo.aid.boese.modelJPA.LogConnector</class>
+		<class>de.bo.aid.boese.modelJPA.LogDeviceComponent</class>
+		<class>de.bo.aid.boese.modelJPA.LogRule</class>
+		<class>de.bo.aid.boese.modelJPA.RepeatRule</class>
+		<class>de.bo.aid.boese.modelJPA.Rule</class>
+		<class>de.bo.aid.boese.modelJPA.Service</class>
+		<class>de.bo.aid.boese.modelJPA.ToDo</class>
+ 		<class>de.bo.aid.boese.modelJPA.Unit</class>
+		<class>de.bo.aid.boese.modelJPA.User</class>
+		<class>de.bo.aid.boese.modelJPA.Zone</class>
+	
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>
+            <property name="hibernate.connection.username" value="sa"/>
+            <property name="hibernate.connection.password" value=""/>
+            <property name="hibernate.connection.url" value="jdbc:hsqldb:mem:butterfly"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+              <!-- For debugging -->          
+<!--        <property name="javax.persistence.jdbc.driver" value="net.sf.log4jdbc.DriverSpy" /> -->
+<!--        <property name="javax.persistence.jdbc.url" value="jdbc:log4jdbc:h2:./data/db" /> -->
+        </properties>
+    </persistence-unit>
+    
+    
 </persistence>
