@@ -291,7 +291,7 @@ public class ProtocolHandler implements MessageHandler {
             }
         }  
 	    
-		if (rc.getPassword() == null && rc.getConnectorId() == -1) { //connector without id
+		if ((rc.getPassword() == null || rc.getPassword().equals("")) && rc.getConnectorId() == -1) { //connector without id
 			
 			// Add requesting Connector to tempConnectors with tempId from SocketHandler
 			if(rc.isUserConnector()){
@@ -318,6 +318,8 @@ public class ProtocolHandler implements MessageHandler {
     				em.getTransaction().rollback();
     				SessionHandler.getInstance().rejectConnection(tempId);
     				logger.error("Connector with ID " + conId + " not found in DB");
+    				em.close();
+    				return;
     			}
     			em.getTransaction().commit();
     			em.close();
