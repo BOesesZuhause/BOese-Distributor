@@ -360,6 +360,8 @@ public class ProtocolHandler implements MessageHandler {
 					TempDevice temp = new TempDevice(connectorId, deviceName);
 					distributor.addTempDevie(temp);
 					em.getTransaction().rollback();
+    				em.close();
+    				return;
 				}
 			}
 		}
@@ -477,6 +479,8 @@ public class ProtocolHandler implements MessageHandler {
 				sendNotificationToAllUserConnectors("Unable to switch component with id: " + deviceComponentId +
 				        "The component, device or connector is unknown.", NotificationType.ERROR, System.currentTimeMillis());
 				em.getTransaction().rollback();
+				em.close();
+				return;
 			}
 			
 		}
