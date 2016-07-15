@@ -585,9 +585,12 @@ private final String logo =
 			em.getTransaction().begin();
 			DeviceComponent deco = daoHandler.getDeviceComponentDAO().get(em, inq.getDeviceComponentId());
 			//ist die DeviceComponet auf loggen gestellt und die Differenz zwischen neuen und alten groß genug?
-			if(deco.isLoggen() && Math.abs(deco.getCurrentValue().doubleValue() - inq.getValue()) > deco.getLogDiffernce().doubleValue()){
-				daoHandler.getLogDeviceComponentDAO().create(em, deco, new Date(inq.getTimestamp()), deco.getCurrentValue());
+			if(deco.getCurrentValue() != null){
+				if(deco.isLoggen() && Math.abs(deco.getCurrentValue().doubleValue() - inq.getValue()) > deco.getLogDiffernce().doubleValue()){
+					daoHandler.getLogDeviceComponentDAO().create(em, deco, new Date(inq.getTimestamp()), deco.getCurrentValue());
+				}
 			}
+
 			deco.setCurrentValue(BigDecimal.valueOf(inq.getValue()));
 			em.getTransaction().commit();
 			em.close();
