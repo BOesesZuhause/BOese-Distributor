@@ -30,9 +30,9 @@ public class DeviceComponentDAO implements StandardDAO<DeviceComponent>{
 	}
 	
 	public Connector getBelongingConnector(EntityManager em, int id){
-		Query q = em.createQuery( "SELECT c FROM Connector c"
-								+ "join Device d on c.coId = d.deId"
-								+ "join DeviceComponent dc on d.deId = dc.deCoId"
+		Query q = em.createQuery( "SELECT c FROM DeviceComponent dc "
+								+ "join dc.device d "
+								+ "join d.connector as c  "
 								+ "where dc.deCoId = " + id);
 		Connector entity = ((Connector)q.getSingleResult());
 		return entity;
