@@ -11,16 +11,11 @@
 		<class>de.bo.aid.boese.modelJPA.Device</class>
 		<class>de.bo.aid.boese.modelJPA.DeviceComponent</class>
 		<class>de.bo.aid.boese.modelJPA.DeviceComponentReplace</class>
-		<class>de.bo.aid.boese.modelJPA.DeviceComponentReplaceIdt</class>
-		<class>de.bo.aid.boese.modelJPA.DeviceComponentRuleId</class>
 		<class>de.bo.aid.boese.modelJPA.DeviceGroup</class>
 		<class>de.bo.aid.boese.modelJPA.DeviceService</class>
-		<class>de.bo.aid.boese.modelJPA.DeviceServiceId</class>
 		<class>de.bo.aid.boese.modelJPA.Group</class>
 		<class>de.bo.aid.boese.modelJPA.GroupUser</class>
-		<class>de.bo.aid.boese.modelJPA.GroupUserId</class>
 		<class>de.bo.aid.boese.modelJPA.GroupZone</class>
-		<class>de.bo.aid.boese.modelJPA.GroupZoneId</class>
 		<class>de.bo.aid.boese.modelJPA.HistoryLogConnector</class>
 		<class>de.bo.aid.boese.modelJPA.HistoryLogDeviceComponent</class>
 		<class>de.bo.aid.boese.modelJPA.HistoryLogRule</class>

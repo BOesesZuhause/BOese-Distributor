@@ -28,28 +28,23 @@
  */
 
 
-
 package de.bo.aid.boese.modelJPA;
 
-import java.sql.Types;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import de.bo.aid.boese.DB.util.SQLXMLUserType;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -78,15 +73,15 @@ public class Rule implements java.io.Serializable {
 	private Date modifyDate;
 	
 	/** The permissions. */
-	@Lob
+	@Column(columnDefinition = "text")
 	private String permissions;
 	
 	/** The conditions. */
-	@Lob
+	@Column(columnDefinition = "text")
 	private String conditions;
 	
 	/** The actions. */
-	@Lob
+	@Column(columnDefinition = "text")
 	private String actions;
 	
 	/** The Logs of this Rule. */
