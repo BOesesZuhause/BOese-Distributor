@@ -294,7 +294,7 @@ public class Zone implements java.io.Serializable, JPAModel {
 		if (superZone == null) {
 			if (other.superZone != null)
 				return false;
-		} else if (!superZone.equals(other.superZone))
+		} else if (!superZone.getName().equals(other.superZone.getName()))
 			return false;
 		return true;
 	}

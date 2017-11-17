@@ -33,7 +33,7 @@ public class DBDefaults {
 		EntityManager em = JPAUtil.getEntityManager();
 		em.getTransaction().begin();
 		defaultUnit(em);
-//		defaultZone(em);
+		defaultZone(em);
 		defaultService(em);
 		defaultUser(em);
 		defaultGroup(em);
