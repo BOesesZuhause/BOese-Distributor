@@ -57,16 +57,16 @@ public class ComponentXML {
 	/** The duration. */
 	protected long duration;
 	
-	/** The comperator. */
-	protected Comperator comperator;
+	/** The comparator. */
+	protected Comparator comparator;
 	
 	/** The repeat after end. */
 	protected int repeatAfterEnd;
 	
 	/**
-	 * The Enum Comperator.
+	 * The Enum Comparator.
 	 */
-	public enum Comperator {
+	public enum Comparator {
 		
 		/** The lowerthen. */
 		LOWERTHEN, 
@@ -90,16 +90,16 @@ public class ComponentXML {
 	 * @param resetValue the reset value
 	 * @param startTime the start time
 	 * @param duration the duration
-	 * @param comperator the comperator
+	 * @param comparator the comparator
 	 */
-	public ComponentXML(int id, CalculationList calculation, double resetValue, TimeFormat startTime, long duration, Comperator comperator) {
+	public ComponentXML(int id, CalculationList calculation, double resetValue, TimeFormat startTime, long duration, Comparator comparator) {
 		this.id = id;
 		this.value = -1;
 		this.calculation = calculation;
 		this.resetValue = resetValue;
 		this.startTime = startTime;
 		this.duration = duration;
-		this.comperator = comperator;
+		this.comparator = comparator;
 		repeatAfterEnd = 0;
 		value = -1;
 	}
@@ -122,7 +122,7 @@ public class ComponentXML {
 		this.startTime = startTime;
 		this.duration = duration;
 		this.repeatAfterEnd = repeatAfterEnd;
-		this.comperator = null;
+		this.comparator = null;
 		value = -1;
 	}
 	
@@ -149,19 +149,19 @@ public class ComponentXML {
 	/**
 	 * Sets the comparator.
 	 *
-	 * @param comperator the new comparator
+	 * @param comparator the new comparator
 	 */
-	public void setValue(Comperator comperator) {
-		this.comperator = comperator;
+	public void setValue(Comparator comparator) {
+		this.comparator = comparator;
 	}
 	
 	/**
-	 * Gets the comperator.
+	 * Gets the comparator.
 	 *
-	 * @return the comperator
+	 * @return the comparator
 	 */
-	public Comperator getComperator() {
-		return comperator;
+	public Comparator getComparator() {
+		return comparator;
 	}
 	
 	

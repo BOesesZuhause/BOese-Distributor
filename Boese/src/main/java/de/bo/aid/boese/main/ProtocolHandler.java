@@ -47,10 +47,12 @@ import javax.persistence.EntityManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.LazyInitializationException;
+import org.hibernate.sql.DecodeCaseFragment;
 
 import de.bo.aid.boese.DB.util.JPAUtil;
 import de.bo.aid.boese.constants.NotificationType;
 import de.bo.aid.boese.dao.DAOHandler;
+import de.bo.aid.boese.dao.DeviceComponentDAO;
 import de.bo.aid.boese.exceptions.DBForeignKeyNotFoundException;
 import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.json.BoeseJson;
@@ -809,12 +811,19 @@ public class ProtocolHandler implements MessageHandler {
 			}
 			else {
 				r = new Rule(rule.getPermissions(), rule.getConditions(), rule.getActions(), rule.isActive());
+				daoHandler.getRuleDAO().create(em, r);
+				
 				ruleDeCos = interpretor.getAllDeCosCondition(BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())));
+				DeviceComponentDAO decoDAO = daoHandler.getDeviceComponentDAO();
+				List<DeviceComponent> ruleDoCoDB = new ArrayList<>();
+				ruleDeCos.forEach((deco) -> {
+					ruleDoCoDB.add(decoDAO.get(em, deco.getDeCoId()));
+				});
+				
 				Set<DeviceComponentRule> decorule = new HashSet<DeviceComponentRule>();
-				for(DeviceComponent deco : ruleDeCos){
+				for(DeviceComponent deco : ruleDoCoDB){
 					decorule.add(new DeviceComponentRule(deco, r));
 				}
-				daoHandler.getRuleDAO().create(em, r);
 				daoHandler.getDeviceComponentRuleDAO().createMore(em, decorule);
 				r.setDeviceComponentRules(decorule);
 				tempRules.put(rule.getTempRuleId(), r.getRuId());

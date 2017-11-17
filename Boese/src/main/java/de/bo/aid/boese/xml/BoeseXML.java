@@ -106,7 +106,7 @@ public class BoeseXML {
 			DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder xmlBuilder;
 			xmlBuilder = xmlFactory.newDocumentBuilder();
-			Document doc = xmlBuilder.parse(is);
+			Document doc = xmlBuilder.parse(is); //TODO: doc get null
 			doc.getDocumentElement().normalize();
 			switch(doc.getDocumentElement().getNodeName()) {
 			case "ACTION":

@@ -151,7 +151,6 @@ public class Checker {
 			return false;
 		}
 		int status = deco.getStatus();
-		em.getTransaction().commit();
 		if(status == Status.NO_STATUS || status == Status.INACTIVE || status == Status.DEFECT || status == Status.UNAVAILABLE || status == Status.COMMUNICATION_FAILURE || status == Status.UNKNOWN || status == Status.DELETED ){
 			return false;
 		}
@@ -178,7 +177,7 @@ public class Checker {
 				System.err.println("Bad XML: " + e.getMessage());
 				return false;
 			}
-			switch(comp.getComperator()){
+			switch(comp.getComparator()){
 			case EQUAL:
 				return isValue == comparativeValue;
 			case NOTEQUAL:

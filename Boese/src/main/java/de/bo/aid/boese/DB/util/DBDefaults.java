@@ -37,7 +37,7 @@ public class DBDefaults {
 		defaultService(em);
 		defaultUser(em);
 		defaultGroup(em);
-		defaultRule(em);
+//		defaultRule(em);
 		em.getTransaction().commit();
 		em.getTransaction().begin();
 		defaultUnits(em);

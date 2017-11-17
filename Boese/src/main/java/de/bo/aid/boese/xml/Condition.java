@@ -38,7 +38,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.bo.aid.boese.ruler.TimeFormat;
-import de.bo.aid.boese.xml.ComponentXML.Comperator;
+import de.bo.aid.boese.xml.ComponentXML.Comparator;
 import de.bo.aid.boese.xml.GateList.GateType;
 
 // TODO: Auto-generated Javadoc
@@ -80,7 +80,7 @@ public class Condition extends BoeseXML {
 				CalculationList compValue = null;
 				TimeFormat compStartTime = null;
 				long compDuration = -1;
-				Comperator compComperator = null;
+				Comparator compComperator = null;
 				for (int k = 0; k < nComponentList.getLength(); k++) {
 					Node nComponent = nComponentList.item(k);
 					switch (nComponent.getNodeName()) {
@@ -88,25 +88,26 @@ public class Condition extends BoeseXML {
 						compID = new Integer(nComponent.getTextContent()).intValue();
 						componentIds.add(compID);
 						break;
+						//TODO: wrong comparatoren abfangen
 					case "COMPARATOR":
 						switch (nComponent.getTextContent()) {
 						case "==":
-							compComperator = Comperator.EQUAL;
+							compComperator = Comparator.EQUAL;
 							break;
 						case ">=":
-							compComperator = Comperator.GREATEREQUAL;
+							compComperator = Comparator.GREATEREQUAL;
 							break;
 						case "<=":
-							compComperator = Comperator.LOWEREQUAL;
+							compComperator = Comparator.LOWEREQUAL;
 							break;
 						case "<":
-							compComperator = Comperator.LOWERTHEN;
+							compComperator = Comparator.LOWERTHEN;
 							break;
 						case ">":
-							compComperator = Comperator.GREATERTHEN;
+							compComperator = Comparator.GREATERTHEN;
 							break;
 						case "!=":
-							compComperator = Comperator.NOTEQUAL;
+							compComperator = Comparator.NOTEQUAL;
 							break;
 
 						default:
