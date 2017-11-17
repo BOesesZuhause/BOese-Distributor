@@ -46,10 +46,7 @@ public class DBDefaults {
 	}
 	
 	private static void defaultUnit(EntityManager em){
-//		System.out.println(daoHandler);
 		UnitDAO dao = daoHandler.getUnitDAO();
-		if (dao.count(em) == 0)
-			return;
 		Unit unew = new Unit("Undefined", "ud");
 		Unit db = dao.get(em, 1);
 		if(db == null){
@@ -63,8 +60,6 @@ public class DBDefaults {
 	
 	private static void defaultZone(EntityManager em){
 		ZoneDAO dao = daoHandler.getZoneDAO();
-		if (dao.count(em) == 0)
-			return;
 		Zone znew = new Zone("Global");
 		znew.setZone(znew);
 		Zone db = dao.get(em, 1);
@@ -79,8 +74,6 @@ public class DBDefaults {
 	
 	private static void defaultService(EntityManager em){
 		ServiceDAO dao = daoHandler.getServiceDAO();
-		if (dao.count(em) == 0)
-			return;
 		Service snew = new Service("Default");
 		Service db = dao.get(em, 1);
 		if(db == null){
@@ -94,8 +87,6 @@ public class DBDefaults {
 	
 	private static void defaultUser(EntityManager em){
 		UserDAO dao = daoHandler.getUserDAO();
-		if (dao.count(em) == 0)
-			return;
 		User unew = new User("User", "Super", "MasterPassword", true, null, "root", null);
 		User db = dao.get(em, 1);
 		if(db == null){
@@ -109,8 +100,6 @@ public class DBDefaults {
 	
 	private static void defaultGroup(EntityManager em){
 		GroupDAO dao = daoHandler.getGroupDAO();
-		if (dao.count(em) == 0)
-			return;
 		Group gnew = new Group("Users");
 		Group db = dao.get(em, 1);
 		if(db == null){
@@ -124,8 +113,6 @@ public class DBDefaults {
 	
 	private static void defaultRule(EntityManager em){
 		RuleDAO dao = daoHandler.getRuleDAO();
-		if (dao.count(em) == 0)
-			return;
 		Rule rnew = new Rule("<PERMISSION></PERMISSION>", "<CONDITION></CONDITION>", "<ACTION></ACTION>");
 		Rule db = dao.get(em, 1);
 		if(db == null){
@@ -140,8 +127,6 @@ public class DBDefaults {
 	//TODO: refactoring
 	private static void defaultUnits(EntityManager em){
 		UnitDAO dao = daoHandler.getUnitDAO();
-		if (dao.count(em) == 0)
-			return;
 		Map<Integer, Unit> unitsDb = dao.getAllAsMap(em);
 		
 		Map<String, String> defaults = getDefaultUnits();	//Name is Key and Symbol is value
