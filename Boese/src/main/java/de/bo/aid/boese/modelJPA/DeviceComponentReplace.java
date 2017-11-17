@@ -51,7 +51,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="\"DeviceComponentReplace\"")
-public class DeviceComponentReplace implements java.io.Serializable {
+public class DeviceComponentReplace implements java.io.Serializable, JPAModel {
 
 	/** The Constant serialVersionUID. */
 	@Transient
@@ -198,6 +198,20 @@ public class DeviceComponentReplace implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		DeviceComponentReplace other = (DeviceComponentReplace) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	@Override
+	public boolean equalsWithoutIDAndFK(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DeviceComponentReplace other = (DeviceComponentReplace) obj;
 		if (deviceComponent == null) {
 			if (other.deviceComponent != null)
 				return false;
@@ -207,8 +221,6 @@ public class DeviceComponentReplace implements java.io.Serializable {
 			if (other.deviceComponentreplaced != null)
 				return false;
 		} else if (!deviceComponentreplaced.equals(other.deviceComponentreplaced))
-			return false;
-		if (id != other.id)
 			return false;
 		if (timestamp == null) {
 			if (other.timestamp != null)

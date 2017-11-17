@@ -51,7 +51,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="\"Service\"")
-public class Service implements java.io.Serializable {
+public class Service implements java.io.Serializable, JPAModel {
 
 	/** The Constant serialVersionUID. */
 	@Transient
@@ -181,16 +181,6 @@ public class Service implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Service other = (Service) obj;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (deviceServices == null) {
-			if (other.deviceServices != null)
-				return false;
-		} else if (!deviceServices.equals(other.deviceServices))
-			return false;
 		if (seId != other.seId)
 			return false;
 		return true;
@@ -203,7 +193,7 @@ public class Service implements java.io.Serializable {
 	 * @param obj the Service object to compare
 	 * @return true if both Services are equal
 	 */
-	public boolean equalsWithoutID(Object obj) {
+	public boolean equalsWithoutIDAndFK(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -216,11 +206,6 @@ public class Service implements java.io.Serializable {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (deviceServices == null) {
-			if (other.deviceServices != null)
-				return false;
-		} else if (!deviceServices.equals(other.deviceServices))
-			return false;
 		return true;
 	}
 
@@ -230,6 +215,6 @@ public class Service implements java.io.Serializable {
 
 	public void setDeviceServices(Set<DeviceService> deviceServices) {
 		this.deviceServices = deviceServices;
-	}	
+	}
 
 }

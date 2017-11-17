@@ -51,7 +51,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="\"Group\"")
-public class Group implements java.io.Serializable {
+public class Group implements java.io.Serializable, JPAModel {
 
 	/** The Constant serialVersionUID. */
 	@Transient
@@ -227,27 +227,7 @@ public class Group implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Group other = (Group) obj;
-		if (deviceGroups == null) {
-			if (other.deviceGroups != null)
-				return false;
-		} else if (!deviceGroups.equals(other.deviceGroups))
-			return false;
 		if (grId != other.grId)
-			return false;
-		if (groupUsers == null) {
-			if (other.groupUsers != null)
-				return false;
-		} else if (!groupUsers.equals(other.groupUsers))
-			return false;
-		if (groupZones == null) {
-			if (other.groupZones != null)
-				return false;
-		} else if (!groupZones.equals(other.groupZones))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
 			return false;
 		return true;
 	}
@@ -259,7 +239,7 @@ public class Group implements java.io.Serializable {
 	 * @param obj the Group object to compare
 	 * @return true if both Groups are equal
 	 */
-	public boolean equalsWithoutID(Object obj) {
+	public boolean equalsWithoutIDAndFK(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -267,21 +247,6 @@ public class Group implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Group other = (Group) obj;
-		if (deviceGroups == null) {
-			if (other.deviceGroups != null)
-				return false;
-		} else if (!deviceGroups.equals(other.deviceGroups))
-			return false;
-		if (groupUsers == null) {
-			if (other.groupUsers != null)
-				return false;
-		} else if (!groupUsers.equals(other.groupUsers))
-			return false;
-		if (groupZones == null) {
-			if (other.groupZones != null)
-				return false;
-		} else if (!groupZones.equals(other.groupZones))
-			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;

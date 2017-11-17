@@ -52,7 +52,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="\"HistoryLogDeviceComponent\"")
-public class HistoryLogDeviceComponent implements java.io.Serializable {
+public class HistoryLogDeviceComponent implements java.io.Serializable, JPAModel {
 
 	/** The Constant serialVersionUID. */
 	@Transient
@@ -183,12 +183,24 @@ public class HistoryLogDeviceComponent implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		HistoryLogDeviceComponent other = (HistoryLogDeviceComponent) obj;
+		if (hiLoCoId != other.hiLoCoId)
+			return false;
+		return true;
+	}
+
+	@Override
+	public boolean equalsWithoutIDAndFK(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HistoryLogDeviceComponent other = (HistoryLogDeviceComponent) obj;
 		if (deviceComponent == null) {
 			if (other.deviceComponent != null)
 				return false;
 		} else if (!deviceComponent.equals(other.deviceComponent))
-			return false;
-		if (hiLoCoId != other.hiLoCoId)
 			return false;
 		if (timestamp == null) {
 			if (other.timestamp != null)

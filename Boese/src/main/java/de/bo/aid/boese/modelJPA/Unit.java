@@ -50,7 +50,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="\"Unit\"")
-public class Unit implements java.io.Serializable {
+public class Unit implements java.io.Serializable, JPAModel {
 	
 	/** The Constant serialVersionUID. */
 	@Transient
@@ -200,22 +200,6 @@ public class Unit implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Unit other = (Unit) obj;
-		if (components == null) {
-			System.out.println("hier");
-			if (other.components != null)
-				return false;
-		} else if (!components.equals(other.components))
-			return false;//System.out.println(components.size() + "\t" + other.components.size());
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (symbol == null) {
-			if (other.symbol != null)
-				return false;
-		} else if (!symbol.equals(other.symbol))
-			return false;
 		if (unId != other.unId)
 			return false;
 		return true;
@@ -228,7 +212,7 @@ public class Unit implements java.io.Serializable {
 	 * @param obj the Unit object to compare
 	 * @return true if both Units are equal
 	 */
-	public boolean equalsWithoutID(Object obj) {
+	public boolean equalsWithoutIDAndFK(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -236,12 +220,6 @@ public class Unit implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Unit other = (Unit) obj;
-		if (components == null) {
-			System.out.println("hier");
-			if (other.components != null)
-				return false;
-		} else if (!components.equals(other.components))
-			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;

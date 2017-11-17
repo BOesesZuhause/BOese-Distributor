@@ -52,7 +52,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="\"User\"")
-public class User implements java.io.Serializable {
+public class User implements java.io.Serializable, JPAModel {
 
 	/** The Constant serialVersionUID. */
 	@Transient
@@ -341,47 +341,7 @@ public class User implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (birthdate == null) {
-			if (other.birthdate != null)
-				return false;
-		} else if (!birthdate.equals(other.birthdate))
-			return false;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (firstName == null) {
-			if (other.firstName != null)
-				return false;
-		} else if (!firstName.equals(other.firstName))
-			return false;
-		if (gender == null) {
-			if (other.gender != null)
-				return false;
-		} else if (!gender.equals(other.gender))
-			return false;
-		if (groupUsers == null) {
-			if (other.groupUsers != null)
-				return false;
-		} else if (!groupUsers.equals(other.groupUsers))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (surname == null) {
-			if (other.surname != null)
-				return false;
-		} else if (!surname.equals(other.surname))
-			return false;
 		if (usId != other.usId)
-			return false;
-		if (userName == null) {
-			if (other.userName != null)
-				return false;
-		} else if (!userName.equals(other.userName))
 			return false;
 		return true;
 	}
@@ -393,7 +353,7 @@ public class User implements java.io.Serializable {
 	 * @param obj the User object to compare
 	 * @return true if both Users are equal
 	 */
-	public boolean equalsWithoutID(Object obj) {
+	public boolean equalsWithoutIDAndFK(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -420,11 +380,6 @@ public class User implements java.io.Serializable {
 			if (other.gender != null)
 				return false;
 		} else if (!gender.equals(other.gender))
-			return false;
-		if (groupUsers == null) {
-			if (other.groupUsers != null)
-				return false;
-		} else if (!groupUsers.equals(other.groupUsers))
 			return false;
 		if (password == null) {
 			if (other.password != null)

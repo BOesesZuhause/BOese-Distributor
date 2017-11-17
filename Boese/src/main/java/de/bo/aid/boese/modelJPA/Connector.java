@@ -51,7 +51,7 @@ import de.bo.aid.boese.constants.Status;
  */
 @Entity
 @Table(name="\"Connector\"")
-public class Connector implements java.io.Serializable {
+public class Connector implements java.io.Serializable, JPAModel {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -322,21 +322,18 @@ public class Connector implements java.io.Serializable {
 		Connector other = (Connector) obj;
 		if (coId != other.coId)
 			return false;
-		if (devices == null) {
-			if (other.devices != null)
-				return false;
-		} else if (!devices.equals(other.devices))
+		return true;
+	}
+
+	@Override
+	public boolean equalsWithoutIDAndFK(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		if (historyLogConnectors == null) {
-			if (other.historyLogConnectors != null)
-				return false;
-		} else if (!historyLogConnectors.equals(other.historyLogConnectors))
+		if (getClass() != obj.getClass())
 			return false;
-		if (logConnectors == null) {
-			if (other.logConnectors != null)
-				return false;
-		} else if (!logConnectors.equals(other.logConnectors))
-			return false;
+		Connector other = (Connector) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;

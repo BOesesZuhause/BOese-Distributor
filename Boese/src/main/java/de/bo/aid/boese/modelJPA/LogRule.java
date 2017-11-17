@@ -51,7 +51,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="\"LogRule\"")
-public class LogRule implements java.io.Serializable {
+public class LogRule implements java.io.Serializable, JPAModel {
 
 	/** The Constant serialVersionUID. */
 	@Transient
@@ -171,6 +171,18 @@ public class LogRule implements java.io.Serializable {
 		LogRule other = (LogRule) obj;
 		if (loRuId != other.loRuId)
 			return false;
+		return true;
+	}
+
+	@Override
+	public boolean equalsWithoutIDAndFK(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LogRule other = (LogRule) obj;
 		if (rule == null) {
 			if (other.rule != null)
 				return false;

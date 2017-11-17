@@ -51,7 +51,7 @@ import javax.persistence.Transient;
  */ 
 @Entity
 @Table(name="\"HistoryLogConnector\"")
-public class HistoryLogConnector implements java.io.Serializable {
+public class HistoryLogConnector implements java.io.Serializable, JPAModel {
 
 	/** The Constant serialVersionUID. */
 	@Transient
@@ -198,6 +198,20 @@ public class HistoryLogConnector implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		HistoryLogConnector other = (HistoryLogConnector) obj;
+		if (hiLoCoId != other.hiLoCoId)
+			return false;
+		return true;
+	}
+
+	@Override
+	public boolean equalsWithoutIDAndFK(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HistoryLogConnector other = (HistoryLogConnector) obj;
 		if (connector == null) {
 			if (other.connector != null)
 				return false;
@@ -207,8 +221,6 @@ public class HistoryLogConnector implements java.io.Serializable {
 			if (other.data != null)
 				return false;
 		} else if (!data.equals(other.data))
-			return false;
-		if (hiLoCoId != other.hiLoCoId)
 			return false;
 		if (timestamp == null) {
 			if (other.timestamp != null)

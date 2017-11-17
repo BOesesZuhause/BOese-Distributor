@@ -56,7 +56,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="\"Zone\"")
-public class Zone implements java.io.Serializable {
+public class Zone implements java.io.Serializable, JPAModel {
 
 	/** The Constant serialVersionUID. */
 	@Transient
@@ -266,32 +266,7 @@ public class Zone implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Zone other = (Zone) obj;
-		if (devices == null) {
-			if (other.devices != null)
-				return false;
-		} else if (!devices.equals(other.devices))
-			return false;
-		if (groupZones == null) {
-			if (other.groupZones != null)
-				return false;
-		} else if (!groupZones.equals(other.groupZones))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
 		if (zoId != other.zoId)
-			return false;
-		if (superZone == null) {
-			if (other.superZone != null)
-				return false;
-		} else if (!superZone.equals(other.superZone))
-			return false;
-		if (zones == null) {
-			if (other.zones != null)
-				return false;
-		} else if (!zones.equals(other.zones))
 			return false;
 		return true;
 	}
@@ -303,7 +278,7 @@ public class Zone implements java.io.Serializable {
 	 * @param obj the Zone object to compare
 	 * @return true if both Zones are equal
 	 */
-	public boolean equalsWithoutID(Object obj) {
+	public boolean equalsWithoutIDAndFK(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -311,16 +286,6 @@ public class Zone implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Zone other = (Zone) obj;
-		if (devices == null) {
-			if (other.devices != null)
-				return false;
-		} else if (!devices.equals(other.devices))
-			return false;
-		if (groupZones == null) {
-			if (other.groupZones != null)
-				return false;
-		} else if (!groupZones.equals(other.groupZones))
-			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -330,11 +295,6 @@ public class Zone implements java.io.Serializable {
 			if (other.superZone != null)
 				return false;
 		} else if (!superZone.equals(other.superZone))
-			return false;
-		if (zones == null) {
-			if (other.zones != null)
-				return false;
-		} else if (!zones.equals(other.zones))
 			return false;
 		return true;
 	}

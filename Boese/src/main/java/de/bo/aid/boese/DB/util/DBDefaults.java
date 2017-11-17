@@ -33,11 +33,11 @@ public class DBDefaults {
 		EntityManager em = JPAUtil.getEntityManager();
 		em.getTransaction().begin();
 		defaultUnit(em);
-		defaultZone(em);
+//		defaultZone(em);
 		defaultService(em);
 		defaultUser(em);
 		defaultGroup(em);
-//		defaultRule(em);
+		defaultRule(em);
 		em.getTransaction().commit();
 		em.getTransaction().begin();
 		defaultUnits(em);
@@ -48,12 +48,14 @@ public class DBDefaults {
 	private static void defaultUnit(EntityManager em){
 //		System.out.println(daoHandler);
 		UnitDAO dao = daoHandler.getUnitDAO();
+		if (dao.count(em) == 0)
+			return;
 		Unit unew = new Unit("Undefined", "ud");
 		Unit db = dao.get(em, 1);
 		if(db == null){
 			dao.create(em, unew);
 		}
-		else if (!db.equalsWithoutID(unew)) {
+		else if (!db.equalsWithoutIDAndFK(unew)) {
 			dao.delete(em, db);
 			dao.create(em, unew);
 		}
@@ -61,13 +63,15 @@ public class DBDefaults {
 	
 	private static void defaultZone(EntityManager em){
 		ZoneDAO dao = daoHandler.getZoneDAO();
+		if (dao.count(em) == 0)
+			return;
 		Zone znew = new Zone("Global");
 		znew.setZone(znew);
 		Zone db = dao.get(em, 1);
 		if(db == null){
 			dao.create(em, znew);
 		}
-		else if (!db.equalsWithoutID(znew)) {
+		else if (!db.equalsWithoutIDAndFK(znew)) {
 			dao.delete(em, db);
 			dao.create(em, znew);
 		}
@@ -75,12 +79,14 @@ public class DBDefaults {
 	
 	private static void defaultService(EntityManager em){
 		ServiceDAO dao = daoHandler.getServiceDAO();
+		if (dao.count(em) == 0)
+			return;
 		Service snew = new Service("Default");
 		Service db = dao.get(em, 1);
 		if(db == null){
 			dao.create(em, snew);
 		}
-		else if (!db.equalsWithoutID(snew)) {
+		else if (!db.equalsWithoutIDAndFK(snew)) {
 			dao.delete(em, db);
 			dao.create(em, snew);
 		}
@@ -88,12 +94,14 @@ public class DBDefaults {
 	
 	private static void defaultUser(EntityManager em){
 		UserDAO dao = daoHandler.getUserDAO();
+		if (dao.count(em) == 0)
+			return;
 		User unew = new User("User", "Super", "MasterPassword", true, null, "root", null);
 		User db = dao.get(em, 1);
 		if(db == null){
 			dao.create(em, unew);
 		}
-		else if (!db.equalsWithoutID(unew)) {
+		else if (!db.equalsWithoutIDAndFK(unew)) {
 			dao.delete(em, db);
 			dao.create(em, unew);
 		}
@@ -101,12 +109,14 @@ public class DBDefaults {
 	
 	private static void defaultGroup(EntityManager em){
 		GroupDAO dao = daoHandler.getGroupDAO();
+		if (dao.count(em) == 0)
+			return;
 		Group gnew = new Group("Users");
 		Group db = dao.get(em, 1);
 		if(db == null){
 			dao.create(em, gnew);
 		}
-		else if (!db.equalsWithoutID(gnew)) {
+		else if (!db.equalsWithoutIDAndFK(gnew)) {
 			dao.delete(em, db);
 			dao.create(em, gnew);
 		}
@@ -114,19 +124,24 @@ public class DBDefaults {
 	
 	private static void defaultRule(EntityManager em){
 		RuleDAO dao = daoHandler.getRuleDAO();
+		if (dao.count(em) == 0)
+			return;
 		Rule rnew = new Rule("<PERMISSION></PERMISSION>", "<CONDITION></CONDITION>", "<ACTION></ACTION>");
 		Rule db = dao.get(em, 1);
 		if(db == null){
 			dao.create(em, rnew);
 		}
-		else if (!db.equalsWithoutID(rnew)) {
+		else if (!db.equalsWithoutIDAndFK(rnew)) {
 			dao.delete(em, db);
 			dao.create(em, rnew);
 		}
 	}
 	
+	//TODO: refactoring
 	private static void defaultUnits(EntityManager em){
 		UnitDAO dao = daoHandler.getUnitDAO();
+		if (dao.count(em) == 0)
+			return;
 		Map<Integer, Unit> unitsDb = dao.getAllAsMap(em);
 		
 		Map<String, String> defaults = getDefaultUnits();	//Name is Key and Symbol is value
@@ -140,10 +155,10 @@ public class DBDefaults {
 				int nameId = -1;
 				int symbolId = -1;
 				for(Entry<Integer, Unit> unit : unitsDb.entrySet()){
-					if(entry.getKey() == unit.getValue().getName()){
+					if(entry.getKey().equals(unit.getValue().getName())){
 						nameId = unit.getKey();
 					}
-					if(entry.getValue() == unit.getValue().getSymbol()){
+					if(entry.getValue().equals(unit.getValue().getSymbol())){
 						symbolId = unit.getKey();
 					}
 					if(nameId != -1 && symbolId != -1){
@@ -193,16 +208,16 @@ public class DBDefaults {
 	
 	private static Map<String, String> getDefaultUnits(){
 		Map<String, String> defaults = new HashMap<>(); 
-		defaults.put("Volt", "V"); 
+		defaults.put("Volt", "V");
 		defaults.put("milliAmpere", "mA"); 
-		defaults.put("Percent", "%"); 
+		defaults.put("Percent", "%");
 		defaults.put("OnOff", "Zeichen fehlt"); 
-		defaults.put("Temperature", "°C"); 
-		defaults.put("Distance", "m"); 
+		defaults.put("Temperature", "°C");
+		defaults.put("Distance", "m");
 		defaults.put("ColorRGB", "rgb"); 
-		defaults.put("Watt", "W"); 
-		defaults.put("Time", "ms"); 
-		defaults.put("Velocity", "m/s"); 
+		defaults.put("Watt", "W");
+		defaults.put("Time", "ms");
+		defaults.put("Velocity", "m/s");
 		defaults.put("Weight", "g");
 		return defaults;
 	}

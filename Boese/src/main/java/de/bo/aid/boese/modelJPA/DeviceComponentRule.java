@@ -47,7 +47,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="\"DeviceComponentRule\"")
-public class DeviceComponentRule {
+public class DeviceComponentRule implements JPAModel {
 
 	/** The DeviceComponentRule id. */
 	@Id
@@ -164,14 +164,26 @@ public class DeviceComponentRule {
 		if (getClass() != obj.getClass())
 			return false;
 		DeviceComponentRule other = (DeviceComponentRule) obj;
+		if (id != other.id) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean equalsWithoutIDAndFK(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DeviceComponentRule other = (DeviceComponentRule) obj;
 		if (deviceComponent == null) {
 			if (other.deviceComponent != null)
 				return false;
 		} else if (!deviceComponent.equals(other.deviceComponent))
 			return false;
-		if (id != other.id) {
-			return false;
-		}
 		if (rule == null) {
 			if (other.rule != null)
 				return false;

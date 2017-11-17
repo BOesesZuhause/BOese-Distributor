@@ -53,7 +53,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="\"Device\"")
-public class Device implements java.io.Serializable {
+public class Device implements java.io.Serializable, JPAModel {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -348,6 +348,20 @@ public class Device implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Device other = (Device) obj;
+		if (deId != other.deId)
+			return false;
+		return true;
+	}
+
+	@Override
+	public boolean equalsWithoutIDAndFK(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Device other = (Device) obj;
 		if (alias == null) {
 			if (other.alias != null)
 				return false;
@@ -357,23 +371,6 @@ public class Device implements java.io.Serializable {
 			if (other.connector != null)
 				return false;
 		} else if (!connector.equals(other.connector))
-			return false;
-		if (deId != other.deId)
-			return false;
-		if (deviceComponents == null) {
-			if (other.deviceComponents != null)
-				return false;
-		} else if (!deviceComponents.equals(other.deviceComponents))
-			return false;
-		if (deviceGroups == null) {
-			if (other.deviceGroups != null)
-				return false;
-		} else if (!deviceGroups.equals(other.deviceGroups))
-			return false;
-		if (deviceServices == null) {
-			if (other.deviceServices != null)
-				return false;
-		} else if (!deviceServices.equals(other.deviceServices))
 			return false;
 		if (purchaseDate == null) {
 			if (other.purchaseDate != null)

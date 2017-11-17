@@ -47,7 +47,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="\"GroupZone\"")
-public class GroupZone implements java.io.Serializable {
+public class GroupZone implements java.io.Serializable, JPAModel {
 
 	/** The Constant serialVersionUID. */
 	@Transient
@@ -206,14 +206,26 @@ public class GroupZone implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		GroupZone other = (GroupZone) obj;
+		if (id != other.id) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean equalsWithoutIDAndFK(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GroupZone other = (GroupZone) obj;
 		if (grp == null) {
 			if (other.grp != null)
 				return false;
 		} else if (!grp.equals(other.grp))
 			return false;
-		if (id != other.id) {
-			return false;
-		}
 		if (rights == null) {
 			if (other.rights != null)
 				return false;

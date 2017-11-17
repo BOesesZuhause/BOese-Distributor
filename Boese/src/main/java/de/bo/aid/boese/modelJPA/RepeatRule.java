@@ -51,7 +51,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="\"RepeatRule\"")
-public class RepeatRule {
+public class RepeatRule implements JPAModel{
 	
 	/** The RepeatRule id. */
 	@Id
@@ -288,6 +288,20 @@ public class RepeatRule {
 		if (getClass() != obj.getClass())
 			return false;
 		RepeatRule other = (RepeatRule) obj;
+		if (rrId != other.rrId)
+			return false;
+		return true;
+	}
+
+	@Override
+	public boolean equalsWithoutIDAndFK(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RepeatRule other = (RepeatRule) obj;
 		if (deviceComponent == null) {
 			if (other.deviceComponent != null)
 				return false;
@@ -300,17 +314,10 @@ public class RepeatRule {
 			return false;
 		if (repeatsAfterEnd != other.repeatsAfterEnd)
 			return false;
-		if (rrId != other.rrId)
-			return false;
 		if (rule == null) {
 			if (other.rule != null)
 				return false;
 		} else if (!rule.equals(other.rule))
-			return false;
-		if (toDo == null) {
-			if (other.toDo != null)
-				return false;
-		} else if (!toDo.equals(other.toDo))
 			return false;
 		if (value == null) {
 			if (other.value != null)

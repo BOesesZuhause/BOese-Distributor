@@ -49,7 +49,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="\"DeviceGroup\"")
-public class DeviceGroup implements java.io.Serializable {
+public class DeviceGroup implements java.io.Serializable, JPAModel {
 
 	/** The Constant serialVersionUID. */
 	@Transient
@@ -206,6 +206,20 @@ public class DeviceGroup implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		DeviceGroup other = (DeviceGroup) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	@Override
+	public boolean equalsWithoutIDAndFK(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DeviceGroup other = (DeviceGroup) obj;
 		if (device == null) {
 			if (other.device != null)
 				return false;
@@ -215,8 +229,6 @@ public class DeviceGroup implements java.io.Serializable {
 			if (other.grp != null)
 				return false;
 		} else if (!grp.equals(other.grp))
-			return false;
-		if (id != other.id)
 			return false;
 		if (rights != other.rights)
 			return false;

@@ -250,8 +250,7 @@ private final String logo =
 		//JPAUtil.initForTesting();
 
 		daoHandler = DAOHandler.getInstance();
-		//TODO: only call if db empty
-//		DBDefaults.defaults();
+		DBDefaults.defaults();
 		EntityManager em = JPAUtil.getEntityManager();
 		em.getTransaction().begin();
 		global = daoHandler.getZoneDAO().get(em, 1);

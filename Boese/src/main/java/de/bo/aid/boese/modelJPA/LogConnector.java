@@ -52,7 +52,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="\"LogConnector\"")
-public class LogConnector implements java.io.Serializable {
+public class LogConnector implements java.io.Serializable, JPAModel {
 
 	/** The Constant serialVersionUID. */
 	@Transient
@@ -198,6 +198,20 @@ public class LogConnector implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		LogConnector other = (LogConnector) obj;
+		if (loCoId != other.loCoId)
+			return false;
+		return true;
+	}
+
+	@Override
+	public boolean equalsWithoutIDAndFK(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LogConnector other = (LogConnector) obj;
 		if (connector == null) {
 			if (other.connector != null)
 				return false;
@@ -207,8 +221,6 @@ public class LogConnector implements java.io.Serializable {
 			if (other.data != null)
 				return false;
 		} else if (!data.equals(other.data))
-			return false;
-		if (loCoId != other.loCoId)
 			return false;
 		if (timestamp == null) {
 			if (other.timestamp != null)

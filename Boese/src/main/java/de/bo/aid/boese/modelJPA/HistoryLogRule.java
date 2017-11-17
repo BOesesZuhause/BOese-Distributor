@@ -51,7 +51,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="\"HistoryLogRule\"")
-public class HistoryLogRule implements java.io.Serializable {
+public class HistoryLogRule implements java.io.Serializable, JPAModel {
 
 	/** The Constant serialVersionUID. */
 	@Transient
@@ -171,6 +171,18 @@ public class HistoryLogRule implements java.io.Serializable {
 		HistoryLogRule other = (HistoryLogRule) obj;
 		if (hiLoRuId != other.hiLoRuId)
 			return false;
+		return true;
+	}
+
+	@Override
+	public boolean equalsWithoutIDAndFK(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HistoryLogRule other = (HistoryLogRule) obj;
 		if (rule == null) {
 			if (other.rule != null)
 				return false;

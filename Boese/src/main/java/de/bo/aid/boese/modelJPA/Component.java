@@ -52,7 +52,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="\"Component\"")
-public class Component implements java.io.Serializable {
+public class Component implements java.io.Serializable, JPAModel {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -237,14 +237,21 @@ public class Component implements java.io.Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Component other = (Component) obj;
-		if (actor != other.actor)
-			return false;
 		if (coId != other.coId)
 			return false;
-		if (deviceComponents == null) {
-			if (other.deviceComponents != null)
-				return false;
-		} else if (!deviceComponents.equals(other.deviceComponents))
+		return true;
+	}
+
+	@Override
+	public boolean equalsWithoutIDAndFK(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Component other = (Component) obj;
+		if (actor != other.actor)
 			return false;
 		if (name == null) {
 			if (other.name != null)

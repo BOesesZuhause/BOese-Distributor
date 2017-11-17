@@ -49,7 +49,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="\"ToDo\"")
-public class ToDo {
+public class ToDo implements JPAModel{
 	
 	/** The ToDoid. */
 	@Id
@@ -220,6 +220,20 @@ public class ToDo {
 		if (getClass() != obj.getClass())
 			return false;
 		ToDo other = (ToDo) obj;
+		if (toDoId != other.toDoId)
+			return false;
+		return true;
+	}
+
+	@Override
+	public boolean equalsWithoutIDAndFK(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ToDo other = (ToDo) obj;
 		if (active != other.active)
 			return false;
 		if (date == null) {
@@ -231,8 +245,6 @@ public class ToDo {
 			if (other.repeatRule != null)
 				return false;
 		} else if (!repeatRule.equals(other.repeatRule))
-			return false;
-		if (toDoId != other.toDoId)
 			return false;
 		return true;
 	}
