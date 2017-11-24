@@ -141,7 +141,7 @@ public class Interpreter {
 				list.add(deco);
 			}
 			else{
-			    logger.error("DeviceCompent mit der ID " + decoID + " konnte in der DB nicht gefunden werden");
+			    logger.error("DeviceCompent with ID " + decoID + " was not found in the DB");
 				//TODO Exception
 			}
 		}

@@ -805,7 +805,7 @@ public class ProtocolHandler implements MessageHandler {
 			if (BoeseXML.readXML(new ByteArrayInputStream(rule.getConditions().getBytes())) == null ||
 					BoeseXML.readXML(new ByteArrayInputStream(rule.getPermissions().getBytes())) == null ||
 					BoeseXML.readXML(new ByteArrayInputStream(rule.getActions().getBytes())) == null) {
-				logger.warn("Invalid XML in new Rule");
+				logger.warn("Invalid XML in new Rule"); //TODO: Why is the XML invalid
 				sendNotificationToAllUserConnectors("Syntax error in rule with id: " + rule.getRuleId(),
 				        NotificationType.ERROR, System.currentTimeMillis());
 			}
@@ -848,22 +848,22 @@ public class ProtocolHandler implements MessageHandler {
 			return;
 		}
 		HashMap<Integer, Integer> tempRules = new HashMap<>();
-		for (RepeatRuleJSON rule : ucrr.getRules()) {
-			//TODO überlegen ob es sein muss die Rule und die DeviceComponete erst zu holen
-			Rule ru = daoHandler.getRuleDAO().get(em, rule.getRuleId());
-			DeviceComponent deco = daoHandler.getDeviceComponentDAO().get(em, rule.getDecoId());
-			if(ru != null && deco != null){
-				RepeatRule r = new RepeatRule(rule.getCron(), BigDecimal.valueOf(rule.getValue()), rule.getRepeatsAfterEnd(), ru, deco);
-				daoHandler.getRepeatRuleDAO().create(em, r);
-				tempRules.put(rule.getTempId(), r.getRrId());
+		for (RepeatRuleJSON repeatRuleJSON : ucrr.getRules()) {
+			Rule rule = daoHandler.getRuleDAO().get(em, repeatRuleJSON.getRuleId());
+			DeviceComponent deco = daoHandler.getDeviceComponentDAO().get(em, repeatRuleJSON.getDecoId());
+			if (rule == null) {
+				logger.error("CreateRepeatRule: Rule with ID " + repeatRuleJSON.getRuleId() + " not found in DB ");
+				sendNotificationToAllUserConnectors("Error while saving repeaterule. The referenced rules are unknown.", NotificationType.ERROR, System.currentTimeMillis());
+				return;
 			}
-			else {
-			    sendNotificationToAllUserConnectors("Error while saving repeaterule with id: " + rule.getRuleId() +
-                        ". The referenced devicecomponents are unknown.", 
-                        NotificationType.ERROR, System.currentTimeMillis());
-				logger.error("Rule with ID " + rule.getRuleId() + " not found in DB or\n"
-							+ "DeviceComponent with ID " + rule.getDecoId() + " not found in DB");
+			if (deco == null) {
+				logger.error("CreateRepeatRule: DeviceComponent with ID " + repeatRuleJSON.getDecoId() + " not found in DB ");
+				sendNotificationToAllUserConnectors("Error while saving repeaterule. The referenced DeviceComponents are unknown.", NotificationType.ERROR, System.currentTimeMillis());
+				return;
 			}
+			RepeatRule rr = new RepeatRule(repeatRuleJSON.getCron(), BigDecimal.valueOf(repeatRuleJSON.getValue()), repeatRuleJSON.getRepeatsAfterEnd(), rule, deco);
+			daoHandler.getRepeatRuleDAO().create(em, rr);
+			tempRules.put(repeatRuleJSON.getTempId(), rr.getRrId());
 		}
 		sendConfirmRepeatRules(tempRules, connectorId);
 		em.getTransaction().commit();

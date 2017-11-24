@@ -191,6 +191,7 @@ private final String logo =
     public static void main(String[] args) {
         Distributor distr = Distributor.getInstance();
         distr.printLogo();
+        logger.info("Begin to load the Distrubutor");
         distr.checkArguments(args);
         logger.info("Loading properties");
         distr.loadProperties();
@@ -313,7 +314,7 @@ private final String logo =
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
-			logger.error("Failed to sleep", e);
+			logger.error("Failed to sleep while printing Logo", e);
 		}
 	}
 
@@ -584,7 +585,7 @@ private final String logo =
 			EntityManager em = JPAUtil.getEntityManager();
 			em.getTransaction().begin();
 			DeviceComponent deco = daoHandler.getDeviceComponentDAO().get(em, inq.getDeviceComponentId());
-			//ist die DeviceComponet auf loggen gestellt und die Differenz zwischen neuen und alten groß genug?
+			//TODO: Log new Value of DeviceComponent if new and old Value are not equal 
 			if(deco.getCurrentValue() != null){
 				if(deco.isLoggen() && Math.abs(deco.getCurrentValue().doubleValue() - inq.getValue()) > deco.getLogDiffernce().doubleValue()){
 					daoHandler.getLogDeviceComponentDAO().create(em, deco, new Date(inq.getTimestamp()), deco.getCurrentValue());

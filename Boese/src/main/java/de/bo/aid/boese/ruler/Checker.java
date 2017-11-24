@@ -44,8 +44,6 @@ import org.apache.logging.log4j.Logger;
 import de.bo.aid.boese.DB.util.JPAUtil;
 import de.bo.aid.boese.constants.Status;
 import de.bo.aid.boese.dao.DAOHandler;
-import de.bo.aid.boese.dao.DeviceComponentDAO;
-import de.bo.aid.boese.exceptions.DBObjectNotFoundException;
 import de.bo.aid.boese.exceptions.NoCalculationTypeException;
 import de.bo.aid.boese.exceptions.NoFirstCalculationException;
 import de.bo.aid.boese.exceptions.OnlyTwoObjectsForModuloException;
@@ -147,7 +145,7 @@ public class Checker {
 		em.getTransaction().commit();
 		em.close();
 		if (deco == null){
-			logger.error("DeviceComponte mit der ID " + comp.getId() + " wurde nicht in der DB gefunden");
+			logger.error("DeviceComponte with ID " + comp.getId() + " was not found in DB");
 			return false;
 		}
 		int status = deco.getStatus();
@@ -161,20 +159,19 @@ public class Checker {
 				comparativeValue = calculate(comp.getCalculation());
 			}
 			catch (NoCalculationTypeException ncte){
-				logger.error("Es wurde kein Calculationtype angegeben");
+				logger.error("No Calculationtype defined in Condition");
 				ncte.printStackTrace();
 			}
 			catch (NoFirstCalculationException nfce){
-				logger.error("Es wurde kein erster Rechenwert(FIRST) angegeben");
+				logger.error("In subtraction, division and modulo has to define a First Tag");
 				nfce.printStackTrace();
 			}
 			catch (OnlyTwoObjectsForModuloException otofme){
-				logger.error("Es wurden mehr als zwei Werte bei einer Moduloberechnung");
+				logger.error("Module may not have more than two Values");
 				otofme.printStackTrace();
 			} 
 			catch (Exception e) {
-				logger.error("Ein unerklicher Fehler in Calculate ist aufgetreten");
-				System.err.println("Bad XML: " + e.getMessage());
+				logger.error("An unknown error has occurred");
 				return false;
 			}
 			switch(comp.getComparator()){
@@ -191,7 +188,7 @@ public class Checker {
 			case LOWERTHEN:
 				return isValue < comparativeValue;
 			default:
-				logger.info("Kein Comperator angegeben");
+				logger.info("There was no Comparator defined");
 				return false;
 			}
 		}
@@ -205,7 +202,6 @@ public class Checker {
 	 * @throws Exception when a Value can not be set
 	 */
 	public List<ComponentXML> action(Action action) throws Exception {
-		//TODO Queries angucken ober erst Select schlau ist
 		EntityManager em = JPAUtil.getEntityManager();
 		em.getTransaction().begin();
 		Map<Integer, Rule> rules = daoHandler.getRuleDAO().getAllAsMap(em);
@@ -228,19 +224,19 @@ public class Checker {
 			try {
 				actor.setValue(calculate(actor.getCalculation()));
 			} catch (NoCalculationTypeException ncte){
-				logger.error("Es wurde kein Calculationtype angegeben");
+				logger.error("No Calculationtype defined in Action");
 				ncte.printStackTrace();
 			}
 			catch (NoFirstCalculationException nfce){
-				logger.error("Es wurde kein erster Rechenwert(FIRST) angegeben");
+				logger.error("In subtraction, division and modulo has to define a First Tag");
 				nfce.printStackTrace();
 			}
 			catch (OnlyTwoObjectsForModuloException otofme){
-				logger.error("Es wurden mehr als zwei Werte bei einer Moduloberechnung");
+				logger.error("Module may not have more than two Values");
 				otofme.printStackTrace();
 			} 
 			catch (Exception e) {
-				logger.error("Ein unerklicher Fehler in Calculate ist aufgetreten");
+				logger.error("An unknown error has occurred");
 				System.err.println("Bad XML: " + e.getMessage());
 				throw new Exception(e.getMessage());
 			}
@@ -273,7 +269,7 @@ public class Checker {
 			}
 			else{
 				//TODO Exception!!!
-				logger.error("Der Wert der Komponente mit der ID: " + i + " konnte nicht in der Datenbank gefunden werden.");
+				logger.error("There was no Value found in the DB for the DeviceComponent with id: " + i );
 			}
 			em.getTransaction().commit();
 		}
@@ -281,23 +277,18 @@ public class Checker {
 		for(CalculationList next : cl.getCalculations()){
 			try{
 				values.add(calculate(next));
-			}
-			catch (NoCalculationTypeException ncte){
-				logger.error("Es wurde kein Calculationtype angegeben");
+			} catch (NoCalculationTypeException ncte){
+				logger.error("No Calculationtype defined in Action");
 				ncte.printStackTrace();
-			}
-			catch (NoFirstCalculationException nfce){
-				logger.error("Es wurde kein erster Rechenwert(FIRST) angegeben");
+			} catch (NoFirstCalculationException nfce){
+				logger.error("In subtraction, division and modulo has to define a First Tag");
 				nfce.printStackTrace();
-			}
-			catch (OnlyTwoObjectsForModuloException otofme){
-				logger.error("Es wurden mehr als zwei Werte bei einer Moduloberechnung");
+			} catch (OnlyTwoObjectsForModuloException otofme){
+				logger.error("Module may not have more than two Values");
 				otofme.printStackTrace();
-			} 
-			catch (Exception e) {
-				logger.error("Ein unerklicher Fehler in Calculate ist aufgetreten");
+			} catch (Exception e) {
+				logger.error("An unknown error has occurred");
 				System.err.println("Bad XML: " + e.getMessage());
-				e.printStackTrace();
 			}
 		}
 		if(cl.getCalculationType() == null && values.size() == 1){
